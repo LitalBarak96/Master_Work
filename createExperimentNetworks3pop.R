@@ -349,15 +349,37 @@ createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNa
 createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
 createRadarPlot(numberAvg3, paramsNames, numberFolder, numberMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
 
+
+
 densL <- cbind(lengthAvg1[1], lengthAvg2[1])
+densL <- cbind(densL, lengthAvg3[1])
+
 modL <- cbind(lengthAvg1[2], lengthAvg2[2])
+modL <- cbind(modL, lengthAvg3[2])
+
 sdL <- cbind(lengthAvg1[3], lengthAvg2[3])
+sdL <- cbind(sdL, lengthAvg3[3])
+
 strL <- cbind(lengthAvg1[4], lengthAvg2[4])
+strL <- cbind(strL, lengthAvg3[4])
+
 betL <- cbind(lengthAvg1[5], lengthAvg2[5])
+betL <- cbind(betL, lengthAvg3[5])
+
 densN <- cbind(numberAvg1[1], numberAvg2[1])
+densN <- cbind(densN, numberAvg3[1])
+
 modN <- cbind(numberAvg1[2], numberAvg2[2])
+modN <- cbind(modN, numberAvg3[2])
+
 sdN <- cbind(numberAvg1[3], numberAvg2[3])
+sdN <- cbind(sdN, numberAvg3[3])
+
 strN <- cbind(numberAvg1[4], numberAvg2[4])
+strN <- cbind(strN, numberAvg3[4])
+
 betN <- cbind(numberAvg1[5], numberAvg2[5])
+betN <- cbind(betN, numberAvg3[5])
+
 
 
