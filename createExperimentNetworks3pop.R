@@ -38,7 +38,7 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   
   # density
   density <- sum(E(net)$weight) / (vertexNumber * (vertexNumber - 1) / 2)
-  #print(paste("density = ", density))
+  print(paste("density = ", density))
   x <- c(1 - density, density)
   labels <- c("","Density")
   jpeg(file.path(folderPath, paste("density ", graphName, ".jpg", sep = "")))
@@ -88,7 +88,6 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
   #number of files we want
   for (i in 1:length(fileNames)) {
     #when debuging see what is inside matfile
-    #what is f[]?i guess it the filenames itself so we get the mat itself transforming to matrix?
     matFile <- fileNames[i]
     mat <- scan(toString(matFile))
     #because the matrix is smetric and there is 100 value so it is 10
