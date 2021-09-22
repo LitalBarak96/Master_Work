@@ -11,17 +11,17 @@ library(argparser, quietly=TRUE)
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
 #reciving arguments from matlab as the number of populations we want to change the color *3 for the rgb
-#p <- arg_parser("chosing color")
+p <- arg_parser("chosing color")
 
 # Add command line arguments
-#p <- add_argument(p,
-                  #c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
-                  #help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
-                  #flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+p <- add_argument(p,
+                  c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
+                  help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
+                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
 
 
 # Parse the command line arguments
-#argv <- parse_args(p)
+argv <- parse_args(p)
 
 
 
@@ -42,7 +42,7 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   x <- c(1 - density, density)
   labels <- c("","Density")
   jpeg(file.path(folderPath, paste("density ", graphName, ".jpg", sep = "")))
-  #pie(x, labels)
+  pie(x, labels)
   dev.off()
   
   # modularity
@@ -102,12 +102,12 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
     if (maxNumberOfInteration > 0) {
       #normalization to the number of the max interaction to the weights of the network this is not happning in lengthparams
       E(net)$weight <- E(net)$weight / maxNumberOfInteration
-      E(net)$width <- E(net)$weight
+      E(net)$width <- E(net)$weight*7
       #the 7 and 25?? is for the vertex size for visualization beacuse the lenght value are smaller than the number values
       cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7,fileNames[i])
     } else {
       #which means length of interaction
-      E(net)$width <- E(net)$weight
+      E(net)$width <- E(net)$weight*10
       
       cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i])
     }
