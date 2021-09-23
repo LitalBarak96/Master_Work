@@ -10,7 +10,7 @@ library(rvest)
 
 
 ##please enter here the group name
-group_name = "MalesandFemales"
+group_name = "MalesGrouped"
 
 
 #calculating density, modularity, sdStrength, strength, betweenness

@@ -1,6 +1,6 @@
 require(R.matlab)
 library(base)
-setwd('F:/statistic_test/MalesandFemales') #where is the data folders
+setwd('F:/statistic_test/MalesGrouped') #where is the data folders
 dir<-list.dirs(recursive = F)
 print(dir)
 
