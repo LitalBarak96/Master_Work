@@ -136,15 +136,14 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   data = data.frame(names, value)
   data$names <- as.character(data$names)
   data$names <- factor(data$names, levels=unique(data$names))
-  print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-  View(data)
+
   #this part creat graph and chosing the color from the parser
   
   #testName = getStatisticTest(groupsParams[[1]], groupsParams[[2]])
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)
-  # <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
+  #g<- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
   #to plot in diffrent way the strenght ans betweenes
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
