@@ -10,8 +10,8 @@ library(rvest)
 
 
 ##please enter here the group name
-group_name = "MalesGrouped"
-
+group_name = "MalesSingels"
+setwd('F:/statistic_test')
 
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
@@ -119,9 +119,9 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
 
 
 #where we choosing the files we want for analysis
-xlsxFile <- choose.files()
+#xlsxFile <- choose.files()
 #all data is the data from the exel in the first sheet
-allData <- read.xlsx(xlsxFile)
+allData <- read.xlsx("expData_0_to_27000.xlsx")
 
 lengthParams <- c()
 numberParams <- c()

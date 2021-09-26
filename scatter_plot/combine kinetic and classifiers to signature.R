@@ -1,6 +1,6 @@
 library(base)
 
-setwd('F:/statistic_test/MalesGrouped') #where is the data folder
+setwd('F:/statistic_test/MalesSingels') #where is the data folder
 all.df<-data.frame()
 bl_frq.df<-data.frame()
 
