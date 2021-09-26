@@ -24,7 +24,7 @@ for(k in 1:length(dir)){
     ave_bl<-data.frame()
     for (i in 1:length(file$allScores[[4]])){
       tmp.df <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(file$allScores[[4]][[i]][[1]])) # convert format of data for each fly
-     
+      
       ### get bout length for each fly ###
       counter<-0
       bl_vector<-data.frame()
@@ -47,28 +47,28 @@ for(k in 1:length(dir)){
       ave_bl_fly<-mean(bl_vector)
       ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
       per_fly_freq<-rbind(per_fly_freq, as.numeric(lengths(bl_vector)/length(tmp.df$value))) # combine frequency of all flies
-      }
+    }
     ave_per_movie<-colMeans(ave_bl, na.rm = T, dims = 1)
     ave_freq_movie<-colMeans(per_fly_freq, na.rm = T, dims = 1)
     if (is.numeric(ave_bl)==F){
       ave_per_movie<-data.frame(0)
     }
-     total_bl <- data.frame(dir=dir[k], files=files[j], value=as.numeric(ave_per_movie)) # data frame per file
-     total_freq <- data.frame(dir=dir[k], files=files[j], value=as.numeric(ave_freq_movie)) # frequency per file
-     total.df<-rbind(total.df, total_bl) #add to averages of all files per directory
-     total_freq.df<-rbind(total_freq.df, total_freq) #frequency of all files per directory
-    }
+    total_bl <- data.frame(dir=dir[k], files=files[j], value=as.numeric(ave_per_movie)) # data frame per file
+    total_freq <- data.frame(dir=dir[k], files=files[j], value=as.numeric(ave_freq_movie)) # frequency per file
+    total.df<-rbind(total.df, total_bl) #add to averages of all files per directory
+    total_freq.df<-rbind(total_freq.df, total_freq) #frequency of all files per directory
+  }
   ### add average bout length to data frame of averages per movie ###
   if (is.numeric(total_all$value)==F){
     total_all<-total.df
     total_freq_all<-total_freq.df
-    }
-    else{
+  }
+  else{
     total_all<-cbind(total_all, total.df)
     total_freq_all<-cbind(total_freq_all, total_freq.df)
-    }
+  }
   
 }
-
+warnings()
 write.csv(total_all, 'bout_length_scores.csv', row.names = F)
 write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
