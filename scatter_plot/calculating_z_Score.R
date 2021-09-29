@@ -1,5 +1,6 @@
 library(base)
 
+number_of_features= 48
 first.df<-data.frame()
 second.df<-data.frame()
 third.df<-data.frame()
@@ -53,7 +54,7 @@ for (i in 2:length(temp.df)){
   
 }
 
-for (i in 1:46){
+for (i in 1:number_of_features){
   new_avg.df[i,]$file = third.df$file[i]
   new_avg.df[i,]$mean_all_pop = (third.df$value[i]+second.df$value[i]+first.df$value[i])/3
   

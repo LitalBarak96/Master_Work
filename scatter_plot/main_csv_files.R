@@ -21,7 +21,9 @@ modN<-c()
 sdN<-c()
 strN<-c()
 betN<-c()
-setwd('F:/statistic_test/MalesandFemales')
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Mated')
+group_name = "Mated"
+number_of_movies =20
 averagesPerMovieByFile<-function(){
   
   dir<-list.dirs(recursive = F)
@@ -244,8 +246,7 @@ importClassifierFilesAndCalculatePerFrame<-function(){
 }
 
 creatNetwork3popforscatter<-function(){
-  group_name = "MalesandFemales"
-  setwd('F:/statistic_test')
+  setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive')
   
   #where we choosing the files we want for analysis
   #xlsxFile <- choose.files()
@@ -458,9 +459,9 @@ combineKineticAndClassifiersToSignature<-function(){
   all.df<-cbind(ave_classifiers.df, ave_kinetic.df)
   #all.df<-rbind(all.df, ave_frq.df)
   
-  all_freq.df<-data.frame(ave_frq.df[, c('files','value', 'value.1', 'value.2','value.3','value.4','value.5','value.6','value.7','value.8','value.9')])
-  #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
+  all_freq.df<-data.frame(ave_frq.df[,seq(3, number_of_movies*3, 3)])
   
+  #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
   for (i in 2:length(ave_frq.df)){
     
     
@@ -503,6 +504,6 @@ averagesPerMovieByFile()
 importClassifierFilesAndCalculatePerFrame()
 
 creatNetwork3popforscatter()
-setwd('F:/statistic_test/MalesandFemales')
-#boutLengthAndFrequencyForClassifiers()
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Mated')
+boutLengthAndFrequencyForClassifiers()
 combineKineticAndClassifiersToSignature()

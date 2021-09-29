@@ -22,7 +22,8 @@ all.df<-cbind(ave_classifiers.df, ave_kinetic.df)
 
 all_freq.df<-data.frame(ave_frq.df[, c('files','value', 'value.1', 'value.2','value.3','value.4','value.5','value.6','value.7','value.8','value.9')])
 #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
-
+a<-data.frame(ave_frq.df[,seq(3, 30, 3)])
+                         
 for (i in 2:length(ave_frq.df)){
   
 
