@@ -60,4 +60,5 @@ for(k in 1:length(dir)){
 write.csv(total_movie_ave.df, 'averages per movie.csv', row.names=F)
 #print(length(files))
 #print(files)
+
   

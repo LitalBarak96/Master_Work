@@ -143,11 +143,9 @@ framesString <- paste(xlsxParts[[1]][2], "-", xlsxParts[[1]][4])
 
 lengthFolder = file.path(dirname(toString(xlsxFile)), paste("Length of interactions graphs ", framesString));
 
-dir.create(lengthFolder, showWarnings = FALSE)
 
 numberFolder = file.path(dirname(toString(xlsxFile)), paste("Number of interactions graphs ", framesString));
 
-dir.create(numberFolder, showWarnings = FALSE)
 #parametrs name
 paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
 #light or dark
