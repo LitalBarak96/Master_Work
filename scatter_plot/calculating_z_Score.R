@@ -17,16 +17,21 @@ number_of_population = 3
 
 
 xlsxFile <- choose.files()
+xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
 first.df<-as.data.frame(read.csv(xlsxFile))
-name1 = 'MalesGrouped '
+#xlsxParts <- strsplit(xlsxName, '\\')
+
+name1 = xlsxName
 
 xlsxFile <- choose.files()
+xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
 second.df<-as.data.frame(read.csv(xlsxFile))
-name2 = "MalesSingels "
+name2 = xlsxName
 
 xlsxFile <- choose.files()
+xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
 third.df<-as.data.frame(read.csv(xlsxFile))
-
+name3= xlsxName
 avg_all_pop.df <-data.frame()
 temp.df<-data.frame()
 
@@ -48,7 +53,7 @@ for (i in 2:length(temp.df)){
   
 }
 
-for (i in 1:48){
+for (i in 1:46){
   new_avg.df[i,]$file = third.df$file[i]
   new_avg.df[i,]$mean_all_pop = (third.df$value[i]+second.df$value[i]+first.df$value[i])/3
   
@@ -72,17 +77,17 @@ library(gridExtra)
 
 a<-ggplot(first.df, aes(x=first.df$value, y=first.df$file)) +
   geom_point(size=1, shape=23)+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=first.df$value-first.df$Variance,xmax=first.df$value+first.df$Variance ,y=first.df$file), width=0.25)
-b<-ggplot(second.df, aes(x=second.df$value, y=second.df$file,color ="blue" )) +
-  geom_point(size=1, shape=23)+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=second.df$value-second.df$Variance,xmax=second.df$value+second.df$Variance ,y=second.df$file), width=0.25)
-c<-ggplot(third.df, aes(x=third.df$value, y=third.df$file,color ="grey" )) +
-  geom_point(size=1, shape=23)+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=third.df$value-third.df$Variance,xmax=third.df$value+third.df$Variance ,y=third.df$file), width=0.25)
+b<-ggplot(second.df, aes(x=second.df$value, y=second.df$file )) +
+  geom_point(size=1, shape=23,color="blue")+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=second.df$value-second.df$Variance,xmax=second.df$value+second.df$Variance ,y=second.df$file), width=0.25)
+c<-ggplot(third.df, aes(x=third.df$value, y=third.df$file )) +
+  geom_point(size=1, shape=23,color="red")+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=third.df$value-third.df$Variance,xmax=third.df$value+third.df$Variance ,y=third.df$file), width=0.25)
 
 grid.arrange(
   a,
   b,
   c,
   nrow = 1,
-  top = paste(name1,name2)
+  top = paste(name1,name2,name3)
 )
 
 

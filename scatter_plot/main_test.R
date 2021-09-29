@@ -1,5 +1,14 @@
 require(R.matlab)
 library(base)
+library(openxlsx)
+library(igraph)
+library(openxlsx)
+library(ggplot2)
+library(cowplot)
+library(ggpubr)
+library(ggsignif)
+library(nortest)
+library(fmsb)
 
 densL<-c()
 varience<-c()
@@ -12,7 +21,7 @@ modN<-c()
 sdN<-c()
 strN<-c()
 betN<-c()
-setwd('F:/statistic_test/MalesSingels')
+setwd('F:/statistic_test/MalesandFemales')
 averagesPerMovieByFile<-function(){
   
   dir<-list.dirs(recursive = F)
@@ -235,7 +244,7 @@ importClassifierFilesAndCalculatePerFrame<-function(){
 }
 
 creatNetwork3popforscatter<-function(){
-  group_name = "MalesSingels"
+  group_name = "MalesandFemales"
   setwd('F:/statistic_test')
   
   #where we choosing the files we want for analysis
@@ -494,6 +503,6 @@ averagesPerMovieByFile()
 importClassifierFilesAndCalculatePerFrame()
 
 creatNetwork3popforscatter()
-setwd('F:/statistic_test/MalesSingels')
+setwd('F:/statistic_test/MalesandFemales')
 #boutLengthAndFrequencyForClassifiers()
 combineKineticAndClassifiersToSignature()
