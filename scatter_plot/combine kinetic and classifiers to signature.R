@@ -1,6 +1,6 @@
 library(base)
-
-setwd('F:/statistic_test/MalesSingels') #where is the data folder
+number_of_movies = 8
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Naive') #where is the data folder
 all.df<-data.frame()
 bl_frq.df<-data.frame()
 
@@ -20,10 +20,9 @@ new_frq.df<-data.frame()
 all.df<-cbind(ave_classifiers.df, ave_kinetic.df)
 #all.df<-rbind(all.df, ave_frq.df)
 
-all_freq.df<-data.frame(ave_frq.df[, c('files','value', 'value.1', 'value.2','value.3','value.4','value.5','value.6','value.7','value.8','value.9')])
+#all_freq.df<-data.frame(ave_frq.df[, c('files','value', 'value.1', 'value.2','value.3','value.4','value.5','value.6','value.7','value.8','value.9')])
 #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
-a<-data.frame(ave_frq.df[,seq(3, 30, 3)])
-                         
+all_freq.df<-data.frame(ave_frq.df[,seq(3, number_of_movies*3, 3)])                         
 for (i in 2:length(ave_frq.df)){
   
 
@@ -36,8 +35,8 @@ for (i in 2:length(ave_frq.df)){
 }
 
 for (i in 1:11){
-  new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:11]))
-  new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:11]))
+  new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:number_of_movies]))
+  new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:number_of_movies]))
   
 }
 

@@ -467,15 +467,16 @@ combineKineticAndClassifiersToSignature<-function(){
     
     ave_frq.df[[i-1]]<-factor(ave_frq.df[[i-1]])
     print(levels(ave_frq.df[[i-1]]))
-    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:11])),Variance =sd(unlist(all_freq.df[i,2:11])) ) # create average per condition
+    #its dont matter cuz the real value is down
+    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:number_of_movies])),Variance =sd(unlist(all_freq.df[i,2:number_of_movies])) ) # create average per condition
     new_frq.df<-rbind(new.df, avg_of_frq.df) # make list of averages per condition of all features
     
     
   }
   
   for (i in 1:11){
-    new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:11]))
-    new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:11]))
+    new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:number_of_movies]))
+    new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:number_of_movies]))
     
   }
   

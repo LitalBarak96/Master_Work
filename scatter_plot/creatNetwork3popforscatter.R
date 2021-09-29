@@ -10,8 +10,8 @@ library(rvest)
 
 
 ##please enter here the group name
-group_name = "MalesSingels"
-setwd('F:/statistic_test')
+group_name = "Naive"
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive')
 
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
@@ -135,16 +135,6 @@ for (i in 1:allData$Number.of.groups[1]) {
   numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
 }
 
-xlsxName <- tools::file_path_sans_ext(basename(xlsxFile))
-
-xlsxParts <- strsplit(xlsxName, '_')
-
-framesString <- paste(xlsxParts[[1]][2], "-", xlsxParts[[1]][4])
-
-lengthFolder = file.path(dirname(toString(xlsxFile)), paste("Length of interactions graphs ", framesString));
-
-
-numberFolder = file.path(dirname(toString(xlsxFile)), paste("Number of interactions graphs ", framesString));
 
 #parametrs name
 paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
