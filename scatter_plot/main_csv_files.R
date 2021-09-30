@@ -21,9 +21,13 @@ modN<-c()
 sdN<-c()
 strN<-c()
 betN<-c()
-setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Mated')
-group_name = "Mated"
-number_of_movies =20
+#setting the path 
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Rejected')
+#this part is for calculating the network
+group_name = "Rejected"
+#excatly how many movies are in the folder
+number_of_movies =18
+#function avg per movie of assa
 averagesPerMovieByFile<-function(){
   
   dir<-list.dirs(recursive = F)
@@ -86,8 +90,7 @@ averagesPerMovieByFile<-function(){
   #print(length(files))
   #print(files)
 }
-
-#calculating density, modularity, sdStrength, strength, betweenness
+#help function for creat network
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
   print(fileName)
@@ -244,6 +247,8 @@ importClassifierFilesAndCalculatePerFrame<-function(){
   write.csv(finalavepermovie.df, 'all_classifier_averages.csv', row.names = F)
   
 }
+#calculating each feature of the network
+#calculating density, modularity, sdStrength, strength, betweenness
 
 creatNetwork3popforscatter<-function(){
   setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive')
@@ -439,6 +444,7 @@ boutLengthAndFrequencyForClassifiers<-function(){
   write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
   
 }
+#creat the final csv for creating the scatter plot ,recive the feature of network and varince
 combineKineticAndClassifiersToSignature<-function(){
   all.df<-data.frame()
   bl_frq.df<-data.frame()
@@ -458,7 +464,7 @@ combineKineticAndClassifiersToSignature<-function(){
   new_frq.df<-data.frame()
   all.df<-cbind(ave_classifiers.df, ave_kinetic.df)
   #all.df<-rbind(all.df, ave_frq.df)
-  
+  #the data frame is look as pairs of 3 of values and we needed the third each time
   all_freq.df<-data.frame(ave_frq.df[,seq(3, number_of_movies*3, 3)])
   
   #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
@@ -467,21 +473,21 @@ combineKineticAndClassifiersToSignature<-function(){
     
     ave_frq.df[[i-1]]<-factor(ave_frq.df[[i-1]])
     print(levels(ave_frq.df[[i-1]]))
-    #its dont matter cuz the real value is down
+    #the real mean value is calculated down,for some reason it is not worknig here but I kept it beacuse I wamted the value colom
     avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:number_of_movies])),Variance =sd(unlist(all_freq.df[i,2:number_of_movies])) ) # create average per condition
     new_frq.df<-rbind(new.df, avg_of_frq.df) # make list of averages per condition of all features
-    
+    #bind to the end each time
     
   }
   
+  #11 features of non network realted features(frequancy features)
   for (i in 1:11){
     new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:number_of_movies]))
     new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:number_of_movies]))
     
   }
   
-  
-  #avg_of_frq<-data.frame(files=ave_frq.df[,2],  value=mean(unlist(all_freq.df[i,2:11])),Variance =sd(unlist(all_freq.df[i,2:11])) )
+
   
   for (k in 1:length(all.df)){
     
@@ -505,6 +511,6 @@ averagesPerMovieByFile()
 importClassifierFilesAndCalculatePerFrame()
 
 creatNetwork3popforscatter()
-setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Mated')
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Rejected')
 boutLengthAndFrequencyForClassifiers()
 combineKineticAndClassifiersToSignature()
