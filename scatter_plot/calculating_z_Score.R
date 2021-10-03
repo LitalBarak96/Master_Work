@@ -60,11 +60,11 @@ for (i in 1:number_of_features){
   
 }
 
-first.df[,2:ncol(first.df)][1]<- first.df[,2:ncol(first.df)][1] / new_avg.df[,2:ncol(new_avg.df)]
+first.df[,2:ncol(first.df)][1]<- first.df[,2:ncol(first.df)][1] / new_avg.df[,2:ncol(new_avg.df)]+100
 
-second.df[,2:ncol(second.df)][1]<- second.df[,2:ncol(second.df)][1]/ new_avg.df[,2:ncol(new_avg.df)]
+second.df[,2:ncol(second.df)][1]<- second.df[,2:ncol(second.df)][1]/ new_avg.df[,2:ncol(new_avg.df)]+100
 
-third.df[,2:ncol(third.df)][1]<- third.df[,2:ncol(third.df)][1] /new_avg.df[,2:ncol(new_avg.df)]
+third.df[,2:ncol(third.df)][1]<- third.df[,2:ncol(third.df)][1] /new_avg.df[,2:ncol(new_avg.df)] +100
 
 
 #this script creat the scatter plot itself from exel files that contain all the data needed
@@ -77,11 +77,11 @@ library(gridExtra)
 
 
 a<-ggplot(first.df, aes(x=first.df$value, y=first.df$file)) +
-  geom_point(size=1, shape=23)+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=first.df$value-first.df$Variance,xmax=first.df$value+first.df$Variance ,y=first.df$file), width=0.25)
+  geom_point(size=3, shape=25)+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=first.df$value-first.df$Variance,xmax=first.df$value+first.df$Variance ,y=first.df$file), width=0.25)
 b<-ggplot(second.df, aes(x=second.df$value, y=second.df$file )) +
-  geom_point(size=1, shape=23,color="blue")+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=second.df$value-second.df$Variance,xmax=second.df$value+second.df$Variance ,y=second.df$file), width=0.25)
+  geom_point(size=3, shape=23,color="blue")+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=second.df$value-second.df$Variance,xmax=second.df$value+second.df$Variance ,y=second.df$file), width=0.25)
 c<-ggplot(third.df, aes(x=third.df$value, y=third.df$file )) +
-  geom_point(size=1, shape=23,color="red")+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=third.df$value-third.df$Variance,xmax=third.df$value+third.df$Variance ,y=third.df$file), width=0.25)
+  geom_point(size=3, shape=20,color="red")+theme_grey(base_size = 9)+geom_errorbar(aes(xmin=third.df$value-third.df$Variance,xmax=third.df$value+third.df$Variance ,y=third.df$file), width=0.25)
 
 grid.arrange(
   a,

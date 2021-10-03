@@ -22,12 +22,12 @@ sdN<-c()
 strN<-c()
 betN<-c()
 #setting the path 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Naive'
+the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Mated'
 setwd(the_path)
-#this part is for calculating the network
-group_name = "Naive"
+#give the name of the group (the last name in the dir of the path)
+group_name = tools::file_path_sans_ext(basename((the_path)))
 #excatly how many movies are in the folder
-number_of_movies =8
+number_of_movies =20
 #function avg per movie of assa
 averagesPerMovieByFile<-function(){
   
