@@ -38,20 +38,19 @@ for(k in 1:length(dir)){
           counter<-counter+1
         }
         else if ((tmp.df$value[m]==0)&(first_bout==1)) {
-          if (counter>1){ # minimum length of bout in frames
+          if (counter>10){ # minimum length of bout in frames
             bl_vector<-rbind(bl_vector, counter) # add all bouts to one data frame for one fly
             counter<-0
           }
         }
       }
-      ave_bl_fly<-colMeans(bl_vector)
+      #ave_bl_fly<-mean(bl_vector)
       ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
       per_fly_freq<-rbind(per_fly_freq, as.numeric(lengths(bl_vector)/length(tmp.df$value))) # combine frequency of all flies
     }
-    ave_per_movie<-colMeans(ave_bl, na.rm = T, dims = 1)
+    ave_per_movie<-mean(colMeans(ave_bl, na.rm = T, dims = 1))
     ave_freq_movie<-colMeans(per_fly_freq, na.rm = T, dims = 1)
-    #ave_bl<-as.numeric(unlist(ave_bl))
-    if (is.numeric(ave_bl)==F){
+    if (is.numeric(mean(ave_bl))==F){
       ave_per_movie<-data.frame(0)
     }
     total_bl <- data.frame(dir=dir[k], files=files[j], value=as.numeric(ave_per_movie)) # data frame per file
@@ -70,6 +69,7 @@ for(k in 1:length(dir)){
   }
   
 }
-warnings()
+
 write.csv(total_all, 'bout_length_scores.csv', row.names = F)
 write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
+

@@ -414,13 +414,13 @@ boutLengthAndFrequencyForClassifiers<-function(){
             }
           }
         }
-        ave_bl_fly<-mean(bl_vector)
+        #ave_bl_fly<-mean(bl_vector)
         ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
         per_fly_freq<-rbind(per_fly_freq, as.numeric(lengths(bl_vector)/length(tmp.df$value))) # combine frequency of all flies
       }
-      ave_per_movie<-colMeans(ave_bl, na.rm = T, dims = 1)
+      ave_per_movie<-mean(colMeans(ave_bl, na.rm = T, dims = 1))
       ave_freq_movie<-colMeans(per_fly_freq, na.rm = T, dims = 1)
-      if (is.numeric(ave_bl)==F){
+      if (is.numeric(mean(ave_bl))==F){
         ave_per_movie<-data.frame(0)
       }
       total_bl <- data.frame(dir=dir[k], files=files[j], value=as.numeric(ave_per_movie)) # data frame per file
@@ -439,7 +439,7 @@ boutLengthAndFrequencyForClassifiers<-function(){
     }
     
   }
-  warnings()
+  
   write.csv(total_all, 'bout_length_scores.csv', row.names = F)
   write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
   
