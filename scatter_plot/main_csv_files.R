@@ -463,6 +463,7 @@ combineKineticAndClassifiersToSignature<-function(){
   new.df<-data.frame()
   new_frq.df<-data.frame()
   all.df<-cbind(ave_classifiers.df, ave_kinetic.df)
+  
   #all.df<-rbind(all.df, ave_frq.df)
   #the data frame is look as pairs of 3 of values and we needed the third each time
   all_freq.df<-data.frame(ave_frq.df[,seq(3, number_of_movies*3, 3)])

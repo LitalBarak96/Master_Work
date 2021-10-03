@@ -1,6 +1,6 @@
 library(base)
 number_of_movies = 8
-setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Naive') #where is the data folder
+setwd('F:/statistic_test/MalesSingels') #where is the data folder
 all.df<-data.frame()
 bl_frq.df<-data.frame()
 

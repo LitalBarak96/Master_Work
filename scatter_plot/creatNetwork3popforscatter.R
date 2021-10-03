@@ -10,8 +10,8 @@ library(rvest)
 
 
 ##please enter here the group name
-group_name = "Naive"
-setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive')
+group_name = "MalesSingels"
+setwd('F:/statistic_test/MalesSingels')
 
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
