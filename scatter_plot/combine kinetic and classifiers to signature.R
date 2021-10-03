@@ -17,11 +17,33 @@ ave_bl.df<-as.data.frame(read.csv('bout_length_scores.csv'))
 ave_frq.df<-as.data.frame(read.csv('frequency_scores.csv'))
 new.df<-data.frame()
 new_frq.df<-data.frame()
+new_bl.df<-data.frame()
 all.df<-cbind(ave_classifiers.df, ave_kinetic.df)
 #all.df<-rbind(all.df, ave_frq.df)
 
 #all_freq.df<-data.frame(ave_frq.df[, c('files','value', 'value.1', 'value.2','value.3','value.4','value.5','value.6','value.7','value.8','value.9')])
 #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
+
+all_bl.df<-data.frame(ave_bl.df[,seq(3, number_of_movies*3, 3)])                         
+for (i in 2:length(ave_bl.df)){
+  
+  
+  ave_bl.df[[i-1]]<-factor(ave_bl.df[[i-1]])
+  print(levels(ave_bl.df[[i-1]]))
+  avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,2:11])),Variance =sd(unlist(all_bl.df[i,2:11])) ) # create average per condition
+  new_lb.df<-rbind(new.df, avg_of_bl.df) # make list of averages per condition of all features
+  
+  
+}
+
+for (i in 1:11){
+  new_lb.df[i,]$value = mean(unlist(all_bl.df[i,2:number_of_movies]))
+  new_lb.df[i,]$Variance = sd(unlist(all_bl.df[i,2:number_of_movies]))
+  
+}
+
+
+
 all_freq.df<-data.frame(ave_frq.df[,seq(3, number_of_movies*3, 3)])                         
 for (i in 2:length(ave_frq.df)){
   

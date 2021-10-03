@@ -69,7 +69,7 @@ for(k in 1:length(dir)){
   }
   
 }
-
+total_all[is.na(total_all)] <- 0
 write.csv(total_all, 'bout_length_scores.csv', row.names = F)
 write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
 

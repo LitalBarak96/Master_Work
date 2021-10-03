@@ -1,6 +1,6 @@
 library(base)
 
-number_of_features= 48
+number_of_features= 60
 first.df<-data.frame()
 second.df<-data.frame()
 third.df<-data.frame()

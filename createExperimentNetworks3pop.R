@@ -72,11 +72,12 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   a<-E(net)
   b<-length(a)
   if (b <max_interaction){
+    all.df<-data.frame(file_name = fileName)
     message("unsaturted network the number of connection is ")
     message(b)
     message("the address is ")
     message(fileName)
-    
+    write.csv(all.df, 'unsaturted_network.csv',row.names = F)
     
   }
   strength <- strength(net, weights = E(net)$weight)
@@ -157,6 +158,8 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = 8) 
   g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
+  
+  
   #to plot in diffrent way the strenght ans betweenes
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
@@ -164,6 +167,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   } else {
     g <- g + geom_jitter(width = 0.2, height = 0)
   }
+  g<-g + scale_y_log10()
   g <- g + theme(legend.position="none")
   
   statsData <- getStatisticData(groupsParams, names, value, data)
@@ -299,6 +303,8 @@ allData <- read.xlsx(xlsxFile)
 lengthParams <- c()
 numberParams <- c()
 numberOfMovies<-c()
+print(dirname(xlsxFile))
+setwd(dirname(xlsxFile))
 for (i in 1:allData$Number.of.groups[1]) {
   #it is depened on the poisiton of the colom in the execl so we can get the length and number files
   cur <- (i + 1) * 2
