@@ -7,6 +7,9 @@ library(ggsignif)
 library(nortest)
 library(fmsb)
 library(argparser, quietly=TRUE)
+#global varible
+number_of_movies = 0
+
 #from rgb to hex
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
@@ -29,7 +32,6 @@ argv <- parse_args(p)
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
-  print(fileName)
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))
   l <- layout_in_circle(net)
@@ -39,7 +41,7 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   
   # density
   density <- sum(E(net)$weight) / (vertexNumber * (vertexNumber - 1) / 2)
-  print(paste("density = ", density))
+  #print(paste("density = ", density))
   x <- c(1 - density, density)
   labels <- c("","Density")
   jpeg(file.path(folderPath, paste("density ", graphName, ".jpg", sep = "")))
@@ -50,33 +52,45 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   #This function tries to find densely connected subgraphs
   wtc <- cluster_walktrap(net)
   modularity <- modularity(wtc)
-  print(paste("modularity = ", modularity))
+  #print(paste("modularity = ", modularity))
   jpeg(file.path(folderPath, paste("modularity ", graphName, ".jpg", sep = "")))
   plot(wtc, net)
   dev.off()
   
   # strength std
   sdStrength <- sd(strength(net, weights = E(net)$weight))
-  print(paste("sd strength = ", sdStrength))
+  #print(paste("sd strength = ", sdStrength))
   
   
   #individual
   
   # strength
   #Summing up the edge weights of the adjacent edges for each vertex.
-  print(net)
+  #this part it the part whice show if the network not staurtated in 10 % 
+  max_interaction <- 0.9*((number_of_movies*(number_of_movies-1))/2)
+  #print(net)
+  a<-E(net)
+  b<-length(a)
+  if (b <max_interaction){
+    message("unsaturted network the number of connection is ")
+    message(b)
+    message("the address is ")
+    message(fileName)
+    
+    
+  }
   strength <- strength(net, weights = E(net)$weight)
   
-  print("strength: ")
-  print(strength)
+  #print("strength: ")
+  #print(strength)
   jpeg(file.path(folderPath, paste("strength ", graphName, ".jpg", sep = "")))
   plot(net, vertex.size=strength*vertexSize, layout = l)
   dev.off()
   
   # betweenness centality 
   betweenness <- betweenness(net, v = V(net), directed = FALSE, weights = E(net)$weight)
-  print("betweenness: ")
-  print(betweenness)
+  #print("betweenness: ")
+  #print(betweenness)
   return(list(density, modularity, sdStrength, strength, betweenness))
 }
 #calculating the params of the group with calculateNetworksParams for length and number groups
@@ -289,6 +303,7 @@ for (i in 1:allData$Number.of.groups[1]) {
   #it is depened on the poisiton of the colom in the execl so we can get the length and number files
   cur <- (i + 1) * 2
   numberOfMovies[i]<- allData[i, 3]
+  number_of_movies<<-numberOfMovies[i]
   #the params are density, modularity, sdStrength, strength, betweenness
   lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
   numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
