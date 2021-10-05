@@ -11,16 +11,16 @@ library(argparser, quietly=TRUE)
 number_of_movies = 0
 
 #from rgb to hex
-#rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
+rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
 #reciving arguments from matlab as the number of populations we want to change the color *3 for the rgb
-#p <- arg_parser("chosing color")
+p <- arg_parser("chosing color")
 
 # Add command line arguments
-#p <- add_argument(p,
- #                 c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
-  #                help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
-   #               flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+p <- add_argument(p,
+                 c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
+                  help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
+                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
 
 
 # Parse the command line arguments
@@ -66,7 +66,7 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   
   # strength
   #Summing up the edge weights of the adjacent edges for each vertex.
-  #this part it the part whice show if the network not staurtated in 10 % 
+  #this part it the part that show if the network not staurtated in 10 % 
   max_interaction <- 0.9*((number_of_movies*(number_of_movies-1))/2)
   #print(net)
   a<-E(net)
@@ -157,7 +157,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = 8) 
-  #g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
+  g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
   
   
   #to plot in diffrent way the strenght ans betweenes
@@ -366,12 +366,12 @@ numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
 
-#createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-#createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-#createRadarPlot(lengthAvg3, paramsNames, lengthFolder, lengthMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
-#createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-#createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-#createRadarPlot(numberAvg3, paramsNames, numberFolder, numberMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
+createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+createRadarPlot(lengthAvg3, paramsNames, lengthFolder, lengthMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
+createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+createRadarPlot(numberAvg3, paramsNames, numberFolder, numberMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
 
 
 #saving the varibles

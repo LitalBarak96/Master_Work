@@ -22,12 +22,12 @@ sdN<-c()
 strN<-c()
 betN<-c()
 #setting the path 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive/Mated'
+the_path = 'F:/statistic_test/MalesandFemales'
 setwd(the_path)
 #give the name of the group (the last name in the dir of the path)
 group_name = tools::file_path_sans_ext(basename((the_path)))
 #excatly how many movies are in the folder
-number_of_movies =20
+number_of_movies =length(list.dirs(path=the_path, full.names=T, recursive=F ))
 #function avg per movie of assa
 averagesPerMovieByFile<-function(){
   
@@ -252,7 +252,8 @@ importClassifierFilesAndCalculatePerFrame<-function(){
 #calculating density, modularity, sdStrength, strength, betweenness
 
 creatNetwork3popforscatter<-function(){
-  setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Rejected vs Mated vs Naive')
+  group_name_dir = tools::file_path_sans_ext(dirname((the_path)))
+  setwd(group_name_dir)
   
   #where we choosing the files we want for analysis
   #xlsxFile <- choose.files()
