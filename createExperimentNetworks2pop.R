@@ -7,21 +7,23 @@ library(ggsignif)
 library(nortest)
 library(fmsb)
 library(argparser, quietly=TRUE)
-rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
+number_of_flies = 0
 
-p <- arg_parser("chosing color")
+#rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
+
+#p <- arg_parser("chosing color")
 
 # Add command line arguments
-p <- add_argument(p,
-                  c("R1", "G1", "B1","R2", "G2", "B2"),
-                  help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+#p <- add_argument(p,
+ #                 c("R1", "G1", "B1","R2", "G2", "B2"),
+  #                help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
+   #               flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
 
 
 # Parse the command line arguments
-argv <- parse_args(p)
+#argv <- parse_args(p)
 #calculating density, modularity, sdStrength, strength, betweenness
-calculateNetworksParams <- function(net, folderPath, graphName, vertexSize) {
+calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))
@@ -32,7 +34,7 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize) {
   
   # density
   density <- sum(E(net)$weight) / (vertexNumber * (vertexNumber - 1) / 2)
-  print(paste("density = ", density))
+  #print(paste("density = ", density))
   x <- c(1 - density, density)
   labels <- c("","Density")
   jpeg(file.path(folderPath, paste("density ", graphName, ".jpg", sep = "")))
@@ -42,30 +44,49 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize) {
   # modularity
   wtc <- cluster_walktrap(net)
   modularity <- modularity(wtc)
-  print(paste("modularity = ", modularity))
+  #print(paste("modularity = ", modularity))
   jpeg(file.path(folderPath, paste("modularity ", graphName, ".jpg", sep = "")))
   plot(wtc, net)
   dev.off()
   
   # strength std
   sdStrength <- sd(strength(net, weights = E(net)$weight))
-  print(paste("sd strength = ", sdStrength))
+  #print(paste("sd strength = ", sdStrength))
   
   
   #individual
-  
+  #Summing up the edge weights of the adjacent edges for each vertex.
+  #this part it the part that show if the network not staurtated in 10 % 
+  max_interaction <- 0.9*((number_of_flies*(number_of_flies-1))/2)
+  #print(net)
+  a<-E(net)
+  print(max_interaction)
+  b<-length(a)
+  print (b)
+  if (b < max_interaction){
+    all.df<-data.frame(file_name = fileName)
+    message("unsaturted network the number of connection is ")
+    message(b)
+    message("the address is ")
+    message(fileName)
+    write.csv(all.df, 'unsaturted_network.csv',row.names = F)
+    
+  }
+  else{
+    
+  }
   # strength
   strength <- strength(net, weights = E(net)$weight)
-  print("strength: ")
-  print(strength)
+  #print("strength: ")
+  #print(strength)
   jpeg(file.path(folderPath, paste("strength ", graphName, ".jpg", sep = "")))
   plot(net, vertex.size=strength*vertexSize, layout = l)
   dev.off()
   
   # betweenness centality 
   betweenness <- betweenness(net, v = V(net), directed = FALSE, weights = E(net)$weight)
-  print("betweenness: ")
-  print(betweenness)
+  #print("betweenness: ")
+  #print(betweenness)
   return(list(density, modularity, sdStrength, strength, betweenness))
 }
 #calculating the params of the group with calculateNetworksParams for length and number groups
@@ -83,6 +104,7 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
     mat <- scan(toString(matFile))
     #because the matrix is smetric and there is 100 value so it is 10
     numCol <- sqrt(length(mat))
+    number_of_flies<<-numCol
     #all this just to transform to mat format?
     mat <- matrix(mat, ncol = numCol, byrow = TRUE)
     #creat the net itself
@@ -94,12 +116,12 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
       E(net)$weight <- E(net)$weight / maxNumberOfInteration
       E(net)$width <- E(net)$weight*7
       #why 7 and 25?
-      cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7)
+      cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7,fileNames[i])
     } else {
       #which means length of interaction
       E(net)$width <- E(net)$weight*10
       #call the function above
-      cur <- calculateNetworksParams(net, folderPath, "length of interction", 25)
+      cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i])
     }
 
     density <- c(cur[1], density)
@@ -129,7 +151,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)
-  g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
+  #g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
   
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
@@ -267,10 +289,14 @@ allData <- read.xlsx(xlsxFile)
 
 lengthParams <- c()
 numberParams <- c()
+numberOfMovies<-c()
+print(dirname(xlsxFile))
+setwd(dirname(xlsxFile))
 for (i in 1:allData$Number.of.groups[1]) {
   #it is depened on the poisiton of the colom in the execl so we can get the length and number files
   cur <- (i + 1) * 2
   numberOfMovies <- allData[i, 3]
+
   #the params are density, modularity, sdStrength, strength, betweenness
   lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies, cur], 0))
   numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies, cur + 1], allData$Max.number.of.interaction[1]))
@@ -310,10 +336,42 @@ lengthMaxValues <- c(0.2,0.25,0.6,1.5,5)
 numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
-createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+#createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+#createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+#createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+#createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+
+
+
+densL <- cbind(lengthAvg1[1], lengthAvg2[1])
+
+
+modL <- cbind(lengthAvg1[2], lengthAvg2[2])
+
+
+sdL <- cbind(lengthAvg1[3], lengthAvg2[3])
+
+
+strL <- cbind(lengthAvg1[4], lengthAvg2[4])
+
+
+betL <- cbind(lengthAvg1[5], lengthAvg2[5])
+
+
+densN <- cbind(numberAvg1[1], numberAvg2[1])
+
+
+modN <- cbind(numberAvg1[2], numberAvg2[2])
+
+
+sdN <- cbind(numberAvg1[3], numberAvg2[3])
+
+
+strN <- cbind(numberAvg1[4], numberAvg2[4])
+
+
+betN <- cbind(numberAvg1[5], numberAvg2[5])
+
 
 
 

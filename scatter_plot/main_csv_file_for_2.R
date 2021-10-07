@@ -272,7 +272,7 @@ creatNetwork3popforscatter<-function(){
     numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
   }
   
-
+  
   #parametrs name
   paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
   #light or dark
@@ -513,7 +513,7 @@ combineKineticAndClassifiersToSignature<-function(){
     
   }
   
-
+  
   
   for (k in 1:length(all.df)){
     
