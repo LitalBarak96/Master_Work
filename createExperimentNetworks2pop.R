@@ -9,19 +9,19 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 number_of_flies = 0
 
-#rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
+rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
-#p <- arg_parser("chosing color")
+p <- arg_parser("chosing color")
 
 # Add command line arguments
-#p <- add_argument(p,
- #                 c("R1", "G1", "B1","R2", "G2", "B2"),
-  #                help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-   #               flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+p <- add_argument(p,
+                  c("R1", "G1", "B1","R2", "G2", "B2"),
+                  help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
+                 flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
 
 
 # Parse the command line arguments
-#argv <- parse_args(p)
+argv <- parse_args(p)
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
@@ -151,7 +151,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)
-  #g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
+  g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
   
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
@@ -336,10 +336,10 @@ lengthMaxValues <- c(0.2,0.25,0.6,1.5,5)
 numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
-#createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-#createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-#createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-#createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
 
 
 

@@ -22,7 +22,7 @@ sdN<-c()
 strN<-c()
 betN<-c()
 #setting the path 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/oldGrouped vs Single/Single'
+the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
 setwd(the_path)
 #give the name of the group (the last name in the dir of the path)
 group_name = tools::file_path_sans_ext(basename((the_path)))
@@ -251,12 +251,11 @@ importClassifierFilesAndCalculatePerFrame<-function(){
 #calculating each feature of the network
 #calculating density, modularity, sdStrength, strength, betweenness
 
-creatNetwork3popforscatter<-function(){
+creatNetwork2popforscatter<-function(){
   group_name_dir = tools::file_path_sans_ext(dirname((the_path)))
   setwd(group_name_dir)
   
   #where we choosing the files we want for analysis
-  #xlsxFile <- choose.files()
   #all data is the data from the exel in the first sheet
   allData <- read.xlsx("expData_0_to_27000.xlsx")
   
@@ -279,11 +278,9 @@ creatNetwork3popforscatter<-function(){
   groupsNames <- as.character(na.omit(allData$Groups.names))
   lengthAvg1 <- c()
   lengthAvg2 <- c()
-  lengthAvg3<- c()
   numberAvg1 <- c()
   numberAvg2 <- c()
-  numberAvg3<-c()
-  #5 time
+
   
   
   
@@ -291,10 +288,9 @@ creatNetwork3popforscatter<-function(){
   for (i in 1:length(paramsNames)) {
     lengthAvg1 <- c(lengthAvg1, mean(unlist(lengthParams[i,1])))
     lengthAvg2 <- c(lengthAvg2, mean(unlist(lengthParams[i,2])))
-    lengthAvg3 <- c(lengthAvg3, mean(unlist(lengthParams[i,3])))
     numberAvg1 <- c(numberAvg1, mean(unlist(numberParams[i,1])))
     numberAvg2 <- c(numberAvg2, mean(unlist(numberParams[i,2])))
-    numberAvg3 <- c(numberAvg3, mean(unlist(numberParams[i,3])))
+
   }
   
   
@@ -317,58 +313,47 @@ creatNetwork3popforscatter<-function(){
   
   
   densL <<- cbind(lengthAvg1[1], lengthAvg2[1])
-  densL <<- cbind(densL, lengthAvg3[1])
   densL<<-densL[my_index]
   
   #density,mudilarity,sd strength,strength,bewtweenss
   varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
-  
+
   modL <<- cbind(lengthAvg1[2], lengthAvg2[2])
-  modL <<- cbind(modL, lengthAvg3[2])
-  
   modL<<-modL[my_index]
   
   
   sdL <<- cbind(lengthAvg1[3], lengthAvg2[3])
-  sdL <<- cbind(sdL, lengthAvg3[3])
   sdL<<-sdL[my_index]
   
   
   
   strL <<- cbind(lengthAvg1[4], lengthAvg2[4])
-  strL <<- cbind(strL, lengthAvg3[4])
   strL<<-strL[my_index]
   
   
   betL <<- cbind(lengthAvg1[5], lengthAvg2[5])
-  betL <<- cbind(betL, lengthAvg3[5])
   
   betL<<-betL[my_index]
   
   
   densN <<- cbind(numberAvg1[1], numberAvg2[1])
-  densN <<- cbind(densN, numberAvg3[1])
   densN<<-densN[my_index]
   
   
   
   modN <<- cbind(numberAvg1[2], numberAvg2[2])
-  modN <<- cbind(modN, numberAvg3[2])
   modN<<-modN[my_index]
   
   
   sdN <<- cbind(numberAvg1[3], numberAvg2[3])
-  sdN <<- cbind(sdN, numberAvg3[3])
   sdN<<-sdN[my_index]
   
   
   strN <<- cbind(numberAvg1[4], numberAvg2[4])
-  strN <<- cbind(strN, numberAvg3[4])
   strN<<-strN[my_index]
   
   
   betN <<- cbind(numberAvg1[5], numberAvg2[5])
-  betN <<- cbind(betN, numberAvg3[5])
   betN<<-betN[my_index]
   
 }
@@ -536,7 +521,7 @@ combineKineticAndClassifiersToSignature<-function(){
 averagesPerMovieByFile()
 importClassifierFilesAndCalculatePerFrame()
 
-creatNetwork3popforscatter()
+creatNetwork2popforscatter()
 setwd(the_path)
 boutLengthAndFrequencyForClassifiers()
 combineKineticAndClassifiersToSignature()
