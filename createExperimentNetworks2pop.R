@@ -8,7 +8,8 @@ library(nortest)
 library(fmsb)
 library(argparser, quietly=TRUE)
 number_of_flies = 0
-
+with_rgb = TRUE
+if (with_rgb == TRUE){
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
 p <- arg_parser("chosing color")
@@ -22,6 +23,7 @@ p <- add_argument(p,
 
 # Parse the command line arguments
 argv <- parse_args(p)
+}
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
@@ -151,8 +153,11 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)
-  g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
-  
+  if(with_rgb == TRUE){g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
+  }
+  else{
+    g <- g + scale_fill_manual(values=c("#00FF00","#4DB3E6","#37004D"))
+  }
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
     g <- g + geom_jitter(width = 0.2, height = 0, aes(color = as.factor(colors))) + scale_colour_hue()
@@ -335,12 +340,12 @@ for (i in 1:length(paramsNames)) {
 lengthMaxValues <- c(0.2,0.25,0.6,1.5,5)
 numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
-
+if(with_rgb == TRUE){
 createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
 createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
 createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
 createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-
+}
 
 
 densL <- cbind(lengthAvg1[1], lengthAvg2[1])

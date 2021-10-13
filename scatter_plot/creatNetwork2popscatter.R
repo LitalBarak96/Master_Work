@@ -7,7 +7,8 @@ library(ggsignif)
 library(nortest)
 library(fmsb)
 
-
+the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
+setwd(the_path)
 
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
@@ -110,8 +111,9 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
 #from here starting the "main"
 
 
-
-
+group_name_dir = tools::file_path_sans_ext(dirname((the_path)))
+setwd(group_name_dir)
+group_name = tools::file_path_sans_ext(basename((the_path)))
 #where we choosing the files we want for analysis
 xlsxFile <- choose.files()
 #all data is the data from the exel in the first sheet
@@ -169,25 +171,60 @@ numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
 
+index_name <- function(input_name,groupsNames){
+  
+  for (i in 1:length(groupsNames)){
+    if(input_name == groupsNames[i]){
+      return (i)
+    }
+  }
+}
 
-densL <- cbind(lengthAvg1[1], lengthAvg2[1])
+my_index = index_name(group_name,groupsNames)
 
-modL <- cbind(lengthAvg1[2], lengthAvg2[2])
 
-sdL <- cbind(lengthAvg1[3], lengthAvg2[3])
 
-strL <- cbind(lengthAvg1[4], lengthAvg2[4])
+densL <<- cbind(lengthAvg1[1], lengthAvg2[1])
+densL<<-densL[my_index]
 
-betL <- cbind(lengthAvg1[5], lengthAvg2[5])
+#density,mudilarity,sd strength,strength,bewtweenss
+varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
 
-densN <- cbind(numberAvg1[1], numberAvg2[1])
+modL <<- cbind(lengthAvg1[2], lengthAvg2[2])
+modL<<-modL[my_index]
 
-modN <- cbind(numberAvg1[2], numberAvg2[2])
 
-sdN <- cbind(numberAvg1[3], numberAvg2[3])
+sdL <<- cbind(lengthAvg1[3], lengthAvg2[3])
+sdL<<-sdL[my_index]
 
-strN <- cbind(numberAvg1[4], numberAvg2[4])
 
-betN <- cbind(numberAvg1[5], numberAvg2[5])
 
+strL <<- cbind(lengthAvg1[4], lengthAvg2[4])
+strL<<-strL[my_index]
+
+
+betL <<- cbind(lengthAvg1[5], lengthAvg2[5])
+
+betL<<-betL[my_index]
+
+
+densN <<- cbind(numberAvg1[1], numberAvg2[1])
+densN<<-densN[my_index]
+
+
+
+modN <<- cbind(numberAvg1[2], numberAvg2[2])
+modN<<-modN[my_index]
+
+
+sdN <<- cbind(numberAvg1[3], numberAvg2[3])
+sdN<<-sdN[my_index]
+
+
+strN <<- cbind(numberAvg1[4], numberAvg2[4])
+strN<<-strN[my_index]
+
+
+betN <<- cbind(numberAvg1[5], numberAvg2[5])
+betN<<-betN[my_index]
 

@@ -1,6 +1,6 @@
 library(base)
 
-setwd('F:/statistic_test/MalesGrouped') #where is the data folder
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped') #where is the data folder
 all.df<-data.frame()
 bl_frq.df<-data.frame()
 
@@ -33,7 +33,7 @@ for (i in 2:length(ave_frq.df)){
   
 
 }
-
+#THE 11 IS FOR 11 FEATURE OF JAABA
 for (i in 1:11){
   new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:11]))
   new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:11]))
@@ -58,5 +58,5 @@ new.df<-rbind(new.df,new_frq.df)
 
 
 
-write.csv(all.df, 'combined per movie.csv',row.names = F)
-write.csv(new.df, 'averages per condition.csv', row.names = F)
+#write.csv(all.df, 'combined per movie.csv',row.names = F)
+#write.csv(new.df, 'averages per condition.csv', row.names = F)
