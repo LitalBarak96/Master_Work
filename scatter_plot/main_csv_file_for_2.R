@@ -316,7 +316,7 @@ creatNetwork2popforscatter<-function(){
   densL<<-densL[my_index]
   
   #density,mudilarity,sd strength,strength,bewtweenss SE
-  varience<<-c(sd(unlist(lengthParams[1,my_index]))/sqrt(number_of_movies),sd(unlist(lengthParams[2,my_index]))/sqrt(number_of_movies),sd(unlist(lengthParams[3,my_index]))/sqrt(number_of_movies),sd(unlist(lengthParams[4,my_index]))/sqrt(number_of_movies),sd(unlist(lengthParams[5,my_index]))/sqrt(number_of_movies),sd(unlist(numberParams[1,my_index]))/sqrt(number_of_movies),sd(unlist(numberParams[2,my_index]))/sqrt(number_of_movies),sd(unlist(numberParams[3,my_index]))/sqrt(number_of_movies),sd(unlist(numberParams[4,my_index]))/sqrt(number_of_movies),sd(unlist(numberParams[5,my_index]))/sqrt(number_of_movies))
+  varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
 
   modL <<- cbind(lengthAvg1[2], lengthAvg2[2])
   modL<<-modL[my_index]
@@ -462,7 +462,7 @@ combineKineticAndClassifiersToSignature<-function(){
     
     ave_bl.df[[i-1]]<-factor(ave_bl.df[[i-1]])
     print(levels(ave_bl.df[[i-1]]))
-    avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,])),Variance =sd(unlist(all_bl.df[i,]))/sqrt(number_of_movies)) # create average per condition
+    avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,])),Variance =sd(unlist(all_bl.df[i,]))) # create average per condition
     new_bl.df<-rbind(new.df, avg_of_bl.df) # make list of averages per condition of all features
     
     
@@ -470,7 +470,7 @@ combineKineticAndClassifiersToSignature<-function(){
   
   for (i in 1:11){
     new_bl.df[i,]$value = mean(unlist(all_bl.df[i,2:number_of_movies]))
-    new_bl.df[i,]$Variance = sd(unlist(all_bl.df[i,2:number_of_movies]))/sqrt(number_of_movies)
+    new_bl.df[i,]$Variance = sd(unlist(all_bl.df[i,2:number_of_movies]))
     
   }
   
@@ -485,7 +485,7 @@ combineKineticAndClassifiersToSignature<-function(){
     ave_frq.df[[i-1]]<-factor(ave_frq.df[[i-1]])
     print(levels(ave_frq.df[[i-1]]))
     #the real mean value is calculated down,for some reason it is not worknig here but I kept it beacuse I wamted the value colom
-    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:number_of_movies])),Variance =sd(unlist(all_freq.df[i,2:number_of_movies]))/sqrt(number_of_movies)) # create average per condition
+    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:number_of_movies])),Variance =sd(unlist(all_freq.df[i,2:number_of_movies]))) # create average per condition
     new_frq.df<-rbind(new.df, avg_of_frq.df) # make list of averages per condition of all features
     #bind to the end each time
     
@@ -494,7 +494,7 @@ combineKineticAndClassifiersToSignature<-function(){
   #11 features of non network related features(frequancy features from jaaba)
   for (i in 1:11){
     new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:number_of_movies]))
-    new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:number_of_movies]))/sqrt(number_of_movies)
+    new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:number_of_movies]))
     
   }
   
@@ -505,7 +505,7 @@ combineKineticAndClassifiersToSignature<-function(){
     if (is.numeric(all.df[[k[1]]])){
       all.df[[k-1]]<-factor(all.df[[k-1]])
       print(levels(all.df[[k-1]]))
-      tmp_new.df<-data.frame(file=levels(all.df[[k-1]]), value=mean(all.df[[k]]), Variance=sd(all.df[[k]])/sqrt(number_of_movies)) # create average per condition
+      tmp_new.df<-data.frame(file=levels(all.df[[k-1]]), value=mean(all.df[[k]]), Variance=sd(all.df[[k]])) # create average per condition
       new.df<-rbind(new.df, tmp_new.df) # make list of averages per condition of all features
     }
   }

@@ -179,7 +179,8 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
     g <- g + geom_jitter(width = 0.2, height = 0)
   }
 
-  g<-g + scale_y_log10()
+  g<-g +scale_y_continuous(trans = "log10")
+
   name_of_y = paste(graphTitle," In Log Scale")
   g<-g + labs(y = name_of_y) 
   g <- g + theme(legend.position="none")

@@ -60,30 +60,52 @@ for (i in 2:length(temp.df)){
   avg_all_pop.df<-data.frame(file=levels(temp.df[[i-1]]),mean_all_pop=((first.df$value[i]+second.df$value[i])/number_of_pop)) # create average per condition
   new_avg.df<-rbind(new.df, avg_all_pop.df) # make list of averages per condition of all features
   new_avg_var.df<-rbind(new.df, avg_all_pop.df)
-  
+  new_avg_var_sem.df<-rbind(new.df, avg_all_pop.df)
   
 }
+mean_num_of_movies = (number_of_movies_in_first +number_of_movies_in_second)
 
-for (i in 1:number_of_features){
+for (i in 1:number_of_features-1){
   new_avg.df[i,]$file = first.df$file[i]
   #for 3 pop add the third to it 
   new_avg.df[i,]$mean_all_pop = ((first.df$value[i]+second.df$value[i])/number_of_pop)
   
 }
 #avg for varience
-for (i in 1:number_of_features){
+for (i in 1:number_of_features-1){
   new_avg_var.df[i,]$file = first.df$file[i]
   #for 3 pop add the third to it 
   new_avg_var.df[i,]$mean_all_pop = ((first.df$Variance[i]+second.df$Variance[i])/number_of_pop)
 
 }
+
+#for (i in 1:number_of_features-1){
+ # new_avg_var_sem.df[i,]$file = first.df$file[i]
+  #for 3 pop add the third to it 
+  #new_avg_var_sem.df[i,]$mean_all_pop_SEM = ((first.df$Variance[i]/sqrt(number_of_movies_in_first)+second.df$Variance[i]/sqrt(number_of_movies_in_second))/number_of_pop)
+  
+#}
 #from SD to SE calculation
 #created new avg for the var and normelizied it
-first.df[,2:ncol(first.df)][1]<- (first.df[,2:ncol(first.df)][1] / new_avg.df[,2:ncol(new_avg.df)])
-first.df[,2:ncol(first.df)][2]<- (first.df[,2:ncol(first.df)][2] / new_avg_var.df[,2:ncol(new_avg_var.df)])
+#Z SCORE TO THE VALEUS
 
-second.df[,2:ncol(second.df)][1]<- second.df[,2:ncol(second.df)][1]/ new_avg.df[,2:ncol(new_avg.df)]
-second.df[,2:ncol(second.df)][2]<- (second.df[,2:ncol(second.df)][2] / new_avg_var.df[,2:ncol(new_avg_var.df)])
+#every feature standrized to the mean 
+#first.df[,2:ncol(first.df)][1]<- (first.df[,2:ncol(first.df)][1]/new_avg.df[2:ncol(new_avg.df)])
+#second.df[,2:ncol(second.df)][1]<- (second.df[,2:ncol(second.df)][1]/new_avg.df[2:ncol(new_avg.df)])
+
+
+first.df[,2:ncol(first.df)][1]<- (first.df[,2:ncol(first.df)][1] - new_avg.df[2:ncol(new_avg.df)])/first.df[,2:ncol(first.df)][2]
+first.df[,2:ncol(first.df)][2]<- abs(first.df[,2:ncol(first.df)][2])
+first.df[,2:ncol(first.df)][2]<- (first.df[,2:ncol(first.df)][2] / sqrt(number_of_movies_in_first))/new_avg.df[2:ncol(new_avg.df)]
+#first.df[,2:ncol(first.df)][2]<- (first.df[,2:ncol(first.df)][2]- new_avg_var_sem.df[2:ncol(new_avg_var_sem.df)])/new_avg_var.df[2:ncol(new_avg_var.df)]
+
+second.df[,2:ncol(second.df)][1]<- (second.df[,2:ncol(second.df)][1] - new_avg.df[2:ncol(new_avg.df)])/second.df[,2:ncol(second.df)][2]
+
+#second.df[,2:ncol(second.df)][1]<- (second.df[,2:ncol(second.df)][1]- new_avg.df[2:ncol(new_avg.df)])/new_avg_var.df[2:ncol(new_avg_var.df)]
+second.df[,2:ncol(second.df)][2]<- abs(second.df[,2:ncol(second.df)][2])
+
+second.df[,2:ncol(second.df)][2]<- (second.df[,2:ncol(second.df)][2] / sqrt(number_of_movies_in_second))/new_avg.df[2:ncol(new_avg.df)]
+#second.df[,2:ncol(second.df)][2]<- (second.df[,2:ncol(second.df)][2]- new_avg_var_sem.df[2:ncol(new_avg_var_sem.df)])/new_avg_var.df[2:ncol(new_avg_var.df)]
 
 if(number_of_pop == 3){
   third.df[,2:ncol(third.df)][1]<- third.df[,2:ncol(third.df)][1] /new_avg.df[,2:ncol(new_avg.df)]
@@ -109,16 +131,20 @@ library(gridExtra)
 
 
 
-first.df$id <- "df1"  # or any other description you want
-second.df$id <- "df2"
+first.df$id <- name1  # or any other description you want
+second.df$id <- name2
 
-
+full_title = paste(name1," is red ",name2," is blue ")
 df.all <- rbind(first.df, second.df)
 
 p = ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
   geom_point(data = first.df, col = "red")+geom_point(data = second.df, col = "blue")+
   geom_pointrange(aes(xmax=value+Variance, xmin=value-Variance), size=0.1, colour = "black") + 
-  theme_classic()
+  theme()+xlim(-5,5)+ggtitle(full_title)
+
+
+
+
 plot(p)
 
 
