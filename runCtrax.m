@@ -1,5 +1,4 @@
-ctraxPath = 'C:\"Program Files (x86)"\Ctrax-0.5\Ctrax.exe';
-
+ctraxPath = '"C:\Program Files (x86)\Ctrax-0.5\Ctrax"';
 
 handles = struct();
 namesFile = fullfile(fileparts(which('runAll')),'filesNames.mat');
