@@ -11,23 +11,24 @@ library(argparser, quietly=TRUE)
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
 #reciving arguments from matlab as the number of populations we want to change the color *3 for the rgb
-#p <- arg_parser("chosing color")
+p <- arg_parser("chosing color")
 
 # Add command line arguments
-#p <- add_argument(p,
-                  #c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
-                  #help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
-                  #flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+p <- add_argument(p,
+                  c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
+                  help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
+                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
 
 
 # Parse the command line arguments
-#argv <- parse_args(p)
+argv <- parse_args(p)
 
 
 
 #calculating density, modularity, sdStrength, strength, betweenness
-calculateNetworksParams <- function(net, folderPath, graphName, vertexSize) {
+calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
+  print(fileName)
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))
   l <- layout_in_circle(net)
@@ -62,8 +63,9 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize) {
   
   # strength
   #Summing up the edge weights of the adjacent edges for each vertex.
-  
+  print(net)
   strength <- strength(net, weights = E(net)$weight)
+  
   print("strength: ")
   print(strength)
   jpeg(file.path(folderPath, paste("strength ", graphName, ".jpg", sep = "")))
@@ -86,7 +88,6 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
   #number of files we want
   for (i in 1:length(fileNames)) {
     #when debuging see what is inside matfile
-    #what is f[]?i guess it the filenames itself so we get the mat itself transforming to matrix?
     matFile <- fileNames[i]
     mat <- scan(toString(matFile))
     #because the matrix is smetric and there is 100 value so it is 10
@@ -102,12 +103,12 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
       E(net)$weight <- E(net)$weight / maxNumberOfInteration
       E(net)$width <- E(net)$weight*7
       #the 7 and 25?? is for the vertex size for visualization beacuse the lenght value are smaller than the number values
-      cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7)
+      cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7,fileNames[i])
     } else {
       #which means length of interaction
       E(net)$width <- E(net)$weight*10
       
-      cur <- calculateNetworksParams(net, folderPath, "length of interction", 25)
+      cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i])
     }
     #for each of the movies
     density <- c(cur[1], density)
@@ -115,9 +116,6 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
     sdStrength <- c(cur[3], sdStrength)
     strength <- c(cur[4], strength)
     betweenness <- c(cur[5], betweenness)
-    print("denciiiiiiiiiiiirttttttttttttyyyyyyyyyyyyyy")
-    print(fileNames)
-    print(strength)
   }
 
   return(list(density, modularity, sdStrength, strength, betweenness))
@@ -136,15 +134,14 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   data = data.frame(names, value)
   data$names <- as.character(data$names)
   data$names <- factor(data$names, levels=unique(data$names))
-  print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-  View(data)
+
   #this part creat graph and chosing the color from the parser
   
   #testName = getStatisticTest(groupsParams[[1]], groupsParams[[2]])
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)
-  # <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
+  g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2), rgb_2_hex(argv$R3,argv$G3,argv$B3)))
   #to plot in diffrent way the strenght ans betweenes
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
@@ -292,7 +289,7 @@ for (i in 1:allData$Number.of.groups[1]) {
   cur <- (i + 1) * 2
   numberOfMovies[i]<- allData[i, 3]
   #the params are density, modularity, sdStrength, strength, betweenness
-  #lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
+  lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
   numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
 }
 
@@ -345,22 +342,44 @@ numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
 
-#createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-#createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-#createRadarPlot(lengthAvg3, paramsNames, lengthFolder, lengthMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
-#createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-#createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-#createRadarPlot(numberAvg3, paramsNames, numberFolder, numberMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
+createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+createRadarPlot(lengthAvg3, paramsNames, lengthFolder, lengthMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
+createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+createRadarPlot(numberAvg3, paramsNames, numberFolder, numberMaxValues, groupsNames[3], rgb(argv$R3,argv$G3,argv$B3))
+
+
 
 densL <- cbind(lengthAvg1[1], lengthAvg2[1])
+densL <- cbind(densL, lengthAvg3[1])
+
 modL <- cbind(lengthAvg1[2], lengthAvg2[2])
+modL <- cbind(modL, lengthAvg3[2])
+
 sdL <- cbind(lengthAvg1[3], lengthAvg2[3])
+sdL <- cbind(sdL, lengthAvg3[3])
+
 strL <- cbind(lengthAvg1[4], lengthAvg2[4])
+strL <- cbind(strL, lengthAvg3[4])
+
 betL <- cbind(lengthAvg1[5], lengthAvg2[5])
+betL <- cbind(betL, lengthAvg3[5])
+
 densN <- cbind(numberAvg1[1], numberAvg2[1])
+densN <- cbind(densN, numberAvg3[1])
+
 modN <- cbind(numberAvg1[2], numberAvg2[2])
+modN <- cbind(modN, numberAvg3[2])
+
 sdN <- cbind(numberAvg1[3], numberAvg2[3])
+sdN <- cbind(sdN, numberAvg3[3])
+
 strN <- cbind(numberAvg1[4], numberAvg2[4])
+strN <- cbind(strN, numberAvg3[4])
+
 betN <- cbind(numberAvg1[5], numberAvg2[5])
+betN <- cbind(betN, numberAvg3[5])
+
 
 

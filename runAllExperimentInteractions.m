@@ -62,6 +62,7 @@ for i =1:my_size
 s1='Select a color for group ';
 %for the group names
 s2 = txt(i+1,2);
+s2=string(s2)
 s = append(s1,s2);
 c = uisetcolor([1 1 0],s)
 color_in_char =[];
