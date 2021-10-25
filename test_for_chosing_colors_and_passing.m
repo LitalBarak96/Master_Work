@@ -1,6 +1,6 @@
-command = '"C:\Program Files\R\R-4.0.4\bin\x64\Rscript.exe" createExperimentNetworks3pop.R';
+command = '"C:\Program Files\R\R-4.0.4\bin\x64\Rscript.exe" createExperimentNetworks2pop.R';
 
-for i =1:3
+for i =1:2
 s1='Select a color for group number ';
 s2 = int2str(i);
 s = append(s1,s2);

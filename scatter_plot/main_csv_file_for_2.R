@@ -98,32 +98,20 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))
   l <- layout_in_circle(net)
-  jpeg(file.path(folderPath, paste("network ", graphName, ".jpg", sep = "")))
-  plot(net, layout = l)
-  dev.off()
-  
+
   # density
   density <- sum(E(net)$weight) / (vertexNumber * (vertexNumber - 1) / 2)
-  print(paste("density = ", density))
-  x <- c(1 - density, density)
-  labels <- c("","Density")
-  jpeg(file.path(folderPath, paste("density ", graphName, ".jpg", sep = "")))
-  pie(x, labels)
-  dev.off()
+
   
   # modularity
   #This function tries to find densely connected subgraphs
   wtc <- cluster_walktrap(net)
   modularity <- modularity(wtc)
-  print(paste("modularity = ", modularity))
-  jpeg(file.path(folderPath, paste("modularity ", graphName, ".jpg", sep = "")))
-  plot(wtc, net)
-  dev.off()
+ 
   
   # strength std
   sdStrength <- sd(strength(net, weights = E(net)$weight))
-  print(paste("sd strength = ", sdStrength))
-  
+
   
   #individual
   
@@ -132,16 +120,11 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   print(net)
   strength <- strength(net, weights = E(net)$weight)
   
-  print("strength: ")
-  print(strength)
-  jpeg(file.path(folderPath, paste("strength ", graphName, ".jpg", sep = "")))
-  plot(net, vertex.size=strength*vertexSize, layout = l)
-  dev.off()
+
   
   # betweenness centality 
   betweenness <- betweenness(net, v = V(net), directed = FALSE, weights = E(net)$weight)
-  print("betweenness: ")
-  print(betweenness)
+
   return(list(density, modularity, sdStrength, strength, betweenness))
 }
 #calculating the params of the group with calculateNetworksParams for length and number groups

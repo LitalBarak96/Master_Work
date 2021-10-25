@@ -1,13 +1,10 @@
 library(base)
 number_of_movies = 8
-setwd('F:/statistic_test/MalesSingels') #where is the data folder
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped') #where is the data folder
 all.df<-data.frame()
 bl_frq.df<-data.frame()
 
-names<-c("density_l","modularity_l","sd_l","srength_l","betweens_l","density_n","modularity_n","sd_n","srength_n","betweens_n")
-values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
-network.df<-data.frame(names,values,varience)
-colnames(network.df) <- c("file", "value","Variance")
+
 
 # write data to a sample.csv file
 
@@ -74,7 +71,6 @@ for (k in 1:length(all.df)){
     new.df<-rbind(new.df, tmp_new.df) # make list of averages per condition of all features
  }
 }
-new.df<-rbind(new.df,network.df)
 
 new.df<-rbind(new.df,new_frq.df)
 
