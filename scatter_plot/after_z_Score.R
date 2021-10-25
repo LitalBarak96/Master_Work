@@ -167,7 +167,7 @@ write.csv(ave_frq_first.df, 'frequency_scores.csv', row.names = F)
 
 setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single') #where is the data folder
 write.csv(ave_classifiers_sec.df, 'all_classifier_averages.csv', row.names = F)
-write.csv(ave_classifiers_sec.df, 'averages per movie.csv', row.names=F)
+write.csv(ave_kinetic_Sec.df, 'averages per movie.csv', row.names=F)
 write.csv(ave_bl_sec.df, 'bout_length_scores.csv', row.names = F)
 write.csv(ave_frq_sec.df, 'frequency_scores.csv', row.names = F)
 

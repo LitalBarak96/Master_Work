@@ -22,7 +22,7 @@ sdN<-c()
 strN<-c()
 betN<-c()
 #setting the path 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
+the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
 setwd(the_path)
 #give the name of the group (the last name in the dir of the path)
 group_name = tools::file_path_sans_ext(basename((the_path)))
@@ -90,6 +90,7 @@ averagesPerMovieByFile<-function(){
   write.csv(total_movie_ave.df, 'averages per movie.csv', row.names=F)
   #print(length(files))
   #print(files)
+  
 }
 #help function for creat network
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
@@ -421,10 +422,10 @@ combineKineticAndClassifiersToSignature<-function(){
   all.df<-data.frame()
   bl_frq.df<-data.frame()
   
-  names<-c("density_l","modularity_l","sd_l","srength_l","betweens_l","density_n","modularity_n","sd_n","srength_n","betweens_n")
-  values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
-  network.df<-data.frame(names,values,varience)
-  colnames(network.df) <- c("file", "value","Variance")
+  #names<-c("density_l","modularity_l","sd_l","srength_l","betweens_l","density_n","modularity_n","sd_n","srength_n","betweens_n")
+  #values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
+  #network.df<-data.frame(names,values,varience)
+  #colnames(network.df) <- c("file", "value","Variance")
   
   # write data to a sample.csv file
   
@@ -492,7 +493,7 @@ combineKineticAndClassifiersToSignature<-function(){
       new.df<-rbind(new.df, tmp_new.df) # make list of averages per condition of all features
     }
   }
-  new.df<-rbind(new.df,network.df)
+  #new.df<-rbind(new.df,network.df)
   new.df<-rbind(new.df,new_frq.df)
   new.df<-rbind(new.df,new_bl.df)
   
@@ -501,8 +502,9 @@ combineKineticAndClassifiersToSignature<-function(){
   write.csv(new.df, 'averages per condition.csv', row.names = F)
 }
 averagesPerMovieByFile()
+setwd(the_path)
 importClassifierFilesAndCalculatePerFrame()
-
+setwd(the_path)
 creatNetwork2popforscatter()
 setwd(the_path)
 boutLengthAndFrequencyForClassifiers()
