@@ -27,7 +27,7 @@ for (i in 2:length(ave_bl.df)){
   
   ave_bl.df[[i-1]]<-factor(ave_bl.df[[i-1]])
   print(levels(ave_bl.df[[i-1]]))
-  avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,2:11])),Variance =sd(unlist(all_bl.df[i,2:11])) ) # create average per condition
+  avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,])),Variance =sd(unlist(all_bl.df[i,])) ) # create average per condition
   new_lb.df<-rbind(new.df, avg_of_bl.df) # make list of averages per condition of all features
   
   
@@ -47,7 +47,7 @@ for (i in 2:length(ave_frq.df)){
 
   ave_frq.df[[i-1]]<-factor(ave_frq.df[[i-1]])
     print(levels(ave_frq.df[[i-1]]))
-    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:11])),Variance =sd(unlist(all_freq.df[i,2:11])) ) # create average per condition
+    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,])),Variance =sd(unlist(all_freq.df[i,])) ) # create average per condition
     new_frq.df<-rbind(new.df, avg_of_frq.df) # make list of averages per condition of all features
   
 

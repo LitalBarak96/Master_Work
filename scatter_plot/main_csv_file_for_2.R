@@ -14,7 +14,7 @@ densL<-c()
 varience<-c()
 modL<-c()
 sdL<-c()
-strL<c()
+strL<-c()
 betL<-c()
 densN<-c()
 modN<-c()
@@ -22,7 +22,7 @@ sdN<-c()
 strN<-c()
 betN<-c()
 #setting the path 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
+the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
 setwd(the_path)
 #give the name of the group (the last name in the dir of the path)
 group_name = tools::file_path_sans_ext(basename((the_path)))
@@ -493,7 +493,6 @@ combineKineticAndClassifiersToSignature<-function(){
     }
   }
   new.df<-rbind(new.df,network.df)
-  
   new.df<-rbind(new.df,new_frq.df)
   new.df<-rbind(new.df,new_bl.df)
   
