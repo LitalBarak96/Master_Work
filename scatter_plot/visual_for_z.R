@@ -1,11 +1,24 @@
 library(base)
 library(NISTunits)
+library(argparser, quietly=TRUE)
+
+rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
+
+p <- arg_parser("chosing color")
+
+# Add command line arguments
+p <- add_argument(p,
+                  c("R1", "G1", "B1","R2", "G2", "B2"),
+                  help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
+                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
 
 
-number_of_features= 60
+# Parse the command line arguments
+argv <- parse_args(p)
+
+
 first.df<-data.frame()
 second.df<-data.frame()
-new_avg_var.df<-data.frame()
 number_of_pop = 2
 
 
@@ -42,39 +55,38 @@ if(number_of_pop == 3){
 }
 
 
-avg_all_pop.df <-data.frame()
-temp.df<-data.frame()
-
-temp.df<-data.frame(first.df[, c('file','value')])
-
-avg_all_pop.df<-data.frame(temp.df[, c('file')])
-new.df<-data.frame()
-
-
 
 
 library(ggplot2)
 library(gridExtra)
+a<-rgb_2_hex(argv$R1,argv$G1,argv$B1)
+b<-rgb_2_hex(argv$R2,argv$G2,argv$B2)
 
 
+print(a)
+print(b)
 
 
 first.df$id <- name1  # or any other description you want
 second.df$id <- name2
 
-full_title = paste(name1," is red ",name2," is blue ")
+
+
+first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first))
+second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second))
+
+full_title = paste(name1,"vs",name2)
 df.all <- rbind(first.df, second.df)
 
-p = ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
-  geom_point(data = first.df, col = "red")+geom_point(data = second.df, col = "blue")+
-  geom_pointrange(aes(xmax=value+Variance, xmin=value-Variance), size=0.1, colour = "black") + 
-  theme()+xlim(-5,5)+ggtitle(full_title)
+t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
+  geom_point(data = first.df, colour  = a,size =1)+geom_point(data = second.df, colour  = b,size =1)+scale_color_identity()+
+  geom_pointrange(data=df.all,mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+scale_colour_manual(values=c(a, b))+
+  xlim(-3,3)+ggtitle(full_title)+theme_minimal()
 
 
-
-
-plot(p)
-
+#scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))+
+print(t)
+ggsave(file="test4.pdf")
 
 
 

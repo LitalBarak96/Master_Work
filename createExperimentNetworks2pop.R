@@ -152,7 +152,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #testName = getStatisticTest(groupsParams[[1]], groupsParams[[2]])
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
-  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)
+  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = 12) 
   if(with_rgb == TRUE){g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
   }
   else{

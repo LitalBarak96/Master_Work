@@ -9,7 +9,6 @@ library(ggpubr)
 library(ggsignif)
 library(nortest)
 library(fmsb)
-library(argparser, quietly=TRUE)
 
 densL<-c()
 varience<-c()
@@ -22,26 +21,8 @@ modN<-c()
 sdN<-c()
 strN<-c()
 betN<-c()
-
-number_of_pop =2
-
-number_of_features = 11
-
-rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
-
-p <- arg_parser("chosing color")
-
-# Add command line arguments
-p <- add_argument(p,
-                  c("R1", "G1", "B1","R2", "G2", "B2"),
-                  help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
-
-
-# Parse the command line arguments
-argv <- parse_args(p)
-
 #setting the path 
+normalize_Z = FALSE
 
 the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
 other_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
@@ -108,7 +89,7 @@ z_score_t <- function(First_classf.df,Sec_classf.df) {
   return(list("temp_x"=temp_x,"temp_y"=temp_y))
 }
 all_z_score<-function(){
-  setwd(the_path) #where is the data folder
+  setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped') #where is the data folder
   
   
   #first
@@ -126,7 +107,7 @@ all_z_score<-function(){
   
   
   
-  setwd(other_path) #where is the data folder
+  setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single') #where is the data folder
   ave_kinetic_Sec.df<-as.data.frame(read.csv('averages per movie.csv'))
   ave_classifiers_sec.df<-as.data.frame(read.csv('all_classifier_averages.csv'))
   
@@ -141,7 +122,7 @@ all_z_score<-function(){
   
   
   
-  # i need to do this for the 2 groupes at once 
+  
   
   
   
@@ -202,7 +183,7 @@ all_z_score<-function(){
   #write it back again
   
   
-  setwd(the_path) #where is the data folder
+  setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped') #where is the data folder
   
   write.csv(ave_classifiers_first.df, 'all_classifier_averages.csv', row.names = F)
   write.csv(ave_kinetic_first.df, 'averages per movie.csv', row.names=F)
@@ -210,7 +191,7 @@ all_z_score<-function(){
   write.csv(ave_frq_first.df, 'frequency_scores.csv', row.names = F)
   
   
-  setwd(other_path) #where is the data folder
+  setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single') #where is the data folder
   write.csv(ave_classifiers_sec.df, 'all_classifier_averages.csv', row.names = F)
   write.csv(ave_kinetic_Sec.df, 'averages per movie.csv', row.names=F)
   write.csv(ave_bl_sec.df, 'bout_length_scores.csv', row.names = F)
@@ -275,8 +256,12 @@ averagesPerMovieByFile<-function(){
     ordered_ave<- col.df[order(col.df$file),]
     final.df<-rbind(final.df, ordered_ave)
   }
+  #write.csv(rowave.df, 'averages per fly.csv',row.names = F)
+  #write.csv(colave.df, 'averages per fly.csv',row.names = F)
+  #write.csv(final.df, 'averages per fly.csv',row.names = F)
   write.csv(total_movie_ave.df, 'averages per movie.csv', row.names=F)
-
+  #print(length(files))
+  #print(files)
   
 }
 #help function for creat network
@@ -547,7 +532,7 @@ creatNetwork2popforscatter<-function(){
   }
   
   
-  #Put in avg values
+  
   for (i in 1:length(paramsNames)) {
     lengthAvg1 <- c(lengthAvg1, mean(unlist(lengthParams[i,1])))
     lengthAvg2 <- c(lengthAvg2, mean(unlist(lengthParams[i,2])))
@@ -705,27 +690,18 @@ boutLengthAndFrequencyForClassifiers<-function(){
   write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
   
 }
-#creat the final csv for creating the scatter plot ,calculating the var in here
+#creat the final csv for creating the scatter plot ,recive the feature of network and varince
 combineKineticAndClassifiersToSignature<-function(){
   all.df<-data.frame()
   bl_frq.df<-data.frame()
-  all_bl.df<-data.frame()
-  all_freq.df<-data.frame()
-  ave_kinetic.df<-data.frame()
-  network.df<-data.frame()
-  ave_frq.df<-data.frame()
-  ave_classifiers.df<-data.frame()
-  ave_bl.df<-data.frame()
-  avg_of_bl.df<-data.frame()
-  avg_of_frq.df<-data.frame()
-  tmp_new.df<-data.frame()
+  
+  # write data to a sample.csv file
   
   ave_kinetic.df<-as.data.frame(read.csv('averages per movie.csv'))
   ave_classifiers.df<-as.data.frame(read.csv('all_classifier_averages.csv'))
   ave_bl.df<-as.data.frame(read.csv('bout_length_scores.csv'))
   ave_frq.df<-as.data.frame(read.csv('frequency_scores.csv'))
   network.df<-as.data.frame(read.csv('network.csv'))
-  
   new.df<-data.frame()
   new_frq.df<-data.frame()
   new_bl.df<-data.frame()
@@ -737,6 +713,7 @@ combineKineticAndClassifiersToSignature<-function(){
   all_bl.df<-data.frame(ave_bl.df[,seq(3, number_of_movies*3, 3)])                         
   for (i in 2:length(ave_bl.df)){
     
+    #זה אמור לא לשנות כי אני כותבת על זה אבל זה משימה לעתיד
     ave_bl.df[[i-1]]<-factor(ave_bl.df[[i-1]])
     print(levels(ave_bl.df[[i-1]]))
     avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,])),Variance =sd(unlist(all_bl.df[i,]))) # create average per condition
@@ -745,34 +722,54 @@ combineKineticAndClassifiersToSignature<-function(){
     
   }
   
-  for (i in 1:number_of_features){
-    new_bl.df[i,]$value = mean(unlist(all_bl.df[i,1:number_of_movies]))
-    new_bl.df[i,]$Variance = sd(unlist(all_bl.df[i,1:number_of_movies]))
+  for (i in 1:11){
+    new_bl.df[i,]$value = mean(unlist(all_bl.df[i,2:number_of_movies]))
+    new_bl.df[i,]$Variance = sd(unlist(all_bl.df[i,2:number_of_movies]))
     
   }
   
   
   
+  ####network
+  for (i in 2:length(ave_bl.df)){
+    
+
+    network.df[[i-1]]<-factor(network.df[[i-1]])
+    print(levels(network.df[[i-1]]))
+    avg_of_nt.df<-data.frame(file=levels(network.df),   value=mean(unlist(all_bl.df[i,])),Variance =sd(unlist(all_bl.df[i,]))) # create average per condition
+    new_nt.df<-rbind(new.df, avg_of_nt.df) # make list of averages per condition of all features
+    
+    
+  }
   
+  for (i in 1:11){
+    new_nt.df[i,]$value = mean(unlist(all_bl.df[i,2:number_of_movies]))
+    new_nt.df[i,]$Variance = sd(unlist(all_bl.df[i,2:number_of_movies]))
+    
+  }
+  
+  #all.df<-rbind(all.df, ave_frq.df)
   #the data frame is look as pairs of 3 of values and we needed the third each time
   all_freq.df<-data.frame(ave_frq.df[,seq(3, number_of_movies*3, 3)])
   
+  #avg_of_frq<-data.frame(files=ave_frq.df[,2], value=rowMeans(all_freq[1:9]),Variance =rowSds(all_freq[1:9]) )
   for (i in 2:length(ave_frq.df)){
     ave_frq.df[[i-1]]<-factor(ave_frq.df[[i-1]])
     print(levels(ave_frq.df[[i-1]]))
     #the real mean value is calculated down,for some reason it is not worknig here but I kept it beacuse I wamted the value colom
-    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:number_of_movies])),Variance =sd(unlist(all_freq.df[i,2:number_of_movies]))) # create average per condition
+    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:number_of_movies])),Variance =sd(unlist(all_freq.df[i,2:number_of_movies]))/sqrt(number_of_movies)) # create average per condition
     new_frq.df<-rbind(new.df, avg_of_frq.df) # make list of averages per condition of all features
     #bind to the end each time
     
   }
   
   #11 features of non network related features(frequancy features from jaaba)
-  for (i in 1:number_of_features){
-    new_frq.df[i,]$value = mean(unlist(all_freq.df[i,1:number_of_movies]))
-    new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,1:number_of_movies]))
+  for (i in 1:11){
+    new_frq.df[i,]$value = mean(unlist(all_freq.df[i,2:number_of_movies]))
+    new_frq.df[i,]$Variance = sd(unlist(all_freq.df[i,2:number_of_movies]))/sqrt(number_of_movies)
     
   }
+  
   
   
   for (k in 1:length(all.df)){
@@ -784,7 +781,6 @@ combineKineticAndClassifiersToSignature<-function(){
       new.df<-rbind(new.df, tmp_new.df) # make list of averages per condition of all features
     }
   }
-  #network don't need to be proccesed 
   new.df<-rbind(new.df,network.df)
   new.df<-rbind(new.df,new_frq.df)
   new.df<-rbind(new.df,new_bl.df)
@@ -792,7 +788,6 @@ combineKineticAndClassifiersToSignature<-function(){
   
   write.csv(all.df, 'combined per movie.csv',row.names = F)
   write.csv(new.df, 'averages per condition.csv', row.names = F)
-  
 }
 
 #split this to 3 part ,the first part is for ave_kinetic.df and ave_classifiers.df
@@ -859,105 +854,19 @@ z_score_t <- function(First_classf.df,Sec_classf.df) {
 }
 
 
-vizual<-function(){
-  
-  first.df<-data.frame()
-  second.df<-data.frame()
-  number_of_pop = 2
-  
-  
-  if(number_of_pop ==3 ){
-    third.df<-data.frame()
-    
-  }
-  #choosing the files getting the name and the number of files for SE
-  #pop 1
-  xlsxFile <- choose.files()
-  xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
-  first.df<-as.data.frame(read.csv(xlsxFile))
-  name1 = xlsxName
-  group_name_in_first = tools::file_path_sans_ext(dirname((xlsxFile)))
-  number_of_movies_in_first =length(list.dirs(path=group_name_in_first, full.names=T, recursive=F ))
-  
-  
-  
-  #pop 2
-  xlsxFile <- choose.files()
-  xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
-  second.df<-as.data.frame(read.csv(xlsxFile))
-  name2 = xlsxName
-  group_name_in_second = tools::file_path_sans_ext(dirname((xlsxFile)))
-  number_of_movies_in_second =length(list.dirs(path=group_name_in_second, full.names=T, recursive=F ))
-  if(number_of_pop == 3){
-    #Pop 3
-    xlsxFile <- choose.files()
-    xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
-    third.df<-as.data.frame(read.csv(xlsxFile))
-    name3= xlsxName
-    group_name_in_third = tools::file_path_sans_ext(dirname((xlsxFile)))
-    number_of_movies_in_third =length(list.dirs(path=group_name_in_third, full.names=T, recursive=F ))
-  }
-  
-  
-  
-  
-  library(ggplot2)
-  library(gridExtra)
-  a<-rgb_2_hex(argv$R1,argv$G1,argv$B1)
-  b<-rgb_2_hex(argv$R2,argv$G2,argv$B2)
-  
-  
-  print(a)
-  print(b)
-  
-  
-  first.df$id <- name1  # or any other description you want
-  second.df$id <- name2
-  
-  
-  
-  first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first))
-  second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second))
-  
-  full_title = paste(name1,"vs",name2)
-  df.all <- rbind(first.df, second.df)
-  
-  t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
-    geom_point(data = first.df, colour  = a,size =1)+geom_point(data = second.df, colour  = b,size =1)+scale_color_identity()+
-    geom_pointrange(data=df.all,mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+scale_colour_manual(values=c(a, b))+
-    xlim(-3,3)+ggtitle(full_title)+theme_minimal()
-  
-  setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
-  print(t)
-  ggsave(file="scatterPlot.pdf")
-  
-}
 
-#at first we need to do false for each group and change the other path and then normelize_z need to 
-#be true 
-
-for (i in 1:number_of_pop){
-  if (i ==1 ){
-    the_path_test =the_path
-  }
-  if(i==2){
-    the_path_test =other_path
-    
-  }
+if (normalize_Z== FALSE){
   averagesPerMovieByFile()
-  setwd(the_path_test)
+  setwd(the_path)
   importClassifierFilesAndCalculatePerFrame()
-  setwd(the_path_test)
+  setwd(the_path)
   creatNetwork2popforscatter()
-  setwd(the_path_test)
+  setwd(the_path)
   boutLengthAndFrequencyForClassifiers()
-  
-}
-
-
+  }else{
   all_z_score()
   setwd(the_path)
   combineKineticAndClassifiersToSignature()
   setwd(other_path)
   combineKineticAndClassifiersToSignature()
-  vizual()
+}
