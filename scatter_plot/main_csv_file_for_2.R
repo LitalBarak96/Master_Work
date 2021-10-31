@@ -24,23 +24,25 @@ strN<-c()
 betN<-c()
 
 number_of_pop =2
-
+with_rgb = FALSE
 number_of_features = 11
+number_of_flies= 10
+
 
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
-p <- arg_parser("chosing color")
-
-# Add command line arguments
-p <- add_argument(p,
-                  c("R1", "G1", "B1","R2", "G2", "B2"),
-                  help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-                  flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
-
-
-# Parse the command line arguments
-argv <- parse_args(p)
-
+if (with_rgb== TRUE){
+  p <- arg_parser("chosing color")
+  
+  # Add command line arguments
+  p <- add_argument(p,
+                    c("R1", "G1", "B1","R2", "G2", "B2"),
+                    help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
+                    flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+  
+  
+  # Parse the command line arguments
+  argv <- parse_args(p)}
 #setting the path 
 
 the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
@@ -621,7 +623,7 @@ creatNetwork2popforscatter<-function(){
   
   
   setwd(the_path)
-  names<-c("density_l","modularity_l","sd_l","srength_l","betweens_l","density_n","modularity_n","sd_n","srength_n","betweens_n")
+  names<-c("density(LOI)","modularity(LOI)","sd strength(LOI)","strength(LOI)","betweens(LOI)","density(NOI)","modularity(NOI)","sd strength(NOI)","strength(NOI)","betweens(NOI)")  
   values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
   network.df<-data.frame(names,values,varience)
   colnames(network.df) <- c("file", "value","Variance")
@@ -630,8 +632,8 @@ creatNetwork2popforscatter<-function(){
   
 }
 boutLengthAndFrequencyForClassifiers<-function(){
-  str1 = "frq_"
-  str2 = "bout_"
+  str1 = "frequency"
+  str2 = "bout length"
   dir<-list.dirs(recursive = F)
   print(dir)
   ave_bl<-data.frame()
@@ -903,12 +905,15 @@ vizual<-function(){
   
   library(ggplot2)
   library(gridExtra)
-  a<-rgb_2_hex(argv$R1,argv$G1,argv$B1)
-  b<-rgb_2_hex(argv$R2,argv$G2,argv$B2)
+  if (with_rgb == TRUE){
+    a<-rgb_2_hex(argv$R1,argv$G1,argv$B1)
+    b<-rgb_2_hex(argv$R2,argv$G2,argv$B2)
+  }
   
-  
-  print(a)
-  print(b)
+  else{
+    a<-"#4DB3E6"
+    b<-"#37004D"
+  }
   
   
   first.df$id <- name1  # or any other description you want
@@ -916,11 +921,20 @@ vizual<-function(){
   
   
   
-  first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first))
-  second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second))
+  first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first*number_of_flies))
+  second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second*number_of_flies))
+  
+  
   
   full_title = paste(name1,"vs",name2)
+  first.df$file<-tools::file_path_sans_ext(first.df$file)
+  first.df$file<- str_replace(first.df$file, "scores_", "")
+  
+  second.df$file<-tools::file_path_sans_ext(second.df$file)
+  second.df$file<- str_replace(second.df$file, "scores_", "")
+  
   df.all <- rbind(first.df, second.df)
+  
   
   t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
     geom_point(data = first.df, colour  = a,size =1)+geom_point(data = second.df, colour  = b,size =1)+scale_color_identity()+
@@ -928,8 +942,8 @@ vizual<-function(){
     xlim(-3,3)+ggtitle(full_title)+theme_minimal()
   
   setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
-  print(t)
-  ggsave(file="scatterPlot.pdf")
+  
+  ggsave(plot = t, filename = "sample.pdf", height=10, width=10)
   
 }
 
