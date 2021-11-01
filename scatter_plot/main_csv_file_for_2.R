@@ -2,7 +2,6 @@ require(R.matlab)
 library(base)
 library(openxlsx)
 library(igraph)
-library(openxlsx)
 library(ggplot2)
 library(cowplot)
 library(ggpubr)
@@ -10,6 +9,8 @@ library(ggsignif)
 library(nortest)
 library(fmsb)
 library(argparser, quietly=TRUE)
+library(stringr)
+library("readxl")
 
 densL<-c()
 varience<-c()
@@ -22,11 +23,12 @@ modN<-c()
 sdN<-c()
 strN<-c()
 betN<-c()
-
+group_name<-c()
 number_of_pop =2
 with_rgb = FALSE
 number_of_features = 11
 number_of_flies= 10
+number_of_movies <-c()
 
 
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
@@ -48,11 +50,9 @@ if (with_rgb== TRUE){
 the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
 other_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
 
-setwd(the_path)
 #give the name of the group (the last name in the dir of the path)
-group_name = tools::file_path_sans_ext(basename((the_path)))
+
 #excatly how many movies are in the folder
-number_of_movies =length(list.dirs(path=the_path, full.names=T, recursive=F ))
 z_score <- function(First_classf.df,Sec_classf.df,numer_of_rows) {
   
   x <- data.matrix(First_classf.df)
@@ -268,7 +268,6 @@ averagesPerMovieByFile<-function(){
         row_ave.df<- NULL
       }
     }
-    #ordered_ave<- col.df[order(col.df$file),]
     if (k==1)
       total_movie_ave.df<- movie_ave.df
     else 
@@ -424,8 +423,8 @@ importClassifierFilesAndCalculatePerFrame<-function(){
 #calculating each feature of the network
 #calculating density, modularity, sdStrength, strength, betweenness
 
-creatNetwork2popforscatter<-function(){
-  group_name_dir = tools::file_path_sans_ext(dirname((the_path)))
+creatNetwork2popforscatter<-function(current_path){
+  group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
   setwd(group_name_dir)
   
   #where we choosing the files we want for analysis
@@ -622,7 +621,7 @@ creatNetwork2popforscatter<-function(){
   betN<<-betN[my_index]
   
   
-  setwd(the_path)
+  setwd(current_path)
   names<-c("density(LOI)","modularity(LOI)","sd strength(LOI)","strength(LOI)","betweens(LOI)","density(NOI)","modularity(NOI)","sd strength(NOI)","strength(NOI)","betweens(NOI)")  
   values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
   network.df<-data.frame(names,values,varience)
@@ -865,7 +864,6 @@ vizual<-function(){
   
   first.df<-data.frame()
   second.df<-data.frame()
-  number_of_pop = 2
   
   
   if(number_of_pop ==3 ){
@@ -933,17 +931,69 @@ vizual<-function(){
   second.df$file<-tools::file_path_sans_ext(second.df$file)
   second.df$file<- str_replace(second.df$file, "scores_", "")
   
-  df.all <- rbind(first.df, second.df)
+  order.df <- as.data.frame(read_excel(file.choose()))
+  test1 <- data.frame(matrix(ncol = 4, nrow = 52))
+  colnames(test1) <- c('file','value','Variance','id')
+  for (i in 1:nrow(order.df)){
+    for(j in 1:nrow(first.df)){
+      if(order.df[i,]==first.df[j,]$file){
+        test1[i,]<-first.df[j,]
+        
+      }
+      else{
+        
+      }
+      
+    }
+    
+    
+  }
+  test1 <- na.omit(test1) 
+  rownames(test1) <-1:nrow(test1)
   
+  
+  
+  
+  
+  test2 <- data.frame(matrix(ncol = 4, nrow = 52))
+  colnames(test2) <- c('file','value','Variance','id')
+  
+  for (i in 1:nrow(order.df)){
+    for(j in 1:nrow(second.df)){
+      if(order.df[i,]==second.df[j,]$file){
+        test2[i,]<-second.df[j,]
+        
+      }
+      else{
+        
+      }
+      
+    }
+    
+    
+  }
+  
+  test2<- na.omit(test2) 
+  rownames(test2) <-1:nrow(test2)
+  
+  df.all <- rbind(test1, test2)
+  test1$file<-as.character(test1$file)
+  test2$file<-as.character(test2$file)
+  
+  test1$file <- factor(test1$file, levels=unique(test1$file))
+  test2$file <- factor(test2$file, levels=unique(test2$file))
+  
+  df.all <- rbind(test1, test2)
+
   
   t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
-    geom_point(data = first.df, colour  = a,size =1)+geom_point(data = second.df, colour  = b,size =1)+scale_color_identity()+
+    geom_point(data = test1, colour  = a,size =1)+geom_point(data = test2, colour  = b,size =1)+scale_color_identity()+
     geom_pointrange(data=df.all,mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+scale_colour_manual(values=c(a, b))+
     xlim(-3,3)+ggtitle(full_title)+theme_minimal()
   
   setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
-  
-  ggsave(plot = t, filename = "sample.pdf", height=10, width=10)
+  print(t)
+  ggsave(plot = t, filename = "sample.pdf", height=13, width=13)
   
 }
 
@@ -958,11 +1008,14 @@ for (i in 1:number_of_pop){
     the_path_test =other_path
     
   }
+  setwd(the_path_test)
+  group_name <<- tools::file_path_sans_ext(basename((the_path_test)))
+  number_of_movies <<-length(list.dirs(path=the_path_test, full.names=T, recursive=F ))
   averagesPerMovieByFile()
   setwd(the_path_test)
   importClassifierFilesAndCalculatePerFrame()
   setwd(the_path_test)
-  creatNetwork2popforscatter()
+  creatNetwork2popforscatter(the_path_test)
   setwd(the_path_test)
   boutLengthAndFrequencyForClassifiers()
   
@@ -971,7 +1024,9 @@ for (i in 1:number_of_pop){
 
   all_z_score()
   setwd(the_path)
+  number_of_movies <<-length(list.dirs(path=the_path, full.names=T, recursive=F ))
   combineKineticAndClassifiersToSignature()
   setwd(other_path)
+  number_of_movies <<-length(list.dirs(path=other_path, full.names=T, recursive=F ))
   combineKineticAndClassifiersToSignature()
   vizual()
