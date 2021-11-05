@@ -1,13 +1,10 @@
 library(base)
 number_of_movies = 8
-setwd('F:/statistic_test/MalesSingels') #where is the data folder
+setwd('F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped') #where is the data folder
 all.df<-data.frame()
 bl_frq.df<-data.frame()
 
-names<-c("density_l","modularity_l","sd_l","srength_l","betweens_l","density_n","modularity_n","sd_n","srength_n","betweens_n")
-values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
-network.df<-data.frame(names,values,varience)
-colnames(network.df) <- c("file", "value","Variance")
+
 
 # write data to a sample.csv file
 
@@ -30,7 +27,7 @@ for (i in 2:length(ave_bl.df)){
   
   ave_bl.df[[i-1]]<-factor(ave_bl.df[[i-1]])
   print(levels(ave_bl.df[[i-1]]))
-  avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,2:11])),Variance =sd(unlist(all_bl.df[i,2:11])) ) # create average per condition
+  avg_of_bl.df<-data.frame(file=levels(ave_bl.df[[i-1]]),   value=mean(unlist(all_bl.df[i,])),Variance =sd(unlist(all_bl.df[i,])) ) # create average per condition
   new_lb.df<-rbind(new.df, avg_of_bl.df) # make list of averages per condition of all features
   
   
@@ -50,7 +47,7 @@ for (i in 2:length(ave_frq.df)){
 
   ave_frq.df[[i-1]]<-factor(ave_frq.df[[i-1]])
     print(levels(ave_frq.df[[i-1]]))
-    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,2:11])),Variance =sd(unlist(all_freq.df[i,2:11])) ) # create average per condition
+    avg_of_frq.df<-data.frame(file=levels(ave_frq.df[[i-1]]),   value=mean(unlist(all_freq.df[i,])),Variance =sd(unlist(all_freq.df[i,])) ) # create average per condition
     new_frq.df<-rbind(new.df, avg_of_frq.df) # make list of averages per condition of all features
   
 
@@ -74,7 +71,6 @@ for (k in 1:length(all.df)){
     new.df<-rbind(new.df, tmp_new.df) # make list of averages per condition of all features
  }
 }
-new.df<-rbind(new.df,network.df)
 
 new.df<-rbind(new.df,new_frq.df)
 

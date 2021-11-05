@@ -2,27 +2,28 @@ library(igraph)
 library(openxlsx)
 library(ggplot2)
 library(cowplot)
-library(ggpubr)
 library(ggsignif)
 library(nortest)
 library(fmsb)
 library(argparser, quietly=TRUE)
 number_of_flies = 0
+
 with_rgb = TRUE
+
 if (with_rgb == TRUE){
-rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
-
-p <- arg_parser("chosing color")
-
-# Add command line arguments
-p <- add_argument(p,
-                  c("R1", "G1", "B1","R2", "G2", "B2"),
-                  help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-                 flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
-
-
-# Parse the command line arguments
-argv <- parse_args(p)
+  rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
+  
+  p <- arg_parser("chosing color")
+  
+  # Add command line arguments
+  p <- add_argument(p,
+                    c("R1", "G1", "B1","R2", "G2", "B2"),
+                    help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
+                    flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+  
+  
+  # Parse the command line arguments
+  argv <- parse_args(p)
 }
 #calculating density, modularity, sdStrength, strength, betweenness
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
@@ -125,7 +126,7 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
       #call the function above
       cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i])
     }
-
+    
     density <- c(cur[1], density)
     modularity <- c(cur[2], modularity)
     sdStrength <- c(cur[3], sdStrength)
@@ -143,8 +144,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   numbers = c()
   for (i in 1:length(groupsNames)) {
     names = c(names, rep(groupsNames[i], length(unlist(groupsParams[i]))))
-    numbers = c(numbers, rnorm(length(unlist(groupsParams[i]))/numOfFlies))
-  }
+    numbers = c(numbers, rnorm(ceiling(length(unlist(groupsParams[i]))/numOfFlies)))  }
   value = rapply(groupsParams, c)
   data = data.frame(names, value)
   data$names <- as.character(data$names)
@@ -152,11 +152,11 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #testName = getStatisticTest(groupsParams[[1]], groupsParams[[2]])
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
-  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)
+  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = 12) 
   if(with_rgb == TRUE){g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
   }
   else{
-    g <- g + scale_fill_manual(values=c("#00FF00","#4DB3E6","#37004D"))
+    g <- g + scale_fill_manual(values=c("#4DB3E6","#37004D"))
   }
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
@@ -164,6 +164,10 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   } else {
     g <- g + geom_jitter(width = 0.2, height = 0)
   }
+  g<-g +scale_y_continuous(trans = "log10")
+  
+  name_of_y = paste(graphTitle," In Log Scale")
+  g<-g + labs(y = name_of_y) 
   g <- g + theme(legend.position="none")
   statsData <- getStatisticData(groupsParams, names, value, data)
   g <- addStatsToGraph(statsData, g, value, names, data)
@@ -301,7 +305,7 @@ for (i in 1:allData$Number.of.groups[1]) {
   #it is depened on the poisiton of the colom in the execl so we can get the length and number files
   cur <- (i + 1) * 2
   numberOfMovies <- allData[i, 3]
-
+  
   #the params are density, modularity, sdStrength, strength, betweenness
   lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies, cur], 0))
   numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies, cur + 1], allData$Max.number.of.interaction[1]))
@@ -340,11 +344,13 @@ for (i in 1:length(paramsNames)) {
 lengthMaxValues <- c(0.2,0.25,0.6,1.5,5)
 numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
+
 if(with_rgb == TRUE){
-createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+  
+  createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+  createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
+  createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
+  createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
 }
 
 

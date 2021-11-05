@@ -12,6 +12,9 @@ library(argparser, quietly=TRUE)
 library(stringr)
 library("readxl")
 
+
+
+#in the zscore function need to adajust
 densL<-c()
 varience<-c()
 modL<-c()
@@ -24,7 +27,7 @@ sdN<-c()
 strN<-c()
 betN<-c()
 group_name<-c()
-number_of_pop =2
+number_of_pop =3
 with_rgb = FALSE
 number_of_features = 11
 number_of_flies= 10
@@ -38,79 +41,31 @@ if (with_rgb== TRUE){
   
   # Add command line arguments
   p <- add_argument(p,
-                    c("R1", "G1", "B1","R2", "G2", "B2"),
-                    help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-                    flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
+                    c("R1", "G1", "B1","R2", "G2", "B2","R3", "G3", "B3"),
+                    help = c("red1", "green1", "blue1","red2", "green2", "blue2","red3", "green3", "blue3"),
+                    flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
   
   
   # Parse the command line arguments
   argv <- parse_args(p)}
 #setting the path 
 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
-other_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
+
+first_path = (choose.dir(default = "", caption = "Select folder of the first group"))
+second_path = (choose.dir(default = "", caption = "Select folder of the second group"))
+third_path = (choose.dir(default = "", caption = "Select folder of the third group"))
+number_of_movies_in_first <-length(list.dirs(path=first_path, full.names=T, recursive=F ))
+number_of_movies_in_second <-length(list.dirs(path=second_path, full.names=T, recursive=F ))
+number_of_movies_in_third <-length(list.dirs(path=third_path, full.names=T, recursive=F ))
 
 #give the name of the group (the last name in the dir of the path)
 
-#excatly how many movies are in the folder
-z_score <- function(First_classf.df,Sec_classf.df,numer_of_rows) {
-  
-  x <- data.matrix(First_classf.df)
-  y<-data.matrix(Sec_classf.df)
-  
-  combined_2_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))), value=c(x[,1],y[,1]))
-  
-  temp_x<-as.data.frame(lapply(structure(.Data=1:length(Sec_classf.df),.Names=1:length(Sec_classf.df)),function(x) numeric(numer_of_rows)))
-  temp_y<-as.data.frame(lapply(structure(.Data=1:length(Sec_classf.df),.Names=1:length(Sec_classf.df)),function(x) numeric(numer_of_rows)))
-  
-  for (i in 1:length(Sec_classf.df)){
-    #to do this for every value of both groups
-    combined_2_group$value<-scale(c(x[,i],y[,i]), center = T, scale = T)
-    #giving me only the row that are belong to x and have x value in group
-    
-    a<-subset(combined_2_group, group %in% "x")
-    temp_x[,i]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
-    temp_y[,i]<-b$value
-  }
-  
-  return(list("temp_x"=temp_x,"temp_y"=temp_y))
-}
 
-z_score_t <- function(First_classf.df,Sec_classf.df) {
-  
-  
-  x <- (data.matrix(First_classf.df))
-  y<-(data.matrix(Sec_classf.df))
-  
-  colnames(x) <-NULL
-  colnames(y) <-NULL
-  
-  
-  
-  
-  combined_2_group<- data.frame(group=c(rep("x", length(x[1,])), rep("y", length(y[1,]))), value=c(x[1,],y[1,]))
-  
-  temp_x<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
-  temp_y<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
-  
-  for (i in 1:nrow(y)){
-    print(nrow(y))
-    #to do this for every value of both groups
-    combined_2_group$value<-scale(c(x[i,],y[i,]), center = T, scale = T)
-    #giving me only the row that are belong to x and have x value in group
-    
-    a<-subset(combined_2_group, group %in% "x")
-    temp_x[,i]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
-    temp_y[,i]<-b$value
-  }
-  
-  
-  return(list("temp_x"=temp_x,"temp_y"=temp_y))
-}
+
+
+
 all_z_score<-function(){
-  setwd(the_path) #where is the data folder
+  setwd(first_path) #where is the data folder
   
   
   #first
@@ -128,7 +83,7 @@ all_z_score<-function(){
   
   
   
-  setwd(other_path) #where is the data folder
+  setwd(second_path) #where is the data folder
   ave_kinetic_Sec.df<-as.data.frame(read.csv('averages per movie.csv'))
   ave_classifiers_sec.df<-as.data.frame(read.csv('all_classifier_averages.csv'))
   
@@ -143,24 +98,38 @@ all_z_score<-function(){
   
   
   
+  setwd(third_path) #where is the data folder
+  ave_kinetic_third.df<-as.data.frame(read.csv('averages per movie.csv'))
+  ave_classifiers_third.df<-as.data.frame(read.csv('all_classifier_averages.csv'))
+  
+  third_classf.df<-data.frame(ave_classifiers_third.df[,seq(3, length(ave_classifiers_third.df), 3)])                         
+  third_kinef.df<-data.frame(ave_kinetic_third.df[,seq(3, length(ave_kinetic_third.df), 3)])                         
+  
+  
+  ave_bl_third.df<-as.data.frame(read.csv('bout_length_scores.csv'))
+  ave_frq_third.df<-as.data.frame(read.csv('frequency_scores.csv'))
+  
+  
   # i need to do this for the 2 groupes at once 
   
   
   
   
-  classify<-z_score(First_classf.df,Sec_classf.df,nrow(ave_classifiers_first.df))
-  kinnetic<-z_score(First_kinef.df,Sec_kinef.df,nrow(ave_kinetic_Sec.df))
+  classify<-z_score(First_classf.df,Sec_classf.df,third_classf.df,nrow(ave_classifiers_first.df))
+  kinnetic<-z_score(First_kinef.df,Sec_kinef.df,third_kinef.df,nrow(ave_kinetic_Sec.df))
   
   
   
   for(j in 1:length(Sec_classf.df)){
     ave_classifiers_first.df[,j*3]=classify$temp_x[,j]
     ave_classifiers_sec.df[,j*3]=classify$temp_y[,j]
+    ave_classifiers_third.df[,j*3]=classify$temp_z[,j]
   }
   
   for(j in 1:length(Sec_kinef.df)){
     ave_kinetic_first.df[,j*3]=kinnetic$temp_x[,j]
     ave_kinetic_Sec.df[,j*3]=kinnetic$temp_y[,j]
+    ave_kinetic_third.df[,j*3]=kinnetic$temp_z[,j]
   }
   
   
@@ -172,39 +141,40 @@ all_z_score<-function(){
   #part 2
   
   fir_bl.df<-data.frame(ave_bl_first.df[,seq(3, length(ave_bl_first.df), 3)])                         
-  Sec_bl.df<-data.frame(ave_bl_sec.df[,seq(3, length(ave_bl_sec.df), 3)])  
+  Sec_bl.df<-data.frame(ave_bl_sec.df[,seq(3, length(ave_bl_sec.df), 3)])
+  third_bl.df<-data.frame(ave_bl_third.df[,seq(3, length(ave_bl_third.df), 3)])  
   
   
   fir_frq.df<-data.frame(ave_frq_first.df[,seq(3, length(ave_frq_first.df), 3)])                         
   Sec_frq.df<-data.frame(ave_frq_sec.df[,seq(3, length(ave_frq_sec.df), 3)])  
+  third_frq.df<-data.frame(ave_frq_third.df[,seq(3, length(ave_frq_third.df), 3)])  
   
   
+  bl<-z_score_t(fir_bl.df,Sec_bl.df,third_bl.df)
   
-  bl<-z_score_t(fir_bl.df,Sec_bl.df)
-  
-  frq<-z_score_t(fir_frq.df,Sec_frq.df)
-  
+  frq<-z_score_t(fir_frq.df,Sec_frq.df,third_frq.df)
   
   
+ #look at this change it
   #12
-  for (i in 1:nrow(bl$temp_x)){
+  #for (i in 1:nrow(bl$temp_x)){
     #11
-    for (j in 1:ncol(bl$temp_x)){
-      ave_frq_first.df[j,i*3]=frq$temp_x[i,j]
-      ave_frq_sec.df[j,i*3]=frq$temp_y[i,j]
+    #for (j in 1:ncol(bl$temp_x)){
+      #ave_frq_first.df[j,i*3]=frq$temp_x[i,j]
+     # ave_frq_sec.df[j,i*3]=frq$temp_y[i,j]
       
-      ave_bl_first.df[j,i*3]=bl$temp_x[i,j]
-      ave_bl_sec.df[j,i*3]=bl$temp_y[i,j]
+    #  ave_bl_first.df[j,i*3]=bl$temp_x[i,j]
+   #   ave_bl_sec.df[j,i*3]=bl$temp_y[i,j]
       
-    }
-  }
+  #  }
+ # }
   
   
   
   #write it back again
   
   
-  setwd(the_path) #where is the data folder
+  setwd(first_path) #where is the data folder
   
   write.csv(ave_classifiers_first.df, 'all_classifier_averages.csv', row.names = F)
   write.csv(ave_kinetic_first.df, 'averages per movie.csv', row.names=F)
@@ -212,13 +182,18 @@ all_z_score<-function(){
   write.csv(ave_frq_first.df, 'frequency_scores.csv', row.names = F)
   
   
-  setwd(other_path) #where is the data folder
+  setwd(second_path) #where is the data folder
   write.csv(ave_classifiers_sec.df, 'all_classifier_averages.csv', row.names = F)
   write.csv(ave_kinetic_Sec.df, 'averages per movie.csv', row.names=F)
   write.csv(ave_bl_sec.df, 'bout_length_scores.csv', row.names = F)
   write.csv(ave_frq_sec.df, 'frequency_scores.csv', row.names = F)
   
+  setwd(third_path) #where is the data folder
   
+  write.csv(ave_classifiers_third.df, 'all_classifier_averages.csv', row.names = F)
+  write.csv(ave_kinetic_third.df, 'averages per movie.csv', row.names=F)
+  write.csv(ave_bl_third.df, 'bout_length_scores.csv', row.names = F)
+  write.csv(ave_frq_third.df, 'frequency_scores.csv', row.names = F)
   
 }
 #function avg per movie of assa
@@ -277,7 +252,7 @@ averagesPerMovieByFile<-function(){
     final.df<-rbind(final.df, ordered_ave)
   }
   write.csv(total_movie_ave.df, 'averages per movie.csv', row.names=F)
-
+  
   
 }
 #help function for creat network
@@ -287,20 +262,20 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))
   l <- layout_in_circle(net)
-
+  
   # density
   density <- sum(E(net)$weight) / (vertexNumber * (vertexNumber - 1) / 2)
-
+  
   
   # modularity
   #This function tries to find densely connected subgraphs
   wtc <- cluster_walktrap(net)
   modularity <- modularity(wtc)
- 
+  
   
   # strength std
   sdStrength <- sd(strength(net, weights = E(net)$weight))
-
+  
   
   #individual
   
@@ -309,11 +284,11 @@ calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileN
   print(net)
   strength <- strength(net, weights = E(net)$weight)
   
-
+  
   
   # betweenness centality 
   betweenness <- betweenness(net, v = V(net), directed = FALSE, weights = E(net)$weight)
-
+  
   return(list(density, modularity, sdStrength, strength, betweenness))
 }
 #calculating the params of the group with calculateNetworksParams for length and number groups
@@ -434,6 +409,7 @@ creatNetwork2popforscatter<-function(current_path){
   lengthParams <- c()
   numberParams <- c()
   numberOfMovies<-c()
+  
   for (i in 1:allData$Number.of.groups[1]) {
     #it is depened on the poisiton of the colom in the execl so we can get the length and number files
     cur <- (i + 1) * 2
@@ -450,32 +426,36 @@ creatNetwork2popforscatter<-function(current_path){
   groupsNames <- as.character(na.omit(allData$Groups.names))
   lengthAvg1 <- c()
   lengthAvg2 <- c()
+  lengthAvg3<- c()
   numberAvg1 <- c()
   numberAvg2 <- c()
-
+  numberAvg3<-c()
+  
   
   #for number param
   for (j in 1:3){
     x <- data.matrix(unlist(numberParams[j,1]))
     y<-data.matrix(unlist(numberParams[j,2]))
-    #reading the value to data matrix for the scale
-    #creating dataframe that combine the 2 pop together
-    combined_2_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))), value=c(x[,1],y[,1]))
+    z<-data.matrix(unlist(numberParams[j,3]))
+    #12
+    combined_3_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))),rep("z", length(z[,1])), value=c(x[,1],y[,1],z[,1]))
     #need to find combine this 2 loops cuz nrow somehow not an double
-    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(12)))
-    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(y) numeric(12)))
-    #creat 2 diffrent data frame to separt them from eachother
-    combined_2_group$value<-scale(c(x,y), center = T, scale = T)
+    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(number_of_movies_in_first)))
+    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(y) numeric(number_of_movies_in_second)))
+    temp_z<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(z) numeric(number_of_movies_in_third)))
     
-    #separat each other base on the symbol they got
-    a<-subset(combined_2_group, group %in% "x")
+    combined_3_group$value<-scale(c(x,y,z), center = T, scale = T)
+    
+    a<-subset(combined_3_group, group %in% "x")
     temp_x[,1]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
+    b<-subset(combined_3_group, group %in% "y")
     temp_y[,1]<-b$value
+    c<-subset(combined_3_group, group %in% "z")
+    temp_z[,1]<-c$value
     
-    #return them to each other cuz they are list 
     numberParams[j,1]<-(list(temp_x[,1]))
     numberParams[j,2]<-(list(temp_y[,1]))
+    numberParams[j,3]<-(list(temp_z[,1]))
     
   }
   
@@ -484,22 +464,27 @@ creatNetwork2popforscatter<-function(current_path){
   for (j in 1:3){
     x <- data.matrix(unlist(lengthParams[j,1]))
     y<-data.matrix(unlist(lengthParams[j,2]))
-    
-    
-    combined_2_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))), value=c(x[,1],y[,1]))
+    z<-data.matrix(unlist(lengthParams[j,3]))
+    #12
+    combined_3_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))),rep("z", length(z[,1])), value=c(x[,1],y[,1],z[,1]))
     #need to find combine this 2 loops cuz nrow somehow not an double
-    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(12)))
-    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(y) numeric(12)))
+    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(number_of_movies_in_first)))
+    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(y) numeric(number_of_movies_in_second)))
+    temp_z<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(z) numeric(number_of_movies_in_third)))
     
-    combined_2_group$value<-scale(c(x,y), center = T, scale = T)
+    combined_3_group$value<-scale(c(x,y,z), center = T, scale = T)
     
-    a<-subset(combined_2_group, group %in% "x")
+    a<-subset(combined_3_group, group %in% "x")
     temp_x[,1]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
+    b<-subset(combined_3_group, group %in% "y")
     temp_y[,1]<-b$value
+    c<-subset(combined_3_group, group %in% "z")
+    temp_z[,1]<-c$value
     
     lengthParams[j,1]<-(list(temp_x[,1]))
     lengthParams[j,2]<-(list(temp_y[,1]))
+    lengthParams[j,3]<-(list(temp_z[,1]))
+    
     
   }
   
@@ -507,21 +492,26 @@ creatNetwork2popforscatter<-function(current_path){
   for(j in 4:5){
     x <- data.matrix(unlist(numberParams[j,1]))
     y<-data.matrix(unlist(numberParams[j,2]))
+    z<-data.matrix(unlist(numberParams[j,3]))
     
-    combined_2_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))), value=c(x[,1],y[,1]))
+    combined_3_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))),rep("z", length(z[,1])), value=c(x[,1],y[,1],z[,1]))
+    #120
+    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(number_of_movies_in_first*number_of_flies)))
+    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(number_of_movies_in_second*number_of_flies)))
+    temp_z<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(z) numeric(number_of_movies_in_third*number_of_flies)))
     
-    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(120)))
-    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(120)))
+    combined_3_group$value<-scale(c(x,y,z), center = T, scale = T)
     
-    combined_2_group$value<-scale(c(x,y), center = T, scale = T)
-    
-    a<-subset(combined_2_group, group %in% "x")
+    a<-subset(combined_3_group, group %in% "x")
     temp_x[,1]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
+    b<-subset(combined_3_group, group %in% "y")
     temp_y[,1]<-b$value
+    c<-subset(combined_3_group, group %in% "z")
+    temp_z[,1]<-c$value
     
     numberParams[j,1]<-(list(temp_x[,1])) 
-    numberParams[j,2]<-(list(temp_y[,1])) 
+    numberParams[j,2]<-(list(temp_y[,1]))
+    numberParams[j,3]<-(list(temp_z[,1]))
     
   }
   
@@ -529,21 +519,26 @@ creatNetwork2popforscatter<-function(current_path){
   for(j in 4:5){
     x <- data.matrix(unlist(lengthParams[j,1]))
     y<-data.matrix(unlist(lengthParams[j,2]))
+    z<-data.matrix(unlist(lengthParams[j,3]))
     
-    combined_2_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))), value=c(x[,1],y[,1]))
+    combined_3_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))),rep("z", length(z[,1])), value=c(x[,1],y[,1],z[,1]))
+    #120
+    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(number_of_movies_in_first*number_of_flies)))
+    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(number_of_movies_in_second*number_of_flies)))
+    temp_z<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(z) numeric(number_of_movies_in_third*number_of_flies)))
     
-    temp_x<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(120)))
-    temp_y<-as.data.frame(lapply(structure(.Data=1:2,.Names=1:2),function(x) numeric(120)))
+    combined_3_group$value<-scale(c(x,y,z), center = T, scale = T)
     
-    combined_2_group$value<-scale(c(x,y), center = T, scale = T)
-    
-    a<-subset(combined_2_group, group %in% "x")
+    a<-subset(combined_3_group, group %in% "x")
     temp_x[,1]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
+    b<-subset(combined_3_group, group %in% "y")
     temp_y[,1]<-b$value
+    c<-subset(combined_3_group, group %in% "z")
+    temp_z[,1]<-c$value
     
     lengthParams[j,1]<-(list(temp_x[,1])) 
-    lengthParams[j,2]<-(list(temp_y[,1])) 
+    lengthParams[j,2]<-(list(temp_y[,1]))
+    lengthParams[j,3]<-(list(temp_z[,1]))
     
   }
   
@@ -552,9 +547,11 @@ creatNetwork2popforscatter<-function(current_path){
   for (i in 1:length(paramsNames)) {
     lengthAvg1 <- c(lengthAvg1, mean(unlist(lengthParams[i,1])))
     lengthAvg2 <- c(lengthAvg2, mean(unlist(lengthParams[i,2])))
+    lengthAvg3 <- c(lengthAvg3, mean(unlist(lengthParams[i,3])))
     numberAvg1 <- c(numberAvg1, mean(unlist(numberParams[i,1])))
     numberAvg2 <- c(numberAvg2, mean(unlist(numberParams[i,2])))
-
+    numberAvg3 <- c(numberAvg3, mean(unlist(numberParams[i,3])))
+    
   }
   
   
@@ -577,47 +574,56 @@ creatNetwork2popforscatter<-function(current_path){
   
   
   densL <<- cbind(lengthAvg1[1], lengthAvg2[1])
+  densL <<- cbind(densL, lengthAvg3[1])
   densL<<-densL[my_index]
   
   #density,mudilarity,sd strength,strength,bewtweenss SE
   varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
-
+  
   modL <<- cbind(lengthAvg1[2], lengthAvg2[2])
+  modL <<- cbind(modL, lengthAvg3[2])
   modL<<-modL[my_index]
   
   
   sdL <<- cbind(lengthAvg1[3], lengthAvg2[3])
+  sdL <<- cbind(sdL, lengthAvg3[3])
   sdL<<-sdL[my_index]
   
   
   
   strL <<- cbind(lengthAvg1[4], lengthAvg2[4])
+  strL <<- cbind(strL, lengthAvg3[4])
   strL<<-strL[my_index]
   
   
   betL <<- cbind(lengthAvg1[5], lengthAvg2[5])
-  
+  betL <<- cbind(betL, lengthAvg3[5])
   betL<<-betL[my_index]
   
   
   densN <<- cbind(numberAvg1[1], numberAvg2[1])
+  densN <<- cbind(densN, numberAvg3[1])
   densN<<-densN[my_index]
   
   
   
   modN <<- cbind(numberAvg1[2], numberAvg2[2])
+  modN <<- cbind(modN, numberAvg3[2])
   modN<<-modN[my_index]
   
   
   sdN <<- cbind(numberAvg1[3], numberAvg2[3])
+  sdN <<- cbind(sdN, numberAvg3[3])
   sdN<<-sdN[my_index]
   
   
   strN <<- cbind(numberAvg1[4], numberAvg2[4])
+  strN <<- cbind(strN, numberAvg3[4])
   strN<<-strN[my_index]
   
   
   betN <<- cbind(numberAvg1[5], numberAvg2[5])
+  betN <<- cbind(betN, numberAvg3[5])
   betN<<-betN[my_index]
   
   
@@ -801,62 +807,71 @@ combineKineticAndClassifiersToSignature<-function(){
 #the third is for the networks
 
 
-z_score <- function(First_classf.df,Sec_classf.df,numer_of_rows) {
+z_score <- function(First_classf.df,Sec_classf.df,third_Classf.df,numer_of_rows) {
   
   x <- data.matrix(First_classf.df)
   y<-data.matrix(Sec_classf.df)
+  y<-data.matrix(third_Classf.df)
   
-  combined_2_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))), value=c(x[,1],y[,1]))
+  combined_3_group<- data.frame(group=c(rep("x", length(x[,1])), rep("y", length(y[,1]))),rep("z", length(z[,1])), value=c(x[,1],y[,1],z[,1]))
   
   temp_x<-as.data.frame(lapply(structure(.Data=1:length(Sec_classf.df),.Names=1:length(Sec_classf.df)),function(x) numeric(numer_of_rows)))
   temp_y<-as.data.frame(lapply(structure(.Data=1:length(Sec_classf.df),.Names=1:length(Sec_classf.df)),function(x) numeric(numer_of_rows)))
+  temp_z<-as.data.frame(lapply(structure(.Data=1:length(Sec_classf.df),.Names=1:length(Sec_classf.df)),function(x) numeric(numer_of_rows)))
   
   for (i in 1:length(Sec_classf.df)){
     #to do this for every value of both groups
-    combined_2_group$value<-scale(c(x[,i],y[,i]), center = T, scale = T)
+    combined_3_group$value<-scale(c(x[,i],y[,i],z[,i]), center = T, scale = T)
     #giving me only the row that are belong to x and have x value in group
     
-    a<-subset(combined_2_group, group %in% "x")
+    a<-subset(combined_3_group, group %in% "x")
     temp_x[,i]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
+    b<-subset(combined_3_group, group %in% "y")
     temp_y[,i]<-b$value
+    c<-subset(combined_3_group, group %in% "z")
+    temp_z[,i]<-c$value
   }
   
-  return(list("temp_x"=temp_x,"temp_y"=temp_y))
+  return(list("temp_x"=temp_x,"temp_y"=temp_y,"temp_z"=temp_z))
 }
 
 
-z_score_t <- function(First_classf.df,Sec_classf.df) {
+z_score_t <- function(First_classf.df,Sec_classf.df,third_classf.df) {
   
   
   x <- (data.matrix(First_classf.df))
   y<-(data.matrix(Sec_classf.df))
+  z<-(data.matrix(third_classf.df))
   
   colnames(x) <-NULL
   colnames(y) <-NULL
+  colnames(z) <-NULL
   
   
   
   
-  combined_2_group<- data.frame(group=c(rep("x", length(x[1,])), rep("y", length(y[1,]))), value=c(x[1,],y[1,]))
-  
-  temp_x<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
-  temp_y<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
+  combined_3_group<- data.frame(group=c(rep("x", length(x[1,])), rep("y", length(y[1,]))),rep("z", length(z[1,])), value=c(x[1,],y[1,],z[1,]))
+  #check this paty
+  #temp_x<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
+  #temp_y<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
+  #temp_z<-as.data.frame(lapply(structure(.Data=1:nrow(Sec_classf.df),.Names=1:nrow(Sec_classf.df)),function(x) numeric(ncol(First_classf.df))))
   
   for (i in 1:nrow(y)){
     print(nrow(y))
     #to do this for every value of both groups
-    combined_2_group$value<-scale(c(x[i,],y[i,]), center = T, scale = T)
+    combined_3_group$value<-scale(c(x[i,],y[i,],z[i,]), center = T, scale = T)
     #giving me only the row that are belong to x and have x value in group
     
-    a<-subset(combined_2_group, group %in% "x")
+    a<-subset(combined_3_group, group %in% "x")
     temp_x[,i]<-a$value
-    b<-subset(combined_2_group, group %in% "y")
+    b<-subset(combined_3_group, group %in% "y")
     temp_y[,i]<-b$value
+    c<-subset(combined_3_group, group %in% "z")
+    temp_z[,i]<-c$value
   }
   
   
-  return(list("temp_x"=temp_x,"temp_y"=temp_y))
+  return(list("temp_x"=temp_x,"temp_y"=temp_y,"temp_z"=temp_z))
 }
 
 
@@ -906,6 +921,8 @@ vizual<-function(){
   if (with_rgb == TRUE){
     a<-rgb_2_hex(argv$R1,argv$G1,argv$B1)
     b<-rgb_2_hex(argv$R2,argv$G2,argv$B2)
+    c<-rgb_2_hex(argv$R3,argv$G3,argv$B3)
+    
   }
   
   else{
@@ -932,7 +949,7 @@ vizual<-function(){
   second.df$file<- str_replace(second.df$file, "scores_", "")
   
   order.df <- as.data.frame(read_excel(file.choose()))
-  test1 <- data.frame(matrix(ncol = 4, nrow = 57))
+  test1 <- data.frame(matrix(ncol = 4, nrow = 52))
   colnames(test1) <- c('file','value','Variance','id')
   for (i in 1:nrow(order.df)){
     for(j in 1:nrow(first.df)){
@@ -955,7 +972,7 @@ vizual<-function(){
   
   
   
-  test2 <- data.frame(matrix(ncol = 4, nrow = 57))
+  test2 <- data.frame(matrix(ncol = 4, nrow = 52))
   colnames(test2) <- c('file','value','Variance','id')
   
   for (i in 1:nrow(order.df)){
@@ -984,7 +1001,7 @@ vizual<-function(){
   test2$file <- factor(test2$file, levels=unique(test2$file))
   
   df.all <- rbind(test1, test2)
-
+  
   
   t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
     geom_point(data = test1, colour  = a,size =1)+geom_point(data = test2, colour  = b,size =1)+scale_color_identity()+
@@ -1022,11 +1039,11 @@ for (i in 1:number_of_pop){
 }
 
 
-  all_z_score()
-  setwd(the_path)
-  number_of_movies <<-length(list.dirs(path=the_path, full.names=T, recursive=F ))
-  combineKineticAndClassifiersToSignature()
-  setwd(other_path)
-  number_of_movies <<-length(list.dirs(path=other_path, full.names=T, recursive=F ))
-  combineKineticAndClassifiersToSignature()
-  vizual()
+all_z_score()
+setwd(the_path)
+number_of_movies <<-length(list.dirs(path=the_path, full.names=T, recursive=F ))
+combineKineticAndClassifiersToSignature()
+setwd(other_path)
+number_of_movies <<-length(list.dirs(path=other_path, full.names=T, recursive=F ))
+combineKineticAndClassifiersToSignature()
+vizual()
