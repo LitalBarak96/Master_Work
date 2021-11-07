@@ -1,3 +1,4 @@
+#this script take the data after salmon and make dataframe with the group the gene and comoon name with MTP
 library(dplyr)
 setwd('D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/N831_L002-ds.9a3268502f2f4745827d7a83e6ccfac4')
 q_gene<-read.csv("quant.sf",sep="\t")
@@ -5,6 +6,7 @@ q_gene<-read.csv("quant.sf",sep="\t")
 setwd("D:/RNA_seq")
 all_gene<-read.csv("dm6_refseq_common_names.tsv",sep="\t")
 
+#
 
 List_of_salmon <- list.files("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2", full.names=TRUE)
 
@@ -35,16 +37,13 @@ df_Salmon[2]<-pull(all_gene_from_salamon,name2)
 
 
 
-#for (j in 1:nrow(all_gene["X.name"])){
- # for (i in 1:nrow(df_Salmon['name'])){
-  #  if(df_Salmon[i,'name'] == all_gene[j,"X.name"]){
-   #   df_Salmon[i,'name'] = all_gene[j,"name2"]
-    #}
-  #}
-
-#}
-
 df_Salmon$sum <- apply(df_Salmon[3:34],1,sum)
 
 
 most_exspressed<-df_Salmon$common_name[which.max(df_Salmon$sum)]
+
+#present the 6 top expresses gene
+
+df_Salmon %>%
+  arrange(desc(df_Salmon$sum)) %>%
+  head()
