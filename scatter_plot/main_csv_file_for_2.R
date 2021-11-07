@@ -25,7 +25,7 @@ strN<-c()
 betN<-c()
 group_name<-c()
 number_of_pop =2
-with_rgb = FALSE
+with_rgb = TRUE
 number_of_features = 11
 number_of_flies= 10
 number_of_movies <-c()
@@ -47,8 +47,8 @@ if (with_rgb== TRUE){
   argv <- parse_args(p)}
 #setting the path 
 
-the_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
-other_path = 'F:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
+the_path = 'D:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped'
+other_path = 'D:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single'
 
 #give the name of the group (the last name in the dir of the path)
 
@@ -592,12 +592,12 @@ creatNetwork2popforscatter<-function(current_path){
   
   
   strL <<- cbind(lengthAvg1[4], lengthAvg2[4])
-  strL<<-strL[my_index]
+  strL<<-strL[my_index]/sqrt(number_of_flies)
   
   
   betL <<- cbind(lengthAvg1[5], lengthAvg2[5])
   
-  betL<<-betL[my_index]
+  betL<<-betL[my_index]/sqrt(number_of_flies)
   
   
   densN <<- cbind(numberAvg1[1], numberAvg2[1])
@@ -614,11 +614,11 @@ creatNetwork2popforscatter<-function(current_path){
   
   
   strN <<- cbind(numberAvg1[4], numberAvg2[4])
-  strN<<-strN[my_index]
+  strN<<-strN[my_index]/sqrt(number_of_flies)
   
   
   betN <<- cbind(numberAvg1[5], numberAvg2[5])
-  betN<<-betN[my_index]
+  betN<<-betN[my_index]/sqrt(number_of_flies)
   
   
   setwd(current_path)
@@ -919,8 +919,8 @@ vizual<-function(){
   
   
   
-  first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first*number_of_flies))
-  second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second*number_of_flies))
+  first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first))
+  second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second))
   
   
   
@@ -987,13 +987,13 @@ vizual<-function(){
 
   
   t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
-    geom_point(data = test1, colour  = a,size =1)+geom_point(data = test2, colour  = b,size =1)+scale_color_identity()+
+    geom_point(data = test1, colour  = a,size =4)+geom_point(data = test2, colour  = b,size =4)+scale_color_identity()+
     geom_pointrange(data=df.all,mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+scale_colour_manual(values=c(a, b))+
     xlim(-3,3)+ggtitle(full_title)+theme_minimal()
   
   setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
   print(t)
-  ggsave(plot = t, filename = "scatterplot.pdf", height=15, width=15)
+  ggsave(plot = t, filename = "scatterplot.pdf", height=12, width=12)
   
 }
 

@@ -1,4 +1,4 @@
-command = '"C:\Program Files\R\R-4.0.4\bin\x64\Rscript.exe" main_csv_file_for_2.R';
+command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" main_csv_file_for_2.R';
 
 for i =1:2
 s1='Select a color for group number ';

@@ -2,6 +2,7 @@ function varargout = runAll(varargin)
 % RUNALL MATLAB code for runAll.fig
 %      RUNALL, by itself, creates a new RUNALL or raises the existing
 %      singleton*.
+
 %
 %      H = RUNALL returns the handle to a new RUNALL or the handle to
 %      the existing singleton*.
