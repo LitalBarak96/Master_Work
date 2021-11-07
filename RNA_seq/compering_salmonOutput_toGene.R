@@ -17,7 +17,7 @@ df_Salmon[1]<-pull(q_gene,Name)
 
 smaple_name<-tools::file_path_sans_ext(basename((List_of_salmon)))
 colnames(df_Salmon)[1] <- "name"
-colnames(df_Salmon)[2] <- "common name"
+colnames(df_Salmon)[2] <- "common_name"
 colnames(df_Salmon)[3:34]<-smaple_name
 
 
@@ -44,4 +44,7 @@ df_Salmon[2]<-pull(all_gene_from_salamon,name2)
 
 #}
 
+df_Salmon$sum <- apply(df_Salmon[3:34],1,sum)
 
+
+most_exspressed<-df_Salmon$common_name[which.max(df_Salmon$sum)]
