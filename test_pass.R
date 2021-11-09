@@ -16,5 +16,5 @@ p <- add_argument(p,"path",
 # Parse the command line arguments
 argv <- parse_args(p)
 
-allData <- read.xlsx(argv$path)
+allColorData <- read.xlsx(argv$path)
 print(allData)
