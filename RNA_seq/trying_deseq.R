@@ -1,7 +1,10 @@
-cts <- as.matrix(read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/Salmon_TPM.csv",sep=",",row.names="gene_id"))
+
+
+
+cts <- read.csv(read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/Salmon_TPM.csv",sep=",",row.names="gene_id"))
 coldata <- read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/meta_test.csv", row.names=1)
 coldata$condition <- factor(coldata$condition)
-rownames(coldata) <- sub("fb", "", rownames(coldata))
+rownames(coldata) <- sub("L00", "", rownames(coldata))
 all(rownames(coldata) %in% colnames(cts))
 all(rownames(coldata) == colnames(cts))
 cts <- cts[, rownames(coldata)]
@@ -14,6 +17,7 @@ dds <- DESeqDataSetFromMatrix(countData = round(cts),
                               design = ~ condition)
 dds
 
+
 featureData <- data.frame(gene=rownames(cts))
 mcols(dds) <- DataFrame(mcols(dds), featureData)
 mcols(dds)
@@ -21,8 +25,8 @@ mcols(dds)
 
 
 #removing low count genes
-#keep <- rowSums(counts(dds)) >= 2
-#dds <- dds[keep,]
+keep <- rowSums(counts(dds)) >= 2
+dds <- dds[keep,]
 
 #check this is put the condition right
 #dds$condition <- factor(dds$condition, levels = c("males","females"))
