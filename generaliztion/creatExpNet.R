@@ -15,8 +15,6 @@ rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
 
 
-colors_of_groups<<-c()
-
 #enough of it
 if (with_rgb == TRUE){
 
@@ -40,9 +38,9 @@ if (with_rgb == TRUE){
 
 num_of_pop<<-c()
 allColorData<<-c()
-colors_of_groups<<-c()
 
 
+colors_of_groups<<-data.frame()
 
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
@@ -284,10 +282,10 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
   #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
   g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = 8) 
-  if(with_rgb == TRUE){  g <- g + scale_fill_manual(values=colors_of_groups)
+  if(with_rgb == TRUE){  g <- g + scale_fill_manual(values=as.character(colors_of_groups$X1))
   }
   else{
-    g <- g + scale_fill_manual(values=colors_of_groups)
+    g <- g + scale_fill_manual(values=as.character(colors_of_groups$X1))
   }
   #
   #to see without the dots just comment this lines below
@@ -328,16 +326,23 @@ xlsxFile <- choose.files()
 allData <- read.xlsx(xlsxFile)
 #this is how I know how many pop
 
-#allColorData <- read.xlsx(argv$path)
-#num_of_pop<-nrow(allColorData)
+if(with_rgb==TRUE){
+  allColorData <- read.xlsx(argv$path)
+  num_of_pop<-nrow(allColorData)
+}else{
+  library(openxlsx)
+  allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
+  num_of_pop<<-nrow(allColorData)
+}
 
-library(openxlsx)
-allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
-num_of_pop<<-nrow(allColorData)
+colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 
 for (i in 1:num_of_pop){
-  colors_of_groups<<-c(colors_of_groups,rgb_2_hex(allColorData[i,1:3]))
+  
+  colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
 }
+
+colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
 
 lengthParams <- c()
 numberParams <- c()
@@ -403,9 +408,10 @@ for (i in 1:length(paramsNames)) {
   plotParamData(groupsNames, numberParams[i,], numberFolder, paramsNames[i])
   #make this part generic to the number of participents
   #doing mean on each of the couple of groupes (light and dark) for all of the params (density, modularity, sdStrength, strength, betweenness)
+  
   for(j in 1:num_of_pop){
     length[j,i+1] <- mean(unlist(lengthParams[i,j]))
-    number[j,i+1] <-mean(unlist(lengthParams[i,j]))
+    number[j,i+1] <-mean(unlist(numberParams[i,j]))
     
   }
 
@@ -418,18 +424,51 @@ numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
 
-if(with_rgb == TRUE){
+
   
   for (i in 1:num_of_pop){
-    createRadarPlot(length[i,2:6],paramsNames,lengthFolder,lengthMaxValues,groupsNames[i],colors_of_groups[i])
+    createRadarPlot(as.numeric(length[i,2:6]),paramsNames,lengthFolder,lengthMaxValues,groupsNames[i],rgb_2_hex(allColorData[i,2:4]))
   }
   for (i in 1:num_of_pop){
-    createRadarPlot(number[i,2:6],paramsNames,lengthFolder,lengthMaxValues,groupsNames[i],colors_of_groups[i])
+    createRadarPlot(as.numeric(number[i,2:6]),paramsNames,numberFolder,numberMaxValues,groupsNames[i],rgb_2_hex(allColorData[i,2:4]))
   }
 
   
-}
+
 
 #saving the varibles
+
+
+
+
+densL<-as.numeric(as.data.frame(t(length[2])))
+
+
+
+modL<-as.numeric(as.data.frame(t(length[3])))
+
+sdL<-as.numeric(as.data.frame(t(length[4])))
+
+
+
+strL <- as.numeric(as.data.frame(t(length[5])))
+
+
+betL <- as.numeric(as.data.frame(t(length[6])))
+
+
+densN <- as.numeric(as.data.frame(t(number[2])))
+
+
+modN <- as.numeric(as.data.frame(t(number[3])))
+
+
+sdN <- as.numeric(as.data.frame(t(number[4])))
+
+
+strN <- as.numeric(as.data.frame(t(number[5])))
+
+
+betN <- as.numeric(as.data.frame(t(number[6])))
 
 

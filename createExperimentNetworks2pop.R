@@ -8,7 +8,8 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 number_of_flies = 0
 
-with_rgb = TRUE
+with_rgb = FALSE
+
 
 if (with_rgb == TRUE){
   rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
@@ -156,7 +157,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   if(with_rgb == TRUE){g <- g + scale_fill_manual(values=c(rgb_2_hex(argv$R1,argv$G1,argv$B1), rgb_2_hex(argv$R2,argv$G2,argv$B2)))
   }
   else{
-    g <- g + scale_fill_manual(values=c("#4DB3E6","#37004D"))
+    g <- g + scale_fill_manual(values=c("#00FF00","#00FFFF"))
   }
   if (numOfFlies > 1) {
     colors = rep(numbers, each = numOfFlies)
@@ -345,13 +346,13 @@ lengthMaxValues <- c(0.2,0.25,0.6,1.5,5)
 numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
 
 
-if(with_rgb == TRUE){
+
   
-  createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-  createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-  createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], rgb(argv$R1,argv$G1,argv$B1))
-  createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], rgb(argv$R2,argv$G2,argv$B2))
-}
+createRadarPlot(lengthAvg1, paramsNames, lengthFolder, lengthMaxValues, groupsNames[1], "#00FF00")
+createRadarPlot(lengthAvg2, paramsNames, lengthFolder, lengthMaxValues, groupsNames[2], "#00FFFF")
+createRadarPlot(numberAvg1, paramsNames, numberFolder, numberMaxValues, groupsNames[1], "#00FF00")
+createRadarPlot(numberAvg2, paramsNames, numberFolder, numberMaxValues, groupsNames[2], "#00FFFF")
+
 
 
 densL <- cbind(lengthAvg1[1], lengthAvg2[1])

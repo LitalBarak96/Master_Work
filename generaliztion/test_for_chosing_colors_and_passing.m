@@ -1,4 +1,4 @@
-command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" test_pass.R ';
+command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" creatExpNet.R ';
 color ="";
 num_of_pop =2;
 group_name =[]
