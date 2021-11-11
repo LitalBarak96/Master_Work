@@ -1,5 +1,17 @@
 
-
+library(htmltools)
+library("DESeq2")
+library(ggplot2)
+library(autoplotly)
+library(factoextra)
+library("pheatmap")
+library("RColorBrewer")
+library(gplots)
+library(limma)
+library("manhattanly")
+library("ggrepel")
+library(plotly)
+library("heatmaply")
 
 
 library(dplyr)
@@ -63,3 +75,55 @@ library(autoplotly)
 library(ggplot2)
 autoplotly::autoplotly((plotPCA(vsdata, intgroup="condition")+geom_text(aes(label=name),vjust=2)+labs(title = "PCA: male vs. female"))
                        , data = vsdata, colour = 'Species', frame = TRUE)
+
+#create loadings arrows
+num<-ncol(data)
+pca<-prcomp(data[2:num], scale. = TRUE)  
+fviz_pca_var(pca, col.var="contrib", gradient.cols=c("#00AFBB", "#E7B800", "#FC4E07"), repel=TRUE)
+
+#results check
+#how many genes are there:
+length(res$pvalue)
+#how many of them are smaller than 0.05?
+sum(res$pvalue <= 0.05, na.rm=TRUE)
+
+#making volcano plots. blue if pval<0.05, red if log2FC>=1 and pval<0.05)
+with(res, plot(log2FoldChange, -log10(pvalue), pch=20, main="Volcano plot", sub="the results of T VS. NT in 2 hours", xlim=c(-3,3), col.sub="orchid4"))
+with(subset(res, pvalue<.05 ), points(log2FoldChange, -log10(pvalue), pch=20, col="blue"))
+with(subset(res, pvalue<.05 & abs(log2FoldChange)>=1), points(log2FoldChange, -log10(pvalue), pch=20, col="red"))
+
+#creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for up regulated genes
+x<-subset(res, pvalue<.05 & log2FoldChange>=1)
+x<-row.names(as.data.frame(x))
+write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/upregulated.csv",
+          row.names = FALSE)
+
+#creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for down regulated genes
+x<-subset(res, pvalue<.05 & log2FoldChange<=-1)
+x<-row.names(as.data.frame(x))
+write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/downregulated.csv",
+          row.names = FALSE)
+
+#create dataframes & heatmaps of significant results 
+#finding the index of the significant genes in cts
+y<-subset(res, pvalue<.05 & abs(log2FoldChange)>=1)
+idx<-which(rownames(vsdata[,1]) %in% row.names(y))
+#finding the genes
+significant<-data[idx,]
+#organize the data frame
+row.names(significant)<-significant[,1] 
+significant<-significant[,2:ncol(significant)]
+colnames(significant)<-paste(coldata$mouse, coldata$treat, sep = ", ")
+#create a matrix of the genes expression and their names
+mat<-as.matrix(significant)
+
+#create heatmap of most changed genes
+
+df <- as.data.frame(colData(dds)[,"treat"])
+colnames(df)<-"treatment"
+row.names(df)<-colnames(mat)
+
+pheatmap(mat, scale = "row", annotation_col =df)
+heatmaply(mat, scale = "row", plot_method ="plotly")
+
+

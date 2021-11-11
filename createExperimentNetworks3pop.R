@@ -9,11 +9,9 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 #global varible
 number_of_flies = 0
-with_rgb = TRUE
+with_rgb = FALSE
 #from rgb to hex
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
-
-
 
 #enough of it
 if (with_rgb == TRUE){
@@ -174,11 +172,11 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   #to plot in diffrent way the strenght ans betweenes
   if (numOfFlies > 1) {
    colors = rep(numbers, each = numOfFlies)
+   print(colors)
     g <- g + geom_jitter(width = 0.2, height = 0, aes(color = as.factor(colors[1:nrow(data)]))) + scale_colour_hue()
   } else {
     g <- g + geom_jitter(width = 0.2, height = 0)
   }
-
   g<-g +scale_y_continuous(trans = "log10")
 
   name_of_y = paste(graphTitle," In Log Scale")

@@ -7,40 +7,35 @@ library(ggsignif)
 library(nortest)
 library(fmsb)
 library(argparser, quietly=TRUE)
+
 #global varible
 number_of_flies = 0
-with_rgb = FALSE
+with_rgb = TRUE
+num_of_pop<<-c()
+allColorData<<-c()
+font_size<<-4
+colors_of_groups<<-data.frame()
+
 #from rgb to hex
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
-
-
-#enough of it
+#to debug
 if (with_rgb == TRUE){
 
-    
-    
   p <- arg_parser("path of the color")
     
     # Add command line arguments
   p <- add_argument(p,"path",
                       help = "path",
                       flag = FALSE)
-    
-    
-    
+  
     # Parse the command line arguments
   argv <- parse_args(p)
-    
-    
 
 }
 
-num_of_pop<<-c()
-allColorData<<-c()
+#________________________________________________________ function zone
 
-
-colors_of_groups<<-data.frame()
 
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
   # all
@@ -149,7 +144,6 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
   
   return(list(density, modularity, sdStrength, strength, betweenness))
 }
-
 getStatisticTest <- function(x, y) {
   dataX <- shapiro.test(unlist(x))
   if (dataX$p.value < 0.05)
@@ -159,7 +153,6 @@ getStatisticTest <- function(x, y) {
     return("wilcox.test")
   return("t.test")
 }
-
 getStatisticData <- function(groupsParams, names, value, data) {
   #statistic data about each paramter density, modularity, sdStrength, strength, betweenness
   for (i in 1:length(groupsParams)) {
@@ -185,7 +178,6 @@ getStatisticData <- function(groupsParams, names, value, data) {
     return(list(stats, "Anova"))
   }
 }
-
 addStatsToGraph <- function(statsData, g, value, names, data) {
   aov.res <- aov(value~names, data)
   templet <- TukeyHSD(aov.res)
@@ -223,7 +215,6 @@ addStatsToGraph <- function(statsData, g, value, names, data) {
   bp_ask <- bp_ask + annotate("text", x = tiny_anova$ave, y = (tiny_anova$ys + (margin.y/nrow(tiny_anova))) , xend = tiny_anova$end, yend = tiny_anova$ys, label = tiny_anova$astks, size = 5)
   return(bp_ask)
 }
-
 make_contrast_coord <- function(n) {
   tmp <- do.call(rbind,lapply(1:n, (function(i){
     do.call(rbind,lapply(1:n, (function(j){
@@ -238,7 +229,6 @@ make_contrast_coord <- function(n) {
   tmp$len <- apply(tmp, 1, (function(vct){ max(vct) - min(vct) }))
   return(tmp)
 }
-
 pval_to_asterisks <- function(p_vals) {
   astk <- sapply(as.numeric(as.character(p_vals)), (function(pv){
     if (pv >= 0 & pv < 0.001) {
@@ -253,7 +243,6 @@ pval_to_asterisks <- function(p_vals) {
   }))
   return(astk)
 }
-
 createRadarPlot <- function(data, paramsNames, graphFolder, maxValues, groupName, color) {
   data <- as.data.frame(t(data))
   colnames(data) <- paramsNames
@@ -276,12 +265,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   data = data.frame(names, value)
   data$names <- as.character(data$names)
   data$names <- factor(data$names, levels=unique(data$names))
-  #this part creat graph and chosing the color from the parser
-  
-  #testName = getStatisticTest(groupsParams[[1]], groupsParams[[2]])
-  #g <- qplot(x = names, y = value, data = data, geom = c("boxplot"), fill = names, ylab = graphTitle) + geom_jitter(width = 0.2, height = 0) + geom_signif(comparisons = list(groupsNames), test = testName, map_signif_level = TRUE)
-  #ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", testName, ".jpg", sep = "")), g, width = 13, height = 9, units = "cm")
-  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = 8) 
+  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = font_size) 
   if(with_rgb == TRUE){  g <- g + scale_fill_manual(values=as.character(colors_of_groups$X1))
   }
   else{
@@ -296,7 +280,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   } else {
     g <- g + geom_jitter(width = 0.2, height = 0)
   }
-  
+  #remove outlier do logscale
   g<-g +scale_y_continuous(trans = "log10")
   
   name_of_y = paste(graphTitle," In Log Scale")
@@ -308,107 +292,80 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = 10, height = 9, units = "cm")
 }
 
-
-
-
-
-
-
-
-#from here starting the "main"
-
-
-
+#________________________________________________________ main zone
 
 #where we choosing the files we want for analysis
 xlsxFile <- choose.files()
 #all data is the data from the exel in the first sheet
 allData <- read.xlsx(xlsxFile)
-#this is how I know how many pop
-
+#reading the color excel
 if(with_rgb==TRUE){
   allColorData <- read.xlsx(argv$path)
   num_of_pop<-nrow(allColorData)
 }else{
+  #test for myself
   library(openxlsx)
   allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
   num_of_pop<<-nrow(allColorData)
 }
 
+#_________________________________________________________color zone
+
+#creat zeros data frame with number of row is 1 and number of colum like the number of population
 colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
-
+#rgb and start from 2 because the first colom is names
 for (i in 1:num_of_pop){
-  
-  colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
+    colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
 }
-
 colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
 
+#_______________________________________________________________param zone
 lengthParams <- c()
 numberParams <- c()
 numberOfMovies<-c()
 print(dirname(xlsxFile))
 setwd(dirname(xlsxFile))
 for (i in 1:allData$Number.of.groups[1]) {
-  #it is depened on the poisiton of the colom in the execl so we can get the length and number files
   cur <- (i + 1) * 2
   numberOfMovies[i]<- allData[i, 3]
   #the params are density, modularity, sdStrength, strength, betweenness
   lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
   numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
 }
-
+#__________________________________________________arranging the names of folders
 xlsxName <- tools::file_path_sans_ext(basename(xlsxFile))
-
 xlsxParts <- strsplit(xlsxName, '_')
-
 framesString <- paste(xlsxParts[[1]][2], "-", xlsxParts[[1]][4])
-
 lengthFolder = file.path(dirname(toString(xlsxFile)), paste("Length of interactions graphs ", framesString));
-
 dir.create(lengthFolder, showWarnings = FALSE)
-
 numberFolder = file.path(dirname(toString(xlsxFile)), paste("Number of interactions graphs ", framesString));
-
 dir.create(numberFolder, showWarnings = FALSE)
 #parametrs name
 paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
-#light or dark
 groupsNames <- as.character(na.omit(allData$Groups.names))
 
-#5 time
-
-
-
+#______________arrange the data to be generic
+#five feature so from 1 to 6
 length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
-
-
-
 number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
-
 
 for (i in 1:num_of_pop){ 
   lengthAvg<-paste0("lengthAvg",as.character(i))
   length[i,1]<-lengthAvg
-  
-  
 }
-
-
 for (i in 1:num_of_pop){ 
   numberAvg<-paste0("numberAvg",as.character(i))
   number[i,1]<-numberAvg
-  
-  
 }
 
+
+#_______________________________________________plot and save the varibels
 for (i in 1:length(paramsNames)) {
-  #the whole row i of lengthParams/numberParams,the param looking right now
+  #the whole row i of lengthParams/numberParams
   plotParamData(groupsNames, lengthParams[i,], lengthFolder, paramsNames[i])
   plotParamData(groupsNames, numberParams[i,], numberFolder, paramsNames[i])
-  #make this part generic to the number of participents
-  #doing mean on each of the couple of groupes (light and dark) for all of the params (density, modularity, sdStrength, strength, betweenness)
-  
+
+  #calculating the mean of each population
   for(j in 1:num_of_pop){
     length[j,i+1] <- mean(unlist(lengthParams[i,j]))
     number[j,i+1] <-mean(unlist(numberParams[i,j]))
@@ -417,58 +374,26 @@ for (i in 1:length(paramsNames)) {
 
 }
 
-
+#___________________________________________________________Raderplot zone
+#max varibles for raderplot for %
 lengthMaxValues <- c(0.2,0.25,0.6,1.5,5)
 numberMaxValues <- c(0.4,0.2,0.85,3.5,4)
+#creation of raderplot
+for (i in 1:num_of_pop){
+  createRadarPlot(as.numeric(length[i,2:6]),paramsNames,lengthFolder,lengthMaxValues,groupsNames[i],rgb_2_hex(allColorData[i,2:4]))
+}
+for (i in 1:num_of_pop){
+  createRadarPlot(as.numeric(number[i,2:6]),paramsNames,numberFolder,numberMaxValues,groupsNames[i],rgb_2_hex(allColorData[i,2:4]))
+}
 
-
-
-
-
-  
-  for (i in 1:num_of_pop){
-    createRadarPlot(as.numeric(length[i,2:6]),paramsNames,lengthFolder,lengthMaxValues,groupsNames[i],rgb_2_hex(allColorData[i,2:4]))
-  }
-  for (i in 1:num_of_pop){
-    createRadarPlot(as.numeric(number[i,2:6]),paramsNames,numberFolder,numberMaxValues,groupsNames[i],rgb_2_hex(allColorData[i,2:4]))
-  }
-
-  
-
-
-#saving the varibles
-
-
-
-
+#____________________________ end of calculation,saving the varibles
 densL<-as.numeric(as.data.frame(t(length[2])))
-
-
-
 modL<-as.numeric(as.data.frame(t(length[3])))
-
 sdL<-as.numeric(as.data.frame(t(length[4])))
-
-
-
 strL <- as.numeric(as.data.frame(t(length[5])))
-
-
 betL <- as.numeric(as.data.frame(t(length[6])))
-
-
 densN <- as.numeric(as.data.frame(t(number[2])))
-
-
 modN <- as.numeric(as.data.frame(t(number[3])))
-
-
 sdN <- as.numeric(as.data.frame(t(number[4])))
-
-
 strN <- as.numeric(as.data.frame(t(number[5])))
-
-
 betN <- as.numeric(as.data.frame(t(number[6])))
-
-
