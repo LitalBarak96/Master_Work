@@ -78,8 +78,10 @@ autoplotly::autoplotly((plotPCA(vsdata, intgroup="condition")+geom_text(aes(labe
 
 #create loadings arrows
 num<-ncol(data)
-pca<-prcomp(data[2:num], scale. = TRUE)  
-fviz_pca_var(pca, col.var="contrib", gradient.cols=c("#00AFBB", "#E7B800", "#FC4E07"), repel=TRUE)
+pca<-prcomp(data[1:num], scale. = TRUE)  
+fviz_pca_ind(pca)
+
+fviz_pca_var(pca, col.var="contrib", gradient.cols=c("#00AFBB", "#E7B800", "#FC4E07"), repel=TRUE,ggrepel.max.overlaps = Inf)
 
 #results check
 #how many genes are there:
@@ -88,7 +90,7 @@ length(res$pvalue)
 sum(res$pvalue <= 0.05, na.rm=TRUE)
 
 #making volcano plots. blue if pval<0.05, red if log2FC>=1 and pval<0.05)
-with(res, plot(log2FoldChange, -log10(pvalue), pch=20, main="Volcano plot", sub="the results of T VS. NT in 2 hours", xlim=c(-3,3), col.sub="orchid4"))
+with(res, plot(log2FoldChange, -log10(pvalue), pch=20, main="Volcano plot", sub="obp69", xlim=c(-3,3), col.sub="orchid4"))
 with(subset(res, pvalue<.05 ), points(log2FoldChange, -log10(pvalue), pch=20, col="blue"))
 with(subset(res, pvalue<.05 & abs(log2FoldChange)>=1), points(log2FoldChange, -log10(pvalue), pch=20, col="red"))
 
@@ -104,6 +106,8 @@ x<-row.names(as.data.frame(x))
 write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/downregulated.csv",
           row.names = FALSE)
 
+
+
 #create dataframes & heatmaps of significant results 
 #finding the index of the significant genes in cts
 y<-subset(res, pvalue<.05 & abs(log2FoldChange)>=1)
@@ -111,19 +115,35 @@ idx<-which(rownames(vsdata[,1]) %in% row.names(y))
 #finding the genes
 significant<-data[idx,]
 #organize the data frame
-row.names(significant)<-significant[,1] 
-significant<-significant[,2:ncol(significant)]
-colnames(significant)<-paste(coldata$mouse, coldata$treat, sep = ", ")
+#row.names(significant)<-significant[,1] 
+#significant<-significant[,2:ncol(significant)]
+#colnames(significant)<-paste(coldata$mouse, coldata$treat, sep = ", ")
 #create a matrix of the genes expression and their names
 mat<-as.matrix(significant)
 
 #create heatmap of most changed genes
 
-df <- as.data.frame(colData(dds)[,"treat"])
-colnames(df)<-"treatment"
+df <- as.data.frame(colData(dds)[,"condition"])
+colnames(df)<-"condition"
 row.names(df)<-colnames(mat)
 
-pheatmap(mat, scale = "row", annotation_col =df)
-heatmaply(mat, scale = "row", plot_method ="plotly")
+
+library(htmltools)
+library("DESeq2")
+library(ggplot2)
+library(autoplotly)
+library(factoextra)
+library("pheatmap")
+library("RColorBrewer")
+library(gplots)
+library(limma)
+library("manhattanly")
+library("ggrepel")
+library(plotly)
+library("heatmaply")
+df_num_scale = scale(mat)
+
+pheatmap(df_num_scale, annotation_col =df,fontsize_row=1)
+heatmaply(mat, scale = "column", plot_method ="plotly")
 
 
