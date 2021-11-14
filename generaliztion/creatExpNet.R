@@ -9,6 +9,8 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 
 #global varible
+astric_sts<<-2
+line_stat<<-0.3
 number_of_flies = 0
 with_rgb = TRUE
 num_of_pop<<-c()
@@ -203,7 +205,7 @@ addStatsToGraph <- function(statsData, g, value, names, data) {
   tiny_anova <- tiny_anova[order(tiny_anova$len, decreasing = FALSE),]
   if (max(value) <= 1) {
     lowest.y <- max(value) + 0.1
-    highest.y <- lowest.y + (nrow(tiny_anova) * 0.3)
+    highest.y <- lowest.y + (nrow(tiny_anova) * 0.5)
   } else {
     lowest.y <- max(value) + 0.5
     highest.y <- lowest.y + nrow(tiny_anova)
@@ -211,8 +213,8 @@ addStatsToGraph <- function(statsData, g, value, names, data) {
   margin.y <- 0.1
   actual.ys <- seq(lowest.y, highest.y, length.out = nrow(tiny_anova))
   tiny_anova$ys <- actual.ys
-  bp_ask <- g + annotate("segment", x = tiny_anova$str, y = tiny_anova$ys, xend = tiny_anova$end, yend = tiny_anova$ys, colour = "black", size = 0.65)
-  bp_ask <- bp_ask + annotate("text", x = tiny_anova$ave, y = (tiny_anova$ys + (margin.y/nrow(tiny_anova))) , xend = tiny_anova$end, yend = tiny_anova$ys, label = tiny_anova$astks, size = 5)
+  bp_ask <- g + annotate("segment", x = tiny_anova$str, y = tiny_anova$ys, xend = tiny_anova$end, yend = tiny_anova$ys, colour = "black", size = line_stat)
+  bp_ask <- bp_ask + annotate("text", x = tiny_anova$ave, y = (tiny_anova$ys + (margin.y/nrow(tiny_anova))) , xend = tiny_anova$end, yend = tiny_anova$ys, label = tiny_anova$astks, size = astric_sts)
   return(bp_ask)
 }
 make_contrast_coord <- function(n) {

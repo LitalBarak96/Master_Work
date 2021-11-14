@@ -1,6 +1,6 @@
 command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" creatExpNet.R ';
 color ="";
-num_of_pop =3;
+num_of_pop =6;
 group_name =[]
 color_value=[];
 
