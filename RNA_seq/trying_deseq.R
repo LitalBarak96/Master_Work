@@ -96,15 +96,15 @@ with(subset(res, pvalue<.05 & abs(log2FoldChange)>=1), points(log2FoldChange, -l
 
 #creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for up regulated genes
 x<-subset(res, pvalue<.05 & log2FoldChange>=1)
-x<-row.names(as.data.frame(x))
+x<-as.data.frame(x)
 write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/upregulated.csv",
-          row.names = FALSE)
+          row.names = TRUE)
 
 #creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for down regulated genes
 x<-subset(res, pvalue<.05 & log2FoldChange<=-1)
-x<-row.names(as.data.frame(x))
+x<-as.data.frame(x)
 write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/downregulated.csv",
-          row.names = FALSE)
+          row.names = TRUE)
 
 
 
@@ -141,9 +141,20 @@ library("manhattanly")
 library("ggrepel")
 library(plotly)
 library("heatmaply")
-df_num_scale = scale(mat)
+library("dplyr")
 
-pheatmap(df_num_scale, annotation_col =df,fontsize_row=1)
-heatmaply(mat, scale = "column", plot_method ="plotly")
+#all that their sum of row is bigger than 50
+df_num_scale<-filter(significant,rowSums(significant)>50)
+df_num_scale = scale(df_num_scale)
+#to how many clusters cutree_rows
+pheatmap(df_num_scale,cutree_cols  =2, annotation_col =df,fontsize_row=4)
+#heatmaply(df_num_scale, plot_method ="plotly")
+
+
+#not good tnse
+library(Rtsne)
+tsne_out <- Rtsne(as.matrix(df_num_scale), dims = 2, perplexity = 5)
+plot(tsne_out$Y, asp=1)
+tsne(df_num_scale,colvec=c('gold'))
 
 

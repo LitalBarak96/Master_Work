@@ -278,7 +278,6 @@ averagesPerMovieByFile<-function(){
   }
   write.csv(total_movie_ave.df, 'averages per movie.csv', row.names=F)
 
-  
 }
 #help function for creat network
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
@@ -686,17 +685,28 @@ boutLengthAndFrequencyForClassifiers<-function(){
       }
       total_bl <- data.frame(dir=dir[k], files=paste(str2,files[j]), value=as.numeric(ave_per_movie)) # data frame per file
       total_freq <- data.frame(dir=dir[k], files=paste(str1,files[j]), value=as.numeric(ave_freq_movie)) # frequency per file
-      total.df<-rbind(total.df, total_bl) #add to averages of all files per directory
-      total_freq.df<-rbind(total_freq.df, total_freq) #frequency of all files per directory
+      if(j==1){
+        #total.df<-data.frame(dir=dir[k], file=files[j], value=mean(row_ave.df$value)) #make average per movie
+        total.df <- data.frame(dir=dir[k], files=paste(str2,files[j]), value=as.numeric(ave_per_movie)) # data frame per file
+        total_freq.df <- data.frame(dir=dir[k], files=paste(str1,files[j]), value=as.numeric(ave_freq_movie)) # frequency per file
+        
+      }
+      else{
+        library(dplyr)
+        total.df<-bind_cols(total.df, total_bl) #add to averages of all files per directory
+        total_freq.df<-bind_cols(total_freq.df, total_freq) #frequency of all files per directory
+        
+      }
     }
     ### add average bout length to data frame of averages per movie ###
-    if (is.numeric(total_all$value)==F){
+    if(k==1){
       total_all<-total.df
       total_freq_all<-total_freq.df
     }
     else{
-      total_all<-cbind(total_all, total.df)
-      total_freq_all<-cbind(total_freq_all, total_freq.df)
+      total_all<-bind_rows(total_all,total.df)
+      total_freq_all<-bind_rows(total_freq_all,total_freq.df)
+      
     }
     
   }
