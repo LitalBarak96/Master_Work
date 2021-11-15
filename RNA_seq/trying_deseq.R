@@ -152,9 +152,9 @@ pheatmap(df_num_scale,cutree_cols  =2, annotation_col =df,fontsize_row=4)
 
 
 #not good tnse
-library(Rtsne)
-tsne_out <- Rtsne(as.matrix(df_num_scale), dims = 2, perplexity = 5)
-plot(tsne_out$Y, asp=1)
-tsne(df_num_scale,colvec=c('gold'))
+#library(Rtsne)
+#tsne_out <- Rtsne(as.matrix(df_num_scale), dims = 2, perplexity = 5)
+#plot(tsne_out$Y, asp=1)
+#tsne(df_num_scale,colvec=c('gold'))
 
 
