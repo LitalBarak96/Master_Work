@@ -147,7 +147,7 @@ library("dplyr")
 df_num_scale<-filter(significant,rowSums(significant)>50)
 df_num_scale = scale(df_num_scale)
 #to how many clusters cutree_rows
-pheatmap(df_num_scale,cutree_cols  =2, annotation_col =df,fontsize_row=4)
+pheatmap(df_num_scale,cutree_cols  =8, annotation_col =df,fontsize_row=4)
 #heatmaply(df_num_scale, plot_method ="plotly")
 
 

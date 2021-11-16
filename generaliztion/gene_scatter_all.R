@@ -249,6 +249,8 @@ importClassifierFilesAndCalculatePerFrame<-function(){
 #calculating density, modularity, sdStrength, strength, betweenness
 
 creatNetwork2popforscatter<-function(current_path){
+  
+  
   setwd(current_path)
   group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
   setwd(group_name_dir)
@@ -343,51 +345,62 @@ creatNetwork2popforscatter<-function(current_path){
   #density,mudilarity,sd strength,strength,bewtweenss SE
   varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
   
-  densL<-as.numeric(as.data.frame(t(length[2])))
-  modL<-as.numeric(as.data.frame(t(length[3])))
-  sdL<-as.numeric(as.data.frame(t(length[4])))
-  strL <- as.numeric(as.data.frame(t(length[5])))
-  betL <- as.numeric(as.data.frame(t(length[6])))
-  densN <- as.numeric(as.data.frame(t(number[2])))
-  modN <- as.numeric(as.data.frame(t(number[3])))
-  sdN <- as.numeric(as.data.frame(t(number[4])))
-  strN <- as.numeric(as.data.frame(t(number[5])))
-  betN <- as.numeric(as.data.frame(t(number[6])))
+  densL1<-c()
+  modL1<-c()
+  sdL1<-c()
+  strL1<-c()
+  betL1<-c()
+  densN1<-c()
+  modN1<-c()
+  sdN1<-c()
+  strN1<-c()
+  betN1<-c()
   
-  densL<<-densL[my_index]
-  
-  modL<<-modL[my_index]
-  
-  sdL<<-sdL[my_index]
-  
-  strL<<-strL[my_index]/sqrt(number_of_flies)
-  
-  
-  betL<<-betL[my_index]/sqrt(number_of_flies)
-  
-  
-  densN<<-densN[my_index]
+  densL1<-as.numeric(as.data.frame(t(length[2])))
+  modL1<-as.numeric(as.data.frame(t(length[3])))
+  sdL1<-as.numeric(as.data.frame(t(length[4])))
+  strL1 <- as.numeric(as.data.frame(t(length[5])))
+  betL1 <- as.numeric(as.data.frame(t(length[6])))
+  densN1 <- as.numeric(as.data.frame(t(number[2])))
+  modN1 <- as.numeric(as.data.frame(t(number[3])))
+  sdN1 <- as.numeric(as.data.frame(t(number[4])))
+  strN1 <- as.numeric(as.data.frame(t(number[5])))
+  betN1 <- as.numeric(as.data.frame(t(number[6])))
   
   
-  modN<<-modN[my_index]
+  densL<<-densL1[my_index]
+  modL<<-modL1[my_index]
+  
+  sdL<<-sdL1[my_index]
+  
+  strL<<-strL1[my_index]/sqrt(number_of_flies)
   
   
-  sdN<<-sdN[my_index]
+  betL<<-betL1[my_index]/sqrt(number_of_flies)
   
   
-  strN<<-strN[my_index]/sqrt(number_of_flies)
+  densN<<-densN1[my_index]
   
   
-  betN<<-betN[my_index]/sqrt(number_of_flies)
+  modN<<-modN1[my_index]
   
+  
+  sdN<<-sdN1[my_index]
+  
+  
+  strN<<-strN1[my_index]/sqrt(number_of_flies)
+  
+  
+  betN<<-betN1[my_index]/sqrt(number_of_flies)
   
   setwd(current_path)
   names<-c("density(LOI)","modularity(LOI)","sd strength(LOI)","strength(LOI)","betweens(LOI)","density(NOI)","modularity(NOI)","sd strength(NOI)","strength(NOI)","betweens(NOI)")  
   values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
   network.df<-data.frame(names,values,varience)
+  View(network.df)
   colnames(network.df) <- c("file", "value","Variance")
   write.csv(network.df, 'network.csv', row.names = F)
-
+  
 }
 boutLengthAndFrequencyForClassifiers<-function(){
   str1 = "frequency"
@@ -578,10 +591,7 @@ vizual<-function(){
   second.df<-data.frame()
   
   
-  if(num_of_pop ==3 ){
-    third.df<-data.frame()
-    
-  }
+  
   #choosing the files getting the name and the number of files for SE
   #pop 1
   xlsxFile <- choose.files()
@@ -600,7 +610,7 @@ vizual<-function(){
   name2 = xlsxName
   group_name_in_second = tools::file_path_sans_ext(dirname((xlsxFile)))
   number_of_movies_in_second =length(list.dirs(path=group_name_in_second, full.names=T, recursive=F ))
-
+  
   
   
   
@@ -634,67 +644,36 @@ vizual<-function(){
   second.df$file<-tools::file_path_sans_ext(second.df$file)
   second.df$file<- str_replace(second.df$file, "scores_", "")
   
-  order.df <- as.data.frame(read_excel(file.choose()))
-  test1 <- data.frame(matrix(ncol = 4, nrow = 72))
-  colnames(test1) <- c('file','value','Variance','id')
-  for (i in 1:nrow(order.df)){
-    for(j in 1:nrow(first.df)){
-      if(order.df[i,]==first.df[j,]$file){
-        test1[i,]<-first.df[j,]
-        
-      }
-      else{
-        
-      }
-      
-    }
-    
-    
-  }
-  test1 <- na.omit(test1) 
-  rownames(test1) <-1:nrow(test1)
+  order_name<-c()
+  order_name<-  as.data.frame(read_excel(file.choose()))
+  library(dplyr)
+  
+  first.df<-semi_join(first.df, order_name, by = "file")
+  second.df<-semi_join(second.df, order_name, by = "file")
+  
+  order_name<-semi_join(order_name, first.df, by = "file")
+  
+  first.df$file<-as.character(first.df$file)
+  second.df$file<-as.character(second.df$file)
+  
+  order_name$file<-as.character(order_name$file)
+  
+  first.df$file <- factor(first.df$file, levels=order_name$file)
+  second.df$file <- factor(second.df$file, levels=order_name$file)
   
   
   
   
-  
-  test2 <- data.frame(matrix(ncol = 4, nrow = 72))
-  colnames(test2) <- c('file','value','Variance','id')
-  
-  for (i in 1:nrow(order.df)){
-    for(j in 1:nrow(second.df)){
-      if(order.df[i,]==second.df[j,]$file){
-        test2[i,]<-second.df[j,]
-        
-      }
-      else{
-        
-      }
-      
-    }
-    
-    
-  }
-  
-  test2<- na.omit(test2) 
-  rownames(test2) <-1:nrow(test2)
-  
-  df.all <- rbind(test1, test2)
-  test1$file<-as.character(test1$file)
-  test2$file<-as.character(test2$file)
-  
-  test1$file <- factor(test1$file, levels=unique(test1$file))
-  test2$file <- factor(test2$file, levels=unique(test2$file))
-  
-  df.all <- rbind(test1, test2)
+  df.all <- rbind(first.df, second.df)
   
   
   t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
-    geom_point(data = test1, colour  = a,size =4)+geom_point(data = test2, colour  = b,size =4)+scale_color_identity()+
+    geom_point(data = first.df, colour  = a,size =4)+geom_point(data = second.df, colour  = b,size =4)+scale_color_identity()+
     geom_pointrange(data=df.all,mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+scale_colour_manual(values=c(a, b))+
     xlim(-3,3)+ggtitle(full_title)+theme_minimal()
   
-  setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
+  #setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
+  setwd("D:/test")
   print(t)
   ggsave(plot = t, filename = "scatterplot.pdf", height=12, width=12)
   
@@ -718,12 +697,15 @@ for (i in 1:num_of_pop){
   setwd(dir[i,1])
   importClassifierFilesAndCalculatePerFrame()
   setwd(dir[i,1])
-  creatNetwork2popforscatter(dir[i,1])
-  setwd(dir[i,1])
   boutLengthAndFrequencyForClassifiers()
   
 }
 #everyone is in the same dir and also this function go one dir up
+
+for (i in 1:num_of_pop){
+  group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+  creatNetwork2popforscatter(dir[i,1])
+}
 
 for_Scaleing(dir)
 for(i in 1:num_of_pop){
