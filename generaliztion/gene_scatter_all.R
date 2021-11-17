@@ -24,29 +24,30 @@ sdN<-c()
 strN<-c()
 betN<-c()
 group_name<-c()
-num_of_pop=2
-
-with_rgb = FALSE
+num_of_pop<-0
+colors_of_groups<<-data.frame()
+with_rgb = TRUE
 number_of_flies= 10
-num_of_movies <<-12
+num_of_movies <-0
 
 
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
 
-if (with_rgb== TRUE){
-  p <- arg_parser("chosing color")
+
+#to debug
+if (with_rgb == TRUE){
+  
+  p <- arg_parser("path of the color")
   
   # Add command line arguments
-  p <- add_argument(p,
-                    c("R1", "G1", "B1","R2", "G2", "B2"),
-                    help = c("red1", "green1", "blue1","red2", "green2", "blue2"),
-                    flag = c(FALSE, FALSE, FALSE,FALSE, FALSE, FALSE))
-  
+  p <- add_argument(p,"path",
+                    help = "path",
+                    flag = FALSE)
   
   # Parse the command line arguments
-  argv <- parse_args(p)}
-#setting the path 
-
+  argv <- parse_args(p)
+  
+}
 #function avg per movie of assa
 averagesPerMovieByFile<-function(){
   
@@ -587,106 +588,80 @@ for_Scaleing<-function(dir){
 vizual<-function(){
   library("readxl")
   library(openxlsx)
-  first.df<-data.frame()
-  second.df<-data.frame()
+  temp.df<-data.frame()
+  all.df<-data.frame()
   
+  if(with_rgb==TRUE){
+    allColorData <- read.xlsx(argv$path)
+    num_of_pop<-nrow(allColorData)
+  }else{
+    allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
+  }
   
-  
-  #choosing the files getting the name and the number of files for SE
-  #pop 1
-  xlsxFile <- choose.files()
-  xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
-  first.df<-as.data.frame(read.csv(xlsxFile))
-  name1 = xlsxName
-  group_name_in_first = tools::file_path_sans_ext(dirname((xlsxFile)))
-  number_of_movies_in_first =length(list.dirs(path=group_name_in_first, full.names=T, recursive=F ))
-  
-  
-  
-  #pop 2
-  xlsxFile <- choose.files()
-  xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
-  second.df<-as.data.frame(read.csv(xlsxFile))
-  name2 = xlsxName
-  group_name_in_second = tools::file_path_sans_ext(dirname((xlsxFile)))
-  number_of_movies_in_second =length(list.dirs(path=group_name_in_second, full.names=T, recursive=F ))
-  
-  
-  
+  colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
+  #rgb and start from 2 because the first colom is names
+  for (i in 1:num_of_pop){
+    colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
+  }
+  colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
   
   library(ggplot2)
   library(gridExtra)
-  if (with_rgb == TRUE){
-    a<-rgb_2_hex(argv$R1,argv$G1,argv$B1)
-    b<-rgb_2_hex(argv$R2,argv$G2,argv$B2)
-  }
-  
-  else{
-    a<-"#4DB3E6"
-    b<-"#37004D"
-  }
-  
-  
-  first.df$id <- name1  # or any other description you want
-  second.df$id <- name2
-  
-  
-  
-  first.df$Variance=first.df$Variance/(sqrt(number_of_movies_in_first))
-  second.df$Variance=second.df$Variance/(sqrt(number_of_movies_in_second))
-  
-  
-  
-  full_title = paste(name1,"vs",name2)
-  first.df$file<-tools::file_path_sans_ext(first.df$file)
-  first.df$file<- str_replace(first.df$file, "scores_", "")
-  
-  second.df$file<-tools::file_path_sans_ext(second.df$file)
-  second.df$file<- str_replace(second.df$file, "scores_", "")
+  all_colors<-as.character(colors_of_groups$X1)
+  #full_title = paste(name1,"vs",name2)
   
   order_name<-c()
-  order_name<-  as.data.frame(read_excel(file.choose()))
+  order_name<-  as.data.frame(read_excel(choose.files(caption = "Select order file")))
   library(dplyr)
   
-  first.df<-semi_join(first.df, order_name, by = "file")
-  second.df<-semi_join(second.df, order_name, by = "file")
+  for(i in 1:num_of_pop){
+    capt =paste('Select avg per condition for ',i,' pop')
+    xlsxFile <- choose.files(caption = capt)
+    xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
+    temp.df<-as.data.frame(read.csv(xlsxFile))
+    name = xlsxName
+    group_name_in_pop = tools::file_path_sans_ext(dirname((xlsxFile)))
+    number_of_movies =length(list.dirs(path=group_name_in_pop, full.names=T, recursive=F ))
+    temp.df$id =name
+    temp.df$Variance=temp.df$Variance/(sqrt(number_of_movies))
+    temp.df$file<-tools::file_path_sans_ext(temp.df$file)
+    temp.df$file<- str_replace(temp.df$file, "scores_", "")
+    temp.df<-semi_join(temp.df, order_name, by = "file")
+    order_name<-semi_join(order_name, temp.df, by = "file")
+    temp.df$file<-as.character(temp.df$file)
+    order_name$file<-as.character(order_name$file)
+    temp.df$file <- factor(temp.df$file, levels=order_name$file)
+    all.df <- rbind(all.df, temp.df)
+  }
+  t <- ggplot(all.df, aes(x=value, y=file, group=id, color=id))
+  t<- t+geom_point(size =4)
+  t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
+  t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
+    xlim(-3,3)+theme_minimal()
   
-  order_name<-semi_join(order_name, first.df, by = "file")
-  
-  first.df$file<-as.character(first.df$file)
-  second.df$file<-as.character(second.df$file)
-  
-  order_name$file<-as.character(order_name$file)
-  
-  first.df$file <- factor(first.df$file, levels=order_name$file)
-  second.df$file <- factor(second.df$file, levels=order_name$file)
-  
-  
-  
-  
-  df.all <- rbind(first.df, second.df)
-  
-  
-  t <- ggplot(df.all, aes(x=value, y=file, group=id, color=id)) + 
-    geom_point(data = first.df, colour  = a,size =4)+geom_point(data = second.df, colour  = b,size =4)+scale_color_identity()+
-    geom_pointrange(data=df.all,mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+scale_colour_manual(values=c(a, b))+
-    xlim(-3,3)+ggtitle(full_title)+theme_minimal()
-  
-  #setwd((choose.dir(default = "", caption = "Select folder for saving the scatter plot")))
-  setwd("D:/test")
+  setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   print(t)
   ggsave(plot = t, filename = "scatterplot.pdf", height=12, width=12)
+  
   
 }
 
 
 
-allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
-num_of_pop<<-nrow(allColorData)
+if(with_rgb==TRUE){
+  allColorData <- read.xlsx(argv$path)
+  num_of_pop<<-nrow(allColorData)
+}else{
+  #test for myself
+  library(openxlsx)
+  library(openxlsx)
+  allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
+}
+
 
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 for (i in 1:num_of_pop){
-  dir[i,1]<-choose.dir(default = "", caption = "Select folder")
+  dir[i,1]<-choose.dir(default = "", caption = "Select folder of group exp")
 }
 
 for (i in 1:num_of_pop){

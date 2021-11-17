@@ -1,6 +1,6 @@
-command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" creatExpNet.R ';
+command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" gene_scatter_all.R ';
 color ="";
-num_of_pop =6;
+num_of_pop =2;
 group_name =[]
 color_value=[];
 
