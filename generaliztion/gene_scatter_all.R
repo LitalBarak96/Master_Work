@@ -26,7 +26,7 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 number_of_flies= 10
 num_of_movies <-0
 
@@ -651,11 +651,12 @@ vizual<-function(){
 if(with_rgb==TRUE){
   allColorData <- read.xlsx(argv$path)
   num_of_pop<<-nrow(allColorData)
+  
 }else{
   #test for myself
   library(openxlsx)
-  library(openxlsx)
   allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
+  num_of_pop<<-nrow(allColorData)
 }
 
 
