@@ -21,8 +21,7 @@ coldata_not_factorial <- read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMO
 
 
 data<-data.frame(row.names=rownames(cts))
-
-num_of_exp =8
+num_of_exp =6
 for (i in 1:num_of_exp){
   temp.df<-data.frame()
   temp.df<-cts %>%
@@ -32,9 +31,13 @@ for (i in 1:num_of_exp){
   data[coldata_not_factorial[i,1]]<- rowMeans(temp.df)
 }
 
+
 coldata$condition <- factor(coldata$condition)
 
 
+#didn't need to subset just change in the meta data
+#data<-subset(data,select=-c(N831,N832))
+#coldata<-subset(coldata,select=-c(N831,N832))
 
 
 #rownames(coldata) <- sub("L00", "", rownames(coldata))
@@ -44,18 +47,19 @@ data <- data[, rownames(coldata)]
 all(rownames(coldata) == colnames(data))
 
 
+
 library("DESeq2")
+
 dds <- DESeqDataSetFromMatrix(countData = round(data),
                               colData = coldata,
                               design = ~ condition)
 dds
 
-
 featureData <- data.frame(gene=rownames(data))
 mcols(dds) <- DataFrame(mcols(dds), featureData)
 mcols(dds)
-
-
+#removing the outlier
+library(dplyr)
 
 #removing low count genes
 
@@ -67,21 +71,20 @@ dds <- DESeq(dds)
 resultsNames(dds)
 res <- results(dds)
 
-keep <- rowSums(counts(dds)) > 0
-dds <- dds[keep,]
+#keep <- rowSums(counts(dds)) > 0
+#dds <- dds[keep,]
 
 vsdata <-vst(dds,blind=FALSE)
-library(autoplotly)
-library(ggplot2)
-autoplotly::autoplotly((plotPCA(vsdata, intgroup="condition")+geom_text(aes(label=name),vjust=2)+labs(title = "PCA: male vs. female"))
-                       , data = vsdata, colour = 'Species', frame = TRUE)
+#autoplotly::autoplotly((plotPCA(vsdata, intgroup="condition")+geom_text(aes(label=name),vjust=2)+labs(title = "PCA: male vs. female"))
+ #                      , data = vsdata, colour = 'Species', frame = TRUE)
 
+autoplotly::autoplotly((plotPCA(vsdata, intgroup="condition")+geom_text(aes(label=name),vjust=2)+labs(title = "PCA:  male vs. female"))
+                       , data = vsdata, colour = 'Species', frame = TRUE)
 #create loadings arrows
 num<-ncol(data)
 pca<-prcomp(data[1:num], scale. = TRUE)  
-fviz_pca_ind(pca)
 
-fviz_pca_var(pca, col.var="contrib", gradient.cols=c("#00AFBB", "#E7B800", "#FC4E07"), repel=TRUE,ggrepel.max.overlaps = Inf)
+fviz_pca_var(pca, col.var="contrib", gradient.cols=c("#00AFBB", "#E7B800", "#FC4E07"), repel=TRUE)
 
 #results check
 #how many genes are there:
@@ -119,6 +122,7 @@ significant<-data[idx,]
 #significant<-significant[,2:ncol(significant)]
 #colnames(significant)<-paste(coldata$mouse, coldata$treat, sep = ", ")
 #create a matrix of the genes expression and their names
+
 mat<-as.matrix(significant)
 
 #create heatmap of most changed genes
@@ -126,6 +130,9 @@ mat<-as.matrix(significant)
 df <- as.data.frame(colData(dds)[,"condition"])
 colnames(df)<-"condition"
 row.names(df)<-colnames(mat)
+
+new_order<-data.frame()
+new_order<-df[order(df$condition),,drop=FALSE]
 
 
 library(htmltools)
@@ -144,10 +151,33 @@ library("heatmaply")
 library("dplyr")
 
 #all that their sum of row is bigger than 50
-df_num_scale<-filter(significant,rowSums(significant)>50)
-df_num_scale = scale(df_num_scale)
+#df_num_scale<-filter(significant,rowSums(significant)>50)
+#df_num_scale = scale(df_num_scale)
+
+#here to change on what data we are doing
+df_num_scale<-scale(significant)
+
+##this part sperated between female and males 
+sub_samp_ordered <- df_num_scale[,rownames(new_order) ]
+pheatmap::pheatmap(sub_samp_ordered, annotation_col  = new_order, cluster_cols = F,show_rownames=FALSE)
+#making avg for female and male
+middle = ncol(sub_samp_ordered)/2
+avg_feamle_and_male <-data.frame(female = rowSums(sub_samp_ordered[,1:middle]),male=rowSums(sub_samp_ordered[,(middle+1): ncol(sub_samp_ordered)]))
+
+pheatmap::pheatmap(avg_feamle_and_male, cluster_cols = F,show_rownames=FALSE)
+
+library(dplyr)
+
+#after avg male and female we want only those who have diffrenece of 10
+avg_feamle_and_male<-avg_feamle_and_male %>% filter(abs(female-male) >10)
+pheatmap::pheatmap(avg_feamle_and_male, cluster_cols = F)
+
+#df
 #to how many clusters cutree_rows
-pheatmap(df_num_scale,cutree_cols  =8, annotation_col =df,fontsize_row=4)
+#fontsize_row=4
+#cutree_cols  =2
+
+pheatmap(df_num_scale, annotation_col =new_order,show_rownames=FALSE,cluster_cols = FALSE)
 #heatmaply(df_num_scale, plot_method ="plotly")
 
 
