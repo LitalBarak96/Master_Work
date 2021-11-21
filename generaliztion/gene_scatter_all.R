@@ -83,15 +83,11 @@ averagesPerMovieByFile<-function(){
           movie_ave.df<-data.frame(dir=dir[k], file=files[j], value=mean(row_ave.df$value)) #make average per movie
         if (index==1)  
           col.df<- row_ave.df
-        #col_ave.df<- cbind(col_ave.df, row_ave.df)
-        
-        
         else {
           col.df<- cbind(col.df, row_ave.df)
           movie_ave.df<-cbind(movie_ave.df, tmp_movie_ave.df) #combine averages per movie
         }
         col.df<- cbind(col.df, row_ave.df)
-        
         row_ave.df<- NULL
       }
     }
@@ -108,73 +104,41 @@ averagesPerMovieByFile<-function(){
 }
 #help function for creat network
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
-  # all
   print(fileName)
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))
   l <- layout_in_circle(net)
-  
-  # density
   density <- sum(E(net)$weight) / (vertexNumber * (vertexNumber - 1) / 2)
-  
-  
-  # modularity
-  #This function tries to find densely connected subgraphs
   wtc <- cluster_walktrap(net)
   modularity <- modularity(wtc)
-  
-  
-  # strength std
   sdStrength <- sd(strength(net, weights = E(net)$weight))
-  
-  
-  #individual
-  
-  # strength
-  #Summing up the edge weights of the adjacent edges for each vertex.
-  print(net)
   strength <- strength(net, weights = E(net)$weight)
-  
-  
-  
-  # betweenness centality 
   betweenness <- betweenness(net, v = V(net), directed = FALSE, weights = E(net)$weight)
   
   return(list(density, modularity, sdStrength, strength, betweenness))
 }
-#calculating the params of the group with calculateNetworksParams for length and number groups
+
 calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
   density <- vector()
   modularity <- vector()
   sdStrength <- vector()
   strength <- vector()
   betweenness <- vector()
-  #number of files we want
   for (i in 1:length(fileNames)) {
-    #when debuging see what is inside matfile
     matFile <- fileNames[i]
     mat <- scan(toString(matFile))
-    #because the matrix is smetric and there is 100 value so it is 10
     numCol <- sqrt(length(mat))
-    #all this just to transform to mat format?
     mat <- matrix(mat, ncol = numCol, byrow = TRUE)
-    #creat the net itself
     net <- graph_from_adjacency_matrix(mat, mode = "undirected", weighted = TRUE)
     folderPath <- dirname(toString(matFile))
-    #numberParams
     if (maxNumberOfInteration > 0) {
-      #normalization to the number of the max interaction to the weights of the network this is not happning in lengthparams
       E(net)$weight <- E(net)$weight / maxNumberOfInteration
       E(net)$width <- E(net)$weight*7
-      #the 7 and 25?? is for the vertex size for visualization beacuse the lenght value are smaller than the number values
       cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7,fileNames[i])
     } else {
-      #which means length of interaction
       E(net)$width <- E(net)$weight*10
-      
       cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i])
     }
-    #for each of the movies
     density <- c(cur[1], density)
     modularity <- c(cur[2], modularity)
     sdStrength <- c(cur[3], sdStrength)
@@ -197,21 +161,14 @@ importClassifierFilesAndCalculatePerFrame<-function(){
     curr.dir<-(paste0(dir[k],'/')) 
     print(k)
     print(curr.dir)
-    #find all that contains the word scores
     files<-list.files(path=paste0(curr.dir), pattern = 'scores')
-    #print(files)
     avepermovie.df<-data.frame()
     first<-T
-    #the number of scores there  is 11
     for(j in 1:length(files)){
       file<-readMat(paste0(curr.dir,'/',files[j])) #read each mat file
       score.df<-data.frame()
-      #for each of the number of flies there is (10)
       for (i in 1:length(file$allScores[[4]])){
-        #everytime overide the last temp.df
         tmp.df <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(file$allScores[[4]][[i]][[1]])) # convert format of data for each fly
-        # add to dataframe of one movie
-        # calculate average per frame
         if (mean(tmp.df$value)!=0){
           scores.table<-(table(tmp.df$value))/(length(tmp.df$value)) #calculate frequency of behavior
           tmpflyscore.df<-data.frame(dir=dir[k], files=files[j], fly=i, values=(scores.table[2])) 
@@ -246,41 +203,28 @@ importClassifierFilesAndCalculatePerFrame<-function(){
   write.csv(finalavepermovie.df, 'all_classifier_averages.csv', row.names = F)
   
 }
-#calculating each feature of the network
-#calculating density, modularity, sdStrength, strength, betweenness
+
 
 creatNetwork2popforscatter<-function(current_path){
-  
-  
   setwd(current_path)
   group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
   setwd(group_name_dir)
-  
-  #where we choosing the files we want for analysis
-  #all data is the data from the exel in the first sheet
+  #we need to make this file befor using this script
   allData <- read.xlsx("expData_0_to_27000.xlsx")
-  library(openxlsx)
-  #if rgb is false!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
-  num_of_pop<<-nrow(allColorData)
-  
   lengthParams <- c()
   numberParams <- c()
   numberOfMovies<-c()
   for (i in 1:allData$Number.of.groups[1]) {
-    #it is depened on the poisiton of the colom in the execl so we can get the length and number files
     cur <- (i + 1) * 2
     numberOfMovies[i]<- allData[i, 3]
-    #the params are density, modularity, sdStrength, strength, betweenness
     lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
     numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
   }
   
-  
   #parametrs name
   paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
-  #light or dark
   groupsNames <- as.character(na.omit(allData$Groups.names))
+  #6 is because there is 5 paramters
   length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
   number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
   
@@ -302,10 +246,8 @@ creatNetwork2popforscatter<-function(current_path){
     
     for(m in 1:num_of_pop){
       start =1
-      end = 
-        if(m!=1) {
+      if(m!=1) {
           start = (length(scaled_num)/num_of_pop)*(m-1)
-          
         }
       numberParams[j,m]<-list(scaled_num[(start+1):((length(scaled_num)/num_of_pop)*m)])
     }
@@ -343,7 +285,6 @@ creatNetwork2popforscatter<-function(current_path){
   }
   
   my_index = index_name(group_name,groupsNames)
-  #density,mudilarity,sd strength,strength,bewtweenss SE
   varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
   
   densL1<-c()
@@ -549,11 +490,7 @@ scaleing<-function(csv_file_name,dir){
     comb<-bind_rows(comb,temp)
   }
   
-  #need to do loop here
-  
   comb$id <- as.factor(comb$id)
-  
-  
   library(dplyr)
   
   scaled<-comb %>%
@@ -574,16 +511,14 @@ scaleing<-function(csv_file_name,dir){
 }
 
 
-
-
 for_Scaleing<-function(dir){
+  #do the scaling for each group
   scaleing("all_classifier_averages.csv",dir)
   scaleing("averages per movie.csv",dir)
   scaleing("bout_length_scores.csv",dir)
   scaleing("frequency_scores.csv",dir)
 }
-#at first we need to do false for each group and change the other path and then normelize_z need to 
-#be true 
+
 
 vizual<-function(){
   library("readxl")
@@ -593,7 +528,7 @@ vizual<-function(){
   
   if(with_rgb==TRUE){
     allColorData <- read.xlsx(argv$path)
-    num_of_pop<-nrow(allColorData)
+    num_of_pop<<-nrow(allColorData)
   }else{
     allColorData <- as.data.frame(read.xlsx("D:/test/color.xlsx"))
   }
@@ -662,12 +597,15 @@ if(with_rgb==TRUE){
 
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 for (i in 1:num_of_pop){
-  dir[i,1]<-choose.dir(default = "", caption = "Select folder of group exp")
+  dir[i,1]<-allColorData$group_name[i]
 }
+
+
 
 for (i in 1:num_of_pop){
   setwd(dir[i,1])
   group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+  group_name<<-gsub(" ", "",group_name)
   num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
   averagesPerMovieByFile()
   setwd(dir[i,1])
@@ -678,12 +616,18 @@ for (i in 1:num_of_pop){
 }
 #everyone is in the same dir and also this function go one dir up
 
+dir$X1<-gsub("\\\\", "/", dir$X1)
+
 for (i in 1:num_of_pop){
   group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+  group_name<<-gsub(" ", "",group_name)
   creatNetwork2popforscatter(dir[i,1])
 }
 
+
 for_Scaleing(dir)
+#here i need to check if there is normal de
+
 for(i in 1:num_of_pop){
   setwd(dir[i,1])
   num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
@@ -691,3 +635,9 @@ for(i in 1:num_of_pop){
 }
 
 vizual()
+
+
+for (i in 1:num_of_pop){
+  # delete a file
+  unlink(argv$path)
+}
