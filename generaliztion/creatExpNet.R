@@ -9,13 +9,13 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 
 #global varible
-astric_sts<<-2
-line_stat<<-0.3
+astric_sts<<-3
+line_stat<<-0.5
 number_of_flies = 0
 with_rgb = TRUE
 num_of_pop<<-c()
 allColorData<<-c()
-font_size<<-4
+font_size<<-15
 colors_of_groups<<-data.frame()
 
 #from rgb to hex
@@ -267,7 +267,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   data = data.frame(names, value)
   data$names <- as.character(data$names)
   data$names <- factor(data$names, levels=unique(data$names))
-  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_grey(base_size = font_size) 
+  g <- qplot(x = names, y = value, data = data, geom = c("boxplot"),  fill=names , ylab = graphTitle, outlier.shape = NA)+theme_classic(base_size = font_size) 
   if(with_rgb == TRUE){  g <- g + scale_fill_manual(values=as.character(colors_of_groups$X1))
   }
   else{
@@ -291,7 +291,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   
   statsData <- getStatisticData(groupsParams, names, value, data)
   g <- addStatsToGraph(statsData, g, value, names, data)
-  ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = 10, height = 9, units = "cm")
+  ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = num_of_pop*5, height = 20, units = "cm")
 }
 
 #________________________________________________________ main zone
