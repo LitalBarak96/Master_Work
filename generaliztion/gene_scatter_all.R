@@ -26,9 +26,10 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = FALSE
+with_rgb = TRUE
+
 number_of_flies= 10
-num_of_movies =10
+num_of_movies =0
 
 
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
@@ -521,6 +522,7 @@ for_Scaleing<-function(dir){
 
 
 vizual<-function(){
+  
   library("readxl")
   library(openxlsx)
   temp.df<-data.frame()
@@ -539,6 +541,11 @@ vizual<-function(){
     colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
   }
   colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
+  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+  setwd(param_dir)
+  params<-data.frame()
+  params <- as.data.frame(read.xlsx("params.xlsx"))
+  
   
   library(ggplot2)
   library(gridExtra)
@@ -568,15 +575,16 @@ vizual<-function(){
     temp.df$file <- factor(temp.df$file, levels=order_name$file)
     all.df <- rbind(all.df, temp.df)
   }
+  all.df$file<-gsub("Aggregation", "Social Clustering", all.df$file)
   t <- ggplot(all.df, aes(x=value, y=file, group=id, color=id))
-  t<- t+geom_point(size =4)
+  t<- t+geom_point(size =params$dot)
   t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
   t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
-    xlim(-3,3)+theme_minimal()
+    xlim(-3,3)+theme_minimal(base_size = params$font)
   
   setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   print(t)
-  ggsave(plot = t, filename = "scatterplot.pdf", height=12, width=12)
+  ggsave(plot = t, filename = "scatterplot.pdf", height=params$height, width=params$width)
   
   
 }
@@ -642,5 +650,6 @@ if(with_rgb==TRUE){
   for (i in 1:num_of_pop){
     # delete a file
     unlink(argv$path)
+    
   } 
 }

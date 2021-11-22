@@ -12,7 +12,7 @@ library(argparser, quietly=TRUE)
 astric_sts<<-3
 line_stat<<-0.5
 number_of_flies = 0
-with_rgb = TRUE
+with_rgb = FALSE
 num_of_pop<<-c()
 allColorData<<-c()
 font_size<<-15
@@ -159,7 +159,8 @@ getStatisticData <- function(groupsParams, names, value, data) {
   #statistic data about each paramter density, modularity, sdStrength, strength, betweenness
   for (i in 1:length(groupsParams)) {
     shapDist <- shapiro.test(unlist(groupsParams[[i]]))
-    if (shapDist$p.value < 0.05) {
+    #22.11.21 changed p value to 0.1
+    if (shapDist$p.value < 0.1) {
       if (length(groupsParams) < 3) {
         stats <- wilcox.test(value~names, data)
         return(list(stats, "Wilcoxen"))
@@ -290,6 +291,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   g <- g + theme(legend.position="none")
   
   statsData <- getStatisticData(groupsParams, names, value, data)
+  
   g <- addStatsToGraph(statsData, g, value, names, data)
   ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = num_of_pop*5, height = 20, units = "cm")
 }
