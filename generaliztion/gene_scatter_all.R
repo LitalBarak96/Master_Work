@@ -28,7 +28,7 @@ num_of_pop<-0
 colors_of_groups<<-data.frame()
 with_rgb = FALSE
 number_of_flies= 10
-num_of_movies <-0
+num_of_movies =10
 
 
 rgb_2_hex <- function(r,g,b){rgb(r, g, b, maxColorValue = 1)}
@@ -601,11 +601,14 @@ for (i in 1:num_of_pop){
 }
 
 
+dir$X1<-gsub("\\\\", "/", dir$X1)
+for(i in 1:num_of_pop){
+  dir[i,1]<-str_trim(dir[i,1], side = c("right"))
+}
 
 for (i in 1:num_of_pop){
   setwd(dir[i,1])
   group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-  group_name<<-gsub(" ", "",group_name)
   num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
   averagesPerMovieByFile()
   setwd(dir[i,1])
@@ -616,14 +619,12 @@ for (i in 1:num_of_pop){
 }
 #everyone is in the same dir and also this function go one dir up
 
-dir$X1<-gsub("\\\\", "/", dir$X1)
+
 
 for (i in 1:num_of_pop){
   group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-  group_name<<-gsub(" ", "",group_name)
   creatNetwork2popforscatter(dir[i,1])
 }
-
 
 for_Scaleing(dir)
 #here i need to check if there is normal de
@@ -637,7 +638,9 @@ for(i in 1:num_of_pop){
 vizual()
 
 
-for (i in 1:num_of_pop){
-  # delete a file
-  unlink(argv$path)
+if(with_rgb==TRUE){
+  for (i in 1:num_of_pop){
+    # delete a file
+    unlink(argv$path)
+  } 
 }
