@@ -26,7 +26,7 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 
 number_of_flies= 10
 num_of_movies =0
@@ -634,7 +634,7 @@ for (i in 1:num_of_pop){
   creatNetwork2popforscatter(dir[i,1])
 }
 
-for_Scaleing(dir)
+#for_Scaleing(dir)
 #here i need to check if there is normal de
 
 for(i in 1:num_of_pop){
@@ -643,7 +643,7 @@ for(i in 1:num_of_pop){
   combineKineticAndClassifiersToSignature()
 }
 
-vizual()
+#vizual()
 
 
 if(with_rgb==TRUE){
