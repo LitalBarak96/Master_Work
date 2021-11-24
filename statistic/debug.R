@@ -51,31 +51,57 @@ library("dplyr")
 datalist = list()
 
 first<-df1[ , grepl( "value" , names( df1 ) ) ]
+first$id <-as.factor(groupsNames[1])
+
 second<-df2[ , grepl( "value" , names( df2 ) ) ]
+second$id <-as.factor(groupsNames[2])
+first<-bind_cols(first,second)
+indexs<-c()
+indexs<-which(grepl( "id" , names( first ) ))
+
+
+
+       
 names_all<-df1[ , grepl( "file" , names( df1 ) ) ]
 all_name<-as.character(names_all[1,1:ncol(names_all)])
+
+featuers_comb<-c()
+
+#the j is for the feature names and i is for the number oof pop
+
+for(j in 1:ncol(names_all)){
 temp<-c()
-test<-c()
-for (i in 1:ncol(names_all)){
-  temp<-cbind(as.list(first[i]),as.list(second[i]))
-  test<-rbind(test,temp)
+temp<-cbind(temp,(as.list(first[j])))
+for(i in 2:num_of_pop){
+  temp<-cbind(temp,(as.list(first[indexs[i-1]+j])))
 }
-rownames(test)<-all_name
+
+featuers_comb<-rbind(featuers_comb,temp)
+
+}
+
+rownames(featuers_comb)<-all_name
+
+
 
   i <-3
 #for(i in 1:ncol(names_all)){
   names = c()
   for (j in 1:num_of_pop) {
-    names = c(names, rep(groupsNames[j], length(unlist(test[j]))))
+    names = c(names, rep(groupsNames[j], length(unlist(featuers_comb[j]))))
   }
-  value = rapply(test[i,], c)
+  value = rapply(featuers_comb[i,], c)
   data = data.frame(names, value)
   data$names <- as.character(data$names)
   data$names <- factor(data$names, levels=unique(data$names))
 
-  groupsParams<-test[i,]
-  stats <- pairwise.wilcox.test(data$value, data$names, p.adjust.method = 'fdr')
-  print(stats)
+
+  statsData <- getStatisticData(featuers_comb[i,], names, value, data)
+  print(all_name[i])
+  #print(statsData)
+  print(statsData[[1]]$p.value)
+  #stats <- pairwise.wilcox.test(data$value, data$names, p.adjust.method = 'fdr')
+  #print(stats)
   
 
   # #statistic data about each paramter density, modularity, sdStrength, strength, betweenness

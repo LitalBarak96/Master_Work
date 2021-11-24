@@ -49,6 +49,50 @@ if (with_rgb == TRUE){
   argv <- parse_args(p)
   
 }
+
+
+
+
+getStatisticData <- function(groupsParams, names, value, data) {
+  #statistic data about each paramter density, modularity, sdStrength, strength, betweenness
+  for (i in 1:length(groupsParams)) {
+    shapDist <- shapiro.test(unlist(groupsParams[[i]]))
+    #22.11.21 changed p value to 0.1
+    if (shapDist$p.value < 0.1) {
+      if (length(groupsParams) < 3) {
+        stats <- wilcox.test(value~names, data)
+        return(list(stats, "Wilcoxen"))
+      } else {
+        kruskal.test(value~names, data)
+        stats <- pairwise.wilcox.test(data$value, data$names, p.adjust.method = 'fdr')
+        return(list(stats, "Kruskal"))
+      }
+    }
+  }
+  if (length(groupsParams) < 3) {
+    stats <- t.test(value~names, data)
+    return(list(stats, "T Test"))
+  } else {
+    aov.res <- aov(value~names, data)
+    summary(aov.res)
+    stats <- TukeyHSD(aov.res)
+    return(list(stats, "Anova"))
+  }
+}
+
+
+statistic_to_csv_of_network<-function(groupsNames, groupsParams){
+  names = c()
+  for (i in 1:length(groupsNames)) {
+    names = c(names, rep(groupsNames[i], length(unlist(groupsParams[i]))))
+    }
+  value = rapply(groupsParams, c)
+  data = data.frame(names, value)
+  data$names <- as.character(data$names)
+  data$names <- factor(data$names, levels=unique(data$names))
+  statsData <- getStatisticData(featuers_comb[i,], names, value, data)
+  
+}
 #function avg per movie of assa
 averagesPerMovieByFile<-function(){
   
@@ -263,6 +307,9 @@ creatNetwork2popforscatter<-function(current_path){
     
   }
   
+  #first i will do it generic and than i will implement it here
+  #statistic_to_csv_of_network(groupsNames, lengthParams[i,])
+  #statistic_to_csv_of_network(groupsNames, numberParams[i,])
   
   
   for (i in 1:length(paramsNames)) {
