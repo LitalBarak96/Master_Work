@@ -25,7 +25,7 @@ getStatisticData <- function(groupsParams, names, value, data) {
   }
 }
 
-
+  library("dplyr")
   datalist = list()
   num_of_pop<-3
   csv_file_name<-'all_classifier_averages.csv'

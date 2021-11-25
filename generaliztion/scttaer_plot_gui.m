@@ -6,17 +6,19 @@ definput = {'2'};
 answer = inputdlg(prompt,dlgtitle,dims,definput)
 num_of_pop=str2double(char(answer))
 
-prompt = {'insert height window size','insert width window size','insert dot size','insert font size'};
+prompt = {'insert height window size','insert width window size','insert dot size','insert font size','insert x-axis size(abs value)','change visual(1) or run(2)?'};
 dlgtitle = 'Input';
 dims = [1 35];
-definput = {'12','12','4','5'};
+definput = {'12','12','4','5','3','2'};
 answer_size = inputdlg(prompt,dlgtitle,dims,definput)
+
 
 height= str2num(answer_size{1});
 width =str2num(answer_size{2});
 dot =str2num(answer_size{3});
 font =str2num(answer_size{4});
-
+xsize =str2num(answer_size{5});
+change_or_run=str2num(answer_size{6});
 color ="";
 group_name =[]
 color_value=[];
@@ -34,7 +36,7 @@ color_in_char= sprintf(' %f', c)
 color_value = [color_value;c];
 end
 tables=table(group_name,color_value);
-tables_params=table(height,width,dot,font);
+tables_params=table(height,width,dot,font,xsize,change_or_run);
 
 OriginFolder = pwd;
 dname = uigetdir();

@@ -12,7 +12,7 @@ library(argparser, quietly=TRUE)
 astric_sts<<-3
 line_stat<<-0.5
 number_of_flies = 0
-with_rgb = FALSE
+with_rgb = TRUE
 num_of_pop<<-c()
 allColorData<<-c()
 font_size<<-15

@@ -1,8 +1,21 @@
 
 library("dplyr")
+require(R.matlab)
+library(base)
+library(openxlsx)
+library(igraph)
+library(ggplot2)
+library(cowplot)
+library(ggpubr)
+library(ggsignif)
+library(nortest)
+library(fmsb)
+library(argparser, quietly=TRUE)
+library(stringr)
+library("readxl")
 
-num_of_pop <-3
-groupsNames<-c("Mated","Gropued","Single")
+
+groupsNames<-c("Single","Gropued")
 
 
 getStatisticData <- function(groupsParams, names, value, data) {
@@ -36,6 +49,7 @@ getStatisticData <- function(groupsParams, names, value, data) {
 #for generalzing I need to put alll data frames together
 compute_stat<-function(csv_file_name,dir){
   datalist = list()
+  groupsNames<-c("Mated","Gropued","Single")
   setwd(dir[1,1])
   df1<-as.data.frame(read.csv(csv_file_name))
   first<-df1[ , grepl( "value" , names( df1 ) ) ]
@@ -82,18 +96,37 @@ compute_stat<-function(csv_file_name,dir){
     
     statsData <- getStatisticData(featuers_comb[i,], names, value, data)
     #i need to write this to dataframe
-    print(all_name[i])
-    print(statsData[[1]]$p.value)
-    
-    dat <- data.frame(name =all_name[i],p_val = statsData[[1]]$p.value)
-    dat$test <- statsData[[2]]  # maybe you want to keep track of which iteration produced it?
-    datalist[[i]] <- dat # add it to your list
+    if(num_of_pop<3){
+      print(all_name[i])
+      print(statsData[[1]]$p.value)
+      dat <- data.frame(name =all_name[i],p_val = statsData[[1]]$p.value)
+      dat$test <- statsData[[2]]  # maybe you want to keep track of which iteration produced it?
+      datalist[[i]] <- dat # add it to your list
+      
+    }
+    else{
+      if(statsData[[2]]=="Kruskal"){
+        p_adj_k<-as.data.frame(statsData[[1]][["p.value"]])
+        p_adj_kk<-data.frame(name = all_name[i],GropuedMated =  p_adj_k["Gropued","Mated"], SingleMated=p_adj_k["Single","Mated"],SingleGropued =  p_adj_k["Single","Gropued"])
+        datalist[[i]]<-p_adj_kk
+        
+      }
+      else{
+        stats_data<-as.data.frame(statsData[[1]][["names"]]) 
+        p_adj<-data.frame(name = all_name[i],GropuedMated =  stats_data["Gropued-Mated","p adj"], SingleMated=stats_data["Single-Mated","p adj"],SingleGropued =  stats_data["Single-Gropued","p adj"])
+        datalist[[i]]<-p_adj
+      }
+      
+    }
     
   }
   big_data = do.call(rbind, datalist)
   big_data
   csv_file_name <-paste("stats",csv_file_name)
   write.csv(big_data, csv_file_name, row.names = F)
+  
+  
+  
 }
 
 Stat_sig<-function(dir){
@@ -104,11 +137,13 @@ Stat_sig<-function(dir){
   compute_stat("frequency_scores.csv",dir)
 }
 
+num_of_pop=2
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 
-dir[1,1]<-"D:/male_And_female_2/Males/Males_Mated"
-dir[2,1]<-"D:/male_And_female_2/Males/Males_Grouped"
-dir[3,1]<-"D:/male_And_female_2/Males/Males_Singels"
+dir[1,1]<-"D:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single"
+dir[2,1]<-"D:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped"
+#dir[3,1]<-"D:/male_And_female_2/Males/Males_Singels"
+
 
 
 
@@ -124,10 +159,22 @@ ave_bl.df<-as.data.frame(read.csv('stats bout_length_scores.csv'))
 ave_frq.df<-as.data.frame(read.csv('stats frequency_scores.csv'))
 
 
+group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
+setwd(group_name_dir)
 all<-bind_rows(ave_kinetic.df,ave_classifiers.df,ave_bl.df,ave_frq.df)
+all$name<- str_replace(all$name, "scores_", "")
+all$name<- str_replace(all$name, ".mat", "")
+
+csv_file_name <-"all_togrther.csv"
+write.csv(all, csv_file_name, row.names = F)
 
 
-fdr<-p.adjust(all$p_val, method ="fdr", n = length(all$p_val))
-all$fdr<-fdr
+if(num_of_pop<3){
+  fdr<-p.adjust(all$p_val, method ="fdr", n = length(all$p_val))
+  all$fdr<-fdr
+}
+
+
+
 
 

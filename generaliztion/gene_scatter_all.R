@@ -26,7 +26,7 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = FALSE
+with_rgb = TRUE
 
 number_of_flies= 10
 num_of_movies =0
@@ -608,6 +608,7 @@ vizual<-function(){
     xlsxFile <- choose.files(caption = capt)
     xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
     temp.df<-as.data.frame(read.csv(xlsxFile))
+    temp.df$file<-gsub("Aggregation", "Social Clustering", temp.df$file)
     name = xlsxName
     group_name_in_pop = tools::file_path_sans_ext(dirname((xlsxFile)))
     number_of_movies =length(list.dirs(path=group_name_in_pop, full.names=T, recursive=F ))
@@ -615,6 +616,7 @@ vizual<-function(){
     temp.df$Variance=temp.df$Variance/(sqrt(number_of_movies))
     temp.df$file<-tools::file_path_sans_ext(temp.df$file)
     temp.df$file<- str_replace(temp.df$file, "scores_", "")
+    temp.df$file<-gsub("Aggregation", "Social Clustering", temp.df$file)
     temp.df<-semi_join(temp.df, order_name, by = "file")
     order_name<-semi_join(order_name, temp.df, by = "file")
     temp.df$file<-as.character(temp.df$file)
@@ -622,12 +624,11 @@ vizual<-function(){
     temp.df$file <- factor(temp.df$file, levels=order_name$file)
     all.df <- rbind(all.df, temp.df)
   }
-  all.df$file<-gsub("Aggregation", "Social Clustering", all.df$file)
   t <- ggplot(all.df, aes(x=value, y=file, group=id, color=id))
   t<- t+geom_point(size =params$dot)
   t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
   t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
-    xlim(-3,3)+theme_minimal(base_size = params$font)
+    xlim(-(params$xsize),(params$xsize))+theme_minimal(base_size = params$font)
   
   setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   print(t)
@@ -650,6 +651,12 @@ if(with_rgb==TRUE){
 }
 
 
+param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+setwd(param_dir)
+params<-data.frame()
+params <- as.data.frame(read.xlsx("params.xlsx"))
+
+
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 for (i in 1:num_of_pop){
   dir[i,1]<-allColorData$group_name[i]
@@ -661,42 +668,51 @@ for(i in 1:num_of_pop){
   dir[i,1]<-str_trim(dir[i,1], side = c("right"))
 }
 
-for (i in 1:num_of_pop){
-  setwd(dir[i,1])
-  group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-  num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
-  averagesPerMovieByFile()
-  setwd(dir[i,1])
-  importClassifierFilesAndCalculatePerFrame()
-  setwd(dir[i,1])
-  boutLengthAndFrequencyForClassifiers()
-  
-}
-#everyone is in the same dir and also this function go one dir up
 
-
-
-for (i in 1:num_of_pop){
-  group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-  creatNetwork2popforscatter(dir[i,1])
-}
-
-#for_Scaleing(dir)
-#here i need to check if there is normal de
-
-for(i in 1:num_of_pop){
-  setwd(dir[i,1])
-  num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
-  combineKineticAndClassifiersToSignature()
-}
-
-#vizual()
-
-
-if(with_rgb==TRUE){
+if(params$change_or_run == 2){
   for (i in 1:num_of_pop){
-    # delete a file
-    unlink(argv$path)
+    setwd(dir[i,1])
+    group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+    num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
+    averagesPerMovieByFile()
+    setwd(dir[i,1])
+    importClassifierFilesAndCalculatePerFrame()
+    setwd(dir[i,1])
+    boutLengthAndFrequencyForClassifiers()
     
-  } 
+  }
+  #everyone is in the same dir and also this function go one dir up
+  
+  
+  
+  for (i in 1:num_of_pop){
+    group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+    creatNetwork2popforscatter(dir[i,1])
+  }
+  
+  for_Scaleing(dir)
+  #here i need to check if there is normal de
+  
+  for(i in 1:num_of_pop){
+    setwd(dir[i,1])
+    num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
+    combineKineticAndClassifiersToSignature()
+  }
+  
+  vizual()
+  
+  
+  if(with_rgb==TRUE){
+    for (i in 1:num_of_pop){
+      # delete a file
+      unlink(argv$path)
+      
+    } 
+  }
 }
+
+if(params$change_or_run == 1){
+  vizual()
+}
+
+
