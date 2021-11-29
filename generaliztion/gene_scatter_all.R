@@ -26,7 +26,7 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 
 number_of_flies= 10
 num_of_movies =0
@@ -51,7 +51,169 @@ if (with_rgb == TRUE){
 }
 
 
+change_row_names<-function(stats_data){
+  
+  list_row_name<-rownames(stats_data)
+  
+  for(i in 1:length(list_row_name)){
+    
+    list_row_name[i]<-reagrange_string(list_row_name[i])
+    
+  }
+  
+  rownames(stats_data)<-list_row_name
+  return(stats_data)
+}
 
+
+reagrange_string<-function(string){
+  temp<-str_split(string, "-")
+  string<-paste(temp[[1]][2],"-",temp[[1]][1])
+  return(string)
+}
+
+
+to_dataframe<-function(p_adj_k,name){
+  p_adj_k <- as.data.frame(p_adj_k)
+  p_adj_k.name <- vector("character")
+  p_adj_k.value <- vector("numeric")
+  
+  for (i in 1:ncol(p_adj_k) )
+    for (j in i:length(p_adj_k) ) {
+      p_adj_k.name <- c(p_adj_k.name,paste(colnames(p_adj_k[i]),"-",rownames(p_adj_k)[j]))
+      p_adj_k.value <- c(p_adj_k.value,p_adj_k[j,i])
+    }
+  
+  
+  v <- order(p_adj_k.value,decreasing = F)
+  data_frame<-data.frame(name =name,t(p_adj_k.value[v]))
+  colnames(data_frame)<-c("name",p_adj_k.name[v])
+  return (data_frame)
+}
+
+compute_stat<-function(csv_file_name,dir){
+  datalist = list()
+  setwd(dir[1,1])
+  df1<-as.data.frame(read.csv(csv_file_name))
+  first<-df1[ , grepl( "value" , names( df1 ) ) ]
+  first$id <-as.factor(groupsNames[1])
+  for (i in 2:num_of_pop){
+    setwd(dir[i,1])
+    df_temp<-as.data.frame(read.csv(csv_file_name))
+    df_temp<-df_temp[ , grepl( "value" , names( df_temp ) ) ]
+    df_temp$id <-as.factor(groupsNames[i])
+    first<-bind_cols(first,df_temp)
+  }
+  
+  indexs<-c()
+  indexs<-which(grepl( "id" , names( first ) ))
+  names_all<-df1[ , grepl( "file" , names( df1 ) ) ]
+  all_name<-as.character(names_all[1,1:ncol(names_all)])
+  featuers_comb<-c()
+  
+  #the j is for the feature names and i is for the number oof pop
+  
+  for(j in 1:ncol(names_all)){
+    temp<-c()
+    temp<-cbind(temp,(as.list(first[j])))
+    for(i in 2:num_of_pop){
+      temp<-cbind(temp,(as.list(first[indexs[i-1]+j])))
+    }
+    
+    featuers_comb<-rbind(featuers_comb,temp)
+    
+  }
+  rownames(featuers_comb)<-all_name
+  
+  for(i in 1:ncol(names_all)){
+    names = c()
+    for (j in 1:num_of_pop) {
+      names = c(names, rep(groupsNames[j], length(unlist(featuers_comb[j]))))
+    }
+    value = rapply(featuers_comb[i,], c)
+    data = data.frame(names, value)
+    data$names <- as.character(data$names)
+    data$names <- factor(data$names, levels=unique(data$names))
+    
+    
+    len_stat <- getStatisticData(featuers_comb[i,], names, value, data)
+    #i need to write this to dataframe
+    if(num_of_pop<3){
+      print(all_name[i])
+      print(len_stat[[1]]$p.value)
+      dat <- data.frame(name =all_name[i],p_val = len_stat[[1]]$p.value)
+      dat$test <- len_stat[[2]]  # maybe you want to keep track of which iteration produced it?
+      datalist[[i]] <- dat # add it to your list
+      
+    }
+    else{
+      if(len_stat[[2]]=="Kruskal"){
+        rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
+        colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
+        p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name[i])
+        datalist[[i]]<-p_adj_kk
+      }
+      else{
+        rownames(len_stat[[1]][["names"]])<-gsub("Males_", "", rownames(len_stat[[1]][["names"]]))
+        stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
+        stats_data<-change_row_names(stats_data)
+        list_rowname<-rownames(stats_data)
+        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]))
+        colnames(data_frame_p_adj)<-c("name",list_rowname)
+        datalist[[i]]<-data_frame_p_adj
+      }
+      
+    }
+    
+  }
+  big_data = do.call(rbind, datalist)
+  big_data
+  csv_file_name <-paste("stats",csv_file_name)
+  write.csv(big_data, csv_file_name, row.names = F)
+  
+  
+  
+}
+
+Stat_sig<-function(dir){
+  
+  compute_stat("all_classifier_averages.csv",dir)
+  compute_stat("averages per movie.csv",dir)
+  compute_stat("bout_length_scores.csv",dir)
+  compute_stat("frequency_scores.csv",dir)
+}
+
+stats_main<-function(dir){
+  
+  Stat_sig(dir)
+  ave_kinetic.df<-as.data.frame(read.csv('stats averages per movie.csv'))
+  ave_classifiers.df<-as.data.frame(read.csv('stats all_classifier_averages.csv'))
+  ave_bl.df<-as.data.frame(read.csv('stats bout_length_scores.csv'))
+  ave_frq.df<-as.data.frame(read.csv('stats frequency_scores.csv'))
+  
+  
+  group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
+  setwd(group_name_dir)
+  net_stat_len.df<-as.data.frame(read.csv("stats of length network.csv"))
+  net_stat_num.df<-as.data.frame(read.csv("stats of number network.csv"))
+  
+  all<-rbind(ave_kinetic.df,ave_classifiers.df,ave_bl.df,ave_frq.df,net_stat_len.df,net_stat_num.df)
+  all$name<- str_replace(all$name, "scores_", "")
+  all$name<- str_replace(all$name, ".mat", "")
+  
+  
+  if(num_of_pop<3){
+    fdr<-p.adjust(all$p_val, method ="fdr", n = length(all$p_val))
+    all$fdr<-fdr
+  }
+  
+  csv_file_name <-"all_togrther.csv"
+  write.csv(all, csv_file_name, row.names = F)
+  
+  
+
+}
 
 getStatisticData <- function(groupsParams, names, value, data) {
   #statistic data about each paramter density, modularity, sdStrength, strength, betweenness
@@ -85,13 +247,13 @@ statistic_to_csv_of_network<-function(groupsNames, groupsParams){
   names = c()
   for (i in 1:length(groupsNames)) {
     names = c(names, rep(groupsNames[i], length(unlist(groupsParams[i]))))
-    }
+  }
   value = rapply(groupsParams, c)
   data = data.frame(names, value)
   data$names <- as.character(data$names)
   data$names <- factor(data$names, levels=unique(data$names))
-  statsData <- getStatisticData(featuers_comb[i,], names, value, data)
-  
+  statsData <- getStatisticData(groupsParams, names, value, data)
+  return(statsData)
 }
 #function avg per movie of assa
 averagesPerMovieByFile<-function(){
@@ -306,15 +468,8 @@ creatNetwork2popforscatter<-function(current_path){
     }
     
   }
-  
-  #first i will do it generic and than i will implement it here
-  #statistic_to_csv_of_network(groupsNames, lengthParams[i,])
-  #statistic_to_csv_of_network(groupsNames, numberParams[i,])
-  
-  
+
   for (i in 1:length(paramsNames)) {
-    #the whole row i of lengthParams/numberParams
-    #calculating the mean of each population
     for(j in 1:num_of_pop){
       length[j,i+1] <- mean(unlist(lengthParams[i,j]))
       number[j,i+1] <-mean(unlist(numberParams[i,j]))
@@ -322,6 +477,8 @@ creatNetwork2popforscatter<-function(current_path){
     }
     
   }
+  
+  
   
   index_name <- function(input_name,groupsNames){
     
@@ -382,7 +539,7 @@ creatNetwork2popforscatter<-function(current_path){
   
   
   betN<<-betN1[my_index]/sqrt(number_of_flies)
-  
+  #the reason i do for each population the get their valus and write it in their dir
   setwd(current_path)
   names<-c("density(LOI)","modularity(LOI)","sd strength(LOI)","strength(LOI)","betweens(LOI)","density(NOI)","modularity(NOI)","sd strength(NOI)","strength(NOI)","betweens(NOI)")  
   values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
@@ -392,6 +549,155 @@ creatNetwork2popforscatter<-function(current_path){
   write.csv(network.df, 'network.csv', row.names = F)
   
 }
+
+
+
+netWorkStats<-function(current_path){
+  setwd(current_path)
+  group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
+  setwd(group_name_dir)
+  #we need to make this file befor using this script
+  allData <- read.xlsx("expData_0_to_27000.xlsx")
+  lengthParams <- c()
+  numberParams <- c()
+  numberOfMovies<-c()
+  for (i in 1:allData$Number.of.groups[1]) {
+    cur <- (i + 1) * 2
+    numberOfMovies[i]<- allData[i, 3]
+    lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
+    numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
+  }
+  
+  #parametrs name
+  paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
+  groupsNames <- as.character(na.omit(allData$Groups.names))
+  #6 is because there is 5 paramters
+  length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
+  number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
+  
+  for (i in 1:num_of_pop){ 
+    lengthAvg<-paste0("lengthAvg",as.character(i))
+    length[i,1]<-lengthAvg
+  }
+  for (i in 1:num_of_pop){ 
+    numberAvg<-paste0("numberAvg",as.character(i))
+    number[i,1]<-numberAvg
+  }
+  
+  
+  num<-apply(numberParams, 1, unlist)
+  lengh<-apply(lengthParams, 1, unlist)
+  for (j in 1:5){
+    scaled_num<-scale(as.numeric(unlist(num[j])))
+    scaled_len<-scale(as.numeric(unlist(lengh[j])))
+    
+    for(m in 1:num_of_pop){
+      start =1
+      if(m!=1) {
+        start = (length(scaled_num)/num_of_pop)*(m-1)
+      }
+      numberParams[j,m]<-list(scaled_num[(start+1):((length(scaled_num)/num_of_pop)*m)])
+    }
+    
+    for(m in 1:num_of_pop){
+      start =1
+      if(m!=1) {
+        start = (length(scaled_len)/num_of_pop)*(m-1)
+      }
+      lengthParams[j,m]<-list(scaled_len[(start+1):((length(scaled_len)/num_of_pop)*m)])
+    }
+    
+  }
+  all_name<-paramsNames
+  all_name_NOI<-paste("NOI",all_name)
+  all_name_LOI<-paste("LOI",all_name)
+  
+  
+  for (i in 1:length(paramsNames)) {
+    len_stat<-statistic_to_csv_of_network(groupsNames, lengthParams[i,])
+    
+    if(num_of_pop<3){
+      print(all_name_LOI[i])
+      print(len_stat[[1]]$p.value)
+      dat <- data.frame(name =all_name_LOI[i],p_val = len_stat[[1]]$p.value)
+      dat$test <- len_stat[[2]]  # maybe you want to keep track of which iteration produced it?
+      datalist[[i]] <- dat # add it to your list
+      
+    }
+    else{
+      if(len_stat[[2]]=="Kruskal"){
+        rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
+        colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
+        p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name_LOI[i])
+        datalist[[i]]<-p_adj_kk
+      }
+      else{
+        rownames(len_stat[[1]][["names"]])<-gsub("Males_", "", rownames(len_stat[[1]][["names"]]))
+        stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
+        stats_data<-change_row_names(stats_data)
+        list_rowname<-rownames(stats_data)
+        data_frame_p_adj<-data.frame(name =all_name_LOI[i],t(stats_data[,-1:-3]))
+        colnames(data_frame_p_adj)<-c("name",list_rowname)
+        datalist[[i]]<-data_frame_p_adj
+      }
+      
+    }
+    len_data = do.call(rbind, datalist)
+    len_data
+    
+    #####################################################################################
+    num_stat<-statistic_to_csv_of_network(groupsNames, numberParams[i,])
+    
+    if(num_of_pop<3){
+      print(all_name_NOI[i])
+      print(num_stat[[1]]$p.value)
+      dat <- data.frame(name =all_name_NOI[i],p_val = num_stat[[1]]$p.value)
+      dat$test <- num_stat[[2]]  # maybe you want to keep track of which iteration produced it?
+      datalist_num[[i]] <- dat # add it to your list
+      
+    }
+    else{
+      if(num_stat[[2]]=="Kruskal"){
+        rownames(num_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(num_stat[[1]][["p.value"]]))
+        colnames(num_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(num_stat[[1]][["p.value"]]))
+        p_adj_k_num<-as.data.frame(num_stat[[1]][["p.value"]])
+        p_adj_kk_num<-to_dataframe(p_adj_k_num,all_name_NOI[i])
+        datalist_num[[i]]<-p_adj_kk_num
+        
+      }
+      else{
+        print(num_stat[[2]])
+        print(num_stat)
+        test<-num_stat
+        rownames(num_stat[[1]][["names"]])<-gsub("Males_", "", rownames(num_stat[[1]][["names"]]))
+        stats_data<-data.frame()
+        stats_data<-as.data.frame(num_stat[[1]][["names"]]) 
+        stats_data<-change_row_names(stats_data)
+        list_rowname_num<-rownames(stats_data)
+        data_frame_p_adj<-data.frame()
+        data_frame_p_adj<-data.frame(name =all_name_NOI[i],t(stats_data[,-1:-3]))
+        colnames(data_frame_p_adj)<-c("name",list_rowname_num)
+        datalist_num[[i]]<-data_frame_p_adj
+      }
+      
+    }
+    num_data = do.call(rbind, datalist_num)
+    num_data
+    
+    csv_file_name <-"stats of number network.csv"
+    write.csv(num_data, csv_file_name, row.names = F)
+    
+    csv_file_name <-"stats of length network.csv"
+    write.csv(len_data, csv_file_name, row.names = F)
+
+    
+  }
+  
+  
+  
+}
+
 boutLengthAndFrequencyForClassifiers<-function(){
   str1 = "frequency"
   str2 = "bout length"
@@ -559,6 +865,10 @@ scaleing<-function(csv_file_name,dir){
 }
 
 
+## i need to do stat in here
+
+
+
 for_Scaleing<-function(dir){
   #do the scaling for each group
   scaleing("all_classifier_averages.csv",dir)
@@ -588,12 +898,20 @@ vizual<-function(){
     colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
   }
   colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
-  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
-  setwd(param_dir)
-  params<-data.frame()
-  params <- as.data.frame(read.xlsx("params.xlsx"))
-  
-  
+
+  if(with_rgb==TRUE){
+    param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+    params<-data.frame()
+    setwd(param_dir)
+    params <- as.data.frame(read.xlsx("params.xlsx"))
+    
+  }
+  else{
+    params<-data.frame()
+    params <- as.data.frame(read.xlsx("D:/test/params.xlsx"))
+    
+  }
+
   library(ggplot2)
   library(gridExtra)
   all_colors<-as.character(colors_of_groups$X1)
@@ -651,10 +969,17 @@ if(with_rgb==TRUE){
 }
 
 
-param_dir = tools::file_path_sans_ext(dirname((argv$path)))
-setwd(param_dir)
-params<-data.frame()
-params <- as.data.frame(read.xlsx("params.xlsx"))
+if(with_rgb=="TRUE"){
+  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+  setwd(param_dir)
+  params<-data.frame()
+  params <- as.data.frame(read.xlsx("params.xlsx"))
+}else{
+  params<-data.frame()
+  params <- as.data.frame(read.xlsx("D:/test/params.xlsx"))
+}
+
+
 
 
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
@@ -684,16 +1009,23 @@ if(params$change_or_run == 2){
   #everyone is in the same dir and also this function go one dir up
   
   
+  #i don't think i need to do this more than 1 time but i do it more times just for the names.when I will have tiime ii iwll fix this
+  for (i in 1:num_of_pop){
+    netWorkStats(dir[i,1])
+  }
   
+  
+  stats_main(dir)
+  
+  for_Scaleing(dir)
+  #here i need to check if there is normal de
   for (i in 1:num_of_pop){
     group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
     creatNetwork2popforscatter(dir[i,1])
   }
   
-  for_Scaleing(dir)
-  #here i need to check if there is normal de
-  
   for(i in 1:num_of_pop){
+    #for each net there is doffrent valus 
     setwd(dir[i,1])
     num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
     combineKineticAndClassifiersToSignature()

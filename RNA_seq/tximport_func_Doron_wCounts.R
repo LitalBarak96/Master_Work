@@ -119,8 +119,8 @@ user_args <- parser$parse_args()
 
 #DEBUG
 user_args$txToGeneID <- "D:/RNA_seq/dm6_refseq_common_names.tsv"
-user_args$barcode <- "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/samples.txt"
-user_args$indir <- "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/"
+user_args$barcode <- "D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/samples.txt"
+user_args$indir <- "D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/"
 user_args$outdir <- user_args$indir 
 user_args$logPath <- paste0(user_args$indir,"/log.txt") 
 

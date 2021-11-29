@@ -15,9 +15,9 @@ library("heatmaply")
 
 
 library(dplyr)
-cts <- (read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/Salmon_TPM.csv",sep=",",row.names="gene_id"))
-coldata <- read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/meta_test.csv", row.names=1)
-coldata_not_factorial <- read.csv("D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/meta_test.csv")
+cts <- (read.csv("D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/DEseq/Salmon_TPM.csv",sep=",",row.names="GeneSymbol"))
+coldata <- read.csv("D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/DEseq/meta_test.csv", row.names=1)
+coldata_not_factorial <- read.csv("D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/DEseq/meta_test.csv")
 
 
 data<-data.frame(row.names=rownames(cts))
@@ -100,13 +100,13 @@ with(subset(res, pvalue<.05 & abs(log2FoldChange)>=1), points(log2FoldChange, -l
 #creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for up regulated genes
 x<-subset(res, pvalue<.05 & log2FoldChange>=1)
 x<-as.data.frame(x)
-write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/upregulated.csv",
+write.csv(x, "D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/DEseq/upregulated.csv",
           row.names = TRUE)
 
 #creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for down regulated genes
 x<-subset(res, pvalue<.05 & log2FoldChange<=-1)
 x<-as.data.frame(x)
-write.csv(x, "D:/RNA_seq/20210608GalitOphir-270838574/SALMON_1.5.2/summery/DEseq/downregulated.csv",
+write.csv(x, "D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/DEseq/downregulated.csv",
           row.names = TRUE)
 
 

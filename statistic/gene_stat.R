@@ -15,7 +15,48 @@ library(stringr)
 library("readxl")
 
 
-groupsNames<-c("Single","Gropued")
+change_row_names<-function(stats_data){
+  
+  list_row_name<-rownames(stats_data)
+  
+  for(i in 1:length(list_row_name)){
+    
+    list_row_name[i]<-reagrange_string(list_row_name[i])
+    
+  }
+  
+  rownames(stats_data)<-list_row_name
+  return(stats_data)
+}
+
+
+reagrange_string<-function(string){
+  temp<-str_split(string, "-")
+  string<-paste(temp[[1]][2],"-",temp[[1]][1])
+  return(string)
+}
+
+
+to_dataframe<-function(p_adj_k,name){
+  p_adj_k <- as.data.frame(p_adj_k)
+  p_adj_k.name <- vector("character")
+  p_adj_k.value <- vector("numeric")
+  
+  for (i in 1:ncol(p_adj_k) )
+    for (j in i:length(p_adj_k) ) {
+      p_adj_k.name <- c(p_adj_k.name,paste(colnames(p_adj_k[i]),"-",rownames(p_adj_k)[j]))
+      p_adj_k.value <- c(p_adj_k.value,p_adj_k[j,i])
+    }
+  
+  
+  v <- order(p_adj_k.value,decreasing = F)
+  data_frame<-data.frame(name =name,t(p_adj_k.value[v]))
+  colnames(data_frame)<-c("name",p_adj_k.name[v])
+  return (data_frame)
+}
+
+#importent to keep the same names
+groupsNames<-c("Grouped","Mated","Singels")
 
 
 getStatisticData <- function(groupsParams, names, value, data) {
@@ -49,7 +90,6 @@ getStatisticData <- function(groupsParams, names, value, data) {
 #for generalzing I need to put alll data frames together
 compute_stat<-function(csv_file_name,dir){
   datalist = list()
-  groupsNames<-c("Mated","Gropued","Single")
   setwd(dir[1,1])
   df1<-as.data.frame(read.csv(csv_file_name))
   first<-df1[ , grepl( "value" , names( df1 ) ) ]
@@ -94,27 +134,32 @@ compute_stat<-function(csv_file_name,dir){
     data$names <- factor(data$names, levels=unique(data$names))
     
     
-    statsData <- getStatisticData(featuers_comb[i,], names, value, data)
+    len_stat <- getStatisticData(featuers_comb[i,], names, value, data)
     #i need to write this to dataframe
     if(num_of_pop<3){
       print(all_name[i])
-      print(statsData[[1]]$p.value)
-      dat <- data.frame(name =all_name[i],p_val = statsData[[1]]$p.value)
-      dat$test <- statsData[[2]]  # maybe you want to keep track of which iteration produced it?
+      print(len_stat[[1]]$p.value)
+      dat <- data.frame(name =all_name[i],p_val = len_stat[[1]]$p.value)
+      dat$test <- len_stat[[2]]  # maybe you want to keep track of which iteration produced it?
       datalist[[i]] <- dat # add it to your list
       
     }
     else{
-      if(statsData[[2]]=="Kruskal"){
-        p_adj_k<-as.data.frame(statsData[[1]][["p.value"]])
-        p_adj_kk<-data.frame(name = all_name[i],GropuedMated =  p_adj_k["Gropued","Mated"], SingleMated=p_adj_k["Single","Mated"],SingleGropued =  p_adj_k["Single","Gropued"])
+      if(len_stat[[2]]=="Kruskal"){
+        rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
+        colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
+        p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name[i])
         datalist[[i]]<-p_adj_kk
-        
       }
       else{
-        stats_data<-as.data.frame(statsData[[1]][["names"]]) 
-        p_adj<-data.frame(name = all_name[i],GropuedMated =  stats_data["Gropued-Mated","p adj"], SingleMated=stats_data["Single-Mated","p adj"],SingleGropued =  stats_data["Single-Gropued","p adj"])
-        datalist[[i]]<-p_adj
+        rownames(len_stat[[1]][["names"]])<-gsub("Males_", "", rownames(len_stat[[1]][["names"]]))
+        stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
+        stats_data<-change_row_names(stats_data)
+        list_rowname<-rownames(stats_data)
+        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]))
+        colnames(data_frame_p_adj)<-c("name",list_rowname)
+        datalist[[i]]<-data_frame_p_adj
       }
       
     }
@@ -137,44 +182,48 @@ Stat_sig<-function(dir){
   compute_stat("frequency_scores.csv",dir)
 }
 
-num_of_pop=2
-dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
+stats_main<-function(dir){
+  
+  Stat_sig(dir)
+  ave_kinetic.df<-as.data.frame(read.csv('stats averages per movie.csv'))
+  ave_classifiers.df<-as.data.frame(read.csv('stats all_classifier_averages.csv'))
+  ave_bl.df<-as.data.frame(read.csv('stats bout_length_scores.csv'))
+  ave_frq.df<-as.data.frame(read.csv('stats frequency_scores.csv'))
+  
+  
+  group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
+  setwd(group_name_dir)
+  net_stat_len.df<-as.data.frame(read.csv("stats of length network.csv"))
+  net_stat_num.df<-as.data.frame(read.csv("stats of number network.csv"))
+  
+  all<-rbind(ave_kinetic.df,ave_classifiers.df,ave_bl.df,ave_frq.df,net_stat_len.df,net_stat_num.df)
+  all$name<- str_replace(all$name, "scores_", "")
+  all$name<- str_replace(all$name, ".mat", "")
+  
+  
+  if(num_of_pop<3){
+    fdr<-p.adjust(all$p_val, method ="fdr", n = length(all$p_val))
+    all$fdr<-fdr
+  }
+  
+  csv_file_name <-"all_togrther.csv"
+  write.csv(all, csv_file_name, row.names = F)
 
-dir[1,1]<-"D:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Single"
-dir[2,1]<-"D:/all_data_of_shir/shir_ben_shushan/Shir Ben Shaanan/old/Grouped vs Single/Grouped"
-#dir[3,1]<-"D:/male_And_female_2/Males/Males_Singels"
-
-
-
-
-
-Stat_sig(dir)
-
-
-
-
-ave_kinetic.df<-as.data.frame(read.csv('stats averages per movie.csv'))
-ave_classifiers.df<-as.data.frame(read.csv('stats all_classifier_averages.csv'))
-ave_bl.df<-as.data.frame(read.csv('stats bout_length_scores.csv'))
-ave_frq.df<-as.data.frame(read.csv('stats frequency_scores.csv'))
-
-
-group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
-setwd(group_name_dir)
-all<-bind_rows(ave_kinetic.df,ave_classifiers.df,ave_bl.df,ave_frq.df)
-all$name<- str_replace(all$name, "scores_", "")
-all$name<- str_replace(all$name, ".mat", "")
-
-csv_file_name <-"all_togrther.csv"
-write.csv(all, csv_file_name, row.names = F)
-
-
-if(num_of_pop<3){
-  fdr<-p.adjust(all$p_val, method ="fdr", n = length(all$p_val))
-  all$fdr<-fdr
 }
 
 
+num_of_pop=3
+dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
+
+dir[1,1]<-"D:/male_And_female_2/Males/Males_Grouped"
+dir[2,1]<-"D:/male_And_female_2/Males/Males_Mated"
+dir[3,1]<-"D:/male_And_female_2/Males/Males_Singels"
+
+
+
+
+
+stats_main(dir)
 
 
 
