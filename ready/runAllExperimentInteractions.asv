@@ -35,11 +35,11 @@ answer_change = questdlg('Would you like run only visual?', ...
 % Handle response
 switch answer_change
     case 'run only vizual'
-        warndlg(' start running vizual soon ','this is not and error')
+        warndlg(' start running vizual soon ','please notice(this is not and error)')
         disp([answer_change ' start running vizual soon '])
         change = 2;
     case 'run from the start'
-        warndlg(' lets start from the start ','this is not and error')
+        warndlg(' lets start from the start ','please notice(this is not and error)')
         disp([answer_change ' lets start from the start '])
         change = 1;
 end
@@ -54,7 +54,7 @@ switch answer_delete
         disp([answer_delete ' will be deleted '])
         deleted = 1;
     case 'keep'
-        warndlg(' we wont delete ','this is not and error')
+        warndlg(' we wont delete ','please notice(this is not and error')
         disp([answer_delete ' we wont delete '])
         deleted = 0;
 end
