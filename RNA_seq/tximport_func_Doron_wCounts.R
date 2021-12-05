@@ -77,7 +77,7 @@ tpm<- function(path_transcriptIDtoGene_name, path_barcode, path_tpm_results, out
   colnames(out)[1] <- "GeneSymbol"
   print("writing abundance table...")
   write.csv(out,"Salmon_TPM.csv",row.names=F, quote = F)
-  write.csv(out[grep("ADAR", rownames(out), ignore.case = T), ],"ADAR_Salmon_TPM.csv",row.names=F, quote = F)
+  write.csv(out[grep("Obp69a", rownames(out), ignore.case = T), ],"Obp69a_Salmon_TPM.csv",row.names=F, quote = F)
   
   #add suffix to sample names to indeicate value
   colnames(tpm) <- lapply(colnames(tpm), paste0, "_TPM")
@@ -90,7 +90,7 @@ tpm<- function(path_transcriptIDtoGene_name, path_barcode, path_tpm_results, out
   
   print("writing abundance and counts table...")
   write.csv(out1,"Salmon_TPM_wCounts.csv",row.names=F, quote = F)
-  write.csv(out1[grep("ADAR", rownames(out1), ignore.case = T), ],"ADAR_Salmon_TPM_wCounts.csv",row.names=F, quote = F)
+  write.csv(out1[grep("Obp69a", rownames(out1), ignore.case = T), ],"Obp69a_Salmon_TPM_wCounts.csv",row.names=F, quote = F)
 }
 
 
@@ -118,9 +118,11 @@ parser$add_argument("-l", action="store", dest = "logPath", default = "log.txt",
 user_args <- parser$parse_args()
 
 #DEBUG
+
+#_______________________________change folders from here,dm6_refseq_common_names for drozofila
 user_args$txToGeneID <- "D:/RNA_seq/dm6_refseq_common_names.tsv"
-user_args$barcode <- "D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/samples.txt"
-user_args$indir <- "D:/RNA_seq/new_data/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/"
+user_args$barcode <- "D:/RNA_seq/new_data/new/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/samples.txt"
+user_args$indir <- "D:/RNA_seq/new_data/new/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/"
 user_args$outdir <- user_args$indir 
 user_args$logPath <- paste0(user_args$indir,"/log.txt") 
 

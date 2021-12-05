@@ -28,6 +28,11 @@ num_of_pop<-0
 colors_of_groups<<-data.frame()
 with_rgb = FALSE
 
+dot<<-0
+xsize<<-0
+font_size<<-0
+width<<-0
+height<<-0
 number_of_flies= 10
 num_of_movies =0
 
@@ -553,6 +558,9 @@ creatNetwork2popforscatter<-function(current_path){
 
 
 netWorkStats<-function(current_path){
+  datalist = list()
+  datalist_num = list()
+  
   setwd(current_path)
   group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
   setwd(group_name_dir)
@@ -943,14 +951,14 @@ vizual<-function(){
     all.df <- rbind(all.df, temp.df)
   }
   t <- ggplot(all.df, aes(x=value, y=file, group=id, color=id))
-  t<- t+geom_point(size =params$dot)
+  t<- t+geom_point(size =dot)
   t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
   t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
-    xlim(-(params$xsize),(params$xsize))+theme_minimal(base_size = params$font)
+    xlim(-(xsize),(xsize))+theme_minimal(base_size = font_size)
   
   setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   print(t)
-  ggsave(plot = t, filename = "scatterplot.pdf", height=params$height, width=params$width)
+  ggsave(plot = t, filename = "scatterplot.pdf", height=height, width=width)
   
   
 }
@@ -979,6 +987,11 @@ if(with_rgb=="TRUE"){
   params <- as.data.frame(read.xlsx("D:/test/params.xlsx"))
 }
 
+dot<<-params$dot
+xsize<<-params$xsize
+font_size<<-params$font
+width<<-params$width
+height<<-params$height
 
 
 
@@ -1016,16 +1029,17 @@ if(params$change_or_run == 2){
   
   
   stats_main(dir)
-  
+  #first stat than scalling
   for_Scaleing(dir)
-  #here i need to check if there is normal de
+  
   for (i in 1:num_of_pop){
+    #the group name if for saving each paramter of the network in spicific var
     group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
     creatNetwork2popforscatter(dir[i,1])
   }
   
   for(i in 1:num_of_pop){
-    #for each net there is doffrent valus 
+    #for each net there is different valus 
     setwd(dir[i,1])
     num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
     combineKineticAndClassifiersToSignature()
@@ -1035,11 +1049,9 @@ if(params$change_or_run == 2){
   
   
   if(with_rgb==TRUE){
-    for (i in 1:num_of_pop){
-      # delete a file
+      # delete a file of color but not the values params 
       unlink(argv$path)
       
-    } 
   }
 }
 

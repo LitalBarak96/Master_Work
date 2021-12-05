@@ -9,13 +9,15 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 
 #global varible
-astric_sts<<-3
-line_stat<<-0.5
+astric_sts<<-0
+line_stat<<-0
+font_size<<-0
+width<<-0
+height<<-0
 number_of_flies = 0
 with_rgb = TRUE
 num_of_pop<<-c()
 allColorData<<-c()
-font_size<<-15
 colors_of_groups<<-data.frame()
 
 #from rgb to hex
@@ -293,13 +295,16 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   statsData <- getStatisticData(groupsParams, names, value, data)
   
   g <- addStatsToGraph(statsData, g, value, names, data)
-  ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = num_of_pop*5, height = 20, units = "cm")
+  ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = width, height = height, units = "cm")
+  
+  #_____delete param file
+
 }
 
 #________________________________________________________ main zone
 
 #where we choosing the files we want for analysis
-xlsxFile <- choose.files()
+xlsxFile <- choose.files(default = "", caption = "Select expData_0_to_27000 file")
 #all data is the data from the exel in the first sheet
 allData <- read.xlsx(xlsxFile)
 #reading the color excel
@@ -313,6 +318,27 @@ if(with_rgb==TRUE){
   num_of_pop<<-nrow(allColorData)
 }
 
+if(with_rgb==TRUE){
+  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+  params<-data.frame()
+  setwd(param_dir)
+  params <- as.data.frame(read.xlsx("params.xlsx"))
+  
+}else{
+  params<-data.frame()
+  params <- as.data.frame(read.xlsx("D:/test/params.xlsx"))
+  
+}
+
+
+height<<-params$height
+width<<-params$width
+font_size<<-params$font
+astric_sts<<-params$asterisk
+line_stat<<-astric_sts/6
+if(params$delete == 1){
+  unlink(argv$path)
+}
 #_________________________________________________________color zone
 
 #creat zeros data frame with number of row is 1 and number of colum like the number of population
@@ -401,3 +427,7 @@ modN <- as.numeric(as.data.frame(t(number[3])))
 sdN <- as.numeric(as.data.frame(t(number[4])))
 strN <- as.numeric(as.data.frame(t(number[5])))
 betN <- as.numeric(as.data.frame(t(number[6])))
+
+if(params$delete == 1){
+  unlink(argv$path)
+}
