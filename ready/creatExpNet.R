@@ -12,6 +12,7 @@ library(argparser, quietly=TRUE)
 astric_sts<<-0
 line_stat<<-0
 font_size<<-0
+format_save<<-0
 width<<-0
 height<<-0
 number_of_flies = 0
@@ -295,10 +296,13 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
   statsData <- getStatisticData(groupsParams, names, value, data)
   
   g <- addStatsToGraph(statsData, g, value, names, data)
-  ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = width, height = height, units = "cm")
   
-  #_____delete param file
-
+  if(format_save == 1){
+    ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".jpg", sep = "")), g, width = width, height = height, units = "cm")
+  }
+  if(format_save == 2){
+    ggsave(filename = file.path(graphFolder, paste(graphTitle, " ", statsData[[2]], ".pdf", sep = "")), g, width = width, height = height, units = "cm")
+  }
 }
 
 #________________________________________________________ main zone
@@ -336,6 +340,8 @@ width<<-params$width
 font_size<<-params$font
 astric_sts<<-params$asterisk
 line_stat<<-astric_sts/6
+format_save<<-params$format
+
 
 #_________________________________________________________color zone
 
