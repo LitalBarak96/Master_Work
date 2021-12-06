@@ -28,17 +28,16 @@ width =str2num(answer_size{2});
 font =str2num(answer_size{3});
 asterisk =str2num(answer_size{4});
 
+
 answer_change = questdlg('Would you like to run from the beginning or only change visual?', ...
 	'run or vizual', ...
 	'change vizual','run from the beginning','run from the beginning');
 % Handle response
 switch answer_change
     case 'change vizual'
-        warndlg(' you choose change vizual  ','this is not and error')
         disp([answer_change ' start running vizual soon '])
         change = 2;
     case 'run from the beginning'
-        warndlg(' calculating from beginning ','this is not error')
         disp([answer_change ' lets start from the beginning '])
         change = 1;
 end
@@ -49,15 +48,25 @@ answer_delete = questdlg('wish to delete paramters files at the end?', ...
 % Handle response
 switch answer_delete
     case 'delete'
-        warndlg(' will be deleted ','this is not error')
         disp([answer_delete ' will be deleted '])
         deleted = 1;
     case 'keep'
-        warndlg(' we wont delete ','this is not error')
         disp([answer_delete ' wont be deleted '])
         deleted = 0;
 end
 
+answer_format = questdlg('what format do you want to save?', ...
+	'pdf or jpeg', ...
+	'pdf','jpeg','jpeg');
+% Handle response
+switch answer_format
+    case 'pdf'
+        disp([answer_format ' pdf choosen '])
+        format =2;
+    case 'jpeg'
+        disp([answer_format ' jpeg choosen '])
+        format = 1;
+end
 if (change == 1)
 xlsxFileName = fullfile(savePath, ['expData_', num2str(param.startFrame), '_to_', num2str(param.endFrame), '.xlsx']);
 groupNumber = [{'Number of groups'; numOfGroups}; cell(numOfGroups - 1, 1)];
@@ -111,7 +120,7 @@ color_in_char= sprintf(' %f', c)
 colorValue = [colorValue;c];
 end
 tables=table(groupNameDir,colorValue);
-tables_params=table(height,width,font,asterisk,change,deleted);
+tables_params=table(height,width,font,asterisk,change,deleted,format);
 
 OriginFolder = pwd;
 folder=savePath;
