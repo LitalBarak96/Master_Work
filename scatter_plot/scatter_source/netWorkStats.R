@@ -1,4 +1,4 @@
-netWorkStats<-function(current_path){
+netWorkStats<-function(current_path,xlsxFile){
   
   current_dir =getwd()
   setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
@@ -13,7 +13,7 @@ netWorkStats<-function(current_path){
   group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
   setwd(group_name_dir)
   #we need to make this file befor using this script
-  allData <- read.xlsx("expData_0_to_27000.xlsx")
+  allData <- read.xlsx(xlsxFile)
   lengthParams <- c()
   numberParams <- c()
   numberOfMovies<-c()

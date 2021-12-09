@@ -38,7 +38,7 @@ number_of_flies= 10
 num_of_movies =0
 
 groupsNames <<- c()
-
+xlsxFile<<-c()
 
 
 #to debug
@@ -62,7 +62,8 @@ creatNetwork2popforscatter<-function(current_path){
   group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
   setwd(group_name_dir)
   #we need to make this file befor using this script
-  allData <- read.xlsx("expData_0_to_27000.xlsx")
+  #all data is the data from the exel in the first sheet
+  allData <- read.xlsx(xlsxFile)
   if(with_rgb==TRUE){
     allColorData <- read.xlsx(argv$path)
     num_of_pop<-nrow(allColorData)
@@ -336,6 +337,8 @@ for(i in 1:num_of_pop){
   dir[i,1]<-str_trim(dir[i,1], side = c("right"))
 }
 
+xlsxFile <<- choose.files(default = "", caption = "Select expData file")
+
 
 setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
 files.sources = list.files()
@@ -353,7 +356,7 @@ if(vizual_or_run == 1){
   }
 
   for (i in 1:num_of_pop){
-    netWorkStats(dir[i,1])
+    netWorkStats(dir[i,1],xlsxFile)
   }
   
   

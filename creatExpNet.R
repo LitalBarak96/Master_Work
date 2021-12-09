@@ -308,7 +308,7 @@ plotParamData <- function(groupsNames, groupsParams, graphFolder, graphTitle) {
 #________________________________________________________ main zone
 
 #where we choosing the files we want for analysis
-xlsxFile <- choose.files(default = "", caption = "Select expData_0_to_27000 file")
+xlsxFile <- choose.files(default = "", caption = "Select expData file")
 #all data is the data from the exel in the first sheet
 allData <- read.xlsx(xlsxFile)
 #reading the color excel

@@ -35,6 +35,8 @@ stats_main<-function(dir,groupsNames){
   
   csv_file_name_net <-"all_together_net.csv"
   write.csv(all_net, csv_file_name_net, row.names = F)
+  unlink("stats of length network.csv")
+  unlink("stats of number network.csv")
   
   
   

@@ -62,14 +62,11 @@ compute_stat<-function(csv_file_name,dir,groupsNames){
     }
     else{
       if(len_stat[[2]]=="Kruskal"){
-        rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
-        colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
         p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
         p_adj_kk<-to_dataframe(p_adj_k,all_name[i],len_stat[[2]])
         datalist[[i]]<-p_adj_kk
       }
       else{
-        rownames(len_stat[[1]][["names"]])<-gsub("Males_", "", rownames(len_stat[[1]][["names"]]))
         stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
         stats_data<-change_row_names(stats_data)
         list_rowname<-rownames(stats_data)
