@@ -1,5 +1,5 @@
 compute_stat<-function(csv_file_name,dir,groupsNames){
-  
+  library(dplyr)
   current_dir =getwd()
   setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
   files.sources = list.files()
@@ -65,7 +65,7 @@ compute_stat<-function(csv_file_name,dir,groupsNames){
         rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
         colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
         p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
-        p_adj_kk<-to_dataframe(p_adj_k,all_name[i])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name[i],len_stat[[2]])
         datalist[[i]]<-p_adj_kk
       }
       else{
@@ -73,8 +73,8 @@ compute_stat<-function(csv_file_name,dir,groupsNames){
         stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
         stats_data<-change_row_names(stats_data)
         list_rowname<-rownames(stats_data)
-        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]))
-        colnames(data_frame_p_adj)<-c("name",list_rowname)
+        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]),test=len_stat[[2]])
+        colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
         datalist[[i]]<-data_frame_p_adj
       }
       
@@ -85,7 +85,6 @@ compute_stat<-function(csv_file_name,dir,groupsNames){
   big_data
   csv_file_name <-paste("stats",csv_file_name)
   write.csv(big_data, csv_file_name, row.names = F)
-  
   
   
 }

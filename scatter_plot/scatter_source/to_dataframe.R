@@ -1,4 +1,4 @@
-to_dataframe<-function(p_adj_k,name){
+to_dataframe<-function(p_adj_k,name,test){
   
   current_dir =getwd()
   setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
@@ -18,7 +18,7 @@ to_dataframe<-function(p_adj_k,name){
   
   
   v <- order(p_adj_k.value,decreasing = F)
-  data_frame<-data.frame(name =name,t(p_adj_k.value[v]))
-  colnames(data_frame)<-c("name",p_adj_k.name[v])
+  data_frame<-data.frame(name =name,t(p_adj_k.value[v]),test =test)
+  colnames(data_frame)<-c("name",p_adj_k.name[v],"test")
   return (data_frame)
 }

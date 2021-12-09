@@ -45,6 +45,19 @@ switch answer_delete
         deleted = 0;
 end
 
+answer_format = questdlg('what is the formant you would like to save the results?', ...
+	'pdf or jpeg', ...
+	'pdf','jpeg','jpeg');
+% Handle response
+switch answer_format
+    case 'pdf'
+        disp([answer_format ' choosen '])
+       format = 1;
+    case 'jpeg'
+        disp([answer_format ' choosen '])
+        format = 2;
+end
+
 color ="";
 groupNameDir =[];
 colorValue=[];
@@ -61,7 +74,7 @@ color_in_char= sprintf(' %f', c)
 colorValue = [colorValue;c];
 end
 tables=table(groupNameDir,colorValue);
-tables_params=table(height,width,font,asterisk,xsize,change,deleted,dot);
+tables_params=table(height,width,font,asterisk,xsize,change,deleted,dot,format);
 
 OriginFolder = pwd;
 folder=savePath;
@@ -78,4 +91,4 @@ path_of_xlsx_params = fullfile(folder, baseFileName);
 writetable(tables_params,baseFileName)
 cd(OriginFolder)
 command = append(command,path_of_xlsx) 
-%[status,cmdout]=system(command,'-echo');
+[status,cmdout]=system(command,'-echo');

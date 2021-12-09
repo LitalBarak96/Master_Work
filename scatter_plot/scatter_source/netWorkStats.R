@@ -85,7 +85,7 @@ netWorkStats<-function(current_path){
         #rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
         #colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
         p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
-        p_adj_kk<-to_dataframe(p_adj_k,all_name_LOI[i])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name_LOI[i],len_stat[[2]])
         datalist[[i]]<-p_adj_kk
       }
       else{
@@ -93,8 +93,8 @@ netWorkStats<-function(current_path){
         stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
         stats_data<-change_row_names(stats_data)
         list_rowname<-rownames(stats_data)
-        data_frame_p_adj<-data.frame(name =all_name_LOI[i],t(stats_data[,-1:-3]))
-        colnames(data_frame_p_adj)<-c("name",list_rowname)
+        data_frame_p_adj<-data.frame(name =all_name_LOI[i],t(stats_data[,-1:-3]),test=len_stat[[2]])
+        colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
         datalist[[i]]<-data_frame_p_adj
       }
       
@@ -118,7 +118,7 @@ netWorkStats<-function(current_path){
         #rownames(num_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(num_stat[[1]][["p.value"]]))
         #colnames(num_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(num_stat[[1]][["p.value"]]))
         p_adj_k_num<-as.data.frame(num_stat[[1]][["p.value"]])
-        p_adj_kk_num<-to_dataframe(p_adj_k_num,all_name_NOI[i])
+        p_adj_kk_num<-to_dataframe(p_adj_k_num,all_name_NOI[i],num_stat[[2]])
         datalist_num[[i]]<-p_adj_kk_num
         
       }
@@ -126,14 +126,13 @@ netWorkStats<-function(current_path){
         print(num_stat[[2]])
         print(num_stat)
         test<-num_stat
-        #rownames(num_stat[[1]][["names"]])<-gsub("Males_", "", rownames(num_stat[[1]][["names"]]))
         stats_data<-data.frame()
         stats_data<-as.data.frame(num_stat[[1]][["names"]]) 
         stats_data<-change_row_names(stats_data)
         list_rowname_num<-rownames(stats_data)
         data_frame_p_adj<-data.frame()
-        data_frame_p_adj<-data.frame(name =all_name_NOI[i],t(stats_data[,-1:-3]))
-        colnames(data_frame_p_adj)<-c("name",list_rowname_num)
+        data_frame_p_adj<-data.frame(name =all_name_NOI[i],t(stats_data[,-1:-3]),test=num_stat[[2]])
+        colnames(data_frame_p_adj)<-c("name",list_rowname_num,"test")
         datalist_num[[i]]<-data_frame_p_adj
       }
       

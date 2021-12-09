@@ -26,13 +26,14 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = FALSE
+with_rgb = TRUE
 
 dot<<-0
 xsize<<-0
 font_size<<-0
 width<<-0
 height<<-0
+type_format<<-0
 number_of_flies= 10
 num_of_movies =0
 
@@ -206,7 +207,6 @@ creatNetwork2popforscatter<-function(current_path){
 
 
 vizual<-function(){
-  
   library("readxl")
   library(openxlsx)
   temp.df<-data.frame()
@@ -232,8 +232,7 @@ vizual<-function(){
     setwd(param_dir)
     params <- as.data.frame(read.xlsx("params.xlsx"))
     
-  }
-  else{
+  }else{
     params<-data.frame()
     params <- as.data.frame(read.xlsx("D:/male_And_female_2/Males/params.xlsx"))
     
@@ -243,20 +242,21 @@ vizual<-function(){
   library(gridExtra)
   all_colors<-as.character(colors_of_groups$X1)
   #full_title = paste(name1,"vs",name2)
-  
+  all.df<-data.frame()
   order_name<-c()
-  order_name<-  as.data.frame(read_excel(choose.files(caption = "Select order file")))
+  #getting the dir and fininding the avg per con itself
+  path_to_avg_per_con<-allColorData$groupNameDir
+  full_path_avg_per_con<-paste0(path_to_avg_per_con,"\\","averages per condition.csv")
+  path_to_order_name<-paste0(((path_to_avg_per_con[1])),"\\","order.xlsx")
+  order_name<-as.data.frame(read_excel(path_to_order_name))
   library(dplyr)
   
   for(i in 1:num_of_pop){
-    capt =paste('Select avg per condition for ',i,' pop')
-    xlsxFile <- choose.files(caption = capt)
-    xlsxName <- tools::file_path_sans_ext(basename(dirname(xlsxFile)))
-    temp.df<-as.data.frame(read.csv(xlsxFile))
+    groupName <- tools::file_path_sans_ext(basename(dirname(full_path_avg_per_con[i])))
+    temp.df<-as.data.frame(read.csv(full_path_avg_per_con[i]))
     temp.df$file<-gsub("Aggregation", "Social Clustering", temp.df$file)
-    name = xlsxName
-    group_name_in_pop = tools::file_path_sans_ext(dirname((xlsxFile)))
-    number_of_movies =length(list.dirs(path=group_name_in_pop, full.names=T, recursive=F ))
+    name = groupName
+    number_of_movies =length(list.dirs(path=dirname(full_path_avg_per_con[i]), full.names=T, recursive=F ))
     temp.df$id =name
     temp.df$Variance=temp.df$Variance/(sqrt(number_of_movies))
     temp.df$file<-tools::file_path_sans_ext(temp.df$file)
@@ -277,15 +277,21 @@ vizual<-function(){
   
   setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   print(t)
-  ggsave(plot = t, filename = "scatterplot.pdf", height=height, width=width)
-  
+  if(type_format==1){
+    ggsave(plot = t, filename = "scatterplot.pdf", height=height, width=width,units = "cm")
+    
+  }
+  if(type_format==2){
+    ggsave(plot = t, filename = "scatterplot.jpeg", height=height, width=width,units = "cm")
+
+  }
   
 }
 
 
 
 
-
+###########################################################
 
 if(with_rgb==TRUE){
   allColorData <- read.xlsx(argv$path)
@@ -314,6 +320,8 @@ xsize<<-params$xsize
 font_size<<-params$font
 width<<-params$width
 height<<-params$height
+vizual_or_run<<-params$change
+type_format<<-params$format
 
 groupsNames <<- as.character(basename(allColorData$groupNameDir))
 
@@ -333,7 +341,7 @@ setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
 files.sources = list.files()
 sapply(files.sources, source)
 
-if(params$change == 1){
+if(vizual_or_run == 1){
   for (i in 1:num_of_pop){
     setwd(dir[i,1])
     group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
@@ -343,11 +351,7 @@ if(params$change == 1){
     boutLengthAndFrequencyForClassifiers(dir[i,1])
     
   }
-  #everyone is in the same dir and also this function go one dir up
-  
-  
- 
-  
+
   for (i in 1:num_of_pop){
     netWorkStats(dir[i,1])
   }
@@ -381,7 +385,7 @@ if(params$change == 1){
   }
 }
 
-if(params$change == 2){
+if(vizual_or_run == 2){
   vizual()
 }
 
