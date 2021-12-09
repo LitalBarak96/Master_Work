@@ -1,4 +1,11 @@
 calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
+ 
+  current_dir =getwd()
+  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
+  
   print(fileName)
   vertexNumber = gorder(net)
   par(mfrow=c(1,1), mar=c(1,1,1,1))

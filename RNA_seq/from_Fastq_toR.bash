@@ -2,9 +2,27 @@ code for RNA seq in unix
 
 FASTQ
 #example to spicific fastqc
- cd FASTQ_Generation_2021-06-09_00_56_28Z-425879454 
- fastqc N831_L001-ds.ad41ba4446b24ff0823c9da24345d56f/1_S1_L001_R2_001.fastq.gz
+ cd /mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data/Mali_1 
+ fastqc Mali_1_FKDL210333053-1a_HLF7TDSX2_L4_2.fq.gz
  
+fastqc Mali_1_FKDL210333053-1a_HLF7TDSX2_L4_1.fq.gz
+
+FASTQ_DIR="/mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data";
+cd $FASTQ_DIR
+read1="Mali_1_FKDL210333053-1a_HLF7TDSX2_L4_1.fq.gz";
+read2="Mali_1_FKDL210333053-1a_HLF7TDSX2_L4_2.fq.gz";
+R1paired=${read1//.fq/_paired.fq}
+R1unpaired=${read1//.fq/_unpaired.fq}	
+R2paired=${read2//.fq/_paired.fq}
+R2unpaired=${read2//.fq/_unpaired.fq}	
+TrimmomaticPE -phred33 $read1 $read2 $R1paired $R1unpaired $R2paired $R2unpaired ILLUMINACLIP:TruSeq-All_Bili_adaptors.fa:2:30:10:2 LEADING:3 TRAILING:3 MINLEN:100
+done
+
+
+
+FASTQ
+  cd FASTQ_Generation_2021-06-09_00_56_28Z-425879454 
+ fastqc N831_L001-ds.ad41ba4446b24ff0823c9da24345d56f/1_S1_L001_R2_001.fastq.gz
 #creat script that loop thorgh the folder
  #!/usr/bin/env bash
  #change to9 the dir that have the files
@@ -26,6 +44,49 @@ cd ~
  source .bashrc
  conda activate py3.7
 multiqc "/mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data" -o "/mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data"
+
+
+#STAR
+/mnt/c/Users/lital/STAR-2.7.9a/bin/Linux_x86_64/STAR
+
+OUT_DIR="/mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/STAR";
+Genom_ref="/mnt/d/RNA_seq/dm6_databases/dm6.fa";
+GTF_ref="/mnt/d/RNA_seq/dm6_databases/dm6.ncbiRefSeq.gtf";
+READ_len=147;
+STAR_prog="/mnt/c/Users/lital/STAR-2.7.9a/bin/Linux_x86_64/STAR"
+$STAR_prog --runThreadN 4 --runMode genomeGenerate --genomeDir $OUT_DIR --genomeFastaFiles $Genom_ref --sjdbGTFfile $GTF_ref --sjdbOverhang $READ_len
+
+
+STAR --runThreadN 4 --runMode genomeGenerate --genomeDir $OUT_DIR --genomeFastaFiles $Genom_ref --sjdbGTFfile $GTF_ref --sjdbOverhang $READ_len
+nohup STAR --runThreadN 4 --runMode genomeGenerate --genomeDir $OUT_DIR --genomeFastaFiles $Genom_ref --sjdbGTFfile $GTF_ref --sjdbOverhang $READ_len
+ &
+
+
+
+OUT_DIR="/mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/STAR";
+STAR_prog="/mnt/c/Users/lital/STAR-2.7.9a/bin/Linux_x86_64/STAR"
+
+for i in 1 2 3 4 5 6; 
+do read1=$(find /mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data -type f -name "*_L${i}_1_paired.fq.gz"); 
+read2=$(find /mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data -type f -name "*_L${i}_2_paired.fq.gz");
+$STAR_prog --runThreadN 4 --genomeDir $OUT_DIR --readFilesIn $read1,$read2
+
+
+done
+
+
+OUT_DIR="/mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/STAR";
+STAR_prog="/mnt/c/Users/lital/STAR-2.7.9a/bin/Linux_x86_64/STAR"
+
+for i in 1 2 3 4 5 6; 
+do read1=$(find /mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data -type f -name "*_L${i}_1_paired.fq.gz"|paste -d,  -s); 
+read2=$(find /mnt/d/RNA_seq/new_data/new/X201SC21111697-Z01-F001/raw_data -type f -name "*_L${i}_2_paired.fq.gz");
+echo $read1
+
+
+done
+
+
 
 
 #Trimmomatic

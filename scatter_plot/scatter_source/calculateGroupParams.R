@@ -1,4 +1,11 @@
 calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
+  
+  current_dir =getwd()
+  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
+  
   density <- vector()
   modularity <- vector()
   sdStrength <- vector()

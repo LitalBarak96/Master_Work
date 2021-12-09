@@ -1,4 +1,11 @@
 scaleing<-function(csv_file_name,dir){
+  
+  current_dir =getwd()
+  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
+  
   temp<-data.frame()
   setwd(dir[1,1])
   comb<-as.data.frame(read.csv(csv_file_name))

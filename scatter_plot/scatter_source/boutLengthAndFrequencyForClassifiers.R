@@ -1,4 +1,10 @@
-boutLengthAndFrequencyForClassifiers<-function(){
+boutLengthAndFrequencyForClassifiers<-function(dir){
+  current_dir =dir
+  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
+  
   str1 = "frequency"
   str2 = "bout length"
   dir<-list.dirs(recursive = F)

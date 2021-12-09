@@ -166,6 +166,7 @@ df_num_scale<-scale(significant)
 
 ##this part sperated between female and males 
 sub_samp_ordered <- df_num_scale[,rownames(new_order) ]
+
 pheatmap::pheatmap(sub_samp_ordered, annotation_col  = new_order, cluster_cols = F,show_rownames=FALSE,main ="most significant")
 #making avg for female and male
 middle = ncol(sub_samp_ordered)/2

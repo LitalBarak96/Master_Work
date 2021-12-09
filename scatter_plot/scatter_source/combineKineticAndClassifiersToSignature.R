@@ -1,4 +1,12 @@
-combineKineticAndClassifiersToSignature<-function(){
+combineKineticAndClassifiersToSignature<-function(dir){
+  
+  current_dir =dir
+  print(current_dir)
+  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
+  
   all.df<-data.frame()
   bl_frq.df<-data.frame()
   all_bl.df<-data.frame()

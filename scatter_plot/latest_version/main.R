@@ -36,6 +36,10 @@ height<<-0
 number_of_flies= 10
 num_of_movies =0
 
+groupsNames <<- c()
+
+
+
 #to debug
 if (with_rgb == TRUE){
   
@@ -50,6 +54,7 @@ if (with_rgb == TRUE){
   argv <- parse_args(p)
   
 }
+
 
 creatNetwork2popforscatter<-function(current_path){
   setwd(current_path)
@@ -79,7 +84,7 @@ creatNetwork2popforscatter<-function(current_path){
   
   #parametrs name
   paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
-  groupsNames <- as.character(basename(allColorData$groupNameDir))
+  #groupsNames <- as.character(basename(allColorData$groupNameDir))
   #6 is because there is 5 paramters
   length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
   number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
@@ -279,11 +284,8 @@ vizual<-function(){
 
 
 
-current_dir =getwd()
-setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
-files.sources = list.files()
-sapply(files.sources, source)
-setwd(current_dir)
+
+
 
 if(with_rgb==TRUE){
   allColorData <- read.xlsx(argv$path)
@@ -313,7 +315,7 @@ font_size<<-params$font
 width<<-params$width
 height<<-params$height
 
-
+groupsNames <<- as.character(basename(allColorData$groupNameDir))
 
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 for (i in 1:num_of_pop){
@@ -326,6 +328,10 @@ for(i in 1:num_of_pop){
   dir[i,1]<-str_trim(dir[i,1], side = c("right"))
 }
 
+
+setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+files.sources = list.files()
+sapply(files.sources, source)
 
 if(params$change == 1){
   for (i in 1:num_of_pop){
@@ -341,11 +347,15 @@ if(params$change == 1){
   
   
  
+  
   for (i in 1:num_of_pop){
     netWorkStats(dir[i,1])
   }
-  stats_main(dir)
-    #first stat than scalling
+  
+  
+  
+  stats_main(dir,groupsNames)
+  #first stat than scalling
   for_Scaleing(dir)
   
   for (i in 1:num_of_pop){
@@ -358,7 +368,6 @@ if(params$change == 1){
     #for each net there is different valus 
     setwd(dir[i,1])
     num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
-    #added path to it because he didn't recognize where it is
     combineKineticAndClassifiersToSignature(dir[i,1])
   }
   
