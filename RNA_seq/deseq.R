@@ -159,7 +159,7 @@ library("dplyr")
 df_num_scale<-scale(data)
 
 sub_samp_ordered <- df_num_scale[,rownames(new_order) ]
-pheatmap::pheatmap(sub_samp_ordered, annotation_col  = new_order, cluster_cols = F,show_rownames=FALSE,main ="all genes")
+pheatmap::pheatmap(sub_samp_ordered, annotation_col  = new_order,  cutree_rows = 4,cluster_cols = F,show_rownames=FALSE,main ="all genes")
 
 
 df_num_scale<-scale(significant)
@@ -167,18 +167,28 @@ df_num_scale<-scale(significant)
 ##this part sperated between female and males 
 sub_samp_ordered <- df_num_scale[,rownames(new_order) ]
 
-pheatmap::pheatmap(sub_samp_ordered, annotation_col  = new_order, cluster_cols = F,show_rownames=FALSE,main ="most significant")
+pheatmap::pheatmap(sub_samp_ordered, annotation_col  = new_order,  cutree_rows = 4,cluster_cols = F,show_rownames=FALSE,main ="most significant")
+
+
 #making avg for female and male
 middle = ncol(sub_samp_ordered)/2
 avg_feamle_and_male <-data.frame(female = rowSums(sub_samp_ordered[,1:middle]),male=rowSums(sub_samp_ordered[,(middle+1): ncol(sub_samp_ordered)]))
 
-pheatmap::pheatmap(avg_feamle_and_male, cluster_cols = F,show_rownames=FALSE,main ="avg male vs female significant")
+pheatmap::pheatmap(avg_feamle_and_male, cutree_rows = 4,cluster_cols = F,show_rownames=FALSE,main ="avg male vs female significant")
+
+#pcc
+library("ggpubr")
+ggscatter(avg_feamle_and_male, x = "female", y = "male", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "female", ylab = "male")
+
 
 #library(dplyr)
 #test<-as.data.frame(rownames(data))
 #after avg male and female we want only those who have diffrenece of 10
 avg_feamle_and_male<-avg_feamle_and_male %>% filter(abs(female-male) >5)
-pheatmap::pheatmap(avg_feamle_and_male, cluster_cols = F,main ="diffrence of 5 avg male vs female")
+pheatmap::pheatmap(avg_feamle_and_male, cutree_rows = 4,cluster_cols = F,main ="diffrence of 5 avg male vs female In significant")
 
 #df
 #to how many clusters cutree_rows
