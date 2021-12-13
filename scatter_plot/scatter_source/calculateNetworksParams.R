@@ -1,7 +1,7 @@
-calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName) {
+calculateNetworksParams <- function(net, folderPath, graphName, vertexSize,fileName,path_to_scripts) {
  
   current_dir =getwd()
-  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  setwd(path_to_scripts)
   files.sources = list.files()
   sapply(files.sources, source)
   setwd(current_dir)

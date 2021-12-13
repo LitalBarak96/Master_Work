@@ -98,15 +98,15 @@ with(subset(res, pvalue<.05 ), points(log2FoldChange, -log10(pvalue), pch=20, co
 with(subset(res, pvalue<.05 & abs(log2FoldChange)>=1), points(log2FoldChange, -log10(pvalue), pch=20, col="red"))
 
 #creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for up regulated genes
-x<-subset(res, pvalue<.05 & log2FoldChange>=1)
-x<-as.data.frame(x)
-write.csv(x, "D:/RNA_seq/new_data/new/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/Deseq/upregulated.csv",
+up<-subset(res, pvalue<.05 & log2FoldChange>=1)
+up<-as.data.frame(up)
+write.csv(up, "D:/RNA_seq/new_data/new/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/Deseq/upregulated.csv",
           row.names = TRUE)
 
 #creating a csv file with all the values with pval<.05 & log2FoldChange>=1 from T VS NT for down regulated genes
-x<-subset(res, pvalue<.05 & log2FoldChange<=-1)
-x<-as.data.frame(x)
-write.csv(x, "D:/RNA_seq/new_data/new/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/Deseq/downregulated.csv",
+down<-subset(res, pvalue<.05 & log2FoldChange<=-1)
+down<-as.data.frame(down)
+write.csv(down, "D:/RNA_seq/new_data/new/X201SC21111697-Z01-F001/SALMON_1.5.2/summery/Deseq/downregulated.csv",
           row.names = TRUE)
 
 
@@ -117,6 +117,7 @@ y<-subset(res, pvalue<.05 & abs(log2FoldChange)>=1)
 idx<-which(rownames(vsdata[,1]) %in% row.names(y))
 #finding the genes
 significant<-data[idx,]
+
 #organize the data frame
 #row.names(significant)<-significant[,1] 
 #significant<-significant[,2:ncol(significant)]
@@ -178,10 +179,22 @@ pheatmap::pheatmap(avg_feamle_and_male, cutree_rows = 4,cluster_cols = F,show_ro
 
 #pcc
 library("ggpubr")
+library("dplyr")
+avg_feamle_and_male$id<-(row.names(avg_feamle_and_male) %in% row.names(up))
+index<-which(row.names(avg_feamle_and_male) %in% row.names(up))
+avg_feamle_and_male[index,]$id ="up"
+index<-which(row.names(avg_feamle_and_male) %in% row.names(down))
+avg_feamle_and_male[index,]$id ="down"
+avg_feamle_and_male$id<-as.factor(avg_feamle_and_male$id)
+
+
+avg_feamle_and_male$name <- rownames(avg_feamle_and_male)
+
 ggscatter(avg_feamle_and_male, x = "female", y = "male", 
-          add = "reg.line", conf.int = TRUE, 
+          add = "reg.line",
+          conf.int = TRUE, color="id", palette = c("#00AFBB", "#E7B800"),
           cor.coef = TRUE, cor.method = "pearson",
-          xlab = "female", ylab = "male")
+          xlab = "female", ylab = "male",label = "name")
 
 
 #library(dplyr)

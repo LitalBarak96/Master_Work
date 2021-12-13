@@ -1,11 +1,11 @@
-stats_main<-function(dir,groupsNames){
+stats_main<-function(dir,groupsNames,path_to_scripts){
   current_dir =getwd()
-  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  setwd(path_to_scripts)
   files.sources = list.files()
   sapply(files.sources, source)
   setwd(current_dir)
   
-  Stat_sig(dir,groupsNames)
+  Stat_sig(dir,groupsNames,path_to_scripts)
   ave_kinetic.df<-as.data.frame(read.csv('stats averages per movie.csv'))
   ave_classifiers.df<-as.data.frame(read.csv('stats all_classifier_averages.csv'))
   ave_bl.df<-as.data.frame(read.csv('stats bout_length_scores.csv'))

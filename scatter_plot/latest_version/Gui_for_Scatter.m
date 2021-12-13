@@ -5,18 +5,17 @@ expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 savePath =suggestedPath;
 numOfGroups = length(expGroups);
 
-prompt = {'insert height window size','insert width window size','insert font size','insert asterisk size','insert x-axis size(abs value)','insert dot size'};
+prompt = {'insert height window size','insert width window size','insert font size','insert x-axis size(abs value)','insert dot size'};
 dlgtitle = 'parameters';
 dims = [1 35];
-definput = {'12','12','5','3','3','1'};
+definput = {'12','12','5','3','1'};
 opts.Resize = 'on';
 answer_size = inputdlg(prompt,dlgtitle,dims,definput,opts);
 height= str2num(answer_size{1});
 width =str2num(answer_size{2});
 font =str2num(answer_size{3});
-asterisk =str2num(answer_size{4});
-xsize =str2num(answer_size{5});
-dot =str2num(answer_size{6});
+xsize =str2num(answer_size{4});
+dot =str2num(answer_size{5});
 
 
 answer_change = questdlg('Would you like to run from the beginning or only change visual?', ...
@@ -74,7 +73,7 @@ color_in_char= sprintf(' %f', c)
 colorValue = [colorValue;c];
 end
 tables=table(groupNameDir,colorValue);
-tables_params=table(height,width,font,asterisk,xsize,change,deleted,dot,format);
+tables_params=table(height,width,font,xsize,change,deleted,dot,format);
 
 OriginFolder = pwd;
 folder=savePath;

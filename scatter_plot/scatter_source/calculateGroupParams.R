@@ -1,7 +1,7 @@
-calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
+calculateGroupParams <- function(fileNames, maxNumberOfInteration,path_to_scripts) {
   
   current_dir =getwd()
-  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  setwd(path_to_scripts)
   files.sources = list.files()
   sapply(files.sources, source)
   setwd(current_dir)
@@ -21,10 +21,10 @@ calculateGroupParams <- function(fileNames, maxNumberOfInteration) {
     if (maxNumberOfInteration > 0) {
       E(net)$weight <- E(net)$weight / maxNumberOfInteration
       E(net)$width <- E(net)$weight*7
-      cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7,fileNames[i])
+      cur <- calculateNetworksParams(net, folderPath, "number of interaction", 7,fileNames[i],path_to_scripts)
     } else {
       E(net)$width <- E(net)$weight*10
-      cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i])
+      cur <- calculateNetworksParams(net, folderPath, "length of interction", 25,fileNames[i],path_to_scripts)
     }
     density <- c(cur[1], density)
     modularity <- c(cur[2], modularity)

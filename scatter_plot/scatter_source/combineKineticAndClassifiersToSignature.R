@@ -1,8 +1,8 @@
-combineKineticAndClassifiersToSignature<-function(dir){
+combineKineticAndClassifiersToSignature<-function(dir,path_to_scripts){
   
   current_dir =dir
   print(current_dir)
-  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  setwd(path_to_scripts)
   files.sources = list.files()
   sapply(files.sources, source)
   setwd(current_dir)

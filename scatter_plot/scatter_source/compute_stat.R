@@ -1,7 +1,7 @@
-compute_stat<-function(csv_file_name,dir,groupsNames){
+compute_stat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
   library(dplyr)
   current_dir =getwd()
-  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  setwd(path_to_scripts)
   files.sources = list.files()
   sapply(files.sources, source)
   setwd(current_dir)
@@ -50,27 +50,27 @@ compute_stat<-function(csv_file_name,dir,groupsNames){
     data$names <- factor(data$names, levels=unique(data$names))
     
     
-    len_stat <- getStatisticData(featuers_comb[i,], names, value, data)
+    all_stat <- getStatisticData(featuers_comb[i,], names, value, data,path_to_scripts)
     #i need to write this to dataframe
     if(num_of_pop<3){
       print(all_name[i])
-      print(len_stat[[1]]$p.value)
-      dat <- data.frame(name =all_name[i],p_val = len_stat[[1]]$p.value)
-      dat$test <- len_stat[[2]]  # maybe you want to keep track of which iteration produced it?
+      print(all_stat[[1]]$p.value)
+      dat <- data.frame(name =all_name[i],p_val = all_stat[[1]]$p.value)
+      dat$test <- all_stat[[2]]  # maybe you want to keep track of which iteration produced it?
       datalist[[i]] <- dat # add it to your list
       
     }
     else{
-      if(len_stat[[2]]=="Kruskal"){
-        p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
-        p_adj_kk<-to_dataframe(p_adj_k,all_name[i],len_stat[[2]])
+      if(all_stat[[2]]=="Kruskal"){
+        p_adj_k<-as.data.frame(all_stat[[1]][["p.value"]])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name[i],all_stat[[2]],path_to_scripts)
         datalist[[i]]<-p_adj_kk
       }
       else{
-        stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
-        stats_data<-change_row_names(stats_data)
+        stats_data<-as.data.frame(all_stat[[1]][["names"]]) 
+        stats_data<-change_row_names(stats_data,path_to_scripts)
         list_rowname<-rownames(stats_data)
-        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]),test=len_stat[[2]])
+        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]),test=all_stat[[2]])
         colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
         datalist[[i]]<-data_frame_p_adj
       }

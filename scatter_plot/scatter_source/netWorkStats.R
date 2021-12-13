@@ -1,7 +1,7 @@
-netWorkStats<-function(current_path,xlsxFile){
+netWorkStats<-function(current_path,xlsxFile,path_to_scripts){
   
   current_dir =getwd()
-  setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+  setwd(path_to_scripts)
   files.sources = list.files()
   sapply(files.sources, source)
   setwd(current_dir)
@@ -20,8 +20,8 @@ netWorkStats<-function(current_path,xlsxFile){
   for (i in 1:allData$Number.of.groups[1]) {
     cur <- (i + 1) * 2
     numberOfMovies[i]<- allData[i, 3]
-    lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
-    numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
+    lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0,path_to_scripts))
+    numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1],path_to_scripts))
   }
   
   #parametrs name
@@ -70,7 +70,7 @@ netWorkStats<-function(current_path,xlsxFile){
   
   
   for (i in 1:length(paramsNames)) {
-    len_stat<-statistic_to_csv_of_network(groupsNames, lengthParams[i,])
+    len_stat<-statistic_to_csv_of_network(groupsNames, lengthParams[i,],path_to_scripts)
     
     if(num_of_pop<3){
       print(all_name_LOI[i])
@@ -82,16 +82,13 @@ netWorkStats<-function(current_path,xlsxFile){
     }
     else{
       if(len_stat[[2]]=="Kruskal"){
-        #rownames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(len_stat[[1]][["p.value"]]))
-        #colnames(len_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(len_stat[[1]][["p.value"]]))
         p_adj_k<-as.data.frame(len_stat[[1]][["p.value"]])
-        p_adj_kk<-to_dataframe(p_adj_k,all_name_LOI[i],len_stat[[2]])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name_LOI[i],len_stat[[2]],path_to_scripts)
         datalist[[i]]<-p_adj_kk
       }
       else{
-        #rownames(len_stat[[1]][["names"]])<-gsub("Males_", "", rownames(len_stat[[1]][["names"]]))
         stats_data<-as.data.frame(len_stat[[1]][["names"]]) 
-        stats_data<-change_row_names(stats_data)
+        stats_data<-change_row_names(stats_data,path_to_scripts)
         list_rowname<-rownames(stats_data)
         data_frame_p_adj<-data.frame(name =all_name_LOI[i],t(stats_data[,-1:-3]),test=len_stat[[2]])
         colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
@@ -103,7 +100,7 @@ netWorkStats<-function(current_path,xlsxFile){
     len_data
     
     #####################################################################################
-    num_stat<-statistic_to_csv_of_network(groupsNames, numberParams[i,])
+    num_stat<-statistic_to_csv_of_network(groupsNames, numberParams[i,],path_to_scripts)
     
     if(num_of_pop<3){
       print(all_name_NOI[i])
@@ -115,10 +112,8 @@ netWorkStats<-function(current_path,xlsxFile){
     }
     else{
       if(num_stat[[2]]=="Kruskal"){
-        #rownames(num_stat[[1]][["p.value"]])<-gsub("Males_", "", rownames(num_stat[[1]][["p.value"]]))
-        #colnames(num_stat[[1]][["p.value"]])<-gsub("Males_", "", colnames(num_stat[[1]][["p.value"]]))
         p_adj_k_num<-as.data.frame(num_stat[[1]][["p.value"]])
-        p_adj_kk_num<-to_dataframe(p_adj_k_num,all_name_NOI[i],num_stat[[2]])
+        p_adj_kk_num<-to_dataframe(p_adj_k_num,all_name_NOI[i],num_stat[[2]],path_to_scripts)
         datalist_num[[i]]<-p_adj_kk_num
         
       }
@@ -128,7 +123,7 @@ netWorkStats<-function(current_path,xlsxFile){
         test<-num_stat
         stats_data<-data.frame()
         stats_data<-as.data.frame(num_stat[[1]][["names"]]) 
-        stats_data<-change_row_names(stats_data)
+        stats_data<-change_row_names(stats_data,path_to_scripts)
         list_rowname_num<-rownames(stats_data)
         data_frame_p_adj<-data.frame()
         data_frame_p_adj<-data.frame(name =all_name_NOI[i],t(stats_data[,-1:-3]),test=num_stat[[2]])

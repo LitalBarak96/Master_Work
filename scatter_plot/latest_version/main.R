@@ -41,7 +41,7 @@ groupsNames <<- c()
 xlsxFile<<-c()
 
 
-#to debug
+#to debug if i want to run and see the var
 if (with_rgb == TRUE){
   
   p <- arg_parser("path of the color")
@@ -56,6 +56,8 @@ if (with_rgb == TRUE){
   
 }
 
+rgb_2_hex <- function(r,g,b){
+  return(rgb(r, g, b, maxColorValue = 1))}
 
 creatNetwork2popforscatter<-function(current_path){
   setwd(current_path)
@@ -80,13 +82,12 @@ creatNetwork2popforscatter<-function(current_path){
   for (i in 1:allData$Number.of.groups[1]) {
     cur <- (i + 1) * 2
     numberOfMovies[i]<- allData[i, 3]
-    lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0))
-    numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1]))
+    lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0,path_to_scripts))
+    numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1],path_to_scripts))
   }
   
   #parametrs name
   paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
-  #groupsNames <- as.character(basename(allColorData$groupNameDir))
   #6 is because there is 5 paramters
   length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
   number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
@@ -305,6 +306,7 @@ if(with_rgb==TRUE){
   num_of_pop<<-nrow(allColorData)
 }
 
+path_to_scripts<-"D:/scripts_for_adding_netwrok/scatter_plot/scatter_source"
 
 if(with_rgb=="TRUE"){
   param_dir = tools::file_path_sans_ext(dirname((argv$path)))
@@ -340,7 +342,7 @@ for(i in 1:num_of_pop){
 xlsxFile <<- choose.files(default = "", caption = "Select expData file")
 
 
-setwd("D:/scripts_for_adding_netwrok/scatter_plot/scatter_source")
+setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
 
@@ -349,21 +351,21 @@ if(vizual_or_run == 1){
     setwd(dir[i,1])
     group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
     num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
-    averagesPerMovieByFile(dir[i,1])
-    importClassifierFilesAndCalculatePerFrame(dir[i,1])
-    boutLengthAndFrequencyForClassifiers(dir[i,1])
+    averagesPerMovieByFile(dir[i,1],path_to_scripts)
+    importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
+    boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
     
   }
 
   for (i in 1:num_of_pop){
-    netWorkStats(dir[i,1],xlsxFile)
+    netWorkStats(dir[i,1],xlsxFile,path_to_scripts)
   }
   
   
   
-  stats_main(dir,groupsNames)
+  stats_main(dir,groupsNames,path_to_scripts)
   #first stat than scalling
-  for_Scaleing(dir)
+  for_Scaleing(dir,path_to_scripts)
   
   for (i in 1:num_of_pop){
     #the group name if for saving each paramter of the network in spicific var
@@ -375,7 +377,7 @@ if(vizual_or_run == 1){
     #for each net there is different valus 
     setwd(dir[i,1])
     num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
-    combineKineticAndClassifiersToSignature(dir[i,1])
+    combineKineticAndClassifiersToSignature(dir[i,1],path_to_scripts)
   }
   
   vizual()
