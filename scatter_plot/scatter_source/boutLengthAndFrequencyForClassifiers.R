@@ -12,7 +12,7 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
   ave_bl<-data.frame()
   total_bl<-data.frame()
   total_all<-data.frame()
-  per_fly_freq<-data.frame()
+  per_movie_freq<-data.frame()
   total_freq_all<-data.frame()
   ave_bl_fly<-data.frame()
   first<-TRUE
@@ -26,7 +26,6 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
     total_freq.df<-data.frame()
     for(j in 1:length(files)){
       file<-readMat(paste0(curr.dir,'/',files[j])) #read each mat file
-      ave_bl<-data.frame()
       #i is the number of flys
       for (i in 1:length(file$allScores[[4]])){
         #gives the value in each frame if there was movement or not (0 or 1)
@@ -56,10 +55,11 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
         #frq calculated by the number of accurance that is happening
         ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
         #calculating the number of instans that had movemnt (e.g 21 accurance divideing by 27001 frames)
-        per_fly_freq<-rbind(per_fly_freq, as.numeric(lengths(bl_vector)/length(tmp.df$value))) # combine frequency of all flies
+        #multiply with 30 beacuse we wanted to change from perframe to seconds
+        per_movie_freq<-rbind(per_movie_freq, as.numeric(lengths(bl_vector)/(30*(length(tmp.df$value))))) # combine frequency of all flies
       }
       ave_per_movie<-colMeans(ave_bl, na.rm = T, dims = 1)
-      ave_freq_movie<-colMeans(per_fly_freq, na.rm = T, dims = 1)
+      ave_freq_movie<-colMeans(per_movie_freq, na.rm = T, dims = 1)
       #I THINK I FIXES THAT PROBLEM WITH INIT THE BL VECTOR TO DATAFRAME OF ZEROS AND ALSO CHANGE FROM MEAN TO COL MEAN BECAUSE THE DF WONT ALLOW TO DO MEAN (I THIINK BECASUE OF THE TITLE OF THE DF)
       if (is.numeric(colMeans(ave_bl))==FALSE){
         ave_per_movie<-data.frame(0)
