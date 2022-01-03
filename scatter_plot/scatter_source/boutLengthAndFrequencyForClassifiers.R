@@ -15,28 +15,31 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
   per_fly_freq<-data.frame()
   total_freq_all<-data.frame()
   ave_bl_fly<-data.frame()
-  first<-T
+  first<-TRUE
   for(k in 1:length(dir)){
     curr.dir<-(paste0(dir[k],'/')) 
     print(k)
     print(curr.dir)
     files<-list.files(path=paste0(curr.dir), pattern = 'scores')
-    first<-T
+    first<-TRUE
     total.df<-data.frame()
     total_freq.df<-data.frame()
     for(j in 1:length(files)){
       file<-readMat(paste0(curr.dir,'/',files[j])) #read each mat file
       ave_bl<-data.frame()
+      #i is the number of flys
       for (i in 1:length(file$allScores[[4]])){
+        #gives the value in each frame if there was movement or not (0 or 1)
         tmp.df <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(file$allScores[[4]][[i]][[1]])) # convert format of data for each fly
         
         ### get bout length for each fly ###
         counter<-0
-        bl_vector<-data.frame()
+        bl_vector<-data.frame(0)
         first_bout<-0
         for (m in 1:length(tmp.df$value)){ # get bout length of one fly
           if ((tmp.df$value[m]==1)&(first_bout==0)){
             counter<-1
+            #there is the first bout?
             first_bout<-1
           }
           else if (tmp.df$value[m]==1) {
@@ -50,12 +53,15 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
           }
         }
         #ave_bl_fly<-mean(bl_vector)
+        #frq calculated by the number of accurance that is happening
         ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
+        #calculating the number of instans that had movemnt (e.g 21 accurance divideing by 27001 frames)
         per_fly_freq<-rbind(per_fly_freq, as.numeric(lengths(bl_vector)/length(tmp.df$value))) # combine frequency of all flies
       }
-      ave_per_movie<-mean(colMeans(ave_bl, na.rm = T, dims = 1))
+      ave_per_movie<-colMeans(ave_bl, na.rm = T, dims = 1)
       ave_freq_movie<-colMeans(per_fly_freq, na.rm = T, dims = 1)
-      if (is.numeric(mean(ave_bl))==F){
+      #I THINK I FIXES THAT PROBLEM WITH INIT THE BL VECTOR TO DATAFRAME OF ZEROS AND ALSO CHANGE FROM MEAN TO COL MEAN BECAUSE THE DF WONT ALLOW TO DO MEAN (I THIINK BECASUE OF THE TITLE OF THE DF)
+      if (is.numeric(colMeans(ave_bl))==FALSE){
         ave_per_movie<-data.frame(0)
       }
       total_bl <- data.frame(dir=dir[k], files=paste(str2,files[j]), value=as.numeric(ave_per_movie)) # data frame per file
