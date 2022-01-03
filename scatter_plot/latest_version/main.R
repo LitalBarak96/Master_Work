@@ -327,8 +327,8 @@ vizual<-function(){
 
 
 
-
-###########################################################
+#EXTRACTION AND USER INPUT TO LIST OF DIRS
+############################################################################################################
 
 
 debbug_path_color<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/data/GroupedvsSingle/color.xlsx"
@@ -347,22 +347,17 @@ if(with_rgb==TRUE){
   file.exists(argv$path)
   allColorData <- read.xlsx(argv$path)
   num_of_pop<<-nrow(allColorData)
+  #reading the params from the exel
+  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+  setwd(param_dir)
+  params<-data.frame()
+  params <- as.data.frame(read.xlsx("params.xlsx"))
   
 }else{
   #test for myself
   library(openxlsx)
   allColorData <- as.data.frame(read.xlsx(debbug_path_color))
   num_of_pop<<-nrow(allColorData)
-}
-
-
-if(with_rgb=="TRUE"){
-  #reading the params from the exel
-  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
-  setwd(param_dir)
-  params<-data.frame()
-  params <- as.data.frame(read.xlsx("params.xlsx"))
-}else{
   params<-data.frame()
   params <- as.data.frame(read.xlsx(debbug_path_param))
 }
@@ -379,10 +374,6 @@ type_format<<-params$format
 #choose the expData file for the network values
 xlsxFile <<- choose.files(default = "", caption = "Select expData file")
 
-
-
-########## init  global values that needed for the run
-
 #to read the group names in the wanted order
 groupsNames <<- as.character(basename(allColorData$groupNameDir))
 
@@ -390,22 +381,21 @@ groupsNames <<- as.character(basename(allColorData$groupNameDir))
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 for (i in 1:num_of_pop){
   dir[i,1]<-allColorData$groupNameDir[i]
-}
-
-
-#chnage the dir values so it would be readable
-dir$X1<-gsub("\\\\", "/", dir$X1)
-for(i in 1:num_of_pop){
   dir[i,1]<-str_trim(dir[i,1], side = c("right"))
 }
 
+dir$X1<-gsub("\\\\", "/", dir$X1)
 
-#### run the functions
+
+#TEST NEED TO BE TRUE
+nrow(dir) == num_of_pop
 
 setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
 
+#COMPUTATION
+#####################################################################################
 
 #### the actuall run (if the user choose to run from the start)
 if(vizual_or_run == 1){
