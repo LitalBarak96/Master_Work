@@ -26,7 +26,7 @@ betN<-c()
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 
 dot<<-0
 xsize<<-0
@@ -72,7 +72,7 @@ creatNetwork2popforscatter<-function(current_path){
   }else{
     #test for myself
     library(openxlsx)
-    allColorData <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
+    allColorData <- as.data.frame(read.xlsx(debbug_path_color))
     num_of_pop<<-nrow(allColorData)
   }
   
@@ -330,20 +330,31 @@ vizual<-function(){
 
 ###########################################################
 
+
+debbug_path_color<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/data/GroupedvsSingle/color.xlsx"
+debbug_path_param<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/data/GroupedvsSingle/params.xlsx"
+#the path that have all the scripts in
+path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
+
+#sainity check # 3 trues
+file.exists(debbug_path_color)
+file.exists(debbug_path_param)
+file.exists(path_to_scripts)
+
 if(with_rgb==TRUE){
   #reading from the path the color values
+  #check if exist
+  file.exists(argv$path)
   allColorData <- read.xlsx(argv$path)
   num_of_pop<<-nrow(allColorData)
   
 }else{
   #test for myself
   library(openxlsx)
-  allColorData <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
+  allColorData <- as.data.frame(read.xlsx(debbug_path_color))
   num_of_pop<<-nrow(allColorData)
 }
 
-#the path that have all the scripts in
-path_to_scripts<-"D:/scripts_for_adding_netwrok/scatter_plot/scatter_source"
 
 if(with_rgb=="TRUE"){
   #reading the params from the exel
@@ -353,7 +364,7 @@ if(with_rgb=="TRUE"){
   params <- as.data.frame(read.xlsx("params.xlsx"))
 }else{
   params<-data.frame()
-  params <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/params.xlsx"))
+  params <- as.data.frame(read.xlsx(debbug_path_param))
 }
 
 dot<<-params$dot
