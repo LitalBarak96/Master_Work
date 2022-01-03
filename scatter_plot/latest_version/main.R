@@ -385,7 +385,11 @@ for (i in 1:num_of_pop){
 }
 
 dir$X1<-gsub("\\\\", "/", dir$X1)
-
+for(i in 1:num_of_pop){
+  if(dir.exists(dir[i,1])){
+    print("exist!!")
+  }
+}
 
 #TEST NEED TO BE TRUE
 nrow(dir) == num_of_pop
