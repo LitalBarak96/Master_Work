@@ -28,31 +28,34 @@ averagesPerMovieByFile<-function(dir,path_to_scripts){
         
         for(i in 1:length(df$data)){
           tmp.df<- data.frame(dir=dir[k], file=files[j], fly=i, value=as.numeric(df$data[[i]][[1]])) #convert to data frame
-          tmp_ave.df<-  data.frame(dir=curr.dir, file=files[j], fly=i, value=mean(tmp.df$value)) #make average per fly
+          tmp_ave.df<-  data.frame(dir=dir[k], file=files[j], fly=i, value=mean(tmp.df$value)) #make average per fly
           row_ave.df<- rbind(row_ave.df, tmp_ave.df) #add average of each fly to others in the same movie
         }
         tmp_movie_ave.df<-data.frame(dir=dir[k], file=files[j], value=mean(row_ave.df$value))
         
-        if (index==1)
+        if (index==1){
           movie_ave.df<-data.frame(dir=dir[k], file=files[j], value=mean(row_ave.df$value)) #make average per movie
-        if (index==1)  
           col.df<- row_ave.df
-        else {
+        }else{
           col.df<- cbind(col.df, row_ave.df)
           movie_ave.df<-cbind(movie_ave.df, tmp_movie_ave.df) #combine averages per movie
         }
-        col.df<- cbind(col.df, row_ave.df)
         row_ave.df<- NULL
       }
     }
-    if (k==1)
+    if (k==1){
       total_movie_ave.df<- movie_ave.df
-    else 
+      all_col.df<-col.df
+    }else{
       total_movie_ave.df<-rbind(total_movie_ave.df, movie_ave.df)
+      all_col.df<-rbind(all_col.df, col.df)
+    }
     
-    ordered_ave<- col.df[order(col.df$file),]
-    final.df<-rbind(final.df, ordered_ave)
+    #ordered_ave<- col.df[order(col.df$file),]
+    #final.df<-rbind(final.df, ordered_ave)
   }
   write.csv(total_movie_ave.df, 'averages per movie.csv', row.names=F)
+  write.csv(all_col.df, 'averages per fly per movie.csv', row.names=F)
+  
   
 }
