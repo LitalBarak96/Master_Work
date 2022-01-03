@@ -56,7 +56,7 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
         ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
         #calculating the number of instans that had movemnt (e.g 21 accurance divideing by 27001 frames)
         #multiply with 30 beacuse we wanted to change from perframe to seconds
-        per_movie_freq<-rbind(per_movie_freq, as.numeric(lengths(bl_vector)/(30*(length(tmp.df$value))))) # combine frequency of all flies
+        per_movie_freq<-rbind(per_movie_freq, as.numeric(lengths(bl_vector)/((length(tmp.df$value))/30))) # combine frequency of all flies
       }
       ave_per_movie<-colMeans(ave_bl, na.rm = T, dims = 1)
       ave_freq_movie<-colMeans(per_movie_freq, na.rm = T, dims = 1)
@@ -91,8 +91,6 @@ boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
     }
     
   }
-  #remove all the na
-  total_all[is.na(total_all)] <- 0
   write.csv(total_all, 'bout_length_scores.csv', row.names = F)
   write.csv(total_freq_all, 'frequency_scores.csv', row.names = F)
   
