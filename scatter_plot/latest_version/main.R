@@ -72,7 +72,7 @@ creatNetwork2popforscatter<-function(current_path){
   }else{
     #test for myself
     library(openxlsx)
-    allColorData <- as.data.frame(read.xlsx("D:/male_And_female_2/Males/color.xlsx"))
+    allColorData <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
     num_of_pop<<-nrow(allColorData)
   }
   
@@ -92,6 +92,8 @@ creatNetwork2popforscatter<-function(current_path){
   length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
   number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
   
+  num_of_flies<-getNumOfFlies(allData[1:numberOfMovies[1], cur],path_to_scripts)
+  
   for (i in 1:num_of_pop){ 
     lengthAvg<-paste0("lengthAvg",as.character(i))
     length[i,1]<-lengthAvg
@@ -101,28 +103,61 @@ creatNetwork2popforscatter<-function(current_path){
     number[i,1]<-numberAvg
   }
   
-  
+  #unlisting all so we could scale
   num<-apply(numberParams, 1, unlist)
   lengh<-apply(lengthParams, 1, unlist)
-  for (j in 1:5){
+  
+  for (j in 1:length(paramsNames)){
     scaled_num<-scale(as.numeric(unlist(num[j])))
     scaled_len<-scale(as.numeric(unlist(lengh[j])))
-    
-    for(m in 1:num_of_pop){
-      start =1
-      if(m!=1) {
-        start = (length(scaled_num)/num_of_pop)*(m-1)
+    #if it is for bc or stength the after scaleing need to be diffrent
+    if(j == 4 || j == 5 ){
+      #creat list of everythiing to sub pop of number of flys
+      spl_num <- split(scaled_num, ceiling(seq_along(scaled_num)/num_of_flies))
+      spl_num<-unname(spl_num)
+      clist<-c()
+      len_of_all_pop<-length(spl_num)
+      for (i in 1:len_of_all_pop){
+        clist<-cbind(clist,c(spl_num[i]))
       }
-      numberParams[j,m]<-list(scaled_num[(start+1):((length(scaled_num)/num_of_pop)*m)])
+      num_of_sub_pop <-len_of_all_pop/num_of_pop
+      splited<-split(clist, ceiling(seq_along(clist)/num_of_sub_pop))
+      splited<-unname(splited)
+      for(m in 1:length(splited)){
+        numberParams[j,m]<-splited[m]
+        
+      }
+      ####################### for len
+      
+      spl_len <- split(scaled_len, ceiling(seq_along(scaled_len)/num_of_flies))
+      spl_len<-unname(spl_len)
+      clist<-c()
+      len_of_all_pop<-length(spl_len)
+      for (i in 1:len_of_all_pop){
+        clist<-cbind(clist,c(spl_len[i]))
+      }
+      num_of_sub_pop <-len_of_all_pop/num_of_pop
+      splited<-split(clist, ceiling(seq_along(clist)/num_of_sub_pop))
+      splited<-unname(splited)
+      for(m in 1:length(splited)){
+        lengthParams[j,m]<-splited[m]
+      }
+    }else{
+      subPopLen<-(length(scaled_num))/num_of_pop
+      for(m in 1:num_of_pop){
+        splited<-split(scaled_num, ceiling(seq_along(scaled_num)/subPopLen))
+        splited<-unname(splited)
+        numberParams[j,m]<-as.list(splited[m])
+      }
+      
+      subPopLen<-(length(scaled_len))/num_of_pop
+      for(m in 1:num_of_pop){
+        splited<-split(scaled_len, ceiling(seq_along(scaled_len)/subPopLen))
+        splited<-unname(splited)
+        lengthParams[j,m]<-as.list(splited[m])
+      }
     }
     
-    for(m in 1:num_of_pop){
-      start =1
-      if(m!=1) {
-        start = (length(scaled_len)/num_of_pop)*(m-1)
-      }
-      lengthParams[j,m]<-list(scaled_len[(start+1):((length(scaled_len)/num_of_pop)*m)])
-    }
     
   }
   
@@ -218,7 +253,7 @@ vizual<-function(){
     allColorData <- read.xlsx(argv$path)
     num_of_pop<<-nrow(allColorData)
   }else{
-    allColorData <- as.data.frame(read.xlsx("D:/male_And_female_2/Males/color.xlsx"))
+    allColorData <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
   }
   
   colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
@@ -236,7 +271,7 @@ vizual<-function(){
     
   }else{
     params<-data.frame()
-    params <- as.data.frame(read.xlsx("D:/male_And_female_2/Males/params.xlsx"))
+    params <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
     
   }
   
@@ -296,26 +331,29 @@ vizual<-function(){
 ###########################################################
 
 if(with_rgb==TRUE){
+  #reading from the path the color values
   allColorData <- read.xlsx(argv$path)
   num_of_pop<<-nrow(allColorData)
   
 }else{
   #test for myself
   library(openxlsx)
-  allColorData <- as.data.frame(read.xlsx("D:/male_And_female_2/Males/color.xlsx"))
+  allColorData <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
   num_of_pop<<-nrow(allColorData)
 }
 
+#the path that have all the scripts in
 path_to_scripts<-"D:/scripts_for_adding_netwrok/scatter_plot/scatter_source"
 
 if(with_rgb=="TRUE"){
+  #reading the params from the exel
   param_dir = tools::file_path_sans_ext(dirname((argv$path)))
   setwd(param_dir)
   params<-data.frame()
   params <- as.data.frame(read.xlsx("params.xlsx"))
 }else{
   params<-data.frame()
-  params <- as.data.frame(read.xlsx("D:/male_And_female_2/Males/params.xlsx"))
+  params <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/params.xlsx"))
 }
 
 dot<<-params$dot
@@ -326,49 +364,60 @@ height<<-params$height
 vizual_or_run<<-params$change
 type_format<<-params$format
 
+
+#choose the expData file for the network values
+xlsxFile <<- choose.files(default = "", caption = "Select expData file")
+
+
+
+########## init  global values that needed for the run
+
+#to read the group names in the wanted order
 groupsNames <<- as.character(basename(allColorData$groupNameDir))
 
+#creat list of dirs 
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
 for (i in 1:num_of_pop){
   dir[i,1]<-allColorData$groupNameDir[i]
 }
 
 
+#chnage the dir values so it would be readable
 dir$X1<-gsub("\\\\", "/", dir$X1)
 for(i in 1:num_of_pop){
   dir[i,1]<-str_trim(dir[i,1], side = c("right"))
 }
 
-xlsxFile <<- choose.files(default = "", caption = "Select expData file")
 
+#### run the functions
 
 setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
 
+
+#### the actuall run (if the user choose to run from the start)
 if(vizual_or_run == 1){
   for (i in 1:num_of_pop){
+    #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
-    group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-    num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    
   }
 
-  for (i in 1:num_of_pop){
-    netWorkStats(dir[i,1],xlsxFile,path_to_scripts)
-  }
-  
-  
-  
+
+
+  #not need for each pop,this calculating the network ass whole i need only for scaleing to do this 
+  netWorkStats(dir[1,1],xlsxFile,path_to_scripts,groupsNames)
   stats_main(dir,groupsNames,path_to_scripts)
   #first stat than scalling
   for_Scaleing(dir,path_to_scripts)
   
   for (i in 1:num_of_pop){
-    #the group name if for saving each paramter of the network in spicific var
+    
+    #the group name if for saving each paramter of the network in spicific var because i want after the scale 
+    #to return as befor was
     group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
     creatNetwork2popforscatter(dir[i,1])
   }
