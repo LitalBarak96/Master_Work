@@ -12,18 +12,6 @@ library(argparser, quietly=TRUE)
 library(stringr)
 library("readxl")
 
-densL<-c()
-varience<-c()
-modL<-c()
-sdL<-c()
-strL<-c()
-betL<-c()
-densN<-c()
-modN<-c()
-sdN<-c()
-strN<-c()
-betN<-c()
-group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
 with_rgb = FALSE
@@ -405,8 +393,8 @@ sapply(files.sources, source)
 if(vizual_or_run == 1){
   #CALCULATING THE PARAMS FOR ALL THE POPULATION TOGETHER
   Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
-  lengthParams<- unlist(Listedparams[1],recursive=FALSE)
-  numberParams<- unlist(Listedparams[2],recursive=FALSE)
+  lengthParams<- as.data.frame(Listedparams[1])
+  numberParams<- as.data.frame(Listedparams[2])
 
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
@@ -414,10 +402,14 @@ if(vizual_or_run == 1){
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
+    #group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+    netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop)
   }
 
 ##############################################
 #SCALING
+
+  
 
 
   #not need for each pop,this calculating the network ass whole i need only for scaleing to do this 
