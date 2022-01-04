@@ -13,21 +13,25 @@ importClassifierFilesAndCalculatePerFrame<-function(dir,path_to_scripts){
   totalscore.df<-data.frame()
   finalavepermovie.df<-data.frame()
   
-  first<-T
+  first<-TRUE
+  #NUMBER OF MOVIES
   for(k in 1:length(dir)){
     curr.dir<-(paste0(dir[k],'/')) 
     print(k)
     print(curr.dir)
+    #FILES ARE THE SCORE PARAMETERS
     files<-list.files(path=paste0(curr.dir), pattern = 'scores')
     avepermovie.df<-data.frame()
-    first<-T
+    first<-TRUE
     for(j in 1:length(files)){
       file<-readMat(paste0(curr.dir,'/',files[j])) #read each mat file
       score.df<-data.frame()
       for (i in 1:length(file$allScores[[4]])){
+        #THIS IS PER FLY IN BINARY DATA PER FRAME 0 OR 1
+        #i IS THE NUMBER OF FLY
         tmp.df <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(file$allScores[[4]][[i]][[1]])) # convert format of data for each fly
         if (mean(tmp.df$value)!=0){
-          scores.table<-(table(tmp.df$value))/(length(tmp.df$value)) #calculate frequency of behavior
+          scores.table<-(table(tmp.df$value))/((length(tmp.df$value)/30)) #calculate frequency of behavior CHANGE FOR PER SECOND IN 04.01.22
           tmpflyscore.df<-data.frame(dir=dir[k], files=files[j], fly=i, values=(scores.table[2])) 
           score.df<-rbind(score.df, tmpflyscore.df)
         }
