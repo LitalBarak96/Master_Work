@@ -403,6 +403,11 @@ sapply(files.sources, source)
 
 #### the actuall run (if the user choose to run from the start)
 if(vizual_or_run == 1){
+  #CALCULATING THE PARAMS FOR ALL THE POPULATION TOGETHER
+  Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
+  lengthParams<- unlist(Listedparams[1],recursive=FALSE)
+  numberParams<- unlist(Listedparams[2],recursive=FALSE)
+
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
@@ -411,6 +416,8 @@ if(vizual_or_run == 1){
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
   }
 
+##############################################
+#SCALING
 
 
   #not need for each pop,this calculating the network ass whole i need only for scaleing to do this 
@@ -419,13 +426,7 @@ if(vizual_or_run == 1){
   #first stat than scalling
   for_Scaleing(dir,path_to_scripts)
   
-  for (i in 1:num_of_pop){
-    
-    #the group name if for saving each paramter of the network in spicific var because i want after the scale 
-    #to return as befor was
-    group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-    creatNetwork2popforscatter(dir[i,1])
-  }
+
   
   for(i in 1:num_of_pop){
     #for each net there is different valus 
