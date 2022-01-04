@@ -31,12 +31,12 @@ importClassifierFilesAndCalculatePerFrame<-function(dir,path_to_scripts){
         #i IS THE NUMBER OF FLY
         tmp.df <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(file$allScores[[4]][[i]][[1]])) # convert format of data for each fly
         if (mean(tmp.df$value)!=0){
-          scores.table<-(table(tmp.df$value))/((length(tmp.df$value)/30)) #calculate frequency of behavior CHANGE FOR PER SECOND IN 04.01.22
+          scores.table<-(table(tmp.df$value))/((length(tmp.df$value))) #calculate amount(%) of behavior(In FRAMES it is not frq)
           tmpflyscore.df<-data.frame(dir=dir[k], files=files[j], fly=i, values=(scores.table[2])) 
           score.df<-rbind(score.df, tmpflyscore.df)
         }
         else{
-          tmpflyscore.df<-data.frame(dir=dir[k], files=files[j], fly=i, values=(scores.table[2])) 
+          tmpflyscore.df<-data.frame(dir=dir[k], files=files[j], fly=i, values=0 )
           score.df<-rbind(score.df, tmpflyscore.df)
         }
       }
@@ -50,7 +50,7 @@ importClassifierFilesAndCalculatePerFrame<-function(dir,path_to_scripts){
       
       if (first){
         allscore.df<-score.df
-        first<-F
+        first<-FALSE
       }
       else
         allscore.df<-cbind(allscore.df,score.df) # merge all files in each movie
