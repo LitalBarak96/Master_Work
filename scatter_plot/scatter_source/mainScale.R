@@ -17,8 +17,5 @@ mainScale<-function(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,number
  }
   #scaleing all other features
   for_Scaleing(dir,path_to_scripts)
-  
-  
-  
-  
+
 }

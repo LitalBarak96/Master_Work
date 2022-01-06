@@ -24,7 +24,7 @@ combineKineticAndClassifiersToSignature<-function(dir,path_to_scripts){
   ave_classifiers.df<-as.data.frame(read.csv('all_classifier_averages.csv'))
   ave_bl.df<-as.data.frame(read.csv('bout_length_scores.csv'))
   ave_frq.df<-as.data.frame(read.csv('frequency_scores.csv'))
-  network.df<-as.data.frame(read.csv('network.csv'))
+  network.df<-as.data.frame(read.csv('ScalednetworkParams.csv'))
   
   new.df<-data.frame()
   all.df<-cbind(ave_classifiers.df, ave_kinetic.df)

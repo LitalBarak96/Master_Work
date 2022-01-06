@@ -46,188 +46,6 @@ if (with_rgb == TRUE){
 rgb_2_hex <- function(r,g,b){
   return(rgb(r, g, b, maxColorValue = 1))}
 
-creatNetwork2popforscatter<-function(current_path){
-  setwd(current_path)
-  group_name_dir = tools::file_path_sans_ext(dirname((current_path)))
-  setwd(group_name_dir)
-  #we need to make this file befor using this script
-  #all data is the data from the exel in the first sheet
-  allData <- read.xlsx(xlsxFile)
-  if(with_rgb==TRUE){
-    allColorData <- read.xlsx(argv$path)
-    num_of_pop<-nrow(allColorData)
-  }else{
-    #test for myself
-    library(openxlsx)
-    allColorData <- as.data.frame(read.xlsx(debbug_path_color))
-    num_of_pop<<-nrow(allColorData)
-  }
-  
-  lengthParams <- c()
-  numberParams <- c()
-  numberOfMovies<-c()
-  for (i in 1:allData$Number.of.groups[1]) {
-    cur <- (i + 1) * 2
-    numberOfMovies[i]<- allData[i, 3]
-    lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0,path_to_scripts))
-    numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1],path_to_scripts))
-  }
-  
-  #parametrs name
-  paramsNames <- c("Density", "Modularity", "SD Strength", "Strength", "Betweenness Centrality")
-  #6 is because there is 5 paramters
-  length<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
-  number<-as.data.frame(lapply(structure(.Data=1:6,.Names=1:6),function(x) numeric(num_of_pop)))
-  
-  num_of_flies<-getNumOfFlies(allData[1:numberOfMovies[1], cur],path_to_scripts)
-  
-  for (i in 1:num_of_pop){ 
-    lengthAvg<-paste0("lengthAvg",as.character(i))
-    length[i,1]<-lengthAvg
-  }
-  for (i in 1:num_of_pop){ 
-    numberAvg<-paste0("numberAvg",as.character(i))
-    number[i,1]<-numberAvg
-  }
-  
-  #unlisting all so we could scale
-  num<-apply(numberParams, 1, unlist)
-  lengh<-apply(lengthParams, 1, unlist)
-  
-  for (j in 1:length(paramsNames)){
-    scaled_num<-scale(as.numeric(unlist(num[j])))
-    scaled_len<-scale(as.numeric(unlist(lengh[j])))
-    #if it is for bc or stength the after scaleing need to be diffrent
-    if(j == 4 || j == 5 ){
-      #creat list of everythiing to sub pop of number of flys
-      spl_num <- split(scaled_num, ceiling(seq_along(scaled_num)/num_of_flies))
-      spl_num<-unname(spl_num)
-      clist<-c()
-      len_of_all_pop<-length(spl_num)
-      for (i in 1:len_of_all_pop){
-        clist<-cbind(clist,c(spl_num[i]))
-      }
-      num_of_sub_pop <-len_of_all_pop/num_of_pop
-      splited<-split(clist, ceiling(seq_along(clist)/num_of_sub_pop))
-      splited<-unname(splited)
-      for(m in 1:length(splited)){
-        numberParams[j,m]<-splited[m]
-        
-      }
-      ####################### for len
-      
-      spl_len <- split(scaled_len, ceiling(seq_along(scaled_len)/num_of_flies))
-      spl_len<-unname(spl_len)
-      clist<-c()
-      len_of_all_pop<-length(spl_len)
-      for (i in 1:len_of_all_pop){
-        clist<-cbind(clist,c(spl_len[i]))
-      }
-      num_of_sub_pop <-len_of_all_pop/num_of_pop
-      splited<-split(clist, ceiling(seq_along(clist)/num_of_sub_pop))
-      splited<-unname(splited)
-      for(m in 1:length(splited)){
-        lengthParams[j,m]<-splited[m]
-      }
-    }else{
-      subPopLen<-(length(scaled_num))/num_of_pop
-      for(m in 1:num_of_pop){
-        splited<-split(scaled_num, ceiling(seq_along(scaled_num)/subPopLen))
-        splited<-unname(splited)
-        numberParams[j,m]<-as.list(splited[m])
-      }
-      
-      subPopLen<-(length(scaled_len))/num_of_pop
-      for(m in 1:num_of_pop){
-        splited<-split(scaled_len, ceiling(seq_along(scaled_len)/subPopLen))
-        splited<-unname(splited)
-        lengthParams[j,m]<-as.list(splited[m])
-      }
-    }
-    
-    
-  }
-  
-  for (i in 1:length(paramsNames)) {
-    for(j in 1:num_of_pop){
-      length[j,i+1] <- mean(unlist(lengthParams[i,j]))
-      number[j,i+1] <-mean(unlist(numberParams[i,j]))
-      
-    }
-    
-  }
-  
-  
-  
-  index_name <- function(input_name,groupsNames){
-    
-    for (i in 1:length(groupsNames)){
-      if(input_name == groupsNames[i]){
-        return (i)
-      }
-    }
-  }
-  
-  my_index = index_name(group_name,groupsNames)
-  varience<<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
-  
-  densL1<-c()
-  modL1<-c()
-  sdL1<-c()
-  strL1<-c()
-  betL1<-c()
-  densN1<-c()
-  modN1<-c()
-  sdN1<-c()
-  strN1<-c()
-  betN1<-c()
-  
-  densL1<-as.numeric(as.data.frame(t(length[2])))
-  modL1<-as.numeric(as.data.frame(t(length[3])))
-  sdL1<-as.numeric(as.data.frame(t(length[4])))
-  strL1 <- as.numeric(as.data.frame(t(length[5])))
-  betL1 <- as.numeric(as.data.frame(t(length[6])))
-  densN1 <- as.numeric(as.data.frame(t(number[2])))
-  modN1 <- as.numeric(as.data.frame(t(number[3])))
-  sdN1 <- as.numeric(as.data.frame(t(number[4])))
-  strN1 <- as.numeric(as.data.frame(t(number[5])))
-  betN1 <- as.numeric(as.data.frame(t(number[6])))
-  
-  
-  densL<<-densL1[my_index]
-  modL<<-modL1[my_index]
-  
-  sdL<<-sdL1[my_index]
-  
-  strL<<-strL1[my_index]/sqrt(number_of_flies)
-  
-  
-  betL<<-betL1[my_index]/sqrt(number_of_flies)
-  
-  
-  densN<<-densN1[my_index]
-  
-  
-  modN<<-modN1[my_index]
-  
-  
-  sdN<<-sdN1[my_index]
-  
-  
-  strN<<-strN1[my_index]/sqrt(number_of_flies)
-  
-  
-  betN<<-betN1[my_index]/sqrt(number_of_flies)
-  #the reason i do for each population the get their valus and write it in their dir
-  setwd(current_path)
-  names<-c("density(LOI)","modularity(LOI)","sd strength(LOI)","strength(LOI)","betweens(LOI)","density(NOI)","modularity(NOI)","sd strength(NOI)","strength(NOI)","betweens(NOI)")  
-  values<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
-  network.df<-data.frame(names,values,varience)
-  View(network.df)
-  colnames(network.df) <- c("file", "value","Variance")
-  write.csv(network.df, 'network.csv', row.names = F)
-  
-}
 
 
 vizual<-function(){
@@ -240,7 +58,7 @@ vizual<-function(){
     allColorData <- read.xlsx(argv$path)
     num_of_pop<<-nrow(allColorData)
   }else{
-    allColorData <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
+    allColorData <- as.data.frame(read.xlsx(debbug_path_color))
   }
   
   colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
@@ -258,7 +76,7 @@ vizual<-function(){
     
   }else{
     params<-data.frame()
-    params <- as.data.frame(read.xlsx("D:/test/GroupedvsSingle/color.xlsx"))
+    params <- as.data.frame(read.xlsx(debbug_path_param))
     
   }
   
@@ -271,8 +89,12 @@ vizual<-function(){
   #getting the dir and fininding the avg per con itself
   path_to_avg_per_con<-allColorData$groupNameDir
   full_path_avg_per_con<-paste0(path_to_avg_per_con,"\\","averages per condition.csv")
-  path_to_order_name<-paste0(((path_to_avg_per_con[1])),"\\","order.xlsx")
-  order_name<-as.data.frame(read_excel(path_to_order_name))
+  #when I will want to creat in certin order or only spcific features
+  #path_to_order_name<-paste0(((path_to_avg_per_con[1])),"\\","order.xlsx")
+  #to change for spcific just change here to path_to_order_name
+  #order_name<-as.data.frame(read_excel(full_path_avg_per_con[1]))
+  order_name<-as.data.frame(read.csv(full_path_avg_per_con[1]))
+  
   library(dplyr)
   
   for(i in 1:num_of_pop){
@@ -327,6 +149,7 @@ path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/inter
 file.exists(debbug_path_color)
 file.exists(debbug_path_param)
 file.exists(path_to_scripts)
+
 
 if(with_rgb==TRUE){
   #reading from the path the color values
@@ -414,6 +237,8 @@ mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_
 #SCALE
 
   #first stat than scalling
+  #doing scaleing and for the other features that are not network it override the data in the csv file
+  #to be the scaled data
   mainScale(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
   
 
@@ -421,7 +246,6 @@ mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_
   for(i in 1:num_of_pop){
     #for each net there is different valus 
     setwd(dir[i,1])
-    num_of_movies <<-length(list.dirs(path=dir[i,1], full.names=T, recursive=F ))
     combineKineticAndClassifiersToSignature(dir[i,1],path_to_scripts)
   }
   
