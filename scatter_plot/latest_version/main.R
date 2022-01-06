@@ -11,6 +11,7 @@ library(fmsb)
 library(argparser, quietly=TRUE)
 library(stringr)
 library("readxl")
+library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
@@ -207,7 +208,18 @@ nrow(dir) == num_of_pop
 setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
+####BAR GRAPH
 
+
+number_of_operation<-(5*num_of_pop)+4
+current_index<-1
+
+pb <- winProgressBar(title = "Windows progress bar", # Window title
+                     label = "Percentage completed", # Window label
+                     min = 0,      # Minimum value of the bar
+                     max = number_of_operation, # Maximum value of the bar
+                     initial = 0,  # Initial value of the bar
+                     width = 300L) # Width of the window 
 
 
 #COMPUTATION
@@ -219,15 +231,36 @@ if(vizual_or_run == 1){
   Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
   lengthParams<- as.data.frame(Listedparams[1])
   numberParams<- as.data.frame(Listedparams[2])
+  current_index<-current_index+1
+  pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
+  setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
+  # winProgressBar function
 
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
+    current_index<-current_index+1
+    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
+    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
+    # winProgressBar function
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
+    current_index<-current_index+1
+    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
+    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
+    # winProgressBar function
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
+    current_index<-current_index+1
+    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
+    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
+    # winProgressBar function
     netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,FALSE)
+    current_index<-current_index+1
+    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
+    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
+    # winProgressBar function
   }
+  close(pb)
 
 ##############################################
 #STATS
