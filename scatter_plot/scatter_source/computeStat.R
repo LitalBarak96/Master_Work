@@ -1,4 +1,4 @@
-compute_stat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
+computeStat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
   library(dplyr)
   current_dir =getwd()
   setwd(path_to_scripts)
@@ -39,38 +39,31 @@ compute_stat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
   }
   rownames(featuers_comb)<-all_name
   
+  
+  
   for(i in 1:ncol(names_all)){
-    names = c()
-    for (j in 1:num_of_pop) {
-      names = c(names, rep(groupsNames[j], length(unlist(featuers_comb[j]))))
-    }
-    value = rapply(featuers_comb[i,], c)
-    data = data.frame(names, value)
-    data$names <- as.character(data$names)
-    data$names <- factor(data$names, levels=unique(data$names))
+    allStat<-statProcess(groupsNames,featuers_comb[i,],path_to_scripts)
     
-    
-    all_stat <- getStatisticData(featuers_comb[i,], names, value, data,path_to_scripts)
     #i need to write this to dataframe
     if(num_of_pop<3){
       print(all_name[i])
-      print(all_stat[[1]]$p.value)
-      dat <- data.frame(name =all_name[i],p_val = all_stat[[1]]$p.value)
-      dat$test <- all_stat[[2]]  # maybe you want to keep track of which iteration produced it?
+      print(allStat[[1]]$p.value)
+      dat <- data.frame(name =all_name[i],pVal = allStat[[1]]$p.value)
+      dat$test <- allStat[[2]]  # maybe you want to keep track of which iteration produced it?
       datalist[[i]] <- dat # add it to your list
       
     }
     else{
-      if(all_stat[[2]]=="Kruskal"){
-        p_adj_k<-as.data.frame(all_stat[[1]][["p.value"]])
-        p_adj_kk<-to_dataframe(p_adj_k,all_name[i],all_stat[[2]],path_to_scripts)
+      if(allStat[[2]]=="Kruskal"){
+        p_adj_k<-as.data.frame(allStat[[1]][["p.value"]])
+        p_adj_kk<-to_dataframe(p_adj_k,all_name[i],allStat[[2]],path_to_scripts)
         datalist[[i]]<-p_adj_kk
       }
       else{
-        stats_data<-as.data.frame(all_stat[[1]][["names"]]) 
+        stats_data<-as.data.frame(allStat[[1]][["names"]]) 
         stats_data<-change_row_names(stats_data,path_to_scripts)
         list_rowname<-rownames(stats_data)
-        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]),test=all_stat[[2]])
+        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]),test=allStat[[2]])
         colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
         datalist[[i]]<-data_frame_p_adj
       }
@@ -78,10 +71,13 @@ compute_stat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
     }
     
   }
-  big_data = do.call(rbind, datalist)
-  big_data
+  allData = do.call(rbind, datalist)
+  allData
+  group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
+  setwd(group_name_dir)
+  
   csv_file_name <-paste("stats",csv_file_name)
-  write.csv(big_data, csv_file_name, row.names = F)
+  write.csv(allData, csv_file_name, row.names = F)
   
   
 }

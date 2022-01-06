@@ -7,6 +7,26 @@ mainStat<-function(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberP
   setwd(current_dir)
   
   netWorkStats(dir[1,1],xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams)
-  stats_main(dir,groupsNames,path_to_scripts)
+  StatPerFeature(dir,groupsNames,path_to_scripts)
   
+  
+  #AFTER CERATING THE STAT WE COMBINE THEM FOR ONE CSV FILE
+  
+  
+  ave_kinetic.df<-as.data.frame(read.csv('stats averages per movie.csv'))
+  ave_classifiers.df<-as.data.frame(read.csv('stats all_classifier_averages.csv'))
+  ave_bl.df<-as.data.frame(read.csv('stats bout_length_scores.csv'))
+  ave_frq.df<-as.data.frame(read.csv('stats frequency_scores.csv'))
+  
+  
+  group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
+  setwd(group_name_dir)
+  net_stat_len.df<-as.data.frame(read.csv("stats of length network.csv"))
+  net_stat_num.df<-as.data.frame(read.csv("stats of number network.csv"))
+  
+  all<-rbind(ave_kinetic.df,ave_classifiers.df,ave_bl.df,ave_frq.df)
+  all$name<- str_replace(all$name, "scores_", "")
+  all$name<- str_replace(all$name, ".mat", "")
+  
+  all_net<-rbind(net_stat_len.df,net_stat_num.df)
 }
