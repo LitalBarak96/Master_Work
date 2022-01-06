@@ -13,8 +13,12 @@ mainScale<-function(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,number
   #did scaleing for all groups and now we calculate the mean and sd 
  for(i in 1:num_of_pop){
   netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParamsScaled,numberParamsScaled,xlsxFile,num_of_pop,TRUE)
-    
-  }
+  
+ }
+  #scaleing all other features
+  for_Scaleing(dir,path_to_scripts)
+  
+  
   
   
 }
