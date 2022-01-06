@@ -26,7 +26,7 @@ calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv
     allColorData <- as.data.frame(read.xlsx(debbug_path_color))
     num_of_pop<<-nrow(allColorData)
   }
-  
+
   
   #this loop calculte for all groupes 
   for (i in 1:allData$Number.of.groups[1]) {

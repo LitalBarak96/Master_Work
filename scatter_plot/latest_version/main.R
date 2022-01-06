@@ -22,7 +22,6 @@ font_size<<-0
 width<<-0
 height<<-0
 type_format<<-0
-number_of_flies= 10
 num_of_movies =0
 
 groupsNames <<- c()
@@ -386,6 +385,8 @@ setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
 
+
+
 #COMPUTATION
 #####################################################################################
 
@@ -402,19 +403,18 @@ if(vizual_or_run == 1){
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop)
+    netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,FALSE)
   }
 
 ##############################################
 #STATS
+mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
 
-  
-  
-  mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
-
+####
+#SCALE
 
   #first stat than scalling
-  for_Scaleing(dir,path_to_scripts)
+  mainScale(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
   
 
   

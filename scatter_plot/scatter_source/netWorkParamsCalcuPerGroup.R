@@ -1,4 +1,4 @@
-netWorkParamsCalcuPerGroup<-function(dir,the_i_pop,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop){
+netWorkParamsCalcuPerGroup<-function(dir,the_i_pop,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,scaled){
   
   current_dir =dir
   setwd(path_to_scripts)
@@ -41,7 +41,6 @@ netWorkParamsCalcuPerGroup<-function(dir,the_i_pop,path_to_scripts,lengthParams,
     number[i,1]<-numberAvg
   }
   
-  #unlisting all so we could scale
 
   for (i in 1:length(paramsNames)) {
     for(j in 1:num_of_pop){
@@ -54,16 +53,6 @@ netWorkParamsCalcuPerGroup<-function(dir,the_i_pop,path_to_scripts,lengthParams,
   
   
   
- # index_name <- function(input_name,groupsNames){
-    
-   # for (i in 1:length(groupsNames)){
-    #  if(input_name == groupsNames[i]){
-     #   return (i)
-    # }
-    #}
-  #}
-  
-  #my_index = index_name(group_name,groupsNames)
   my_index<-the_i_pop
   Variance<-c(sd(unlist(lengthParams[1,my_index])),sd(unlist(lengthParams[2,my_index])),sd(unlist(lengthParams[3,my_index])),sd(unlist(lengthParams[4,my_index])),sd(unlist(lengthParams[5,my_index])),sd(unlist(numberParams[1,my_index])),sd(unlist(numberParams[2,my_index])),sd(unlist(numberParams[3,my_index])),sd(unlist(numberParams[4,my_index])),sd(unlist(numberParams[5,my_index])))
   
@@ -113,13 +102,19 @@ netWorkParamsCalcuPerGroup<-function(dir,the_i_pop,path_to_scripts,lengthParams,
   strN<-strN1[my_index]/sqrt(num_of_flies)
   
   
-  betN<-betN1[my_index]/sqrt(number_of_flies)
+  betN<-betN1[my_index]/sqrt(num_of_flies)
   #the reason i do for each population the get their valus and write it in their dir
   setwd(current_dir)
   file<-c("density(LOI)","modularity(LOI)","sd strength(LOI)","strength(LOI)","betweens(LOI)","density(NOI)","modularity(NOI)","sd strength(NOI)","strength(NOI)","betweens(NOI)")  
   value<-c(densL,modL,sdL,strL,betL,densN,modN,sdN,strN,betN)
   network.df<-data.frame(file,value,Variance)
-  write.csv(network.df, 'networkParams.csv', row.names = F)
+  if(scaled == TRUE){
+    write.csv(network.df, 'ScalednetworkParams.csv', row.names = F)
+    
+  }else{
+    write.csv(network.df, 'networkParams.csv', row.names = F)
+    
+  }
   
 }
 
