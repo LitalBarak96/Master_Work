@@ -410,7 +410,7 @@ if(vizual_or_run == 1){
 
   
   
-  mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams)
+  mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
 
 
   #first stat than scalling

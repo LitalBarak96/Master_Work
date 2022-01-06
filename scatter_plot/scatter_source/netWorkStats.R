@@ -58,7 +58,7 @@ netWorkStats<-function(current_path,xlsxFile,path_to_scripts,groupsNames,lengthP
     if(num_of_pop<3){
       print(all_name_NOI[i])
       print(numStat[[1]]$p.value)
-      dat <- data.frame(name =all_name_NOI[i],p_val = numStat[[1]]$p.value)
+      dat <- data.frame(name =all_name_NOI[i],pVal = numStat[[1]]$p.value)
       dat$test <- numStat[[2]]  # maybe you want to keep track of which iteration produced it?
       datalist_num[[i]] <- dat # add it to your list
       
