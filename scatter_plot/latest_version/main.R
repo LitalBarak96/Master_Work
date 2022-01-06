@@ -402,19 +402,17 @@ if(vizual_or_run == 1){
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    #group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
     netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop)
   }
 
 ##############################################
-#SCALING
+#STATS
 
   
+  
+  mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams)
 
 
-  #not need for each pop,this calculating the network ass whole i need only for scaleing to do this 
-  netWorkStats(dir[1,1],xlsxFile,path_to_scripts,groupsNames)
-  stats_main(dir,groupsNames,path_to_scripts)
   #first stat than scalling
   for_Scaleing(dir,path_to_scripts)
   

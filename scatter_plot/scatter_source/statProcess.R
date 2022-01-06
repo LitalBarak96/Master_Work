@@ -1,4 +1,4 @@
-statistic_to_csv_of_network<-function(groupsNames, groupsParams,path_to_scripts){
+statProcess<-function(groupsNames, groupsParams,path_to_scripts){
   
   current_dir =getwd()
   setwd(path_to_scripts)
