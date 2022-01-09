@@ -8,6 +8,7 @@ library(ggpubr)
 library(ggsignif)
 library(nortest)
 library(fmsb)
+
 library(argparser, quietly=TRUE)
 library(stringr)
 library("readxl")
@@ -142,8 +143,8 @@ vizual<-function(){
 ############################################################################################################
 
 
-debbug_path_color<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/data/GroupedvsSingle/color.xlsx"
-debbug_path_param<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/data/GroupedvsSingle/params.xlsx"
+debbug_path_color<-"F:/RejectedvsMatedvsNaive/color.xlsx"
+debbug_path_param<-"F:/RejectedvsMatedvsNaive/params.xlsx"
 #the path that have all the scripts in
 path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
 
