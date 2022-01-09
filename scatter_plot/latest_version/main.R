@@ -91,11 +91,10 @@ vizual<-function(){
   path_to_avg_per_con<-allColorData$groupNameDir
   full_path_avg_per_con<-paste0(path_to_avg_per_con,"\\","averages per condition.csv")
   #when I will want to creat in certin order or only spcific features
-  #path_to_order_name<-paste0(((path_to_avg_per_con[1])),"\\","order.xlsx")
+  path_to_order_name<-paste0(((path_to_avg_per_con[1])),"\\","order.xlsx")
   #to change for spcific just change here to path_to_order_name
-  #order_name<-as.data.frame(read_excel(full_path_avg_per_con[1]))
-  order_name<-as.data.frame(read.csv(full_path_avg_per_con[1]))
-  
+  order_name<-as.data.frame(read_excel(path_to_order_name[1]))
+
   library(dplyr)
   
   for(i in 1:num_of_pop){
@@ -110,6 +109,8 @@ vizual<-function(){
     temp.df$file<- str_replace(temp.df$file, "scores_", "")
     temp.df$file<-gsub("Aggregation", "Social Clustering", temp.df$file)
     temp.df<-semi_join(temp.df, order_name, by = "file")
+    #to check if something is missing
+    #test<-anti_join(temp.df, order_name, by = "file")
     order_name<-semi_join(order_name, temp.df, by = "file")
     temp.df$file<-as.character(temp.df$file)
     order_name$file<-as.character(order_name$file)
@@ -212,7 +213,7 @@ sapply(files.sources, source)
 
 
 number_of_operation<-(5*num_of_pop)+4
-current_index<-1
+current_index<-0
 
 pb <- winProgressBar(title = "Windows progress bar", # Window title
                      label = "Percentage completed", # Window label
