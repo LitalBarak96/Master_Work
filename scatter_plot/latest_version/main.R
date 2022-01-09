@@ -231,41 +231,26 @@ if(vizual_or_run == 1){
   Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
   lengthParams<- as.data.frame(Listedparams[1])
   numberParams<- as.data.frame(Listedparams[2])
-  current_index<-current_index+1
-  pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
-  setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
-  # winProgressBar function
+  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
 
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
-    current_index<-current_index+1
-    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
-    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
-    # winProgressBar function
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
-    current_index<-current_index+1
-    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
-    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
-    # winProgressBar function
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    current_index<-current_index+1
-    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
-    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
-    # winProgressBar function
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,FALSE)
-    current_index<-current_index+1
-    pctg <- paste(round(current_index/number_of_operation *100, 0), "% completed")
-    setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
-    # winProgressBar function
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   }
-  close(pb)
 
 ##############################################
 #STATS
 mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
-
+current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  
 ####
 #SCALE
 
@@ -273,6 +258,7 @@ mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_
   #doing scaleing and for the other features that are not network it override the data in the csv file
   #to be the scaled data
   mainScale(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
+  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   
 
   
@@ -280,9 +266,13 @@ mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_
     #for each net there is different valus 
     setwd(dir[i,1])
     combineKineticAndClassifiersToSignature(dir[i,1],path_to_scripts)
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    
   }
   
   vizual()
+  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  close(pb)
   
   
   if(with_rgb==TRUE){
