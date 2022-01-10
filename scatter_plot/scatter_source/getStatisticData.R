@@ -1,5 +1,6 @@
 getStatisticData <- function(groupsParams, names, value, data,path_to_scripts) {
-  
+  # i used this packeg of dunn test because the output of the compers look almost the same
+  library(dunn.test)
   current_dir =getwd()
   setwd(path_to_scripts)
   files.sources = list.files()
@@ -15,9 +16,9 @@ getStatisticData <- function(groupsParams, names, value, data,path_to_scripts) {
         stats <- wilcox.test(value~names, data,exact=FALSE)
         return(list(stats, "Wilcoxen"))
       } else {
-        kruskal.test(value~names, data)
-        stats <- pairwise.wilcox.test(data$value, data$names, p.adjust.method = 'fdr',exact=FALSE)
-        return(list(stats, "Kruskal"))
+        Kruskal<-kruskal.test(value~names, data)
+        stats <- dunn.test(data$value,data$names, method="none",list = TRUE)
+        return(list(stats, "Dunn",Kruskal[["p.value"]],"pVal"))
       }
     }
   }
@@ -25,9 +26,10 @@ getStatisticData <- function(groupsParams, names, value, data,path_to_scripts) {
     stats <- t.test(value~names, data)
     return(list(stats, "T Test"))
   } else {
+    #The output includes the columns F value and Pr(>F) corresponding to the p-value of the test.
     aov.res <- aov(value~names, data)
-    summary(aov.res)
+    aov.resF<-summary(aov.res)
     stats <- TukeyHSD(aov.res)
-    return(list(stats, "Anova"))
+    return(list(stats, "Anova",aov.resF[[1]][["Pr(>F)"]][1],"pVal"))
   }
 }

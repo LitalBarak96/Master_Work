@@ -239,13 +239,13 @@ if(vizual_or_run == 1){
     #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,FALSE)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   }
 
 ##############################################
