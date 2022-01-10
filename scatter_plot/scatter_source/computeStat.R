@@ -54,18 +54,12 @@ computeStat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
       
     }
     else{
-      if(allStat[[2]]=="Kruskal"){
-        p_adj_k<-as.data.frame(allStat[[1]][["p.value"]])
-        p_adj_kk<-to_dataframe(p_adj_k,all_name[i],allStat[[2]],path_to_scripts)
-        datalist[[i]]<-p_adj_kk
+      if(allStat[[2]]=="Dunn"){
+        datalist[[i]]<-DunnTstDataFrame(all_name[i],allStat,path_to_scripts)
+        
       }
       else{
-        stats_data<-as.data.frame(allStat[[1]][["names"]]) 
-        stats_data<-change_row_names(stats_data,path_to_scripts)
-        list_rowname<-rownames(stats_data)
-        data_frame_p_adj<-data.frame(name =all_name[i],t(stats_data[,-1:-3]),test=allStat[[2]])
-        colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
-        datalist[[i]]<-data_frame_p_adj
+        datalist[[i]]<-AnovaToDataFrame(all_name[i],allStat,path_to_scripts)
       }
       
     }
