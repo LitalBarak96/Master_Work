@@ -17,7 +17,7 @@ getStatisticData <- function(groupsParams, names, value, data,path_to_scripts) {
         return(list(stats, "Wilcoxen"))
       } else {
         Kruskal<-kruskal.test(value~names, data)
-        stats <- dunn.test(data$value,data$names, method="none",list = TRUE)
+        stats <- dunn.test(data$value,data$names, method="none",list = FALSE)
         return(list(stats, "Dunn",Kruskal[["p.value"]],"pVal"))
       }
     }
