@@ -16,7 +16,7 @@ library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = FALSE
+with_rgb = TRUE
 
 dot<<-0
 xsize<<-0
@@ -122,10 +122,9 @@ vizual<-function(){
   t<- t+geom_point(size =dot)
   t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
   t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
-    xlim(-(xsize),(xsize))+theme_minimal(base_size = font_size)
-  
-  setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
+    xlim(-(2),(2))+theme_minimal(base_size = font_size)
   print(t)
+  setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   if(type_format==1){
     ggsave(plot = t, filename = "scatterplot.pdf", height=height, width=width,units = "cm")
     
@@ -175,13 +174,13 @@ if(with_rgb==TRUE){
   params <- as.data.frame(read.xlsx(debbug_path_param))
 }
 
-dot<<-params$dot
-xsize<<-params$xsize
-font_size<<-params$font
-width<<-params$width
-height<<-params$height
-vizual_or_run<<-params$change
-type_format<<-params$format
+dot<-params$dot
+xsize<-params$xsize
+font_size<-params$font
+width<-params$width
+height<-params$height
+vizual_or_run<-params$change
+type_format<-params$format
 
 
 #choose the expData file for the network values
@@ -233,19 +232,19 @@ if(vizual_or_run == 1){
   Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
   lengthParams<- as.data.frame(Listedparams[1])
   numberParams<- as.data.frame(Listedparams[2])
-  #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
 
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
-    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
-    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,FALSE)
-    #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   }
 
 ##############################################

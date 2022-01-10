@@ -29,14 +29,12 @@ mainStat<-function(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberP
   all$name<- str_replace(all$name, "scores_", "")
   all$name<- str_replace(all$name, ".mat", "")
   
-  #need to change the name of pVAL
+  
+  
 
+  fdr<-p.adjust(all$pVal, method ="fdr", n = length(all$pVal))
+  all$fdr<-fdr
   
-  
-  if(num_of_pop<3){
-    fdr<-p.adjust(all$pVal, method ="fdr", n = length(all$pVal))
-    all$fdr<-fdr
-  }
   csv_file_name <-"all_together.csv"
   write.csv(all, csv_file_name, row.names = F)
   unlink("stats of length network.csv")
