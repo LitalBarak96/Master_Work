@@ -233,7 +233,7 @@ if(vizual_or_run == 1){
   Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
   lengthParams<- as.data.frame(Listedparams[1])
   numberParams<- as.data.frame(Listedparams[2])
-  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  #current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
 
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
