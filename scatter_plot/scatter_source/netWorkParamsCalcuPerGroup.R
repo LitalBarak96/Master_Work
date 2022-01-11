@@ -41,7 +41,7 @@ netWorkParamsCalcuPerGroup<-function(dir,the_i_pop,path_to_scripts,lengthParams,
     number[i,1]<-numberAvg
   }
   
-
+#for some reason i calculate for all and take onluy the index
   for (i in 1:length(paramsNames)) {
     for(j in 1:num_of_pop){
       length[j,i+1] <- mean(unlist(lengthParams[i,j]))
