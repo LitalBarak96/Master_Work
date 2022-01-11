@@ -1,4 +1,4 @@
-ScaleNetwork<-function(numberParams,lengthParams,num_of_pop,xlsxFile){
+ScaleNetwork<-function(numberParams,lengthParams,num_of_pop,xlsxFile,namesOfGroupsFromxlsx){
   
   current_dir =getwd()
   setwd(path_to_scripts)
@@ -67,5 +67,12 @@ ScaleNetwork<-function(numberParams,lengthParams,num_of_pop,xlsxFile){
     
     
   }
+  colnames(namesOfGroupsFromxlsx)<-c("groupname")
+  namesOfXlsx<-gsub("^(\\S+)\\s+(.*)", "\\1", namesOfGroupsFromxlsx$groupname)
+  namesOfXlsx<-namesOfXlsx[duplicated(namesOfXlsx)]
+  
+  colnames(lengthParams)<-namesOfXlsx
+  colnames(numberParams)<-namesOfXlsx
+  
   return(list(lengthParams,numberParams))
 }

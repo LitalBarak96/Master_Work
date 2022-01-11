@@ -284,7 +284,7 @@ if(vizual_or_run == 1){
   #first stat than scalling
   #doing scaleing and for the other features that are not network it override the data in the csv file
   #to be the scaled data
-  mainScale(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
+  mainScale(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop,namesOfGroupsFromxlsx)
   current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   
 
