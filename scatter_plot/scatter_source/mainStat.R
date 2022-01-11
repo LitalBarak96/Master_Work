@@ -15,7 +15,7 @@ mainStat<-function(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberP
   
 
   
-  
+  #WRITING AND READING FROM THE FATHER DIR
   group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
   setwd(group_name_dir)
   net_stat_len.df<-as.data.frame(read.csv("stats of length network.csv"))
@@ -31,7 +31,7 @@ mainStat<-function(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberP
   
   
   
-
+  #DOING FDR TO ALL OF THEM 
   fdr<-p.adjust(all$pVal, method ="fdr", n = length(all$pVal))
   all$fdr<-fdr
   

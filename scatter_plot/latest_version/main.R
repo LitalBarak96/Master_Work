@@ -18,16 +18,16 @@ num_of_pop<-0
 colors_of_groups<<-data.frame()
 with_rgb = TRUE
 
-dot<<-0
-xsize<<-0
-font_size<<-0
-width<<-0
-height<<-0
-type_format<<-0
+dot<-0
+xsize<-0
+font_size<-0
+width<-0
+height<-0
+type_format<-0
 num_of_movies =0
 
-groupsNames <<- c()
-xlsxFile<<-c()
+groupsNames <- c()
+xlsxFile<-c()
 
 
 #to debug if i want to run and see the var
@@ -63,7 +63,7 @@ vizual<-function(){
     allColorData <- as.data.frame(read.xlsx(debbug_path_color))
   }
   
-  colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
+  colors_of_groups<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
   #rgb and start from 2 because the first colom is names
   for (i in 1:num_of_pop){
     colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
@@ -122,7 +122,7 @@ vizual<-function(){
   t<- t+geom_point(size =dot)
   t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
   t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
-    xlim(-(2),(2))+theme_minimal(base_size = font_size)
+    xlim(-(xsize),(xsize))+theme_minimal(base_size = font_size)
   print(t)
   setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
   if(type_format==1){
@@ -141,9 +141,8 @@ vizual<-function(){
 #EXTRACTION AND USER INPUT TO LIST OF DIRS
 ############################################################################################################
 
-
-debbug_path_color<-"F:/RejectedvsMatedvsNaive/color.xlsx"
-debbug_path_param<-"F:/RejectedvsMatedvsNaive/params.xlsx"
+debbug_path_color<-"F:/allGroups/color.xlsx"
+debbug_path_param<-"F:/allGroups/params.xlsx"
 #the path that have all the scripts in
 path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
 
@@ -215,7 +214,7 @@ sapply(files.sources, source)
 number_of_operation<-(5*num_of_pop)+4
 current_index<-0
 
-pb <- winProgressBar(title = "Windows progress bar", # Window title
+pb <- winProgressBar(title = "Window progress bar", # Window title
                      label = "Percentage completed", # Window label
                      min = 0,      # Minimum value of the bar
                      max = number_of_operation, # Maximum value of the bar
@@ -223,7 +222,7 @@ pb <- winProgressBar(title = "Windows progress bar", # Window title
                      width = 300L) # Width of the window 
 
 
-#COMPUTATION
+  #####COMPUTATION
 #####################################################################################
 
 #### the actuall run (if the user choose to run from the start)
@@ -248,12 +247,12 @@ if(vizual_or_run == 1){
   }
 
 ##############################################
-#STATS
-mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
-current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  ###########STATS
+  mainStat(dir,xlsxFile,path_to_scripts,groupsNames,lengthParams,numberParams,num_of_pop)
+  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   
-####
-#SCALE
+
+  ############SCALE
 
   #first stat than scalling
   #doing scaleing and for the other features that are not network it override the data in the csv file
@@ -273,6 +272,7 @@ current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   
   vizual()
   current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  #closeing progress bar
   close(pb)
   
   
@@ -284,6 +284,7 @@ current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
 }
 
 if(vizual_or_run == 2){
+  #only change vizual,we have averages per condition.csv after computation
   vizual()
 }
 
