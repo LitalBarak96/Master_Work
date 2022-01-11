@@ -1,4 +1,4 @@
-calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv,debbug_path_color){
+calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv,debbug_path_color,namesOfGroupsFromxlsx){
   
   current_dir =dir
   setwd(path_to_scripts)
@@ -11,6 +11,7 @@ calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv
   lengthParams <- c()
   numberParams <- c()
   numberOfMovies<-c()
+  namesOfXlsx<-c()
   
   group_name_dir = tools::file_path_sans_ext(dirname((current_dir)))
   setwd(group_name_dir)
@@ -26,7 +27,7 @@ calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv
     allColorData <- as.data.frame(read.xlsx(debbug_path_color))
     num_of_pop<<-nrow(allColorData)
   }
-
+  
   
   #this loop calculte for all groupes 
   for (i in 1:allData$Number.of.groups[1]) {
@@ -35,5 +36,14 @@ calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv
     lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0,path_to_scripts))
     numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1],path_to_scripts))
   }
+  
+  #giving names to the 
+  colnames(namesOfGroupsFromxlsx)<-c("groupname")
+  namesOfXlsx<-gsub("^(\\S+)\\s+(.*)", "\\1", namesOfGroupsFromxlsx$groupname)
+  namesOfXlsx<-namesOfXlsx[duplicated(namesOfXlsx)]
+  
+  colnames(lengthParams)<-namesOfXlsx
+  colnames(numberParams)<-namesOfXlsx
+  
   return(list(lengthParams,numberParams))
 }
