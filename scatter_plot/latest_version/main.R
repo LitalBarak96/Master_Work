@@ -16,7 +16,7 @@ library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 
 dot<-0
 xsize<-0
@@ -147,6 +147,7 @@ debbug_path_param<-"F:/allGroups/params.xlsx"
 path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
 
 #sainity check # 3 trues
+print("this only need to bbe true in debug mode")
 file.exists(debbug_path_color)
 file.exists(debbug_path_param)
 file.exists(path_to_scripts)
@@ -187,6 +188,8 @@ xlsxFile <<- choose.files(default = "", caption = "Select expData file")
 
 #to read the group names in the wanted order
 groupsNames <<- as.character(basename(allColorData$groupNameDir))
+##test to prevent error of calculating
+
 
 #creat list of dirs 
 dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
@@ -204,6 +207,28 @@ for(i in 1:num_of_pop){
 
 #TEST NEED TO BE TRUE
 nrow(dir) == num_of_pop
+
+##TEST TO SEE IF CHOOSE THE RIGHT ORDER
+xlsxFileRead<-read_excel(xlsxFile)
+
+namesOfGroupsFromxlsx<-data.frame()
+namesOfGroupsFromxlsx<-as.data.frame(colnames(xlsxFileRead))
+
+#from the 4th place until how many pop they are is 
+namesOfGroupsFromxlsx<-as.data.frame(namesOfGroupsFromxlsx[4:(3+num_of_pop*2),1])
+#check from the 4th place
+
+#check on each one from expdata is iin the same order as the group the user choose
+#by useing grep i check the iif true 
+for(i in 1:num_of_pop){
+  output<-grep(paste0("^.*", groupsNames[i], ".*$"), namesOfGroupsFromxlsx[i*2,1])
+  print(output)
+  if(output !=1){
+    
+    warning("not in the right order!please check the correct order in you expdata")
+    
+  }
+}
 
 setwd(path_to_scripts)
 files.sources = list.files()
