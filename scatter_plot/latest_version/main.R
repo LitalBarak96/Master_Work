@@ -16,7 +16,7 @@ library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 
 dot<-0
 xsize<-0
@@ -223,7 +223,9 @@ for(i in 1:num_of_pop){
   output<-grep(paste0("^.*", groupsNames[i], ".*$"), namesOfGroupsFromxlsx[i*2,1])
   print(output)
   if(length(output) !=1){
-        stop("you choose not in the right order!please check the correct order in you expdata")
+        warning(("the order should be: "))
+        warning(paste(" ",groupsNames))
+        stop("you choose not in the right order!please check the correct order as you choose in expdata")
   }
 }
 
