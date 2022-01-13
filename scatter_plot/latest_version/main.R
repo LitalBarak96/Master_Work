@@ -16,13 +16,14 @@ library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = FALSE
+with_rgb = TRUE
 
 dot<-0
 xsize<-0
 font_size<-0
 width<-0
 height<-0
+toDelete<-0
 type_format<-0
 num_of_movies =0
 
@@ -105,6 +106,7 @@ vizual<-function(){
     name = groupName
     number_of_movies =length(list.dirs(path=dirname(full_path_avg_per_con[i]), full.names=T, recursive=F ))
     temp.df$id =name
+    #the part from SD TO SE
     temp.df$Variance=temp.df$Variance/(sqrt(number_of_movies))
     temp.df$file<-tools::file_path_sans_ext(temp.df$file)
     temp.df$file<- str_replace(temp.df$file, "scores_", "")
@@ -141,8 +143,8 @@ vizual<-function(){
 #EXTRACTION AND USER INPUT TO LIST OF DIRS
 ############################################################################################################
 
-debbug_path_color<-"F:/allGroups/color.xlsx"
-debbug_path_param<-"F:/allGroups/params.xlsx"
+debbug_path_color<-"F:/RejectedvsMatedvsNaive/color.xlsx"
+debbug_path_param<-"F:/RejectedvsMatedvsNaive/params.xlsx"
 #the path that have all the scripts in
 path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
 
@@ -181,7 +183,7 @@ width<-params$width
 height<-params$height
 vizual_or_run<-params$change
 type_format<-params$format
-
+toDelete<-params$deleted
 
 #choose the expData file for the network values
 xlsxFile <<- choose.files(default = "", caption = "Select expData file")
@@ -212,6 +214,13 @@ for(i in 1:num_of_pop){
   }
 }
 
+
+
+#getting the real order
+colnames(namesOfGroupsFromxlsx)<-c("groupname")
+namesOfXlsx<-gsub("^(\\S+)\\s+(.*)", "\\1", namesOfGroupsFromxlsx$groupname)
+namesOfXlsx<-namesOfXlsx[duplicated(namesOfXlsx)]
+
 #TEST NEED TO BE TRUE
 nrow(dir) == num_of_pop
 #check from the 4th place
@@ -224,10 +233,12 @@ for(i in 1:num_of_pop){
   print(output)
   if(length(output) !=1){
         warning(("the order should be: "))
-        warning(paste(" ",groupsNames))
+        warning(paste(" ",namesOfXlsx))
         stop("you choose not in the right order!please check the correct order as you choose in expdata")
   }
 }
+
+
 
 setwd(path_to_scripts)
 files.sources = list.files()
@@ -299,17 +310,38 @@ if(vizual_or_run == 1){
   #closeing progress bar
   close(pb)
   
-  
-  if(with_rgb==TRUE){
-    # delete a file of color but not the values params 
-    unlink(argv$path)
-    
+  if(toDelete == 1){
+    if(with_rgb==TRUE){
+      
+      # delete a file of color but not the values params 
+      unlink(param_dir)
+      
+    }
+    else{
+      unlink(debbug_path_param)
+    }
   }
+ 
 }
 
 if(vizual_or_run == 2){
   #only change vizual,we have averages per condition.csv after computation
   vizual()
+  if(toDelete == 1){
+    if(with_rgb==TRUE){
+      
+      # delete a file of color but not the values params 
+      unlink(param_dir)
+      
+    }
+    else{
+      unlink(debbug_path_param)
+    }
+  }
+  
+  close(pb)
+  
+  
 }
 
 
