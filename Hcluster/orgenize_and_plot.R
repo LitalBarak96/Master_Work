@@ -113,11 +113,13 @@ for(i in 1:num_of_pop){
 library("pheatmap")
 library(seriation)
 library(dendextend)
+library(svDialogs)
 phtmap <- pheatmap(all_together)
 row_dend <- phtmap[[1]]
 #sorting by rows and alphbeticly
 
-change <- dlg_list(c("yes","no"), multiple = TRUE,title="change heatmap name order?")$res
+change <- dlg_list(c("yes","no"), multiple = TRUE,title="change heatmap name order?",Sys.info()
+)$res
 
 if(change == "yes"){
   res<-c()
@@ -125,7 +127,8 @@ if(change == "yes"){
     res[i] <- dlg_list(groupsNames, multiple = TRUE,title="order for the heatmap")$res
   }
   row_dend<-rotate(row_dend,res)
-  pheatmap(all_together, cluster_rows =as.hclust(row_dend))
+  t<-pheatmap(all_together, cluster_rows =as.hclust(row_dend))
+  print(t)
 }
 #list_of_names<-c("Males_Grouped","Males_Mated","Males_Singels","Females_Mated","Females_Grouped","Females_Singles")
 
