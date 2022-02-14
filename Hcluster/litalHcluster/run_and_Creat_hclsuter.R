@@ -1,60 +1,36 @@
-require(R.matlab)
-library(base)
-library(openxlsx)
-library(igraph)
-library(ggplot2)
-library(cowplot)
-library(ggpubr)
-library(ggsignif)
-library(nortest)
-library(fmsb)
-
-library(argparser, quietly=TRUE)
-library(stringr)
-library("readxl")
-library(progress)
-library(dplyr)
-#i wish I have the power to do this right
-
-##Females_Grouped
-##Females_Mated
-##Females_Singles
-##Males_Grouped
-##Males_Mated
-##Males_Singels
 
 
-with_rgb = FALSE
-#to debug if i want to run and see the var
-if (with_rgb == TRUE){
+run_and_Creat_hclsuter<-function(full_path_to_dirs,path_to_scripts){
   
-  p <- arg_parser("path of the color")
+  require(R.matlab)
+  library(base)
+  library(openxlsx)
+  library(igraph)
+  library(ggplot2)
+  library(cowplot)
+  library(ggpubr)
+  library(ggsignif)
+  library(nortest)
+  library(fmsb)
   
-  # Add command line arguments
-  p <- add_argument(p,"path",
-                    help = "path",
-                    flag = FALSE)
-  
-  # Parse the command line arguments
-  argv <- parse_args(p)
-  
-}
+  library(argparser, quietly=TRUE)
+  library(stringr)
+  library("readxl")
+  library(progress)
+  library(dplyr)
 
-if(with_rgb == FALSE){
-  debbugPath<-"D:/Assa/Ex_N4/Males/dirs.xlsx"
-  file.exists(debbugPath)
-  allDirsData <- read.xlsx(debbugPath)
-  num_of_pop<<-nrow(allDirsData)
-  param_dir = tools::file_path_sans_ext(dirname((debbugPath)))
   
-  
-}else{
-  file.exists(argv$path)
-  allDirsData <- read.xlsx(argv$path)
-  num_of_pop<<-nrow(allDirsData)
-  param_dir = tools::file_path_sans_ext(dirname((argv$path)))
+  current_dir =getwd()
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
 
-}
+
+allDirsData <- read.xlsx(full_path_to_dirs)
+num_of_pop<<-nrow(allDirsData)
+param_dir = tools::file_path_sans_ext(dirname((full_path_to_dirs)))
+
 
 
 
@@ -138,7 +114,13 @@ if(change == "yes"){
   }
   row_dend<-rotate(row_dend,res)
   t<-pheatmap(all_together, cluster_rows =as.hclust(row_dend))
-  print(t)
+  setwd((choose.dir(caption = "Select folder for saving the heatmap")))
+  
+  ggsave(plot = t, filename = "heatmap.jpeg", units = "cm")
+}else{
+  t <- pheatmap(all_together)
+  ggsave(plot = t, filename = "heatmap.jpeg",units = "cm")
+  
 }
 #list_of_names<-c("Males_Grouped","Males_Mated","Males_Singels","Females_Mated","Females_Grouped","Females_Singles")
 
@@ -159,17 +141,12 @@ distance_mat
 set.seed(240) # Setting seed
 Hierar_cl <- hclust(distance_mat, method = "average")
 Hierar_cl
-
-# Plotting dendrogram
 plot(Hierar_cl)
+# Plotting dendrogram
 
 # Choosing no. of clusters
 # Cutting tree by height
 abline(h = 110, col = "green")
 
-# Cutting tree by no. of clusters
-fit <- cutree(Hierar_cl, k = 3 )
-fit
 
-table(fit)
-rect.hclust(Hierar_cl, k = 3, border = "green")
+}
