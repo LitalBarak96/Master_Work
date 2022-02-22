@@ -115,10 +115,10 @@ if(change == "yes"){
   row_dend<-rotate(row_dend,res)
   t<-pheatmap(all_together, cluster_rows =as.hclust(row_dend))
   setwd((choose.dir(caption = "Select folder for saving the heatmap")))
-  
   ggsave(plot = t, filename = "heatmap.jpeg", units = "cm")
 }else{
   t <- pheatmap(all_together)
+  setwd((choose.dir(caption = "Select folder for saving the heatmap")))
   ggsave(plot = t, filename = "heatmap.jpeg",units = "cm")
   
 }
@@ -142,6 +142,7 @@ set.seed(240) # Setting seed
 Hierar_cl <- hclust(distance_mat, method = "average")
 Hierar_cl
 plot(Hierar_cl)
+
 # Plotting dendrogram
 
 # Choosing no. of clusters

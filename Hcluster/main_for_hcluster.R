@@ -1,4 +1,6 @@
-path_to_scripts<-"D:/MATLAB/runAll/litalHcluster"
+#path_to_scripts<-"D:/MATLAB/runAll/litalHcluster"
+path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/Hcluster/litalHcluster"
+
 setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
