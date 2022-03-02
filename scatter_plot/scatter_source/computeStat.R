@@ -55,17 +55,17 @@ computeStat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
     }
     else{
       if(allStat[[2]]=="Dunn"){
-        datalist[[i]]<-DunnTstDataFrame(all_name[i],allStat,path_to_scripts)
+        datalist[[i]]<-DunnTstDataFrame(all_name[i],allStat,path_to_scripts,groupsNames)
         
       }
       else{
-        datalist[[i]]<-AnovaToDataFrame(all_name[i],allStat,path_to_scripts)
+        datalist[[i]]<-AnovaToDataFrame(all_name[i],allStat,path_to_scripts,groupsNames)
       }
       
     }
     
   }
-  allData = do.call(rbind, datalist)
+  allData = do.call(bind_rows, datalist)
   allData
   group_name_dir = tools::file_path_sans_ext(dirname((dir[1,1])))
   setwd(group_name_dir)

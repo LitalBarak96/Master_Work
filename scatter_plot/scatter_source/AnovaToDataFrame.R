@@ -1,4 +1,4 @@
-AnovaToDataFrame<-function(currentName,Stat,path_to_scripts){
+AnovaToDataFrame<-function(currentName,Stat,path_to_scripts,groupsNames){
   
   
   current_dir =getwd()
@@ -8,7 +8,7 @@ AnovaToDataFrame<-function(currentName,Stat,path_to_scripts){
   setwd(current_dir)
   
   stats_data<-as.data.frame(Stat[[1]][["names"]]) 
-  stats_data<-change_row_names(stats_data,path_to_scripts)
+  stats_data<-change_row_names(stats_data,path_to_scripts,groupsNames,TRUE)
   list_rowname<-rownames(stats_data)
   data_frame_p_adj<-data.frame(name =currentName,t(stats_data[,-1:-3]),test=Stat[[2]])
   colnames(data_frame_p_adj)<-c("name",list_rowname,"test")
