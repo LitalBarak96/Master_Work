@@ -91,8 +91,8 @@ net3
 net3
 plot(net3)
 
-vs <- data.frame(onset=0, terminus=50, vertex.id=1:17)
-es <- data.frame(onset=1:49, terminus=50, 
+vs <- data.frame(onset=0, terminus=27000, vertex.id=1:10)
+es <- data.frame(onset=0, terminus=27000, 
                  head=as.matrix(net3, matrix.type="edgelist")[,1],
                  tail=as.matrix(net3, matrix.type="edgelist")[,2])
 head(vs)
