@@ -9,12 +9,20 @@
   
 #meanwhile ii am doing iit undiirected 
   
-  for(k in 1:length(dir)){
+  for(l in 1:length(dir)){
    
   df <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
   test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
   test1<-as.data.frame(test)
   test2<-as.matrix(test1)
+  
+  for(i in 1:ncol(test1)){
+    for(j in 1:nrow(test1)){
+      if(length(unlist(test1[i,j])) == 0 && !is.null(test1[i,j])){
+        test1[i,j] = NULL
+      }
+    }
+  }
   
   
 
@@ -40,10 +48,35 @@
         #tobind<-c(colnames(test1[i]),rownames(test1[j,]),test1[i,j])
         tobind<-c(colnames(test1[i]),rownames(test1[j,]))
         tobind<-as.data.frame(t(tobind))
-        tobind<-tobind[rep(seq_len(nrow(tobind)), each = length(temp_num_frames)), ]
-        tobind<-cbind(tobind,temp_num_frames)
-        all<-rbind(all,tobind)
         
+        seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+        if(length(seq_inter)> 0){
+          num_of_seq_iter<-length(seq_inter)
+          current_iindex<-1
+          for(k in 1:num_of_seq_iter){
+            tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+            tobind<-as.data.frame(t(tobind))
+            
+            index<-which(temp_num_frames == seq_inter[k])
+            tt_temp_num_frames<-as.data.frame(temp_num_frames)
+            temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
+            current_iindex<-index+1
+            tobind<-cbind(tobind,temp_all_inter[1])
+            tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
+            colnames(tobind)<-c("from","to","begin","end")
+            
+            all<-rbind(all,tobind)
+        }
+        
+        }else{
+          tobind<-cbind(tobind,temp_num_frames[1])
+          tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+          colnames(tobind)<-c("from","to","begin","end")
+          all<-rbind(all,tobind)
+          
+        }
+       # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ]
+        #tobind<-cbind(tobind,temp_num_frames)
         print(colnames(test1[i]))
         print("and")
         print(rownames(test1[j,]))
@@ -55,15 +88,23 @@
     }
   }
   
-  colnames(all)<-c("from","to","frames")
+  colnames(all)<-c("from","to","begin","end")
   
   
-  temp_num_frames[diff(temp_num_frames)>120]
-  
+ #seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+ #num_of_seq_iter<-length(seq_inter)
+ #current_iindex<-1
+ #for(i in 1:num_of_seq_iter){
+  # index<-which(temp_num_frames == seq_inter[i])
+   #tt_temp_num_frames<-as.data.frame(temp_num_frames)
+   #temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
+   #current_iindex<-index
+   
+ #}
   links<-all[1:2]
   
   library("igraph")
-  
+  library(network)
   net <- graph_from_data_frame(d=links, vertices=nodes, directed=FALSE) 
   net <- simplify(net, remove.multiple = F, remove.loops = T)
   
@@ -76,10 +117,31 @@
   
   
   vs <- data.frame(onset=0, terminus=27000, vertex.id=1:10)
-  es <- data.frame(onset=0, terminus=27000, 
+  es <- data.frame(onset=all["begin"], terminus=all["end"], 
                    head=as.matrix(net3, matrix.type="edgelist")[,1],
                    tail=as.matrix(net3, matrix.type="edgelist")[,2])
   head(vs)
   head(es)
   library(networkDynamic)
   net3.dyn <- networkDynamic(base.net=net3, edge.spells=es, vertex.spells=vs)
+  
+  
+  compute.animation(net3.dyn, animation.mode = "kamadakawai",
+                    slice.par=list(start=0, end=27000, rule='any'))
+  
+  library(ndtv)
+  render.d3movie(net3.dyn, usearrows = F, 
+                 displaylabels = F, label=net3 %v% "media",
+                 bg="#ffffff", vertex.border="#333333",
+                 vertex.cex = degree(net3)/2,  
+                 vertex.col = net3.dyn %v% "col",
+                 edge.lwd = (net3.dyn %e% "weight")/3, 
+                 edge.col = '#55555599',
+                 vertex.tooltip = paste("<b>Name:</b>", (net3.dyn %v% "media") , "<br>",
+                                        "<b>Type:</b>", (net3.dyn %v% "type.label")),
+                 edge.tooltip = paste("<b>Edge type:</b>", (net3.dyn %e% "type"), "<br>", 
+                                      "<b>Edge weight:</b>", (net3.dyn %e% "weight" ) ),
+                 launchBrowser=T, filename="Media-Network-Dynamic.html",
+                 render.par=list(tween.frames = 30, show.time = F),
+                 plot.par=list(mar=c(0,0,0,0)) )
+  
