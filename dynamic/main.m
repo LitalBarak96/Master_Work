@@ -44,6 +44,4 @@ for i = 1:numOfGroups
         foldersNames = [foldersNames; cellsToAdd];
     end
     data = [data, foldersNames];
-
-    maxExperimentInteractions = max(maxExperimentInteractions, maxGroupInteractions);
 end

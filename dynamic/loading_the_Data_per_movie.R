@@ -1,0 +1,63 @@
+
+  #install.packages('R.matlab')
+  library(R.matlab)
+  current_dir ="F:/GroupedvsSingle/Grouped"
+  setwd(current_dir)
+  
+  dir<-list.dirs(recursive = F)
+  print(dir)
+  
+#meanwhile ii am doing iit undiirected 
+  
+  for(k in 1:length(dir)){
+   
+  df <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
+  test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+  test1<-as.data.frame(test)
+  test2<-as.matrix(test1)
+  
+  
+
+  #net <- graph_from_adjacency_matrix(test2, mode = "undirected", weighted = FALSE)
+  
+    #ordered_ave<- col.df[order(col.df$file),]
+    #final.df<-rbind(final.df, ordered_ave)
+  }
+  
+  #test1[][test1[] == "NULL"] <- 0
+  colnames(test1)<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  rownames(test1)<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  nodes<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  nodes<-as.data.frame(nodes)
+  links<-c
+  #other <- do.call(unlist, test1)
+  all<-data.frame()
+  
+  number_of_flys<-10
+  for(i in 1:number_of_flys){
+    for(j in 1:number_of_flys){
+      if(test1[i,j] !="NULL"){
+        temp_num_frames<-unlist(test1[i,j])
+        #tobind<-c(colnames(test1[i]),rownames(test1[j,]),test1[i,j])
+        tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+        tobind<-as.data.frame(t(tobind))
+        tobind<-tobind[rep(seq_len(nrow(tobind)), each = length(temp_num_frames)), ]
+        all<-rbind(all,tobind)
+        
+        print(colnames(test1[i]))
+        print("and")
+        print(rownames(test1[j,]))
+        print(" ")
+        print(length(temp_num_frames))
+        
+      }
+        
+    }
+  }
+  
+  colnames(all)<-c("from","to")
+  
+#need to remember romove the 0 
+  a<-list(numeric(0))
+  
+ 
