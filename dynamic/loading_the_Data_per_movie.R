@@ -9,20 +9,31 @@
   
 #meanwhile ii am doing iit undiirected 
   
-  for(l in 1:length(dir)){
+ # for(l in 1:length(dir)){
    
   df <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
   test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
   test1<-as.data.frame(test)
-  test2<-as.matrix(test1)
+
   
+  f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+  }
+  #test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
+  
+  
+  #REMOVE 0 (MEAN NO INTERACTION)
   for(i in 1:ncol(test1)){
     for(j in 1:nrow(test1)){
-      if(length(unlist(test1[i,j])) == 0 && !is.null(test1[i,j])){
-        test1[i,j] = NULL
+      if(length(unlist(test1[i,j])) == 0){
+        test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
       }
     }
   }
+  
+  test1<-na.omit(test1)
+  #test1[(unlist(test1)) == 0] <- NULL
   
   
 
@@ -30,7 +41,6 @@
   
     #ordered_ave<- col.df[order(col.df$file),]
     #final.df<-rbind(final.df, ordered_ave)
-  }
   
   #test1[][test1[] == "NULL"] <- 0
   colnames(test1)<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
@@ -43,7 +53,7 @@
   number_of_flys<-10
   for(i in 1:number_of_flys){
     for(j in 1:number_of_flys){
-      if(test1[i,j] !="NULL"){
+      if(length(unlist(test[i,j]))!=0){
         temp_num_frames<-unlist(test1[i,j])
         #tobind<-c(colnames(test1[i]),rownames(test1[j,]),test1[i,j])
         tobind<-c(colnames(test1[i]),rownames(test1[j,]))
@@ -63,7 +73,7 @@
             current_iindex<-index+1
             tobind<-cbind(tobind,temp_all_inter[1])
             tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
-            colnames(tobind)<-c("from","to","begin","end")
+            colnames(tobind)<-c("from","to","onset","terminus")
             
             all<-rbind(all,tobind)
         }
@@ -71,7 +81,7 @@
         }else{
           tobind<-cbind(tobind,temp_num_frames[1])
           tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
-          colnames(tobind)<-c("from","to","begin","end")
+          colnames(tobind)<-c("from","to","onset","terminus")
           all<-rbind(all,tobind)
           
         }
@@ -88,7 +98,7 @@
     }
   }
   
-  colnames(all)<-c("from","to","begin","end")
+  colnames(all)<-c("from","to","onset","terminus")
   
   
  #seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
@@ -105,33 +115,50 @@
   
   library("igraph")
   library(network)
-  net <- graph_from_data_frame(d=links, vertices=nodes, directed=FALSE) 
-  net <- simplify(net, remove.multiple = F, remove.loops = T)
+  net <- graph_from_data_frame(d=links, vertices=unique(nodes), directed=FALSE) 
+  net <- simplify(net, remove.multiple =T, remove.loops = T)
   
-  net3 <- network(links, vertex.attr=nodes, matrix.type="edgelist", 
-                  loops=T, multiple=T, ignore.eval = F,directed=FALSE)
+  net3 <- network((links), vertex.attr=(nodes), matrix.type="edgelist", 
+                  loops=TRUE, multiple=FALSE,hyper=F)
   net3
 #need to remember romove the 0 
   plot(net3)
  
   
   
-  vs <- data.frame(onset=0, terminus=27000, vertex.id=1:10)
-  es <- data.frame(onset=all["begin"], terminus=all["end"], 
+  vs <- data.frame(onset=0, terminus=27001, vertex.id=1:10)
+  es <- data.frame(onset=all["onset"], terminus=all["terminus"], 
                    head=as.matrix(net3, matrix.type="edgelist")[,1],
                    tail=as.matrix(net3, matrix.type="edgelist")[,2])
   head(vs)
   head(es)
-  library(networkDynamic)
+  library(ndtv)
+  
+  is.multiplex(net3) 
   net3.dyn <- networkDynamic(base.net=net3, edge.spells=es, vertex.spells=vs)
   
   
   compute.animation(net3.dyn, animation.mode = "kamadakawai",
-                    slice.par=list(start=0, end=27000, rule='any'))
+                    slice.par=list(start=0, end=27001, interval=10, 
+                                   aggregate.dur=10, rule='any'))
+  
+  
+  plot( network.extract(net3, at=1) )
+  
+  g<-as.network.matrix(test1,matrix.type="adjacency")
+  
+  render.d3movie(net3,displaylabels=FALSE)
+  
+  filmstrip(net3.dyn, displaylabels=F, mfrow=c(1, 5),
+            slice.par=list(start=0, end=27001, interval=10,
+                           aggregate.dur=10, rule='any'))
+  
+  
+  render.d3movie(short.stergm.sim,displaylabels=TRUE)
   
   library(ndtv)
   render.d3movie(net3.dyn, usearrows = F, 
-                 displaylabels = F, label=net3 %v% "media",
+                 displaylabelnet3s = F, label=net3 %v% "media",
                  bg="#ffffff", vertex.border="#333333",
                  vertex.cex = degree(net3)/2,  
                  vertex.col = net3.dyn %v% "col",

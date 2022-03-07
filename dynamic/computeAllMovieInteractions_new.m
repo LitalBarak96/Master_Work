@@ -47,7 +47,7 @@ spaces(spaces == -1) = [];
 
 if (~param.directed)
     for i = 1:length(savenames)
-        for j = (i + 1):length(savenames)
+        for  j = (i + 1) :length(savenames)
             allFrames = unique([interactionFrameMatrix{i, j}; interactionFrameMatrix{j, i}]);
             new_interactionFrameMatrix{i,j} = allFrames;
             undirectedInteractionMatrixLength(i, j) = length(allFrames) / pairtrx(1).nframes;
