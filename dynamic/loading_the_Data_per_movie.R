@@ -43,9 +43,9 @@
     #final.df<-rbind(final.df, ordered_ave)
   
   #test1[][test1[] == "NULL"] <- 0
-  colnames(test1)<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
-  rownames(test1)<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
-  nodes<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  colnames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-c("1","2","3","4","5","6","7","8","9","10")
   nodes<-as.data.frame(nodes)
   #other <- do.call(unlist, test1)
   all<-data.frame()
@@ -73,7 +73,7 @@
             current_iindex<-index+1
             tobind<-cbind(tobind,temp_all_inter[1])
             tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
-            colnames(tobind)<-c("from","to","onset","terminus")
+            colnames(tobind)<-c("tail","head","onset","terminus")
             
             all<-rbind(all,tobind)
         }
@@ -81,7 +81,7 @@
         }else{
           tobind<-cbind(tobind,temp_num_frames[1])
           tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
-          colnames(tobind)<-c("from","to","onset","terminus")
+          colnames(tobind)<-c("tail","head","onset","terminus")
           all<-rbind(all,tobind)
           
         }
@@ -98,9 +98,13 @@
     }
   }
   
-  colnames(all)<-c("from","to","onset","terminus")
+  colnames(all)<-c("tail","head","onset","terminus")
   
+  all["head"] <- as.numeric(unlist(all["head"]))
+  all["tail"] <- as.numeric(unlist(all["tail"]))
   
+  #all["head"]=as.matrix(all["head"], matrix.type="edgelist")[,1]
+  #tail=as.matrix(net3, matrix.type="edgelist")[,2])
  #seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
  #num_of_seq_iter<-length(seq_inter)
  #current_iindex<-1
@@ -113,6 +117,15 @@
  #}
   links<-all[1:2]
   
+  final<-data.frame(onset=all["onset"], terminus=all["terminus"], 
+                    head=as.matrix(all["head"]),
+                    tail=as.matrix(all["tail"]))
+  duration<-final[2]-final[1]
+  colnames(duration)<-"duration"
+  
+  final<-cbind(final,duration)
+  
+  network.extract(as.list(final), at=1)
   library("igraph")
   library(network)
   net <- graph_from_data_frame(d=links, vertices=unique(nodes), directed=FALSE) 
@@ -171,4 +184,11 @@
                  launchBrowser=T, filename="Media-Network-Dynamic.html",
                  render.par=list(tween.frames = 30, show.time = F),
                  plot.par=list(mar=c(0,0,0,0)) )
+  
+  
+  
+  
+  ###################
+  
+  
   

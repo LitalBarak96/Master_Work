@@ -1,0 +1,481 @@
+---
+title: "dynmic_net"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+  #install.packages('R.matlab')
+  library(R.matlab)
+  current_dir ="F:/allGroups/Females_Mated"
+  setwd(current_dir)
+  
+  dir<-list.dirs(recursive = F)
+  print(dir)
+  
+#meanwhile ii am doing iit undiirected 
+  
+   
+  df <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
+  test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+  test1<-as.data.frame(test)
+
+  
+  f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+  }
+
+  
+  #REMOVE 0 (MEAN NO INTERACTION)
+  for(i in 1:ncol(test1)){
+    for(j in 1:nrow(test1)){
+      if(length(unlist(test1[i,j])) == 0){
+        test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  test1<-na.omit(test1)
+
+  
+  
+  colnames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-as.data.frame(nodes)
+  nodes$name<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  colnames(nodes)<-c("vertex.id","names")
+  #colnames(nodes)<-c("vertex.id")
+  nodes$vertex.id<-as.numeric(nodes$vertex.id)
+  #other <- do.call(unlist, test1)
+  all<-data.frame()
+  
+  number_of_flys<-10
+  for(i in 1:number_of_flys){
+    for(j in 1:number_of_flys){
+      if(length(unlist(test[i,j]))!=0){
+        temp_num_frames<-unlist(test1[i,j])
+        #tobind<-c(colnames(test1[i]),rownames(test1[j,]),test1[i,j])
+        tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+        tobind<-as.data.frame(t(tobind))
+        
+        seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+        if(length(seq_inter)> 0){
+          num_of_seq_iter<-length(seq_inter)
+          current_iindex<-1
+          for(k in 1:num_of_seq_iter){
+            tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+            tobind<-as.data.frame(t(tobind))
+            
+            index<-which(temp_num_frames == seq_inter[k])
+            tt_temp_num_frames<-as.data.frame(temp_num_frames)
+            temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
+            current_iindex<-index+1
+            tobind<-cbind(tobind,temp_all_inter[1])
+            tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
+            colnames(tobind)<-c("tail","head","onset","terminus")
+            
+            all<-rbind(all,tobind)
+        }
+        
+        }else{
+          tobind<-cbind(tobind,temp_num_frames[1])
+          tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+          colnames(tobind)<-c("tail","head","onset","terminus")
+          all<-rbind(all,tobind)
+          
+        }
+       # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ])
+        
+      }
+        
+    }
+  }
+    colnames(all)<-c("tail","head","onset","terminus")
+    edge.id<-seq_along(1:nrow(all))
+    all<-cbind(edge.id,all)
+    all$tail<-as.numeric(all$tail)
+    all$head<-as.numeric(all$head)
+
+```
+
+
+#this part doing the rendering itself
+
+
+```{r pressure, echo=FALSE}
+new_edge<-data.frame(onset=all["onset"],terminus=all["terminus"],tail=all["tail"],head=all["head"])
+new_nodes<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["tail"])
+tmp_new<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["head"])
+colnames(tmp_new)<-c("onset","terminus","id")
+colnames(new_nodes)<-c("onset","terminus","id")
+
+new_nodes<-rbind(new_nodes,tmp_new)
+new_nodes$pid<-seq_along(1:nrow(new_nodes))
+
+test_nodes<-new_nodes
+test_nodes$onset<-0
+test_nodes$terminus<-27001
+
+net <- networkDynamic(edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(test_nodes))
+
+compute.animation(net, 
+              slice.par = list(start = 1, end = 27001, interval = 100, aggregate.dur = 100, rule = "any"))
+
+  render.d3movie(net,
+           output.mode = "HTML",
+           launchBrowser = TRUE,displaylabels=TRUE)
+```
+
+
+```{r pressure, echo=FALSE}
+n((links), vertex.attr=(nodes), matrix.type="edgelist", 
+                  loops=TRUE, multiple=FALSE,hyper=F)
+  net3
+#need to remember romove the 0 
+  plot(net3)
+ 
+  
+  
+  vs <- data.frame(onset=0, terminus=27001, vertex.id=1:10)
+  es <- data.frame(onset=all["onset"], terminus=all["terminus"], 
+                   head=as.matrix(net3, matrix.type="edgelist")[,1],
+                   tail=as.matrix(net3, matrix.type="edgelist")[,2])
+  head(vs)
+  head(es)
+  library(ndtv)
+  
+  is.multiplex(net3) 
+  net3.dyn <- networkDynamic(base.net=net3, edge.spells=es, vertex.spells=vs)
+  
+  
+  compute.animation(net3.dyn, animation.mode = "kamadakawai",
+                    slice.par=list(start=0, end=27001, interval=50, 
+                                   aggregate.dur=50, rule='any'))
+  
+  
+  plot( network.extract(net3, at=1) )
+  
+  g<-as.network.matrix(test1,matrix.type="adjacency")
+  
+  render.d3movie(net3,displaylabels=FALSE)
+  
+  filmstrip(net3.dyn, displaylabels=F, mfrow=c(1, 5),
+            slice.par=list(start=0, end=27001, interval=10,
+                           aggregate.dur=10, rule='any'))
+  
+  
+  render.d3movie(short.stergm.sim,displaylabels=TRUE)
+  
+  library(ndtv)
+  render.d3movie(net3.dyn, usearrows = F, 
+                 displaylabelnet3s = F, label=net3 %v% "media",
+                 bg="#ffffff", vertex.border="#333333",
+                 vertex.cex = degree(net3)/2,  
+                 vertex.col = net3.dyn %v% "col",
+                 edge.lwd = (net3.dyn %e% "weight")/3, 
+                 edge.col = '#55555599',
+                 vertex.tooltip = paste("<b>Name:</b>", (net3.dyn %v% "media") , "<br>",
+                                        "<b>Type:</b>", (net3.dyn %v% "type.label")),
+                 edge.tooltip = paste("<b>Edge type:</b>", (net3.dyn %e% "type"), "<br>", 
+                                      "<b>Edge weight:</b>", (net3.dyn %e% "weight" ) ),
+                 launchBrowser=T, filename="Media-Network-Dynamic.html",
+                 render.par=list(tween.frames = 30, show.time = F),
+                 plot.par=list(mar=c(0,0,0,0)) )
+  
+  
+  
+  
+  ###################
+  
+  
+  
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+
+
+# networks from data frames ===========================================================
+#* simple networks ====================================================================
+simple_edge_df <- data.frame(
+  from = c("b", "c", "c", "d", "a"),
+  to = c("a", "b", "a", "a", "b"),
+  onset = c(1, 1, 2, 2, 3),
+  terminus =c(2,3,4,4,6),
+  stringsAsFactors = FALSE
+)
+simple_edge_df
+
+t<-as.network(simple_edge_df)
+
+
+# simple networks with vertices =======================================================
+simple_vertex_df <- data.frame(
+  name = letters[1:5],
+  residence = c("urban", "rural", "suburban", "suburban", "rural"),
+  stringsAsFactors = FALSE
+)
+simple_vertex_df
+
+as.network(simple_edge_df, vertices = simple_vertex_df)
+
+net<-as.network(simple_edge_df,
+           directed = FALSE, vertices = simple_vertex_df,
+           multiple = TRUE
+)
+plot( network.extract(net, at=1) )
+
+triangle <- network.initialize(82) # create a toy network
+add.edges.active(triangle,tail=as.numeric(unlist(all["head"])),head=as.numeric(unlist(all["tail"])))
+activate.vertices(triangle,onset=as.numeric(unlist(all["onset"])),terminus=as.numeric(unlist(all["terminus"])))
+
+
+test<-network.extract(triangle,at=1)
+plot(test)
+
+plot(triangle,main='ignoring dynamics',displaylabels=TRUE)
+
+render.d3movie(test,displaylabels=TRUE) 
+
+is.network(triangle)
+```
+
+```{r}
+#initialize network
+test<-network.initialize(5)
+#activate vertex attribute
+test<-activate.vertex.attribute(test,"letter","a",onset=0,terminus=1)
+test<-activate.vertex.attribute(test,"number","4",onset=1,terminus=2)
+test<-activate.vertex.attribute(test,"number","5",onset=2,terminus=3)
+#list active/all vertex attributes
+list.vertex.attributes.active(test, onset=0,terminus=3,dynamic.only=TRUE)
+list.vertex.attributes.active(test, onset=1,terminus=3,dynamic.only=FALSE)
+#get values for specific vertex attribute
+get.vertex.attribute.active(test,"letter",onset=2,terminus=3)
+#deactive vertex attribute
+test <- deactivate.vertex.attribute(test, "letter", onset=0, terminus=3)
+list.vertex.attributes.active(test, onset=0,terminus=3,dynamic.only=TRUE)
+#initialize edges
+test[1,2]<-1
+test[2,3]<-1
+#activate edge attribute
+test<-activate.edge.attribute(test,"number",1,onset=0,terminus=2)
+test<-activate.edge.attribute(test,"number",5,onset=2,terminus=5)
+test<-activate.edge.attribute(test,"letter","a",onset=1,terminus=4)
+#list edge attributes
+list.edge.attributes.active(test, onset=0,terminus=4,dynamic.only=TRUE)
+list.edge.attributes.active(test, onset=0,terminus=4,dynamic.only=FALSE)
+#get values for specific edge attribute
+get.edge.value.active(test,"number",onset=3,terminus=4)
+#deactive edge attribute
+test <- deactivate.edge.attribute(test, "letter", onset=0, terminus=3)
+list.edge.attributes.active(test, onset=0,terminus=3,dynamic.only=TRUE)
+#activate network attribute
+test <- activate.network.attribute(test,"alist",list("a","b"),onset=1,terminus=2)
+test <- activate.network.attribute(test,"alist",list("c","d"),onset=2,terminus=3)
+test <- activate.network.attribute(test,"aspace",list("1","2"),onset=1,terminus=2)
+test <- activate.network.attribute(test,"aspace",list("3","4"),onset=2,terminus=3)
+#list network attributes
+list.network.attributes.active(test, onset=0,terminus=3,dynamic.only=TRUE)
+list.network.attributes.active(test, onset=0,terminus=3,dynamic.only=FALSE)
+#get values for specific network attribute
+get.network.attribute.active(test,"alist",at=2.5,unlist=FALSE)
+#deactive network attribute
+test <- deactivate.network.attribute(test, "alist", onset=0, terminus=3)
+list.network.attributes.active(test, onset=0,terminus=3,dynamic.only=TRUE)
+# activate multiple values on multiple vertices at multiple times
+test<-network.initialize(3)
+activate.vertex.attribute(test,"letters",c("a","b","c"),onset=c(0,1,2),terminus=c(1,2,3))
+# peek at TEA structure using non-TEA attribute query
+```
+
+```{r}
+nodelist <- read.csv("https://github.com/aterhorst/data/raw/master/nodelist.csv", header=T, stringsAsFactors = F)
+edgelist <- read.csv("https://github.com/aterhorst/data/raw/master/edgelist.csv", header=T, stringsAsFactors = F)
+nodelist_expanded <- read.csv("https://github.com/aterhorst/data/raw/master/nodelist_expanded.csv", header=T, stringsAsFactors = F)
+
+# onset date must be numeric (does not like date?)
+nodelist$onset <- year(nodelist$onset)
+nodelist$terminus <- year(nodelist$terminus)
+
+# colour nodes by portfolio type
+nodelist$col <- ifelse(nodelist$portfolio == T, "red", "blue")
+
+nodelist_expanded$onset <- year(nodelist_expanded$onset)
+nodelist_expanded$terminus <- year(nodelist_expanded$terminus)
+
+# scale attributes
+nodelist_expanded$log_appropriation <- log(nodelist_expanded$appropriation + 10) / 10
+nodelist_expanded$log_ext_revenue <- log(nodelist_expanded$ext_revenue + 10) / 10
+
+edgelist$onset <- year(edgelist$onset)
+edgelist$terminus <- year(edgelist$terminus)
+
+# create basic network object
+nw <- network(edgelist[,c(2,3)],
+          vertex.attr = nodelist$vertex.id,
+          vertex.attrnames = c("vertex.id"),
+          directed = F)
+
+# plot basic network object
+plot(nw, vertex.col = "col")
+
+# make dynamic network object
+nd <-networkDynamic(nw,
+                    edge.spells = edgelist[,c(4,5,3,2)],
+                    vertex.spells = nodelist_expanded[,c(6,7,1,8,9)],
+                    create.TEAs = TRUE,
+                    vertex.TEA.names = c("log_appropriation", "log_ext_revenue"))
+
+# reconcile things
+reconcile.vertex.activity(nd, mode = "match.to.edges")
+
+# make movie!
+render.d3movie(nd,
+               displaylabels = FALSE,
+               vertex.col = "col",
+               vertex.tooltip = function(slice) {
+             paste("<b>Agency:</b>", (slice %v% "agency"))})
+
+```
+
+```{r}
+
+nw <- network(all[,c(1,2)],
+          vertex.attr=nodes$vertex.id, 
+                  loops=F, multiple=FALSE,hyper=F)
+```
+```{r}
+nodelist <- read.csv("https://github.com/aterhorst/data/raw/master/nodelist.csv", header=T, stringsAsFactors = F)
+
+edgelist <- read.csv("https://github.com/aterhorst/data/raw/master/edgelist.csv", header=T, stringsAsFactors = F)
+
+nw <- network(edgelist,
+              vertex.attr = nodelist[,c(1,2)],
+              vertex.attrnames = c("vertex.id", "agency"), 
+              directed = F,loops = T)
+
+nd <-networkDynamic(nw, 
+                    edge.spells = edgelist[,c(3,4,2,1)],
+                    vertex.spells=nodelist[,c(3,4,1)])
+```
+
+```{r}
+require(sna)
+require(tsna)
+require(ndtv)
+require(networkDynamic)
+require(lubridate)
+
+nodelist <- read.csv("https://github.com/aterhorst/data/raw/master/nodelist.csv", header=T, stringsAsFactors = F)
+edgelist <- read.csv("https://github.com/aterhorst/data/raw/master/edgelist.csv", header=T, stringsAsFactors = F)
+nodelist_expanded <- read.csv("https://github.com/aterhorst/data/raw/master/nodelist_expanded.csv", header=T, stringsAsFactors = F)
+
+# onset date must be numeric (does not like date?)
+#nodelist$onset <- year(nodelist$onset)
+#nodelist$terminus <- year(nodelist$terminus)
+
+# colour nodes by portfolio type
+nodelist$col <- ifelse(nodelist$portfolio == T, "red", "blue")
+
+nodelist_expanded$onset <- year(nodelist_expanded$onset)
+nodelist_expanded$terminus <- year(nodelist_expanded$terminus)
+
+# scale attributes
+nodelist_expanded$log_appropriation <- log(nodelist_expanded$appropriation + 10) / 10
+nodelist_expanded$log_ext_revenue <- log(nodelist_expanded$ext_revenue + 10) / 10
+
+edgelist$onset <- year(edgelist$onset)
+edgelist$terminus <- year(edgelist$terminus)
+
+# create basic network object
+nw <- network(edgelist[,c(2,3)],
+          vertex.attr = nodelist[,c(1:3,6)],
+          vertex.attrnames = c("vertex.id", "agency", "portfolio", "col"),
+          directed = F)
+
+# plot basic network object
+plot(nw, vertex.col = "col")
+
+# make dynamic network object
+nd <-networkDynamic(nw,
+                    edge.spells = edgelist[,c(4,5,3,2)],
+                    vertex.spells = nodelist_expanded[,c(6,7,1,8,9)],
+                    create.TEAs = TRUE,
+                    vertex.TEA.names = c("log_appropriation", "log_ext_revenue"))
+
+# reconcile things
+reconcile.vertex.activity(nd, mode = "match.to.edges")
+
+# make movie!
+render.d3movie(nd,
+               displaylabels = FALSE,
+               vertex.col = "col",
+               vertex.tooltip = function(slice) {
+             paste("<b>Agency:</b>", (slice %v% "agency"))})
+```
+
+```{r}
+library(networkDynamic)
+edges <- read.csv("https://raw.githubusercontent.com/SoranHD/Rstuff/main/edges.csv")
+edges$X<- NULL
+nodes <- read.csv("https://raw.githubusercontent.com/SoranHD/Rstuff/main/nodes.csv")
+nodes$X <- NULL
+net <- networkDynamic(edge.spells = edges, vertex.spells = nodes, create.TEAs = TRUE)
+compute.animation(net, 
+              slice.par = list(start = 1, end = 8, interval = 1, aggregate.dur = 1, rule = "any"))
+render.d3movie(net, usearrows = T,
+           edge.lwd = (net %e% "weight.active")/100,
+           vertex.cex = (net %v% "size.active"),
+           output.mode = "HTML",
+           launchBrowser = FALSE)
+```
+
+
+```{r}
+new_edge<-data.frame(onset=all["onset"],terminus=all["terminus"],tail=all["tail"],head=all["head"])
+new_nodes<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["tail"])
+tmp_new<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["head"])
+colnames(tmp_new)<-c("onset","terminus","id")
+colnames(new_nodes)<-c("onset","terminus","id")
+
+new_nodes<-rbind(new_nodes,tmp_new)
+new_nodes$pid<-seq_along(1:nrow(new_nodes))
+
+test_nodes<-new_nodes
+test_nodes$onset<-0
+test_nodes$terminus<-27001
+
+net <- networkDynamic(edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(test_nodes))
+
+compute.animation(net, 
+              slice.par = list(start = 1, end = 27001, interval = 100, aggregate.dur = 100, rule = "any"))
+  render.d3movie(net,displaylabels=TRUE)
+
+  render.d3movie(net,
+           output.mode = "HTML",
+           launchBrowser = TRUE)
+
+```
+

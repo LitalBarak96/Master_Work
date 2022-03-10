@@ -13,7 +13,6 @@ maxExperimentInteractions = -1;
 
 expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 [suggestedPath, ~, ~] = fileparts(expGroups{1});
-savePath = uigetdir(suggestedPath, 'Select folder to save csv file');
 numOfGroups = length(expGroups);
 
 
