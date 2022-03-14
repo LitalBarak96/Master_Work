@@ -1,4 +1,4 @@
-function [maxGroupInteractions, foldersNames] = runOneGroupInteractions(param, allFolders, csvFileName, groupName)
+function [maxGroupInteractions, foldersNames] = runOneGroupInteractions(param, allFolders, groupName)
 interactions = [];
 noInteractions = [];
 maxGroupInteractions = -1;

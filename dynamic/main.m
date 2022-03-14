@@ -17,8 +17,6 @@ numOfGroups = length(expGroups);
 
 
 
-
-xlsxFileName = fullfile(savePath, ['expData_', num2str(param.startFrame), '_to_', num2str(param.endFrame), '.xlsx']);
 groupNumber = [{'Number of groups'; numOfGroups}; cell(numOfGroups - 1, 1)];
 groupNames = cell(numOfGroups + 1, 1);
 groupNames{1} = 'Groups names';
@@ -34,7 +32,7 @@ for i = 1:numOfGroups
     allFolders(ismember(allFolders,{'.','..'})) = [];
     allFolders = fullfile(expGroups{i}, allFolders);
     data{i + 1, 3} = length(allFolders);
-    [maxGroupInteractions, foldersNames] = runOneGroupInteractions_new(param, allFolders, xlsxFileName, groupName);
+    [maxGroupInteractions, foldersNames] = runOneGroupInteractions_new(param, allFolders, groupName);
     if size(foldersNames, 1) > size(data, 1)
         cellsToAdd = cell(size(foldersNames, 1) - size(data, 1), size(data, 2));
         data = [data; cellsToAdd];
