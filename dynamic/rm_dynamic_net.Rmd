@@ -13,28 +13,28 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
-```
-
 ## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-
+```{r}
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="F:/movies_for_dynamic/assa/diffrent"
+  current_dir ="F:/movies_for_dynamic/EX_5/Females_Mated"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
   print(dir)
-  
+```
+
+
+```{r pressure, echo=FALSE}
+
+
+  order_index<-1
 #meanwhile ii am doing iit undiirected 
-  
-   
-  df <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
+    all<-data.frame()
+
+  setwd(current_dir)
+
+  df <- (readMat(paste0(dir[order_index], '/','Allinteraction.mat'))) # read each MAT file
   mat_all_inter<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
   all_inter<-as.data.frame(mat_all_inter)
 
@@ -74,22 +74,28 @@ You can also embed plots, for example:
     for(j in 1:number_of_flys){
       if(length(unlist(mat_all_inter[i,j]))!=0){
         temp_num_frames<-unlist(all_inter[i,j])
-        #tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]),all_inter[i,j])
+        tt_temp_num_frames<-as.data.frame(temp_num_frames)
+
         tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
         tobind<-as.data.frame(t(tobind))
         
+        #check the diffrences from previus interaction
+        #the value itself
         seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
         if(length(seq_inter)> 0){
           num_of_seq_iter<-length(seq_inter)
-          current_iindex<-1
+          running_index<-1
           for(k in 1:num_of_seq_iter){
             tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
             tobind<-as.data.frame(t(tobind))
             
             index<-which(temp_num_frames == seq_inter[k])
-            tt_temp_num_frames<-as.data.frame(temp_num_frames)
-            temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
-            current_iindex<-index+1
+            #looking for the index in temp_num_frames
+            #putting here the index blok that the diffrences in the thrshold is above 120
+            #the frames itself
+            temp_all_inter<-tt_temp_num_frames[running_index:index,]
+            #the next in the frames in the next bloc
+            running_index<-index+1
             tobind<-cbind(tobind,temp_all_inter[1])
             tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
             colnames(tobind)<-c("tail","head","onset","terminus")
@@ -118,12 +124,211 @@ You can also embed plots, for example:
 
 ```
 
+```{r}
+
+  order_index<-1
+#meanwhile ii am doing iit undiirected 
+    all<-data.frame()
+
+  setwd(current_dir)
+
+  df <- (readMat(paste0(dir[order_index], '/','Allinteraction.mat'))) # read each MAT file
+  mat_all_inter<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+  all_inter<-as.data.frame(mat_all_inter)
+
+  
+  f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+  }
+
+  
+  #REMOVE 0 (MEAN NO INTERACTION)
+  for(i in 1:ncol(all_inter)){
+    for(j in 1:nrow(all_inter)){
+      if(length(unlist(all_inter[i,j])) == 0){
+        all_inter[i,j] <- lapply(all_inter[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  all_inter<-na.omit(all_inter)
+
+  
+  
+  colnames(all_inter)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(all_inter)<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-as.data.frame(nodes)
+  nodes$name<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  colnames(nodes)<-c("vertex.id","names")
+  #colnames(nodes)<-c("vertex.id")
+  nodes$vertex.id<-as.numeric(nodes$vertex.id)
+  #other <- do.call(unlist, all_inter)
+  all<-data.frame()
+  
+  number_of_flys<-10
+  for(i in 1:number_of_flys){
+    for(j in 1:number_of_flys){
+      if(length(unlist(mat_all_inter[i,j]))!=0){
+        temp_num_frames<-unlist(all_inter[i,j])
+        tt_temp_num_frames<-as.data.frame(temp_num_frames)
+
+        tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
+        tobind<-as.data.frame(t(tobind))
+        
+        #check the diffrences from previus interaction
+        #the value itself
+        seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+        if(length(seq_inter)> 0){
+          tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
+          tobind<-as.data.frame(t(tobind))
+            
+          Breaks <- c(0, which(diff(temp_num_frames) > 120), length(temp_num_frames))
+          chunks<-sapply(seq(length(Breaks) - 1),function(i) temp_num_frames[(Breaks[i] +             1):Breaks[i+1]])
+            
+            #looking for the index in temp_num_frames
+            #putting here the index blok that the diffrences in the thrshold is above 120
+            #the frames itself
+            #the next in the frames in the next bloc
+          for(k in 1:length(chunks)){
+          temp_unlist<-unlist(chunks[k])
+          tobind<-cbind(tobind,temp_unlist[1])
+          tobind<-cbind(tobind,temp_unlist[length(temp_unlist)])
+          colnames(tobind)<-c("tail","head","onset","terminus")
+            
+          all<-rbind(all,tobind)
+          }
+
+        }
+        
+        }else{
+          tobind<-cbind(tobind,temp_num_frames[1])
+          tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+          colnames(tobind)<-c("tail","head","onset","terminus")
+          all<-rbind(all,tobind)
+          
+        }
+       # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ])
+        
+      }
+        
+    }
+  
+    colnames(all)<-c("tail","head","onset","terminus")
+    edge.id<-seq_along(1:nrow(all))
+    all<-cbind(edge.id,all)
+    all$tail<-as.numeric(all$tail)
+    all$head<-as.numeric(all$head)
+
+
+
+
+```
+
+
+```{r}
+order_index<-1
+#meanwhile ii am doing iit undiirected 
+all<-data.frame()
+
+setwd(current_dir)
+
+df <- (readMat(paste0(dir[order_index], '/','Allinteraction.mat'))) # read each MAT file
+mat_all_inter<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+all_inter<-as.data.frame(mat_all_inter)
+
+
+f <- function(x) {
+  if(is.list(x)) lapply(x, f)
+  else ifelse(length(x) == 0, 0, x)
+}
+
+
+#REMOVE 0 (MEAN NO INTERACTION)
+for(i in 1:ncol(all_inter)){
+  for(j in 1:nrow(all_inter)){
+    if(length(unlist(all_inter[i,j])) == 0){
+      all_inter[i,j] <- lapply(all_inter[i,j], function(x)x[lengths(x) == 0] <- 0)
+    }
+  }
+}
+
+all_inter<-na.omit(all_inter)
+
+
+
+colnames(all_inter)<-c("1","2","3","4","5","6","7","8","9","10")
+rownames(all_inter)<-c("1","2","3","4","5","6","7","8","9","10")
+nodes<-c("1","2","3","4","5","6","7","8","9","10")
+nodes<-as.data.frame(nodes)
+nodes$name<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+colnames(nodes)<-c("vertex.id","names")
+#colnames(nodes)<-c("vertex.id")
+nodes$vertex.id<-as.numeric(nodes$vertex.id)
+#other <- do.call(unlist, all_inter)
+all<-data.frame()
+
+number_of_flys<-10
+for(i in 1:number_of_flys){
+  for(j in 1:number_of_flys){
+    if(length(unlist(mat_all_inter[i,j]))!=0){
+      temp_num_frames<-unlist(all_inter[i,j])
+      tt_temp_num_frames<-as.data.frame(temp_num_frames)
+      
+      tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
+      tobind<-as.data.frame(t(tobind))
+      
+      #check the diffrences from previus interaction
+      #the value itself
+      seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+      if(length(seq_inter)> 0){
+        num_of_seq_iter<-length(seq_inter)
+        Breaks <- c(0, which(diff(temp_num_frames) > 120), length(temp_num_frames))
+        chunks<-sapply(seq(length(Breaks) - 1),function(i) temp_num_frames[(Breaks[i] +1):Breaks[i+1]])
+          
+        #looking for the index in temp_num_frames
+          #putting here the index blok that the diffrences in the thrshold is above 120
+          #the frames itself
+          #the next in the frames in the next bloc
+        for(k in 1:length(chunks)){
+          tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
+          tobind<-as.data.frame(t(tobind))
+          temp_unlist<-unlist(chunks[k])
+          tobind<-cbind(tobind,temp_unlist[1])
+          tobind<-cbind(tobind,temp_unlist[length(temp_unlist)])
+          colnames(tobind)<-c("tail","head","onset","terminus")
+          all<-rbind(all,tobind)
+        }
+        
+      }else{
+        tobind<-cbind(tobind,temp_num_frames[1])
+        tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+        colnames(tobind)<-c("tail","head","onset","terminus")
+        all<-rbind(all,tobind)
+        
+      }
+      # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ])
+      
+    }
+    
+  }
+}
+colnames(all)<-c("tail","head","onset","terminus")
+edge.id<-seq_along(1:nrow(all))
+all<-cbind(edge.id,all)
+all$tail<-as.numeric(all$tail)
+all$head<-as.numeric(all$head)
+
+```
 
 #this part doing the rendering itself
 
 
 ```{r pressure, echo=FALSE}
 library(ndtv)
+setwd(current_dir)
+
 new_edge<-data.frame(onset=all["onset"],terminus=all["terminus"],tail=all["tail"],head=all["head"])
 new_nodes<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["tail"])
 tmp_new<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["head"])
