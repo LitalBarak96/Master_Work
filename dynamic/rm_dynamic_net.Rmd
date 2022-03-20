@@ -17,11 +17,12 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="F:/movies_for_dynamic/EX_5/Male_Mated"
+  current_dir ="F:/movies_for_dynamic/EX_5/Females_Mated"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
   print(dir)
+  color<-"red"
 ```
 
 
@@ -142,7 +143,7 @@ final_nodes$onset<-0
 final_nodes$terminus<-27001
 
 
-vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c("blue"))
+vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
 
 vertex$vertex.id<-as.numeric(vertex$vertex.id)
 
