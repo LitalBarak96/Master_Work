@@ -1,7 +1,9 @@
-boutLengthAndFrequencyForClassifiers<-function(dir,path_to_scripts){
+frq<-function(dir,path_to_scripts){
   
-  current_dir ="F:/GroupedvsSingle/Grouped"
-
+  current_dir =dir
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
   setwd(current_dir)
   
   str1 = "frequency"

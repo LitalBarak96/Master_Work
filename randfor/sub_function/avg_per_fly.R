@@ -1,9 +1,8 @@
 avg_per_fly<-function(dir,path_to_scripts){
-  library(R.matlab)
-  current_dir ="F:/GroupedvsSingle/Single"
-  #setwd(path_to_scripts)
-  #files.sources = list.files()
-  #sapply(files.sources, source)
+  current_dir =getwd()
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
