@@ -65,12 +65,12 @@ frq<-function(dir,path_to_scripts){
         
         
        # ave_bl<-rbind(ave_bl,as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # combine average bout lengths of all flies per movie
-        avg_bl_df_per_Fly <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # convert format of data for each fly
+        avg_bl_df_per_Fly <- data.frame(dir=dir[k], files=paste(str2,files[j]), fly=i, value=as.numeric(colMeans(bl_vector, na.rm = T, dims = 1))) # convert format of data for each fly
         avg_bl_df_per_Fly_combined<-bind_rows(avg_bl_df_per_Fly_combined,avg_bl_df_per_Fly)
         #calculating the number of instans that had movemnt (e.g 21 accurance divideing by 27001 frames)
         #multiply with 30 beacuse we wanted to change from perframe to seconds
         #per_movie_freq<-rbind(per_movie_freq, as.numeric(lengths(bl_vector)/((length(tmp.df$value))/30)))
-        frq_df_per_Fly <- data.frame(dir=dir[k], files=files[j], fly=i, value=as.numeric(lengths(bl_vector)/((length(tmp.df$value))/30))) # convert format of data for each fly
+        frq_df_per_Fly <- data.frame(dir=dir[k], files=paste(str1,files[j]), fly=i, value=as.numeric(lengths(bl_vector)/((length(tmp.df$value))/30))) # convert format of data for each fly
         frq_df_per_Fly_combined<-bind_rows(frq_df_per_Fly_combined,frq_df_per_Fly)
         # combine frequency of all flies
       }

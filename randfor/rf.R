@@ -58,7 +58,7 @@ if(test==TRUE){
 }else{
   #test for myself
   library(openxlsx)
-  dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
+  dirs <- as.data.frame(read.xlsx("F:/allGroups/females/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
 }
 
@@ -92,13 +92,13 @@ sapply(files.sources, source)
 
 
 #### the actuall run (if the user choose to run from the start)
-#  for (i in 1:num_of_pop){
+  for (i in 1:num_of_pop){
 #for each population i get the group name the number for movies and running 
-#   setwd(dir[i,1])
-#  avg_per_fly(dir[i,1],path_to_scripts)
-# importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
-#frq(dir[i,1],path_to_scripts)
-#}
+   setwd(dir[i,1])
+  avg_per_fly(dir[i,1],path_to_scripts)
+ importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
+frq(dir[i,1],path_to_scripts)
+}
 
 
 #for (i in 1:num_of_pop){
@@ -117,15 +117,20 @@ for(i in 1:num_of_pop){
 library("dplyr")
 library("stringr")
 
-all_features_final_male<-data.frame()
-all_features_final_female<-data.frame()
+Grouped<-data.frame()
+Mated<-data.frame()
+Single<-data.frame()
 
 
 #feature_names<-all_features %>%
  # select(-ends_with('~'))
+Mated_index<-0
+Grouped_index<-0
+Singles_index<-0
 
 for(i in 1:num_of_pop){
-  if(str_detect(basename(dir[i,1]), "Males")){
+  if(str_detect(basename(dir[i,1]), "Mated")){
+    Mated_index<-Mated_index+1
     setwd(dir[i,1])
     all_features<-read.csv("combined_per_fly.csv")
     #getting the colom names - getting the feature name e.g aggregation 
@@ -154,16 +159,24 @@ for(i in 1:num_of_pop){
     
   #test<-all_features_valus[,!grepl("*~",names(all_features_valus))]
     #connecting the names of the movies to the value and feature name
-    all_features_names<-cbind(all_features_names,all_features_valus[,!grepl("*~",names(all_features_valus))])
-    all_features_names$id<-c("Males")
-    all_features_final_male<-bind_rows(all_features_final_male,all_features_names)
+    
+    #all_features_names<-cbind(all_features_names,all_features_valus[,!grepl("*~",names(all_features_valus))])
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("Mated")
+    if(Mated_index==1){
+      Mated<-all_features_names
+    }else{
+      Mated<-rbind(Mated,all_features_names)
+      
+    }
     #putting factor on the label
-    all_features_final_male$id<-as.factor(all_features_final_male$id)
+    Mated$id<-as.factor(Mated$id)
   }
   
   
   
-  if(str_detect(basename(dir[i,1]), "Females")){
+  if(str_detect(basename(dir[i,1]), "Grouped")){
+    Grouped_index<-Grouped_index+1
     setwd(dir[i,1])
     all_features<-read.csv("combined_per_fly.csv")
     #getting the colom names - getting the feature name e.g aggregation 
@@ -190,15 +203,62 @@ for(i in 1:num_of_pop){
     
     #connecting the names of the movies to the value and feature name
     all_features_names<-cbind(all_features_names,all_features_valus)
-    all_features_names$id<-c("Females")
+    all_features_names$id<-c("Grouped")
     
-    all_features_final_female<-bind_rows(all_features_final_female,all_features_names)
+    if(Grouped_index==1){
+      Grouped<-all_features_names
+    }else{
+      Grouped<-rbind(Grouped,all_features_names)
+      
+    }
     #putting factor on the label
-    all_features_final_female$id<-as.factor(all_features_final_female$id)
+    Grouped$id<-as.factor(Grouped$id)
+  }
+  
+  if(str_detect(basename(dir[i,1]), "Single")){
+    Singles_index<-Singles_index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    #connecting the names of the movies to the value and feature name
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("Single")
+    
+    if(Singles_index==1){
+      Single<-all_features_names
+    }else{
+      Single<-rbind(Single,all_features_names)
+      
+    }
+    #putting factor on the label
+    Single$id<-as.factor(Single$id)
   }
   
 }
-all_feature_final<-rbind(all_features_final_female,all_features_final_male)
+all_feature_final<-rbind(Single,Mated)
+all_feature_final<-rbind(all_feature_final,Grouped)
+
 #this part was problematic for the random forest
 colnames(all_feature_final) <- make.names(colnames(all_feature_final))
 
