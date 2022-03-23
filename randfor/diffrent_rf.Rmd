@@ -57,8 +57,6 @@ font_size<<-0
 width<<-0
 height<<-0
 type_format<<-0
-number_of_flies= 10
-num_of_movies =0
 
 groupsNames <<- c()
 xlsxFile<<-c()
@@ -91,7 +89,7 @@ if(test==TRUE){
 }else{
   #test for myself
   library(openxlsx)
-  dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
+  dirs <- as.data.frame(read.xlsx("F:/allGroups/group_and_mated/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
 }
 

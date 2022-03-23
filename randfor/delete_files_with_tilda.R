@@ -10,3 +10,16 @@ song_path<-list.files(path=dir, pattern="Song", all.files=TRUE,
 unlink(song_path)
 unlink(chain_path)
 unlink(chase_path)
+
+
+
+
+path<-"F:/new_cyp6a20/twentyCyp6a20"
+setwd(path)
+dir<-list.dirs(recursive = F)
+
+tilda_path<-list.files(path=dir, pattern="~", all.files=TRUE,
+                       full.names=TRUE)
+
+
+unlink(tilda_path)

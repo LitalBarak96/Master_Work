@@ -1,3 +1,35 @@
+---
+title: "rf_cyp"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+```{r}
 require(R.matlab)
 library(base)
 library(openxlsx)
@@ -17,15 +49,6 @@ test = FALSE
 group_name<-c()
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-
-dot<<-0
-xsize<<-0
-font_size<<-0
-width<<-0
-height<<-0
-type_format<<-0
-number_of_flies= 10
-num_of_movies =0
 
 groupsNames <<- c()
 xlsxFile<<-c()
@@ -58,7 +81,7 @@ if(test==TRUE){
 }else{
   #test for myself
   library(openxlsx)
-  dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
+  dirs <- as.data.frame(read.xlsx("F:/new_cyp6a20/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
 }
 
@@ -117,19 +140,25 @@ for(i in 1:num_of_pop){
 library("dplyr")
 library("stringr")
 
-Female<-data.frame()
-Male<-data.frame()
+ten<-data.frame()
+twenty<-data.frame()
+thirty<-data.frame()
+forty<-data.frame()
+fifty<-data.frame()
 
 
 
 #feature_names<-all_features %>%
 # select(-ends_with('~'))
-Female_index<-0
-Male_index<-0
+ten_index<-0
+twenty_index<-0
+thirty_index<-0
+forty_index<-0
+fifty_index<-0
 
 for(i in 1:num_of_pop){
-  if(str_detect(basename(dir[i,1]), "Females")){
-    Female_index<-Female_index+1
+  if(str_detect(basename(dir[i,1]), "ten")){
+    ten_index<-ten_index+1
     setwd(dir[i,1])
     all_features<-read.csv("combined_per_fly.csv")
     #getting the colom names - getting the feature name e.g aggregation 
@@ -161,21 +190,18 @@ for(i in 1:num_of_pop){
     
     #all_features_names<-cbind(all_features_names,all_features_valus[,!grepl("*~",names(all_features_valus))])
     all_features_names<-cbind(all_features_names,all_features_valus)
-    all_features_names$id<-c("Female")
-    if(Female_index==1){
-      Female<-all_features_names
+    all_features_names$id<-c("ten")
+    if(ten_index==1){
+      ten<-all_features_names
     }else{
-      Female<-rbind(Female,all_features_names)
+      ten<-rbind(ten,all_features_names)
       
     }
     #putting factor on the label
-    Female$id<-as.factor(Female$id)
+    ten$id<-as.factor(ten$id)
   }
-  
-  
-  
-  if(str_detect(basename(dir[i,1]), "Males")){
-    Male_index<-Male_index+1
+  if(str_detect(basename(dir[i,1]), "twenty")){
+    twenty_index<-twenty_index+1
     setwd(dir[i,1])
     all_features<-read.csv("combined_per_fly.csv")
     #getting the colom names - getting the feature name e.g aggregation 
@@ -202,30 +228,173 @@ for(i in 1:num_of_pop){
     
     #connecting the names of the movies to the value and feature name
     all_features_names<-cbind(all_features_names,all_features_valus)
-    all_features_names$id<-c("Male")
+    all_features_names$id<-c("twenty")
     
-    if(Male_index==1){
-      Male<-all_features_names
+    if(twenty_index==1){
+      twenty<-all_features_names
     }else{
-      Male<-rbind(Male,all_features_names)
+      twenty<-rbind(twenty,all_features_names)
       
     }
     #putting factor on the label
-    Male$id<-as.factor(Male$id)
+    twenty$id<-as.factor(twenty$id)
   }
-  
+  if(str_detect(basename(dir[i,1]), "thirty")){
+    thirty_index<-thirty_index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    #connecting the names of the movies to the value and feature name
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("thirty")
+    
+    if(thirty_index==1){
+      thirty<-all_features_names
+    }else{
+      thirty<-rbind(thirty,all_features_names)
+      
+    }
+    #putting factor on the label
+    thirty$id<-as.factor(thirty$id)
+  }
+  if(str_detect(basename(dir[i,1]), "forty")){
+    forty_index<-forty_index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    #connecting the names of the movies to the value and feature name
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("forty")
+    
+    if(forty_index==1){
+      forty<-all_features_names
+    }else{
+      forty<-rbind(forty,all_features_names)
+      
+    }
+    #putting factor on the label
+    forty$id<-as.factor(forty$id)
+  }
+  if(str_detect(basename(dir[i,1]), "fifty")){
+    fifty_index<-fifty_index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    #connecting the names of the movies to the value and feature name
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("fifty")
+    
+    if(fifty_index==1){
+      fifty<-all_features_names
+    }else{
+      fifty<-rbind(fifty,all_features_names)
+      
+    }
+    #putting factor on the label
+    fifty$id<-as.factor(fifty$id)
+  }
+
 
 }
-all_feature_final<-rbind(Female,Male)
+all_feature_final<-rbind(ten,twenty)
+all_feature_final<-rbind(all_feature_final,thirty)
+all_feature_final<-rbind(all_feature_final,forty)
+all_feature_final<-rbind(all_feature_final,fifty)
+
 
 #this part was problematic for the random forest
 colnames(all_feature_final) <- make.names(colnames(all_feature_final))
 
 
-#check balance
-all_feature_final %>% 
-  count(id) %>% 
-  mutate(prop = n/sum(n))
+
+```
+
+
+
+
+```{r}
+library(randomForest)
+set.seed(71)
+rf <-randomForest(id ~ .,data=all_feature_final) 
+print(rf)
+
+
+
+
+set.seed(71)
+rf <-randomForest(id~.,data=all_feature_final, importance=TRUE,ntree=500)
+print(rf)
+importance(rf)
+varImpPlot(rf)
+```
+
+
+
+```{r}
+
 
 library(tidyverse)
 library(dplyr) 
@@ -240,7 +409,7 @@ set.seed(123)
 
 
 
-rf_mod<-rand_forest(trees = 500)%>%set_engine("ranger")%>%set_mode("classification")
+rf_mod<-rand_forest(trees = 1000)%>%set_engine("ranger")%>%set_mode("classification")
 
 rf_fit<-rf_mod%>%fit(id ~ .,data = all_feature_final)
 
@@ -334,3 +503,5 @@ final_tree %>%
 final_tree %>% 
   extract_fit_parsnip() %>% 
   vip()
+```
+

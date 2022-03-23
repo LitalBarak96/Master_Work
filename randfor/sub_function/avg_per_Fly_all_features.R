@@ -12,8 +12,8 @@ avg_per_Fly_all_features<-function(dir,path_to_scripts){
   col_ave.df<-data.frame()
   row_ave.df<- data.frame()
   final.df<-data.frame()
-  included_list.df<-as.data.frame(read.csv2('included.csv', header = F, colClasses = "character"))  
-  included<-as.character(included_list.df$V1)
+  #included_list.df<-as.data.frame(read.csv2('included.csv', header = F, colClasses = "character"))  
+  #included<-as.character(included_list.df$V1)
   
   for(k in 1:length(dir)){
     curr.dir<-(paste0(dir[k],'/perframe/')) 
