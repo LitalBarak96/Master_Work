@@ -17,18 +17,18 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="F:/movies_for_dynamic/EX_5/Females_Mated"
+  current_dir ="F:/Dark&Ligth/Ligth"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
   print(dir)
-  color<-"red"
+  color<-"green"
 ```
 
 
 
 ```{r}
-order_index<-1
+order_index<-10
 #meanwhile ii am doing iit undiirected 
 all<-data.frame()
 

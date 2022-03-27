@@ -1,7 +1,7 @@
 
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="F:/GroupedvsSingle/Grouped"
+  current_dir ="F:/Dark&Ligth/Dark"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
