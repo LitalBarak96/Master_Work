@@ -18,7 +18,9 @@ When you click the **Knit** button a document will be generated that includes bo
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
+```{r all sub groups, echo=FALSE}
+#all groupes
+library(stringr)
  library(openxlsx)
   dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
@@ -105,14 +107,82 @@ colnames(all_feature_final) <- make.names(colnames(all_feature_final))
 all_feature_final %>% 
   count(id) %>% 
   mutate(prop = n/sum(n))
+
+actuall_data<-all_feature_final[,-1]
+
+scaled_dat <- data.frame(lapply(actuall_data, function(x) scale(x, center = FALSE, scale = max(x, na.rm = TRUE)/1)))
+scaled_dat<-cbind(all_feature_final$id,scaled_dat)
+names(scaled_dat)[names(scaled_dat) == 'all_feature_final$id'] <- 'id'
+
+
+library(readr)
+library(Rtsne)
+tag<-all_feature_final$id
+colors = rainbow(length(unique(scaled_dat$id)))
+names(colors) = unique(scaled_dat$id)
+
+## Run the t-SNE algorithm and store the results into an object called tsne_results
+tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
+#THE DEFULAT IS 1000 ITERS
+plot(tsne_results$Y, col = "black", bg= scaled_dat$id, pch = 21, cex = 1.5)
+text(tsne_results$Y, labels=scaled_dat$id, col=colors[scaled_dat$id])
+
+
+##ALSO WITH SAMPLING
+
+numTrain <-1190
+set.seed(1)
+rows <- sample(1:nrow(scaled_dat), numTrain)
+train <- scaled_dat[rows,]
+
+set.seed(1) # for reproducibility
+tsne <- Rtsne(train[,-1], perplexity=30,check_duplicates = FALSE)
+
+
+colors = rainbow(length(unique(train$id)))
+names(colors) = unique(train$id)
+
+plot(tsne$Y, t='n', main="tSNE", xlab="tSNE dimension 1", ylab="tSNE dimension 2", "cex.main"=2, "cex.lab"=0.5)
+text(tsne$Y, labels=train$id, col=colors[train$id])
+
+
+library(Rtsne)
+
+tsne_plot <- function(perpl=30,iterations=1000,learning=250){
+  set.seed(1) # for reproducibility
+  tsne <- Rtsne(train[,-1], dims = 2, perplexity=perpl, verbose=TRUE, max_iter=iterations, eta=learning)
+  plot(tsne$Y, t='n', main = print(paste0("perplexity = ",perpl, ", max_iter = ",iterations, ", learning rate = ",learning)), xlab="tSNE dimension 1", ylab="tSNE dimension 2", "cex.main"=1, "cex.lab"=1.5)
+  text(tsne$Y, labels=train$id, col=colors[train$id],cex=0.5)
+}
+
+perplexity_values <- c(20,30,40,50,60,70,80,90)
+sapply(perplexity_values,function(i){tsne_plot(perpl=i)})
+
+learning_values <- c(20,200,300,2000)
+sapply(learning_values,function(i){tsne_plot(learning=i)})
+
+par(mfrow=c(3,3))
+optPerp <- round(sqrt(104),0)
+for(i in c( 200, 300, 500,1000,2000,3000,4000,5000,6000))
+{
+	tsne <- Rtsne(train[,-1],
+		      perplexity=30, max_iter=i)
+	plot(tsne$Y, col="blue", xlab="tSNE1", ylab="tSNE2", cex=0.5)
+	mtext(paste0("max_iter = ", i))
+}
+
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
 
-```{r}
-  library(openxlsx)
+```{r male vs female}
+
+rm(list = ls())
+#male vs female
+library(stringr)
+library(openxlsx)
   dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
   
@@ -246,6 +316,71 @@ colnames(all_feature_final) <- make.names(colnames(all_feature_final))
 all_feature_final %>% 
   count(id) %>% 
   mutate(prop = n/sum(n))
+
+
+actuall_data<-all_feature_final[,-1]
+
+scaled_dat <- data.frame(lapply(actuall_data, function(x) scale(x, center = FALSE, scale = max(x, na.rm = TRUE)/1)))
+scaled_dat<-cbind(all_feature_final$id,scaled_dat)
+names(scaled_dat)[names(scaled_dat) == 'all_feature_final$id'] <- 'id'
+
+
+
+library(readr)
+library(Rtsne)
+tag<-all_feature_final$id
+colors = rainbow(length(unique(scaled_dat$id)))
+names(colors) = unique(scaled_dat$id)
+
+## Run the t-SNE algorithm and store the results into an object called tsne_results
+tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
+#THE DEFULAT IS 1000 ITERS
+plot(tsne_results$Y, col = "black", bg= scaled_dat$id, pch = 21, cex = 1.5)
+text(tsne_results$Y, labels=scaled_dat$id, col=colors[scaled_dat$id])
+
+
+##ALSO WITH SAMPLING
+
+numTrain <-1190
+set.seed(1)
+rows <- sample(1:nrow(scaled_dat), numTrain)
+train <- scaled_dat[rows,]
+
+set.seed(1) # for reproducibility
+tsne <- Rtsne(train[,-1], perplexity=30,check_duplicates = FALSE)
+
+
+colors = rainbow(length(unique(train$id)))
+names(colors) = unique(train$id)
+
+plot(tsne$Y, t='n', main="tSNE", xlab="tSNE dimension 1", ylab="tSNE dimension 2", "cex.main"=2, "cex.lab"=0.5)
+text(tsne$Y, labels=train$id, col=colors[train$id])
+
+
+library(Rtsne)
+
+tsne_plot <- function(perpl=30,iterations=1000,learning=250){
+  set.seed(1) # for reproducibility
+  tsne <- Rtsne(train[,-1], dims = 2, perplexity=perpl, verbose=TRUE, max_iter=iterations, eta=learning)
+  plot(tsne$Y, t='n', main = print(paste0("perplexity = ",perpl, ", max_iter = ",iterations, ", learning rate = ",learning)), xlab="tSNE dimension 1", ylab="tSNE dimension 2", "cex.main"=1, "cex.lab"=1.5)
+  text(tsne$Y, labels=train$id, col=colors[train$id],cex=0.5)
+}
+
+perplexity_values <- c(20,30,40,50,60,70,80,90)
+sapply(perplexity_values,function(i){tsne_plot(perpl=i)})
+
+learning_values <- c(20,200,300,2000)
+sapply(learning_values,function(i){tsne_plot(learning=i)})
+
+par(mfrow=c(3,3))
+optPerp <- round(sqrt(104),0)
+for(i in c( 200, 300, 500,1000,2000,3000,4000,5000,6000))
+{
+	tsne <- Rtsne(train[,-1],
+		      perplexity=30, max_iter=i)
+	plot(tsne$Y, col="blue", xlab="tSNE1", ylab="tSNE2", cex=0.5)
+	mtext(paste0("max_iter = ", i))
+}
 ```
 
 
@@ -253,77 +388,66 @@ all_feature_final %>%
 ```{r}
 library(readr)
 library(Rtsne)
-actuall_data<-all_feature_final[,-1]
-#scale them to 1
-dat <- data.frame(lapply(actuall_data, function(x) scale(x, center = FALSE, scale = max(x, na.rm = TRUE)/1)))
-
-tag<-all_feature_final[,1]
-
-library(Rtsne)
-
-
-
-
+tag<-all_feature_final$id
+colors = rainbow(length(unique(scaled_dat$id)))
+names(colors) = unique(scaled_dat$id)
 
 ## Run the t-SNE algorithm and store the results into an object called tsne_results
-tsne_results <- Rtsne(actuall_data, perplexity=30, check_duplicates = FALSE)
-plot(tsne_results$Y, col = "black", bg= tag, pch = 21, cex = 1.5)
-text(tsne_results$Y, labels=tag, col=colors[tag])
-```
+tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
+#THE DEFULAT IS 1000 ITERS
+plot(tsne_results$Y, col = "black", bg= scaled_dat$id, pch = 21, cex = 1.5)
+text(tsne_results$Y, labels=scaled_dat$id, col=colors[scaled_dat$id])
 
 
-
-```{r}
-
-
-actuall_data<-all_feature_final[,-1]
-#scale them to 1
-dat <- data.frame(lapply(actuall_data, function(x) scale(x, center = FALSE, scale = max(x, na.rm = TRUE)/1)))
-
-tag<-all_feature_final[,1]
-
+##ALSO WITH SAMPLING
 
 numTrain <-1190
 set.seed(1)
-rows <- sample(1:nrow(all_feature_final), numTrain)
-train <- all_feature_final[rows,]
+rows <- sample(1:nrow(scaled_dat), numTrain)
+train <- scaled_dat[rows,]
 
 set.seed(1) # for reproducibility
-tsne <- Rtsne(train[,-1], dims = 3, perplexity=30, verbose=TRUE, max_iter = 500)
+tsne <- Rtsne(train[,-1], perplexity=30,check_duplicates = FALSE)
 
 
-colors = rainbow(length(unique(all_feature_final$id)))
-names(colors) = unique(all_feature_final$id)
+colors = rainbow(length(unique(train$id)))
+names(colors) = unique(train$id)
 
 plot(tsne$Y, t='n', main="tSNE", xlab="tSNE dimension 1", ylab="tSNE dimension 2", "cex.main"=2, "cex.lab"=0.5)
-text(tsne$Y, labels=all_feature_final$id, col=colors[all_feature_final$id])
+text(tsne$Y, labels=train$id, col=colors[train$id])
 
 ```
 ```{r}
-tsne_plot <- function(perpl=50,iterations=100,learning=200){
+
+library(Rtsne)
+
+tsne_plot <- function(perpl=30,iterations=1000,learning=250){
   set.seed(1) # for reproducibility
   tsne <- Rtsne(train[,-1], dims = 2, perplexity=perpl, verbose=TRUE, max_iter=iterations, eta=learning)
   plot(tsne$Y, t='n', main = print(paste0("perplexity = ",perpl, ", max_iter = ",iterations, ", learning rate = ",learning)), xlab="tSNE dimension 1", ylab="tSNE dimension 2", "cex.main"=1, "cex.lab"=1.5)
   text(tsne$Y, labels=train$id, col=colors[train$id],cex=0.5)
 }
 
-perplexity_values <- c(2,5,20,25,40,50,60,70,80,90,100)
+perplexity_values <- c(20,30,40,50,60,70,80,90)
 sapply(perplexity_values,function(i){tsne_plot(perpl=i)})
-```
 
-```{r}
-
-learning_values <- c(20,200,2000)
+learning_values <- c(20,200,300,2000)
 sapply(learning_values,function(i){tsne_plot(learning=i)})
+
 ```
+
+
+
+
+
 ```{r}
 
 par(mfrow=c(3,3))
 optPerp <- round(sqrt(104),0)
-for(i in c(5, 10, 20, 50, 100, 200, 300, 500,5000))
+for(i in c( 200, 300, 500,1000,2000,3000,4000,5000,6000))
 {
 	tsne <- Rtsne(train[,-1],
-		      perplexity=20, max_iter=i)
+		      perplexity=30, max_iter=i)
 	plot(tsne$Y, col="blue", xlab="tSNE1", ylab="tSNE2", cex=0.5)
 	mtext(paste0("max_iter = ", i))
 }
