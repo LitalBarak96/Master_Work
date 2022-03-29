@@ -9,36 +9,80 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+#this chunk will creat combined_per_fly.csv
+#note that combined_per_fly.csv does not include graph theory parametrs
+#please also note this is taking time to calculate so please check first if you already have this file.
+#needing also the dirs.xlsx that contain the list of dir you want to put together in combined_per_fly.csv (it is calculating the values per fly)
+# ```{r}
+# 
+# require(R.matlab)
+# library(base)
+# library(openxlsx)
+# library(igraph)
+# library(ggplot2)
+# library(cowplot)
+# library(ggpubr)
+# library(ggsignif)
+# library(nortest)
+# library(fmsb)
+# library(argparser, quietly=TRUE)
+# library(stringr)
+# library("readxl")
+# 
+# 
+#   library(openxlsx)
+#   dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
+#   num_of_pop<<-nrow(dirs)
+#   path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/tsne/sub_function"
+#   dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
+#   for (i in 1:num_of_pop){
+#   dir[i,1]<-dirs$groupNameDir[i]
+#   }
+#   groupsNames <<- as.character(basename(dirs$groupNameDir))
+#   #chnage the dir values so it would be readable
+#   dir$X1<-gsub("\\\\", "/", dir$X1)
+#   for(i in 1:num_of_pop){
+#   dir[i,1]<-str_trim(dir[i,1], side = c("right"))
+#   }
+#   #### run the functions
+#   setwd(path_to_scripts)
+#   files.sources = list.files()
+#   sapply(files.sources, source)
+#   #### the actuall run (if the user choose to run from the start)
+#   for (i in 1:num_of_pop){
+#   #for each population i get the group name the number for movies and running 
+#   setwd(dir[i,1])
+#   avg_per_Fly_all_features(dir[i,1],path_to_scripts)
+#   importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
+#   frq(dir[i,1],path_to_scripts)
+#   }
+# 
+#   for(i in 1:num_of_pop){
+#   #for each net there is different valus 
+#   setwd(dir[i,1])
+#   combind_all(dir[i,1],path_to_scripts)
+#   }
+#   
+# ```
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
-```
+#this chunk creat the data set itself assuming we have combined_per_fly.csv that is created in random forest or in the pervous chunk
+#in the color xlsx their is the color in rgb
+#per male vs females
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#tnse for male vs female
 ```{r}
 #male vs female
-library(stringr)
-library(openxlsx)
+  library(stringr)
+  library(openxlsx)
   dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
   
-  
+    
   dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
-for (i in 1:num_of_pop){
-  dir[i,1]<-dirs$groupNameDir[i]
-}
-#xlsxFile <<- choose.files(default = "", caption = "Select expData file")
+  for (i in 1:num_of_pop){
+    dir[i,1]<-dirs$groupNameDir[i]
+  }
 
 groupsNames <<- as.character(basename(dirs$groupNameDir))
 
@@ -54,13 +98,11 @@ for(i in 1:num_of_pop){
 library("dplyr")
 library("stringr")
 
+#data frame that keep every group
 Female<-data.frame()
 Male<-data.frame()
+#index for the first time inserting to the data frame we could do without rbind/bindrows 
 
-
-
-#feature_names<-all_features %>%
-# select(-ends_with('~'))
 Female_index<-0
 Male_index<-0
 
@@ -83,25 +125,22 @@ for(i in 1:num_of_pop){
     names_in_list<-as.list(names_data_frame$feature_name)
     all_features_names<-all_features$dir
     all_features_names<-as.data.frame(all_features_names)
-    colnames(all_features_names)<-c("id")
     #taking the movie name and calling it id
+    colnames(all_features_names)<-c("id")
     
     #taking only the values
     all_features_valus<-all_features %>%
       select(starts_with('valu'))
     #putting the name of the feature as colom name to the values
     colnames(all_features_valus)<-c(names_in_list)
-    
-    
-    #test<-all_features_valus[,!grepl("*~",names(all_features_valus))]
-    #connecting the names of the movies to the value and feature name
-    
-    #all_features_names<-cbind(all_features_names,all_features_valus[,!grepl("*~",names(all_features_valus))])
     all_features_names<-cbind(all_features_names,all_features_valus)
     all_features_names$id<-c("Female")
+    #if the index is 1 we can't do rbind cuz the df is empty so we need to insert dirctly
+    #we don't want to use bind_rows,it make problem with the colom names
     if(Female_index==1){
       Female<-all_features_names
     }else{
+      #else the df is not empty and we can do rbind
       Female<-rbind(Female,all_features_names)
       
     }
@@ -109,7 +148,8 @@ for(i in 1:num_of_pop){
     Female$id<-as.factor(Female$id)
   }
   
-  
+  ###the same for the male group
+  #if the name contain the word males
   
   if(str_detect(basename(dir[i,1]), "Males")){
     Male_index<-Male_index+1
@@ -153,6 +193,8 @@ for(i in 1:num_of_pop){
   
   
 }
+
+#after all we combainng them together
 all_feature_final<-rbind(Female,Male)
 
 #this part was problematic for the random forest
@@ -165,36 +207,44 @@ all_feature_final %>%
   mutate(prop = n/sum(n))
 
 
+#separting the data from the label so we could do scaling and than combein them together
 actuall_data<-all_feature_final[,-1]
 
+#scalng each colom to 1
 scaled_dat <- data.frame(lapply(actuall_data, function(x) scale(x, center = FALSE, scale = max(x, na.rm = TRUE)/1)))
+#putting the id in the first colom
 scaled_dat<-cbind(all_feature_final$id,scaled_dat)
+#changing it name to id
 names(scaled_dat)[names(scaled_dat) == 'all_feature_final$id'] <- 'id'
 library(readr)
 library(Rtsne)
 ```
 
+
+#doing defulat tsne
 ```{r male vs female tsne}
 options(knitr.duplicate.label = "allow")
 
 library(readr)
 library(Rtsne)
-tag<-all_feature_final$id
-colors = rainbow(length(unique(scaled_dat$id)))
-names(colors) = unique(scaled_dat$id)
+
+colors = c("#00FF00","#FF0000")
+names(colors)<-c("Male","Female")
 
 ## Run the t-SNE algorithm and store the results into an object called tsne_results
 tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
 #THE DEFULAT IS 1000 ITERS
-plot(tsne_results$Y, col = colors[scaled_dat$id], bg= colors[scaled_dat$id], pch = 21, cex = 1.5)
+plot(tsne_results$Y, col = "black", bg= colors[scaled_dat$id], pch = 21, cex = 1.5)
 #text(tsne_results$Y, labels=scaled_dat$id, col=colors[scaled_dat$id])
 legend(x="topleft",legend = names(colors),fill=colors,cex=0.5)
+
 ```
 
+#sampled tsne
 
 ```{r male vs female}
 ##ALSO WITH SAMPLING
-numTrain <-1190
+numTrain <-nrow(scaled_dat)
 set.seed(1)
 rows <- sample(1:nrow(scaled_dat), numTrain)
 train <- scaled_dat[rows,]
@@ -202,22 +252,22 @@ train <- scaled_dat[rows,]
 set.seed(1) # for reproducibility
 tsne <- Rtsne(train[,-1], perplexity=30,check_duplicates = FALSE)
 
-colors = rainbow(length(unique(train$id)))
-names(colors) = unique(train$id)
-plot(tsne$Y, main="tSNE sampled rows",col =colors[train$id], bg= colors[train$id],pch = 21, cex = 1.3)
+#colors = rainbow(length(unique(train$id)))
+#names(colors) = unique(train$id)
+plot(tsne$Y, main="tSNE sampled rows",col ="black", bg= colors[train$id],pch = 21, cex = 1.3)
 #text(tsne$Y, labels=train$id, col=colors[train$id])
 legend(x = "topleft",          # Position
        legend =names(colors),fill= colors,cex=0.5)
 ```
 
-
+#cheking hyperparamters
 ```{r male vs female samples tsne}
 library(Rtsne)
 
 tsne_plot <- function(perpl=30,iterations=1000,learning=250){
   set.seed(1) # for reproducibility
   tsne <- Rtsne(train[,-1], dims = 2, perplexity=perpl, verbose=TRUE, max_iter=iterations, eta=learning)
-  plot(tsne$Y, main = print(paste0("perplexity = ",perpl, ", max_iter = ",iterations, ", learning rate = ",learning)), col =colors[train$id], bg= colors[train$id],pch = 21, cex = 1.3 )
+  plot(tsne$Y, main = print(paste0("perplexity = ",perpl, ", max_iter = ",iterations, ", learning rate = ",learning)), col ="black", bg= colors[train$id],pch = 21, cex = 1.3 )
   legend(x = "topleft",          # Position
        legend =names(colors),fill= colors,cex=0.5)
   #text(tsne$Y, labels=train$id, col=colors[train$id],cex=0.5)
