@@ -101,12 +101,6 @@ for (i in 1:num_of_pop){
 }
 
 
-#for (i in 1:num_of_pop){
-#group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
-#creatNetwork2popforscatter(dir[i,1])
-#}
-
-
 for(i in 1:num_of_pop){
   #for each net there is different valus 
   setwd(dir[i,1])
@@ -155,11 +149,8 @@ for(i in 1:num_of_pop){
     #putting the name of the feature as colom name to the values
     colnames(all_features_valus)<-c(names_in_list)
     
+        #connecting the names of the movies to the value and feature name
     
-    #test<-all_features_valus[,!grepl("*~",names(all_features_valus))]
-    #connecting the names of the movies to the value and feature name
-    
-    #all_features_names<-cbind(all_features_names,all_features_valus[,!grepl("*~",names(all_features_valus))])
     all_features_names<-cbind(all_features_names,all_features_valus)
     all_features_names$id<-c("Female")
     if(Female_index==1){
@@ -240,7 +231,7 @@ set.seed(123)
 
 
 
-rf_mod<-rand_forest(trees = 500)%>%set_engine("ranger")%>%set_mode("classification")
+rf_mod<-rand_forest(trees = 1000)%>%set_engine("ranger")%>%set_mode("classification")
 
 rf_fit<-rf_mod%>%fit(id ~ .,data = all_feature_final)
 
@@ -331,6 +322,9 @@ final_tree %>%
   pull_workflow_fit() %>% 
   vip()
 
+library(ggplot2)
 final_tree %>% 
   extract_fit_parsnip() %>% 
-  vip()
+  vip(include_type=TRUE)+theme(axis.text=element_text(size=16))
+ggsave(file="random_forest_male_vs_female.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
+
