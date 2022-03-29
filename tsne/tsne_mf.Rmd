@@ -1,5 +1,5 @@
 ---
-title: "tsne_mf"
+title: "tsne_male vs female"
 output: html_document
 ---
 
@@ -228,8 +228,8 @@ options(knitr.duplicate.label = "allow")
 library(readr)
 library(Rtsne)
 
-colors = c("#00FF00","#FF0000")
-names(colors)<-c("Male","Female")
+colors = c("#FF0000","#00FF00")
+names(colors)<-unique(scaled_dat$id)
 
 ## Run the t-SNE algorithm and store the results into an object called tsne_results
 tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
