@@ -1,0 +1,137 @@
+---
+title: "degree"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+library(openxlsx)
+library(R.matlab)
+df<-readMat("F:/GroupedvsSingle/Grouped/Assa_Males_Grouped_Unknown_RigA_20180507T124356/Allinteraction.mat")
+test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+test1<-as.data.frame(test)
+
+
+```
+
+
+```{r}
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+  }
+  #test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
+  
+  
+  #REMOVE 0 (MEAN NO INTERACTION)
+  for(i in 1:ncol(test1)){
+    for(j in 1:nrow(test1)){
+      if(length(unlist(test1[i,j])) == 0){
+        test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  test1<-na.omit(test1)
+  #test1[(unlist(test1)) == 0] <- NULL
+  
+  
+
+  #net <- graph_from_adjacency_matrix(test2, mode = "undirected", weighted = FALSE)
+  
+    #ordered_ave<- col.df[order(col.df$file),]
+    #final.df<-rbind(final.df, ordered_ave)
+  
+  #test1[][test1[] == "NULL"] <- 0
+  colnames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-as.data.frame(nodes)
+  #other <- do.call(unlist, test1)
+  all<-data.frame()
+  
+  number_of_flys<-10
+  for(i in 1:number_of_flys){
+    for(j in 1:number_of_flys){
+      if(length(unlist(test[i,j]))!=0){
+        temp_num_frames<-unlist(test1[i,j])
+        #tobind<-c(colnames(test1[i]),rownames(test1[j,]),test1[i,j])
+        tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+        tobind<-as.data.frame(t(tobind))
+        
+        seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+        if(length(seq_inter)> 0){
+          num_of_seq_iter<-length(seq_inter)
+          current_iindex<-1
+          for(k in 1:num_of_seq_iter){
+            tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+            tobind<-as.data.frame(t(tobind))
+            
+            index<-which(temp_num_frames == seq_inter[k])
+            tt_temp_num_frames<-as.data.frame(temp_num_frames)
+            temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
+            current_iindex<-index+1
+            tobind<-cbind(tobind,temp_all_inter[1])
+            tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
+            colnames(tobind)<-c("tail","head","onset","terminus")
+            
+            all<-rbind(all,tobind)
+        }
+        
+        }else{
+          tobind<-cbind(tobind,temp_num_frames[1])
+          tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+          colnames(tobind)<-c("tail","head","onset","terminus")
+          all<-rbind(all,tobind)
+          
+        }
+       # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ]
+        #tobind<-cbind(tobind,temp_num_frames)
+        print(colnames(test1[i]))
+        print("and")
+        print(rownames(test1[j,]))
+        print(" ")
+        print(length(temp_num_frames))
+        
+      }
+        
+    }
+  }
+  
+  colnames(all)<-c("tail","head","onset","terminus")
+  
+  all["head"] <- as.numeric(unlist(all["head"]))
+  all["tail"] <- as.numeric(unlist(all["tail"]))
+```
+
+```{r}
+#wanted to get all the rows in the spcific timeline
+library(dplyr)
+temp_between_values<-all %>% filter(onset > 6000,terminus<7000)
+
+
+library(reshape2)
+
+temp<-acast(temp_between_values, tail~head)
+
+#doing the cumeltive thing,just need to put all the 1:10 flys and put in them 0 
+```
+
