@@ -236,7 +236,12 @@ tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
 #THE DEFULAT IS 1000 ITERS
 plot(tsne_results$Y, col = "black", bg= colors[scaled_dat$id], pch = 21, cex = 1.5)
 #text(tsne_results$Y, labels=scaled_dat$id, col=colors[scaled_dat$id])
-legend(x="topleft",legend = names(colors),fill=colors,cex=0.5)
+par(cex=1)
+legend(x="topleft",legend = names(colors),fill=colors)
+
+ggsave(file="male_Vs_female.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
+
+
 
 ```
 

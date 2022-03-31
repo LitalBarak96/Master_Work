@@ -110,9 +110,13 @@ tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
 #THE DEFULAT IS 1000 ITERS
 #plot(tsne_results$Y, col = colors[scaled_dat$id], bg= colors[scaled_dat$id], pch = 21, cex = 1.2)
 plot(tsne_results$Y, col = "black", bg= colors[scaled_dat$id], pch = 21, cex = 1.2)
+par(cex = 0.85)
 
 legend(x = "topleft",          # Position
-       legend =names(colors),fill= colors,cex=0.5)
+       legend =names(colors),fill= colors,bty = "n")
+
+ggsave(file="all_females_tsne.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
+
 
 ```
 

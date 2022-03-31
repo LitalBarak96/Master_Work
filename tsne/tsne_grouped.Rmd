@@ -116,6 +116,7 @@ legend(x = "topleft",          # Position
        legend =names(colors),fill= colors,cex=0.5)
 
 
+ggsave(file="male_vs_female_grouped.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
 
 
 ```
