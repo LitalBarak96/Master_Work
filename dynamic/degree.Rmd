@@ -25,7 +25,7 @@ You can also embed plots, for example:
 
 library(openxlsx)
 library(R.matlab)
-df<-readMat("F:/allGroups/Females_Grouped/Assa_Females_Grouped_Unknown_RigA_20211024T080419/Allinteraction.mat")
+df<-readMat("F:/GroupedvsSingle/Grouped/Assa_Males_Grouped_Unknown_RigA_20180426T130854/Allinteraction.mat")
 test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
 test1<-as.data.frame(test)
 
@@ -138,8 +138,8 @@ for(i in 1:(length(numbers)-1)){
   
   print(numbers[i])
   print(numbers[i+1])
-  
-  temp_between_values<-all %>% filter(onset > numbers[i],terminus<numbers[i+1])
+  temp_between_values<-c()
+  temp_between_values<-all %>% filter(numbers[i]>=onset & numbers[i+1] <=terminus)
   if( nrow(temp_between_values)!=0){
   if(nrow(temp_between_values)<2){
   values<-acast(temp_between_values, tail~head,fun.aggregate=sum) 
