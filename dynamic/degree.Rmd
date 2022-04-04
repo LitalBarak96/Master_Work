@@ -3,31 +3,21 @@ title: "degree"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
+##this script calculate at evry movie the avg degree for evey 60 frame(can be chnagable in numbers) and visulaize it 
 
 ```{r pressure, echo=FALSE}
 
 library(openxlsx)
 library(R.matlab)
-df<-readMat("F:/GroupedvsSingle/Grouped/Assa_Males_Grouped_Unknown_RigA_20180426T130854/Allinteraction.mat")
-test<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
-test1<-as.data.frame(test)
+path ="F:/allGroups/Females_Mated"
+setwd(path)
+  
+dir<-list.dirs(recursive = F)
+print(dir)
+mat <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
+sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+df_mat<-as.data.frame(sub_list_mat)
 
 
 ```
@@ -38,43 +28,34 @@ f <- function(x) {
     if(is.list(x)) lapply(x, f)
     else ifelse(length(x) == 0, 0, x)
   }
-  #test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
-  
+
   
   #REMOVE 0 (MEAN NO INTERACTION)
-  for(i in 1:ncol(test1)){
-    for(j in 1:nrow(test1)){
-      if(length(unlist(test1[i,j])) == 0){
-        test1[i,j] <- lapply(test1[i,j], function(x)x[lengths(x) == 0] <- 0)
+  for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
       }
     }
   }
   
-  test1<-na.omit(test1)
-  #test1[(unlist(test1)) == 0] <- NULL
-  
+  df_mat<-na.omit(df_mat)
+
   
 
-  #net <- graph_from_adjacency_matrix(test2, mode = "undirected", weighted = FALSE)
-  
-    #ordered_ave<- col.df[order(col.df$file),]
-    #final.df<-rbind(final.df, ordered_ave)
-  
-  #test1[][test1[] == "NULL"] <- 0
-  colnames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
-  rownames(test1)<-c("1","2","3","4","5","6","7","8","9","10")
+  #10 flys
+  colnames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
   nodes<-c("1","2","3","4","5","6","7","8","9","10")
   nodes<-as.data.frame(nodes)
-  #other <- do.call(unlist, test1)
   all<-data.frame()
   
   number_of_flys<-10
   for(i in 1:number_of_flys){
     for(j in 1:number_of_flys){
-      if(length(unlist(test[i,j]))!=0){
-        temp_num_frames<-unlist(test1[i,j])
-        #tobind<-c(colnames(test1[i]),rownames(test1[j,]),test1[i,j])
-        tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+      if(length(unlist(sub_list_mat[i,j]))!=0){
+        temp_num_frames<-unlist(df_mat[i,j])
+        tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
         tobind<-as.data.frame(t(tobind))
         
         seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
@@ -82,7 +63,7 @@ f <- function(x) {
           num_of_seq_iter<-length(seq_inter)
           current_iindex<-1
           for(k in 1:num_of_seq_iter){
-            tobind<-c(colnames(test1[i]),rownames(test1[j,]))
+            tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
             tobind<-as.data.frame(t(tobind))
             
             index<-which(temp_num_frames == seq_inter[k])
@@ -103,13 +84,6 @@ f <- function(x) {
           all<-rbind(all,tobind)
           
         }
-       # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ]
-        #tobind<-cbind(tobind,temp_num_frames)
-        print(colnames(test1[i]))
-        print("and")
-        print(rownames(test1[j,]))
-        print(" ")
-        print(length(temp_num_frames))
         
       }
         
@@ -131,7 +105,9 @@ library(reshape2)
 library(igraph)
 
 value_avg_df<-data.frame()
-numbers<-seq(1, 27001, by=100)
+#each 60 frames
+numbers<-seq(1, 27001, by=60)
+#for acast(need to read it documnation) so it will sum it as 1 
 all<-cbind(all,1)
 
 for(i in 1:(length(numbers)-1)){
@@ -141,29 +117,51 @@ for(i in 1:(length(numbers)-1)){
   temp_between_values<-c()
   temp_between_values<-all %>% filter(numbers[i]>=onset & numbers[i+1] <=terminus)
   if( nrow(temp_between_values)!=0){
+    #need to check if to remove this condition
   if(nrow(temp_between_values)<2){
   values<-acast(temp_between_values, tail~head,fun.aggregate=sum) 
-  values[1]<-1
   }else{
-  print("above 2 please check if its okay")
   values<-acast(temp_between_values, tail~head,fun.aggregate=sum) 
   }
-
   zero_matrix <- matrix(0, ncol = 10, nrow = 10)
   all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
   net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
   deg <- degree(net2, mode="all")
   value_avg_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=mean(deg))
   value_avg_df<- bind_rows(value_avg_df,value_avg_temp)
-}
+  }else{
+  value_avg_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=0)
+  value_avg_df<- bind_rows(value_avg_df,value_avg_temp)
+  }
   }
   
+#the else is to get the whole frame on interaction so we see the buildup
+data<- as.data.frame(paste0(value_avg_df$begin,"-", value_avg_df$end))
+data$value<-value_avg_df$avg_value
+colnames(data)<-c("Frame","Value")
 
 
+data$Frame <- as.character(data$Frame)
+#Then turn it back into a factor with the levels in the correct order
+data$Frame <- factor(data$Frame, levels=unique(data$Frame))
+
+library(ggplot2)
+ggplot(data = data, mapping = aes(x = Frame, y = Value))+    geom_bar(stat="identity", color="black", fill="gray")+theme(text = element_text(size=3),
+        axis.text.x = element_text(angle=90, hjust=1)) 
+
+
+#histogram of distrabution
 with(value_avg_df, hist(avg_value))
+library(stringr)
+
+name_for_file<-paste0(basename(path),"_avg_degree.pdf")
+
+ggsave(filename = name_for_file,device="pdf",path="C:/Users/lital/OneDrive - Bar Ilan University/Lital/weekly presentation/7.4")
 
 ```
 
+
+debug for spcific frames
 ```{r}
 
 
