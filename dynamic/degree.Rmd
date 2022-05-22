@@ -10,11 +10,13 @@ output: html_document
 
 library(openxlsx)
 library(R.matlab)
-path ="F:/allGroups/Females_Mated"
+path ="D:/allGroups/Females_Mated"
 setwd(path)
-  
+
+
 dir<-list.dirs(recursive = F)
 print(dir)
+#it is under the assumtion that there is 10 flys and they are orgenized in spcific way from the Allinteraction.mat
 mat <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
 sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
 df_mat<-as.data.frame(sub_list_mat)
@@ -23,6 +25,9 @@ df_mat<-as.data.frame(sub_list_mat)
 ```
 
 
+#remove 0 and omnit nans 
+#give each fly from the 10 flys a "name"
+#can be more generic about the number of flys
 ```{r}
 f <- function(x) {
     if(is.list(x)) lapply(x, f)
@@ -57,7 +62,7 @@ f <- function(x) {
         temp_num_frames<-unlist(df_mat[i,j])
         tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
         tobind<-as.data.frame(t(tobind))
-        
+        #the value from where the diffrence is bigger than 120 in the next frame
         seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
         if(length(seq_inter)> 0){
           num_of_seq_iter<-length(seq_inter)
@@ -96,6 +101,9 @@ f <- function(x) {
   all["tail"] <- as.numeric(unlist(all["tail"]))
 ```
 
+#the net is undirected
+#the degree is caluclated with degree function from igraph that give the number
+#if an interaaction stop in the middle of a batch of the 60 it will count as no interaction
 ```{r}
 #wanted to get all the rows in the spcific timeline
 
@@ -103,10 +111,11 @@ f <- function(x) {
 library(dplyr)
 library(reshape2)
 library(igraph)
-
-value_avg_df<-data.frame()
 #each 60 frames
-numbers<-seq(1, 27001, by=60)
+
+number_of_frame<-120
+value_avg_df<-data.frame()
+numbers<-seq(1, 27001, by=number_of_frame)
 #for acast(need to read it documnation) so it will sum it as 1 
 all<-cbind(all,1)
 
@@ -124,6 +133,7 @@ for(i in 1:(length(numbers)-1)){
   values<-acast(temp_between_values, tail~head,fun.aggregate=sum) 
   }
   zero_matrix <- matrix(0, ncol = 10, nrow = 10)
+  #all_values conation who is in intartcion with who in the spcific frame
   all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
   net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
   deg <- degree(net2, mode="all")
@@ -145,19 +155,43 @@ data$Frame <- as.character(data$Frame)
 #Then turn it back into a factor with the levels in the correct order
 data$Frame <- factor(data$Frame, levels=unique(data$Frame))
 
+
+
+title_of_plot<-paste0(basename(path)," plot of dgree in each ",number_of_frame," frames")
+
+
 library(ggplot2)
-ggplot(data = data, mapping = aes(x = Frame, y = Value))+    geom_bar(stat="identity", color="black", fill="gray")+theme(text = element_text(size=3),
-        axis.text.x = element_text(angle=90, hjust=1)) 
-
-
+ggplot(data = data, mapping = aes(x = Frame, y = Value))+    geom_bar(stat="identity", color="black", fill="gray")+theme(text = element_text(size=6),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(title_of_plot) +
+  xlab("frames") + ylab("avg dgree(mean)") +theme(
+plot.title = element_text(color="red", size=6, face="bold.italic"),
+axis.title.x = element_text(color="blue", size=6, face="bold"),
+axis.title.y = element_text(color="#993333", size=6, face="bold")
+)
 #histogram of distrabution
 with(value_avg_df, hist(avg_value))
 library(stringr)
 
 name_for_file<-paste0(basename(path),"_avg_degree.pdf")
 
-ggsave(filename = name_for_file,device="pdf",path="C:/Users/lital/OneDrive - Bar Ilan University/Lital/weekly presentation/7.4")
+#ggsave(filename = name_for_file,device="pdf",path="C:/Users/lital/OneDrive - Bar Ilan University/Lital/weekly presentation/7.4")
 
+
+
+
+
+#lines and dots
+
+
+library(ggplot2)
+ggplot(data = data, mapping = aes(x = Frame, y = Value,group = 1))+ geom_line() +
+    geom_point()+theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(title_of_plot) +
+  xlab("frames") + ylab("avg dgree(mean)") +theme(
+plot.title = element_text(color="red", size=7, face="bold.italic"),
+axis.title.x = element_text(color="blue", size=7, face="bold"),
+axis.title.y = element_text(color="#993333", size=7, face="bold")
+)
 ```
 
 
