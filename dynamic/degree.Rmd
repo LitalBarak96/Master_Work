@@ -113,7 +113,7 @@ library(igraph)
 #each 120 frames
 
 number_of_frame<-150
-value_avg_df<-data.frame()
+value_sum_df<-data.frame()
 numbers<-seq(1, 27001, by=number_of_frame)
 #for acast so it will sum it as 1 
 all<-cbind(all,1)
@@ -124,7 +124,10 @@ for(i in 1:(length(numbers)-1)){
   #print(numbers[i+1])
   temp_between_values<-c()
   #find those that are bigger than the onset and small from the terminus
-  temp_between_values<-all %>% filter(numbers[i]>=onset & numbers[i+1] <=terminus)
+  mat_of_termins_and_onset<-as.matrix(all)
+  temp_between_values<-all %>% filter(c(numbers[i],numbers[i+1]) %overlaps%  (all[,3:4]))
+
+  temp_between_values<-all %>% filter(numbers[i+1]>=onset & numbers[i] <=terminus)
   if( nrow(temp_between_values)!=0){
     #changing the format to get "matrix" with who is in interaction with who
   values<-acast(temp_between_values, tail~head,fun.aggregate=sum)
@@ -135,17 +138,17 @@ for(i in 1:(length(numbers)-1)){
   net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
   #creat a degree 
   deg <- degree(net2, mode="all")
-  value_avg_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=mean(deg))
-  value_avg_df<- bind_rows(value_avg_df,value_avg_temp)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=mean(deg))
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
   }else{
-  value_avg_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=0)
-  value_avg_df<- bind_rows(value_avg_df,value_avg_temp)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=0)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
   }
   }
   
 #the else is to get the whole frame on interaction so we see the buildup
-data<- as.data.frame(paste0(value_avg_df$begin,"-", value_avg_df$end))
-data$value<-value_avg_df$avg_value
+data<- as.data.frame(paste0(value_sum_df$begin,"-", value_sum_df$end))
+data$value<-value_sum_df$avg_value
 colnames(data)<-c("Frame","Value")
 
 
@@ -167,7 +170,7 @@ data$Frame <- factor(data$Frame, levels=unique(data$Frame))
 #axis.title.y = element_text(color="#993333", size=6, face="bold")
 #)
 #histogram of distrabution
-#with(value_avg_df, hist(avg_value))
+#with(value_sum_df, hist(avg_value))
 
 
 
@@ -207,10 +210,10 @@ library(dplyr)
 library(reshape2)
 library(igraph)
 library(R.matlab)
-path ="D:/allGroups/Females_Mated"
+path ="D:/allGroups/Males_Singels"
 setwd(path)
 number_of_flys<-10
-number_of_frame<-150
+number_of_frame<-40
 #seq by the  number of frames
 numbers<-seq(1, 27001, by=number_of_frame)
 
@@ -304,14 +307,14 @@ for(num_of_movie in 1:length(dir)){
   
   
   all<-cbind(all,1)
-  value_avg_df<-data.frame()
+  value_sum_df<-data.frame()
   data<-data.frame()
   temp_between_values<-c()
 
 for(i in 1:(length(numbers)-1)){
   temp_between_values<-c()
   #find those that are bigger than the onset and small from the terminus
-  temp_between_values<-all %>% filter(numbers[i]>=onset & numbers[i+1] <=terminus)
+  temp_between_values<-all %>% filter(numbers[i+1]>=onset & numbers[i] <=terminus)
   if( nrow(temp_between_values)!=0){
     #changing the format to get "matrix" with who is in interaction with who
   values<-acast(temp_between_values, tail~head,fun.aggregate=sum)
@@ -321,24 +324,25 @@ for(i in 1:(length(numbers)-1)){
   all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
   net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
   #creat a degree 
-  deg <- degree(net2, mode="all")
-  value_avg_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=mean(deg))
-  value_avg_df<- bind_rows(value_avg_df,value_avg_temp)
+  deg <- degree(net2)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],degree=(sum(deg)/2))
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
   }else{
-  value_avg_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=0)
-  value_avg_df<- bind_rows(value_avg_df,value_avg_temp)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],degree=0)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
   }
   }
   
 #the else is to get the whole frame on interaction so we see the buildup
-data<- as.data.frame(paste0(value_avg_df$begin,"-", value_avg_df$end))
-data$value<-value_avg_df$avg_value
+data<- as.data.frame(paste0(value_sum_df$begin,"-", value_sum_df$end))
+data$value<-value_sum_df$degree
 colnames(data)<-c("Frame","Value")
 
 
 data$Frame <- as.character(data$Frame)
 #Then turn it back into a factor with the levels in the correct order
-data$Frame <- factor(data$Frame, levels=unique(data$Frame))
+#data$Frame<-as.factor(data$Frame)
+#data$Frame <- factor(data$Frame, levels=unique(data$Frame))
 data$group<-as.character(num_of_movie)
 #data$group <- factor(data$group, levels=unique(data$group))
 
@@ -354,72 +358,53 @@ total_data_for_Graph$group <- factor(total_data_for_Graph$group, levels=unique(t
 
 }
 
+
+avarge_per_frames<-aggregate(total_data_for_Graph[,2], list(total_data_for_Graph$Frame), mean)
+
+colnames(avarge_per_frames)<-c("Frame","Value")
+
 #title
 title_of_plot<-paste0(basename(path)," plot of dgree in each ",number_of_frame," frames")
 
 
 
 library(ggplot2)
-p<-ggplot(data = total_data_for_Graph, mapping = aes(x = Frame, y = Value,group=group))+geom_line(aes(color=group))
+
+p<-ggplot()+geom_line(data = total_data_for_Graph, mapping = aes(x = Frame, y = Value,group=group,color=group)) +geom_point(data=avarge_per_frames, aes(x=Frame, y=Value), color='red', size = 3,alpha = 0.15)
+
+
+
+
+
  p<-p+theme(text = element_text(size=10),
         axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(title_of_plot) +
-  xlab("frames") + ylab("avg dgree(mean)") +theme(
+  xlab("frames") + ylab("dgree(sum)") +theme(
 plot.title = element_text(color="red", size=7, face="bold.italic"),
 axis.title.x = element_text(color="blue", size=7, face="bold"),
 axis.title.y = element_text(color="#993333", size=7, face="bold")
-) + ylim(0, 10)
-
-
-
- 
+) + ylim(0, 45)
  plot(p)
+
+ #library(ggplot2)
+
+# ggplot(avarge_per_frames,aes(x=Frame,y=Value))+geom_point()
+
+
+ 
+ 
+ name_for_file<-paste0(basename(path),number_of_frame,"_frames_all_movies_avg_degree_with_avg_red.pdf")
+
+ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/26.05")
  
 ```
 
-
-
-
-
-
-
-
-
-
-
-debug for spcific frames
 ```{r}
-
-
-library(dplyr)
-all<-cbind(all,1)
-temp_between_values<-all %>% filter(onset > 14201,terminus<14301)
-
-
-library(reshape2)
-
-
-if(nrow(temp_between_values)<2){
- values<-acast(temp_between_values, tail~head,fun.aggregate=sum) 
- values[1]<-1
-}else{
-  print("above 2 please check if its okay")
-  values<-acast(temp_between_values, tail~head)
-
-}
-
-
-zero_matrix <- matrix(0, ncol = 10, nrow = 10)
-
-
-library(reshape2)
-all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
+total_data_for_Graph$Frame <- factor(total_data_for_Graph$Frame, levels=unique(total_data_for_Graph$Frame))
 
 
 
-library(igraph)
-net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
-deg <- degree(net2, mode="all")
-value_avg_df<-data.frame(begin=numbers[1],end=numbers[2],avg_value=mean(deg))
-#doing the cumeltive thing,just need to put all the 1:10 flys and put in them 0 
+test<-aggregate(total_data_for_Graph[,2], list(total_data_for_Graph$Frame), mean)
+
 ```
+
 
