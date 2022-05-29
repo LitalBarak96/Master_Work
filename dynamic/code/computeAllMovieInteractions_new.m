@@ -1,4 +1,4 @@
-function [interactions, noInteractions, txtFileName] = computeAllMovieInteractions(savenames, param)
+function [interactions, noInteractions, txtFileName] = computeAllMovieInteractions_new(savenames, param)
 load(savenames{1});
 maxNumberOfInteractions = sum([pairtrx.nframes]);
 load(savenames{2});

@@ -6,7 +6,8 @@ classifier = [(1:length(pairtrx(flyIdentity).distnose2ell))', pairtrx(flyIdentit
 % remove data of all frames which are not interactions
 classifier(classifier(:, 1) < param.startFrame, :) = [];
 classifier(classifier(:, 1) > param.endFrame, :) = [];
-classifier(classifier(:, 3) == param.interactionsAnglesub, :) = [];
+%removed to check if the angle made problems in aggregation
+%classifier(classifier(:, 3) == param.interactionsAnglesub, :) = [];
 classifier(classifier(:, 2) > param.interactionsDistance, :) = [];
 toDelete = repmat(-1, 1, length(classifier(:, 1)));
 iDelete = 1;

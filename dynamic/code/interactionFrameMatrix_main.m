@@ -15,14 +15,12 @@ maxExperimentInteractions = -1;
 
 %please note that need to be in each movie 10 flys
 
-command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" main.R ';
 
 expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 [suggestedPath, ~, ~] = fileparts(expGroups{1});
 numOfGroups = length(expGroups);
-savePath =expGroups{1};
 
-
+%you can choose more than 1 group to creat 
 groupNumber = [{'Number of groups'; numOfGroups}; cell(numOfGroups - 1, 1)];
 groupNames = cell(numOfGroups + 1, 1);
 groupNames{1} = 'Groups names';
@@ -38,46 +36,6 @@ for i = 1:numOfGroups
     allFolders(ismember(allFolders,{'.','..'})) = [];
     allFolders = fullfile(expGroups{i}, allFolders);
     data{i + 1, 3} = length(allFolders);
-    [maxGroupInteractions, foldersNames] = runOneGroupInteractions_new(param, allFolders, groupName);
-    if size(foldersNames, 1) > size(data, 1)
-        cellsToAdd = cell(size(foldersNames, 1) - size(data, 1), size(data, 2));
-        data = [data; cellsToAdd];
-    elseif size(foldersNames, 1) < size(data, 1)
-        cellsToAdd = cell(size(data, 1) - size(foldersNames, 1), size(foldersNames, 2));
-        foldersNames = [foldersNames; cellsToAdd];
-    end
-    data = [data, foldersNames];
+    runOneGroupInteractions_new(param, allFolders, groupName);
+
 end
-
-color ="";
-groupNameDir =[];
-colorValue=[];
-
-groupNameDir=expGroups';
-
-for i =1:numOfGroups
-s1='Select a color for ';
-[~,currentGroupName,~]=fileparts(groupNameDir(i));
-displayOrder =char(strcat(s1,{' '},currentGroupName));
-c = uisetcolor([1 1 0],displayOrder);
-color_in_char =[];
-color_in_char= sprintf(' %f', c)
-colorValue = [colorValue;c];
-end
-tables=table(groupNameDir,colorValue);
-
-OriginFolder = pwd;
-folder=savePath;
-if ~exist(folder, 'dir')
-    mkdir(folder);
-end
-cd(folder)
-baseFileName = 'dir_and_color.xlsx';
-path_of_xlsx = fullfile(folder, baseFileName);
-writetable(tables,baseFileName)
-
-cd(OriginFolder)
-command = append(command,path_of_xlsx) 
-[status,cmdout]=system(command,'-echo');
-
-
