@@ -16,8 +16,8 @@ library(R.matlab)
 path ="D:/allGroups/Females_Grouped"
 setwd(path)
 number_of_flys<-10
-number_of_frame<-40
-facade<-TRUE
+number_of_frame<-1
+facade<-FALSE
 
 #seq by the  number of frames
 numbers<-seq(1, 27001, by=number_of_frame)
@@ -27,18 +27,21 @@ f <- function(x) {
     else ifelse(length(x) == 0, 0, x)
 }
 
-dir<-list.dirs(recursive = F)
+
+
+dir<-list.dirs(recursive = F,path = path)
+
 for(num_of_movie in 1:length(dir)){
-  dir[num_of_movie]
+  #if the file don't exist ,creat him
+  if(!file.exists(paste0(dir[num_of_movie], '/','all_frames_degree.csv'))){
+  print(dir[num_of_movie])
+    print("creating the file of this dir")
   #it is under the assumtion that there is 10 flys and they are orgenized in spcific way from the Allinteraction.mat
-  mat <- (readMat(paste0(path,dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
+  mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
   sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
   df_mat<-as.data.frame(sub_list_mat)
   
-  
-  
-  
-  
+
   
   
   
@@ -150,15 +153,18 @@ data$Frame <- as.character(data$Frame)
 data$group<-as.character(num_of_movie)
 #data$group <- factor(data$group, levels=unique(data$group))
 
-if(num_of_movie==1){
-  total_data_for_Graph<-data
-}else{
-  total_data_for_Graph<-rbind(total_data_for_Graph,data)
+write.csv(data,paste0(dir[num_of_movie], '/','all_frames_degree.csv'), row.names = TRUE)
+
 }
+#if(num_of_movie==1){
+ # total_data_for_Graph<-data
+#}else{
+ # total_data_for_Graph<-cbind(total_data_for_Graph,data)
+#}
 
 
 
-total_data_for_Graph$group <- factor(total_data_for_Graph$group, levels=unique(total_data_for_Graph$group))
+#total_data_for_Graph$group <- factor(total_data_for_Graph$group, levels=unique(total_data_for_Graph$group))
 
 }
 
@@ -168,7 +174,7 @@ avarge_per_frames<-aggregate(total_data_for_Graph[,2], list(total_data_for_Graph
 colnames(avarge_per_frames)<-c("Frame","Value")
 
 #title
-title_of_plot<-paste0(basename(path)," plot of dgree in each ",number_of_frame," frames")
+title_of_plot<-paste0(basename(path)," plot of dgree in each ",number_of_frame," frames_without angelsub")
 
 
 
@@ -190,9 +196,9 @@ axis.title.y = element_text(color="#993333", size=7, face="bold")
 
  plot(p)
   
- name_for_file<-paste0(basename(path),number_of_frame,"_frames_all_movies_sum_degree_with_avg_red.pdf")
+ name_for_file<-paste0(basename(path),number_of_frame,"_frames_all_movies_sum_degree_without_angelsub.pdf")
 
-ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/26.05")
+ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/pics_for_degree")
  
 
 }else{
@@ -216,9 +222,9 @@ axis.title.y = element_text(color="#993333", size=7, face="bold")
 plot(p)
 
 
- name_for_file<-paste0(basename(path),number_of_frame,"_frames_all_movies_sum_degree_each_movie_.pdf")
+ name_for_file<-paste0(basename(path),number_of_frame,"_frames_all_movies_sum_degree_each_movie_without_angelsub.pdf")
 
-ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/26.05")
+ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/pics_for_degree")
 }
 
  #library(ggplot2)
@@ -231,4 +237,75 @@ ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - 
 ```
 
 
+```{r}
+
+library(lubridate)
+
+
+my_t = ts(data[,1:2])
+
+my_t = ts(s, start = c(2019,1), frequency = 19)
+
+
+plot(aggregate(my_t), type="p", pch=20, cex=3, ylab="Aggregate per time unit")
+
+```
+
+```{r}
+
+
+set.seed(9797)
+s_1 = seq(221:256)
+
+# A cyclic vector for SEASONAL variations.
+s_2 = cos(seq(from=1/12*pi, to=6*pi, by=(6*pi/36)))*5
+
+# Random numbers for errors (white noise).
+set.seed(65)
+s_3 = rnorm(36)
+
+# The data vector.
+s = s_1 + s_2 + s_3
+
+# The time series object is created.
+my_t = ts(s, start = c(2019,1), frequency = 12)
+
+# Plot the time series.
+plot(my_t, ylab = "Values")
+```
+
+```{r}
+xts(data$Value, as.Date(data$Frame))
+
+
+
+ library(zoo)
+ #ZOO <- zoo(data$Value, as.character(data$Frame))
+ ZOO <- zoo(data$Value)
+
+ my_t<-ts(ZOO,frequency = 2700)
+ plot(my_t)
+ 
+ 
+plot(aggregate(my_t), type="p", pch=20, cex=3, ylab="Aggregate per time unit")
+
+library(lubridate)
+
+library(forecast)
+
+my_vec<-as.vector(data$Value)
+myts <- ts(my_vec, start=c(1, 1), frequency=2700)
+
+
+ plot(myts)
+ fit <- stl(myts, s.window="period")
+
+plot(fit)
+
+fit <- auto.arima(my_t)
+forecast(fit, 20)
+
+
+plot(forecast(fit, 2000))
+```
 
