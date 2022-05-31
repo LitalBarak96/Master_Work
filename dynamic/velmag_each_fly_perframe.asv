@@ -1,5 +1,24 @@
 %getting the first value in each cell
-path="D:\allGroups\Females_Grouped\Assa_Females_Grouped__Unknown_RigA_20220206T090743";
+
+
+path="D:\allGroups\Females_Mated\Assa_Female_Mated_Unknown_RigA_20211025T120646\perframe";
+
+perframedir=dir(fullfile(path,"perframe/"))
+cell_dir=struct2cell(perframedir);
+all=[];
+
+
+for j =3:81
+name=cell_dir{1,j}
+load(fullfile(path,cell_dir{1,j}))
+end
+
+
+%name_of_ferframe=zeros(1,81)
+
+%for i=1:81
+ %   name_of_ferframe(i)=cell_dir{1,i}
+%end
 
 num_of_frames=27001;
 perframe_avarge_allflies=zeros(1,num_of_frames);
@@ -9,4 +28,11 @@ perframe_avarge_allflies(i)=sum_per_frame;
 end
 horizen_perframe_avarge_allflies=perframe_avarge_allflies'
 
-csvwrite('myFile.csv',horizen_perframe_avarge_allflies)
+table_of_current_perframe = array2table(horizen_perframe_avarge_allflies, 'VariableNames',{name});
+
+all=horzcat(all,table_of_current_perframe);
+
+filename=name+"perframe_sum_allflies.csv";
+
+full_path_tocsv=fullfile(path,filename)
+csvwrite(full_path_tocsv,horizen_perframe_avarge_allflies)

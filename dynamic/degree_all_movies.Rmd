@@ -13,7 +13,7 @@ library(dplyr)
 library(reshape2)
 library(igraph)
 library(R.matlab)
-path ="D:/allGroups/Females_Grouped"
+path ="D:/allGroups/Females_Mated"
 setwd(path)
 number_of_flys<-10
 number_of_frame<-1
