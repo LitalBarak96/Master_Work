@@ -1,0 +1,73 @@
+---
+title: "linear_regression_velmagVSdegree"
+output: html_document
+date: '2022-05-31'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r}
+
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+path ="D:/allGroups/Females_Mated"
+setwd(path)
+number_of_flys<-10
+number_of_frame<-1
+facade<-FALSE
+
+#seq by the  number of frames
+numbers<-seq(1, 27001, by=number_of_frame)
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+dir<-list.dirs(recursive = F,path = path)
+
+num_of_movie=1
+
+
+velmag<-read.csv(paste0(dir[num_of_movie],"/","perframe_sum_allflies.csv"))
+degree<-read.csv(paste0(dir[num_of_movie],"/","all_frames_degree.csv"))["Value"]
+degree<-rbind(degree,0)
+
+#velmag<-scale(velmag, center = TRUE, scale = TRUE)
+
+#degree<-scale(degree, center = TRUE, scale = TRUE)
+
+combined_velmage_degree<-cbind(velmag,degree)
+
+
+
+combined_velmage_degree %>%
+  as.data.frame() %>%
+  GGally::ggpairs()
+
+
+library(ggplot2)
+combined_velmage_degree %>%
+  as.data.frame() %>%
+  ggplot(aes(x=Velmag_Sum, y=Value)) +
+    ylab("sum of velmage per frame all flies ") +
+    xlab("the degree in each frame of all flies") +
+    geom_point()+ 
+    geom_smooth(method="lm", se=FALSE)
+
+simple.fit<-lm(formula =Velmag_Sum ~ Value, data=combined_velmage_degree)
+summary(simple.fit)
+plot(simple.fit)
+```
+
