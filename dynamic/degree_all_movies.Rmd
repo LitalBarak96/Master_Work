@@ -6,14 +6,25 @@ output: html_notebook
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-```{r}
+```{r warning=FALSE}
 library(openxlsx)
 library(stringr)
 library(dplyr)
 library(reshape2)
 library(igraph)
 library(R.matlab)
-path ="D:/allGroups/Females_Mated"
+
+
+list_of_all_groups<-list.dirs(path = "D:/allGroups", full.names = TRUE, recursive = FALSE)
+
+
+for(group in 1:6){
+  
+path =list_of_all_groups[group]
+
+print(group)
+print(path)
+
 setwd(path)
 number_of_flys<-10
 number_of_frame<-1
@@ -168,7 +179,14 @@ write.csv(data,paste0(dir[num_of_movie], '/','all_frames_degree.csv'), row.names
 
 
 }
+}
 
+
+
+
+```
+
+```{r}
 test<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/all_frames_degree.csv")
 
 avarge_per_frames<-aggregate(total_data_for_Graph[,2], list(total_data_for_Graph$Frame), mean)
@@ -235,7 +253,6 @@ ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - 
 
 
  
-
 ```
 
 

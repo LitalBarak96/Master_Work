@@ -15,11 +15,10 @@ maxExperimentInteractions = -1;
 
 %please note that need to be in each movie 10 flys
 
-
+addpath 'C:\Users\barakli8\OneDrive - Bar Ilan University\Lital\code\interactions_network\dynamic\code'
 expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 [suggestedPath, ~, ~] = fileparts(expGroups{1});
 numOfGroups = length(expGroups);
-
 %you can choose more than 1 group to creat 
 groupNumber = [{'Number of groups'; numOfGroups}; cell(numOfGroups - 1, 1)];
 groupNames = cell(numOfGroups + 1, 1);

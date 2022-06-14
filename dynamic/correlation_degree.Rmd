@@ -1,0 +1,243 @@
+---
+title: "corrleaction_for_degree"
+output: html_document
+date: '2022-06-13'
+---
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+```{r}
+
+file_name_Save<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/8.06/mycorrplot.png"
+
+test<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T132422/all_frames_degree.csv")
+
+
+all_features<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T132422/per_framefeatures_sum_allflies.csv")
+sum_per_frames<-test[1:26997,c(1,3)]
+colnames(sum_per_frames)<-c("Frame","degree")
+
+library(stringr)
+
+
+
+all_features_new<-all_features[1:26997,]
+
+
+colnames(all_features_new)<-str_remove(colnames(all_features_new), ".mat")
+
+data<-cbind(all_features_new,sum_per_frames$degree)
+
+
+my_data <- data[, c(1,3,4,5,6,7)]
+
+library("PerformanceAnalytics")
+
+
+chart.Correlation(data, histogram=FALSE)
+
+```
+
+
+```{r corrleaction}
+
+
+file_name_Save<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/8.06/mycorrplot.png"
+
+test<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T132422/all_frames_degree.csv")
+
+
+all_features<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T132422/per_framefeatures_sum_allflies.csv")
+sum_per_frames<-test[1:26997,c(1,3)]
+colnames(sum_per_frames)<-c("Frame","degree")
+
+library(stringr)
+
+
+
+all_features_new<-all_features[1:26997,]
+
+
+colnames(all_features_new)<-str_remove(colnames(all_features_new), ".mat")
+
+data<-cbind(all_features_new,sum_per_frames$degree)
+
+
+
+
+
+
+# library
+library(igraph)
+
+
+# Make a correlation matrix:
+mat=cor(data)
+# Keep only high correlations
+mat[mat<0.995]=0
+
+# Make an Igraph object from this matrix:
+network=graph_from_adjacency_matrix( mat, weighted=T, mode="undirected", diag=F)
+
+plot(network)
+
+
+
+data<-cbind(time=1:26997,data)
+
+data<-ts(data)
+ccf(data[,1],data[,2])
+
+data_cor <- cor(data[ , colnames(data) != "degree"],  # Calculate correlations
+                data$degree)
+data_cor  
+
+cor(data)
+library(corrplot)
+corrplot(data_cor, method="circle",tl.cex = 0.5)
+corrplot(data_cor, type="upper", order="hclust", tl.col="black", tl.srt=45,tl.cex = 0.4)
+
+
+png(filename = "C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/8.06/mycorrplot.png", width = 1200, height = 800)
+corrplot(data_cor, method="circle", addCoef.col = 1, tl.cex = 0.5)
+#dev.off()
+
+
+#In this example, I’ll demonstrate how to get the Pearson correlation coefficient between a particular data frame variable with all the other variables in this data frame.
+
+
+
+#In order to reduce the sheer quantity of variables (without having to manually pick and choose), Only variables above a specific significance level threshold are selected. It is set to 0.5 as the initial default.
+
+library(dplyr)
+corr_simple <- function(data=df,sig=0.5){
+  #convert data to numeric in order to run correlations
+  #convert to factor first to keep the integrity of the data - each value will become a number rather than turn into NA
+  df_cor <- data %>% mutate_if(is.character, as.factor)
+  df_cor <- df_cor %>% mutate_if(is.factor, as.numeric)
+  #run a correlation and drop the insignificant ones
+  
+  #corr <- cor(df_cor[ , colnames(df_cor) != "degree"],  # Calculate correlations
+  #             df_cor$degree) 
+  
+  corr<-cor(df_cor)
+  #prepare to drop duplicates and correlations of 1     
+  corr[lower.tri(corr,diag=TRUE)] <- NA 
+  #drop perfect correlations
+  corr[corr == 1] <- NA 
+  #turn into a 3-column table
+  corr <- as.data.frame(as.table(corr))
+  #remove the NA values from above 
+  corr <- na.omit(corr) 
+  #select significant values  
+  corr <- subset(corr, abs(Freq) > sig) 
+  #sort by highest correlation
+  corr <- corr[order(-abs(corr$Freq)),] 
+  #print table
+  print(corr)
+  #turn corr back into matrix in order to plot with corrplot
+  mtx_corr <- reshape2::acast(corr, Var1~Var2, value.var="Freq")
+  
+  #plot correlations visually
+  png(filename = file_name_Save, width = 1200, height = 800)
+  corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 0.55)
+}
+corr_simple(data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+res <- cor(data)
+
+
+# Get some colors
+col<- colorRampPalette(c("blue", "white", "red"))(80)
+heatmap(x = res, col = col, symm = TRUE)
+
+
+
+
+corr_mat <- round(cor(data),2) 
+head(corr_mat)
+
+# Install and load reshape2 package
+library(reshape2)
+
+# creating correlation matrix
+corr_mat <- round(cor(data),2)
+
+# reduce the size of correlation matrix
+melted_corr_mat <- melt(corr_mat)
+# head(melted_corr_mat)
+
+# plotting the correlation heatmap
+library(ggplot2)
+ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2,
+                                   fill=value)) +
+  geom_tile()
+
+# Code to plot a reorederd heatmap
+
+# Install and load reshape2 package
+library(reshape2)
+
+# creating correlation matrix
+corr_mat <- round(cor(data),2)
+
+# reorder corr matrix
+# using corr coefficient as distance metric
+dist <- as.dist((1-corr_mat)/2)
+
+# hierarchical clustering the dist matrix
+hc <- hclust(dist)
+corr_mat <-corr_mat[hc$order, hc$order]
+
+# reduce the size of correlation matrix
+melted_corr_mat <- melt(corr_mat)
+#head(melted_corr_mat)
+
+#plotting the correlation heatmap
+library(ggplot2)
+ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile()
+
+
+
+# Load and install heatmaply package
+library(heatmaply)
+
+# plotting corr heatmap
+heatmaply_cor(x = cor(data), xlab = "Features",
+              ylab = "Features", k_col = 2, k_row = 2)
+
+
+
+
+
+```
+
+
+#combin the dataframe for python for corrleaction
+
+```{r}
+
+```
+
