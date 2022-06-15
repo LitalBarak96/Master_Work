@@ -15,7 +15,7 @@ library(purrr)
 all.the.data <- 
     all.the.files %>%  map_dfc( ~ read.csv(.x) )
 
-
+#combined by coloms
 
 wo_framenum <- all.the.data[,!grepl("Frame", colnames(all.the.data))]
 
@@ -47,6 +47,7 @@ library(purrr)
 #bind all with coloms
 all.the.data <- 
     all.the.files %>%  map_dfr( ~ read.csv(.x) )
+#combined by rows
 
 wo_frame <- all.the.data[,!grepl("Frame", colnames(all.the.data))]
 

@@ -1776,15 +1776,217 @@ the chunk or by placing your cursor inside it and pressing
 <em>Ctrl+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xvc2UocGIpXG5cbmBgYCJ9 -->
-<pre class="r"><code>close(pb)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShvcGVueGxzeClcbmxpYnJhcnkoc3RyaW5ncilcbmxpYnJhcnkoZHBseXIpXG5saWJyYXJ5KHJlc2hhcGUyKVxubGlicmFyeShpZ3JhcGgpXG5saWJyYXJ5KFIubWF0bGFiKVxuXG5cblxuXG5cbmxpc3Rfb2ZfYWxsX2dyb3VwczwtbGlzdC5kaXJzKHBhdGggPSBcIkQ6L2FsbEdyb3Vwc1wiLCBmdWxsLm5hbWVzID0gVFJVRSwgcmVjdXJzaXZlID0gRkFMU0UpXG5udW1iZXJfb2ZfZGlyczwtbGVuZ3RoKGxpc3QuZGlycyhyZWN1cnNpdmUgPSBULHBhdGggPSBcIkQ6L2FsbEdyb3Vwc1wiKSktN1xuXG5cbmN1cnJlbnRfaW5kZXg8LTBcblxucGIgPC0gd2luUHJvZ3Jlc3NCYXIodGl0bGUgPSBcIldpbmRvdyBwcm9ncmVzcyBiYXJcIiwgIyBXaW5kb3cgdGl0bGVcbiAgICAgICAgICAgICAgICAgICAgIGxhYmVsID0gXCJQZXJjZW50YWdlIGNvbXBsZXRlZFwiLCAjIFdpbmRvdyBsYWJlbFxuICAgICAgICAgICAgICAgICAgICAgbWluID0gMCwgICAgICAjIE1pbmltdW0gdmFsdWUgb2YgdGhlIGJhclxuICAgICAgICAgICAgICAgICAgICAgbWF4ID0gbnVtYmVyX29mX2RpcnMsICMgTWF4aW11bSB2YWx1ZSBvZiB0aGUgYmFyXG4gICAgICAgICAgICAgICAgICAgICBpbml0aWFsID0gMCwgICMgSW5pdGlhbCB2YWx1ZSBvZiB0aGUgYmFyXG4gICAgICAgICAgICAgICAgICAgICB3aWR0aCA9IDMwMEwpICMgV2lkdGggb2YgdGhlIHdpbmRvdyBcblxuXG5cbndpbmRvd0JhcjwtZnVuY3Rpb24oY3VycmVudF9pbmRleCxwYixudW1iZXJfb2Zfb3BlcmF0aW9uKXtcblxuICBjdXJyZW50X2luZGV4PC1jdXJyZW50X2luZGV4KzFcbiAgcGN0ZyA8LSBwYXN0ZShyb3VuZChjdXJyZW50X2luZGV4L251bWJlcl9vZl9vcGVyYXRpb24gKjEwMCwgMCksIFwiJSBjb21wbGV0ZWRcIilcbiAgc2V0V2luUHJvZ3Jlc3NCYXIocGIsIGN1cnJlbnRfaW5kZXgsIGxhYmVsID0gcGN0ZykgIyBUaGUgbGFiZWwgd2lsbCBvdmVycmlkZSB0aGUgbGFiZWwgc2V0IG9uIHRoZVxuICByZXR1cm4oY3VycmVudF9pbmRleClcbiAgXG59XG5cbmYgPC0gZnVuY3Rpb24oeCkge1xuICAgIGlmKGlzLmxpc3QoeCkpIGxhcHBseSh4LCBmKVxuICAgIGVsc2UgaWZlbHNlKGxlbmd0aCh4KSA9PSAwLCAwLCB4KVxufVxuXG5cblxuZm9yKGdyb3VwIGluIDE6Nil7XG4gIFxucGF0aCA9bGlzdF9vZl9hbGxfZ3JvdXBzW2dyb3VwXVxuXG5wcmludChwYXRoKVxuXG5zZXR3ZChwYXRoKVxubnVtYmVyX29mX2ZseXM8LTEwXG5udW1iZXJfb2ZfZnJhbWU8LTFcblxuXG5cblxuI3NlcSBieSB0aGUgIG51bWJlciBvZiBmcmFtZXNcbm51bWJlcnM8LXNlcSgxLCAyNzAwMSwgYnk9bnVtYmVyX29mX2ZyYW1lKVxuXG5cblxuZGlyPC1saXN0LmRpcnMocmVjdXJzaXZlID0gRixwYXRoID0gcGF0aClcblxuZm9yKG51bV9vZl9tb3ZpZSBpbiAxOmxlbmd0aChkaXIpKXtcbiAgICBjdXJyZW50X2luZGV4PC13aW5kb3dCYXIoY3VycmVudF9pbmRleCxwYixudW1iZXJfb2ZfZGlycylcbiAgICBcbiAgI2lmIHRoZSBmaWxlIGRvbid0IGV4aXN0ICxjcmVhdCBoaW1cblxuICBpZighZmlsZS5leGlzdHMocGFzdGUwKGRpcltudW1fb2ZfbW92aWVdLCAnLycsJ2FsbF9mcmFtZXNfZGVncmVlLmNzdicpKSl7XG4gIHByaW50KGRpcltudW1fb2ZfbW92aWVdKVxuICAgIHByaW50KFwiY3JlYXRpbmcgdGhlIGZpbGUgb2YgdGhpcyBkaXJcIilcbiAgI2l0IGlzIHVuZGVyIHRoZSBhc3N1bXRpb24gdGhhdCB0aGVyZSBpcyAxMCBmbHlzIGFuZCB0aGV5IGFyZSBvcmdlbml6ZWQgaW4gc3BjaWZpYyB3YXkgZnJvbSB0aGUgQWxsaW50ZXJhY3Rpb24ubWF0XG4gIG1hdCA8LSAocmVhZE1hdChwYXN0ZTAoZGlyW251bV9vZl9tb3ZpZV0sICcvJywnQWxsaW50ZXJhY3Rpb24ubWF0JykpKSAjIHJlYWQgZWFjaCBNQVQgZmlsZVxuICBzdWJfbGlzdF9tYXQ8LW1hdHJpeChtYXRbW1wibmV3LmludGVyYWN0aW9uRnJhbWVNYXRyaXhcIl1dLG5yb3cgPSBudW1iZXJfb2ZfZmx5cywgbmNvbCA9IG51bWJlcl9vZl9mbHlzKVxuICBkZl9tYXQ8LWFzLmRhdGEuZnJhbWUoc3ViX2xpc3RfbWF0KVxuICBcblxuICBcbiAgXG4gIFxuICAgICNSRU1PVkUgMCAoTUVBTiBOTyBJTlRFUkFDVElPTilcbiAgZm9yKGkgaW4gMTpuY29sKGRmX21hdCkpe1xuICAgIGZvcihqIGluIDE6bnJvdyhkZl9tYXQpKXtcbiAgICAgIGlmKGxlbmd0aCh1bmxpc3QoZGZfbWF0W2ksal0pKSA9PSAwKXtcbiAgICAgICAgZGZfbWF0W2ksal0gPC0gbGFwcGx5KGRmX21hdFtpLGpdLCBmdW5jdGlvbih4KXhbbGVuZ3Rocyh4KSA9PSAwXSA8LSAwKVxuICAgICAgfVxuICAgIH1cbiAgfVxuICBcbiAgZGZfbWF0PC1uYS5vbWl0KGRmX21hdClcblxuICBcblxuICAjMTAgZmx5c1xuICBjb2xuYW1lcyhkZl9tYXQpPC1jKFwiMVwiLFwiMlwiLFwiM1wiLFwiNFwiLFwiNVwiLFwiNlwiLFwiN1wiLFwiOFwiLFwiOVwiLFwiMTBcIilcbiAgcm93bmFtZXMoZGZfbWF0KTwtYyhcIjFcIixcIjJcIixcIjNcIixcIjRcIixcIjVcIixcIjZcIixcIjdcIixcIjhcIixcIjlcIixcIjEwXCIpXG4gIG5vZGVzPC1jKFwiMVwiLFwiMlwiLFwiM1wiLFwiNFwiLFwiNVwiLFwiNlwiLFwiN1wiLFwiOFwiLFwiOVwiLFwiMTBcIilcbiAgbm9kZXM8LWFzLmRhdGEuZnJhbWUobm9kZXMpXG4gIGFsbDwtZGF0YS5mcmFtZSgpXG4gIFxuICBmb3IoaSBpbiAxOm51bWJlcl9vZl9mbHlzKXtcbiAgICBmb3IoaiBpbiAxOm51bWJlcl9vZl9mbHlzKXtcbiAgICAgIGlmKGxlbmd0aCh1bmxpc3Qoc3ViX2xpc3RfbWF0W2ksal0pKSE9MCl7XG4gICAgICAgIHRlbXBfbnVtX2ZyYW1lczwtdW5saXN0KGRmX21hdFtpLGpdKVxuICAgICAgICB0b2JpbmQ8LWMoY29sbmFtZXMoZGZfbWF0W2ldKSxyb3duYW1lcyhkZl9tYXRbaixdKSlcbiAgICAgICAgdG9iaW5kPC1hcy5kYXRhLmZyYW1lKHQodG9iaW5kKSlcbiAgICAgICAgI3RoZSB2YWx1ZSBmcm9tIHdoZXJlIHRoZSBkaWZmcmVuY2UgaXMgYmlnZ2VyIHRoYW4gMTIwIGluIHRoZSBuZXh0IGZyYW1lXG4gICAgICAgIHNlcV9pbnRlcjwtIHRlbXBfbnVtX2ZyYW1lc1tkaWZmKHRlbXBfbnVtX2ZyYW1lcyk+MTIwXVxuICAgICAgICBpZihsZW5ndGgoc2VxX2ludGVyKT4gMCl7XG4gICAgICAgICAgbnVtX29mX3NlcV9pdGVyPC1sZW5ndGgoc2VxX2ludGVyKVxuICAgICAgICAgIGN1cnJlbnRfaWluZGV4PC0xXG4gICAgICAgICAgZm9yKGsgaW4gMTpudW1fb2Zfc2VxX2l0ZXIpe1xuICAgICAgICAgICAgdG9iaW5kPC1jKGNvbG5hbWVzKGRmX21hdFtpXSkscm93bmFtZXMoZGZfbWF0W2osXSkpXG4gICAgICAgICAgICB0b2JpbmQ8LWFzLmRhdGEuZnJhbWUodCh0b2JpbmQpKVxuICAgICAgICAgICAgXG4gICAgICAgICAgICBpbmRleDwtd2hpY2godGVtcF9udW1fZnJhbWVzID09IHNlcV9pbnRlcltrXSlcbiAgICAgICAgICAgIHR0X3RlbXBfbnVtX2ZyYW1lczwtYXMuZGF0YS5mcmFtZSh0ZW1wX251bV9mcmFtZXMpXG4gICAgICAgICAgICB0ZW1wX2FsbF9pbnRlcjwtdHRfdGVtcF9udW1fZnJhbWVzW2N1cnJlbnRfaWluZGV4OmluZGV4LF1cbiAgICAgICAgICAgIGN1cnJlbnRfaWluZGV4PC1pbmRleCsxXG4gICAgICAgICAgICB0b2JpbmQ8LWNiaW5kKHRvYmluZCx0ZW1wX2FsbF9pbnRlclsxXSlcbiAgICAgICAgICAgIHRvYmluZDwtY2JpbmQodG9iaW5kLHRlbXBfYWxsX2ludGVyW2xlbmd0aCh0ZW1wX2FsbF9pbnRlcildKVxuICAgICAgICAgICAgY29sbmFtZXModG9iaW5kKTwtYyhcInRhaWxcIixcImhlYWRcIixcIm9uc2V0XCIsXCJ0ZXJtaW51c1wiKVxuICAgICAgICAgICAgXG4gICAgICAgICAgICBhbGw8LXJiaW5kKGFsbCx0b2JpbmQpXG4gICAgICAgIH1cbiAgICAgICAgXG4gICAgICAgIH1lbHNle1xuICAgICAgICAgIHRvYmluZDwtY2JpbmQodG9iaW5kLHRlbXBfbnVtX2ZyYW1lc1sxXSlcbiAgICAgICAgICB0b2JpbmQ8LWNiaW5kKHRvYmluZCx0ZW1wX251bV9mcmFtZXNbbGVuZ3RoKHRlbXBfbnVtX2ZyYW1lcyldKVxuICAgICAgICAgIGNvbG5hbWVzKHRvYmluZCk8LWMoXCJ0YWlsXCIsXCJoZWFkXCIsXCJvbnNldFwiLFwidGVybWludXNcIilcbiAgICAgICAgICBhbGw8LXJiaW5kKGFsbCx0b2JpbmQpXG4gICAgICAgICAgXG4gICAgICAgIH1cbiAgICAgICAgXG4gICAgICB9XG4gICAgICAgIFxuICAgIH1cbiAgfVxuICBcbiAgY29sbmFtZXMoYWxsKTwtYyhcInRhaWxcIixcImhlYWRcIixcIm9uc2V0XCIsXCJ0ZXJtaW51c1wiKVxuICBcbiAgYWxsW1wiaGVhZFwiXSA8LSBhcy5udW1lcmljKHVubGlzdChhbGxbXCJoZWFkXCJdKSlcbiAgYWxsW1widGFpbFwiXSA8LSBhcy5udW1lcmljKHVubGlzdChhbGxbXCJ0YWlsXCJdKSlcbiAgXG4gIFxuICBcbiAgXG4gIFxuICBhbGw8LWNiaW5kKGFsbCwxKVxuICB2YWx1ZV9zdW1fZGY8LWRhdGEuZnJhbWUoKVxuICBkYXRhPC1kYXRhLmZyYW1lKClcbiAgdGVtcF9iZXR3ZWVuX3ZhbHVlczwtYygpXG5cbiAgbGlicmFyeShkcGx5cilcbmZvcihpIGluIDE6KGxlbmd0aChudW1iZXJzKS0xKSl7XG4gIHRlbXBfYmV0d2Vlbl92YWx1ZXM8LWMoKVxuICAjZmluZCB0aG9zZSB0aGF0IGFyZSBiaWdnZXIgdGhhbiB0aGUgb25zZXQgYW5kIHNtYWxsIGZyb20gdGhlIHRlcm1pbnVzXG4gIHRlbXBfYmV0d2Vlbl92YWx1ZXM8LWFsbCAlPiUgZmlsdGVyKG51bWJlcnNbaSsxXT49b25zZXQgJiBudW1iZXJzW2ldIDw9dGVybWludXMpXG4gIGlmKCBucm93KHRlbXBfYmV0d2Vlbl92YWx1ZXMpIT0wKXtcbiAgICAjY2hhbmdpbmcgdGhlIGZvcm1hdCB0byBnZXQgXCJtYXRyaXhcIiB3aXRoIHdobyBpcyBpbiBpbnRlcmFjdGlvbiB3aXRoIHdob1xuICB2YWx1ZXM8LXN1cHByZXNzTWVzc2FnZXMoYWNhc3QodGVtcF9iZXR3ZWVuX3ZhbHVlcywgdGFpbH5oZWFkLGZ1bi5hZ2dyZWdhdGU9c3VtKSlcbiAgI2NyZWF0IG1hdHJpeCBpbiB0aGUgc2l6ZSBvZiAxMCBvbiAxMCB3aXRoIDAgXG4gIHplcm9fbWF0cml4IDwtIG1hdHJpeCgwLCBuY29sID0gMTAsIG5yb3cgPSAxMClcbiAgI2FsbF92YWx1ZXMgY29uYXRpb24gd2hvIGlzIGluIGludGFydGNpb24gd2l0aCB3aG8gaW4gdGhlIHNwY2lmaWMgZnJhbWVcbiAgYWxsX3ZhbHVlczwtYWNhc3QocmJpbmQobWVsdCh2YWx1ZXMpLCBtZWx0KHplcm9fbWF0cml4KSksIFZhcjF+VmFyMiwgc3VtKVxuICBuZXQyIDwtIGdyYXBoX2Zyb21fYWRqYWNlbmN5X21hdHJpeChhbGxfdmFsdWVzLG1vZGUgPSBcInVuZGlyZWN0ZWRcIilcbiAgI2NyZWF0IGEgZGVncmVlIFxuICBkZWcgPC0gZGVncmVlKG5ldDIpXG4gIHZhbHVlX3N1bV90ZW1wPC1kYXRhLmZyYW1lKGJlZ2luPW51bWJlcnNbaV0sZW5kPW51bWJlcnNbaSsxXSxkZWdyZWU9KHN1bShkZWcpLzIpKVxuICB2YWx1ZV9zdW1fZGY8LSBiaW5kX3Jvd3ModmFsdWVfc3VtX2RmLHZhbHVlX3N1bV90ZW1wKVxuICB9ZWxzZXtcbiAgdmFsdWVfc3VtX3RlbXA8LWRhdGEuZnJhbWUoYmVnaW49bnVtYmVyc1tpXSxlbmQ9bnVtYmVyc1tpKzFdLGRlZ3JlZT0wKVxuICB2YWx1ZV9zdW1fZGY8LSBiaW5kX3Jvd3ModmFsdWVfc3VtX2RmLHZhbHVlX3N1bV90ZW1wKVxuICB9XG4gIH1cbiAgXG4jdGhlIGVsc2UgaXMgdG8gZ2V0IHRoZSB3aG9sZSBmcmFtZSBvbiBpbnRlcmFjdGlvbiBzbyB3ZSBzZWUgdGhlIGJ1aWxkdXBcbmRhdGE8LSBhcy5kYXRhLmZyYW1lKHBhc3RlMCh2YWx1ZV9zdW1fZGYkYmVnaW4sXCItXCIsIHZhbHVlX3N1bV9kZiRlbmQpKVxuZGF0YSR2YWx1ZTwtdmFsdWVfc3VtX2RmJGRlZ3JlZVxuY29sbmFtZXMoZGF0YSk8LWMoXCJGcmFtZVwiLFwiVmFsdWVcIilcblxuXG5kYXRhJEZyYW1lIDwtIGFzLmNoYXJhY3RlcihkYXRhJEZyYW1lKVxuI1RoZW4gdHVybiBpdCBiYWNrIGludG8gYSBmYWN0b3Igd2l0aCB0aGUgbGV2ZWxzIGluIHRoZSBjb3JyZWN0IG9yZGVyXG5kYXRhJGdyb3VwPC1hcy5jaGFyYWN0ZXIobnVtX29mX21vdmllKVxuI2RhdGEkZ3JvdXAgPC0gZmFjdG9yKGRhdGEkZ3JvdXAsIGxldmVscz11bmlxdWUoZGF0YSRncm91cCkpXG5cbndyaXRlLmNzdihkYXRhLHBhc3RlMChkaXJbbnVtX29mX21vdmllXSwgJy8nLCdhbGxfZnJhbWVzX2RlZ3JlZS5jc3YnKSwgcm93Lm5hbWVzID0gVFJVRSlcblxuICB9XG4gIGVsc2V7XG4gICAgICBwcmludChkaXJbbnVtX29mX21vdmllXSlcbiAgcHJpbnQoXCJmaWxlIGlzIGV4aXRlZCBhbHJlYWR5XCIpXG4gIH1cbiNpZihudW1fb2ZfbW92aWU9PTEpe1xuICMgdG90YWxfZGF0YV9mb3JfR3JhcGg8LWRhdGFcbiN9ZWxzZXtcbiAjIHRvdGFsX2RhdGFfZm9yX0dyYXBoPC1jYmluZCh0b3RhbF9kYXRhX2Zvcl9HcmFwaCxkYXRhKVxuI31cblxuXG5cbiN0b3RhbF9kYXRhX2Zvcl9HcmFwaCRncm91cCA8LSBmYWN0b3IodG90YWxfZGF0YV9mb3JfR3JhcGgkZ3JvdXAsIGxldmVscz11bmlxdWUodG90YWxfZGF0YV9mb3JfR3JhcGgkZ3JvdXApKVxuXG5cbn1cbn1cblxuXG5jbG9zZShwYilcblxuXG5cblxuXG5gYGAifQ== -->
+<pre class="r"><code>library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+
+
+
+
+
+list_of_all_groups&lt;-list.dirs(path = &quot;D:/allGroups&quot;, full.names = TRUE, recursive = FALSE)
+number_of_dirs&lt;-length(list.dirs(recursive = T,path = &quot;D:/allGroups&quot;))-7
+
+
+current_index&lt;-0
+
+pb &lt;- winProgressBar(title = &quot;Window progress bar&quot;, # Window title
+                     label = &quot;Percentage completed&quot;, # Window label
+                     min = 0,      # Minimum value of the bar
+                     max = number_of_dirs, # Maximum value of the bar
+                     initial = 0,  # Initial value of the bar
+                     width = 300L) # Width of the window 
+
+
+
+windowBar&lt;-function(current_index,pb,number_of_operation){
+
+  current_index&lt;-current_index+1
+  pctg &lt;- paste(round(current_index/number_of_operation *100, 0), &quot;% completed&quot;)
+  setWinProgressBar(pb, current_index, label = pctg) # The label will override the label set on the
+  return(current_index)
+  
+}
+
+f &lt;- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+for(group in 1:6){
+  
+path =list_of_all_groups[group]
+
+print(path)
+
+setwd(path)
+number_of_flys&lt;-10
+number_of_frame&lt;-1
+
+
+
+
+#seq by the  number of frames
+numbers&lt;-seq(1, 27001, by=number_of_frame)
+
+
+
+dir&lt;-list.dirs(recursive = F,path = path)
+
+for(num_of_movie in 1:length(dir)){
+    current_index&lt;-windowBar(current_index,pb,number_of_dirs)
+    
+  #if the file don&#39;t exist ,creat him
+
+  if(!file.exists(paste0(dir[num_of_movie], &#39;/&#39;,&#39;all_frames_degree.csv&#39;))){
+  print(dir[num_of_movie])
+    print(&quot;creating the file of this dir&quot;)
+  #it is under the assumtion that there is 10 flys and they are orgenized in spcific way from the Allinteraction.mat
+  mat &lt;- (readMat(paste0(dir[num_of_movie], &#39;/&#39;,&#39;Allinteraction.mat&#39;))) # read each MAT file
+  sub_list_mat&lt;-matrix(mat[[&quot;new.interactionFrameMatrix&quot;]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat&lt;-as.data.frame(sub_list_mat)
+  
+
+  
+  
+  
+    #REMOVE 0 (MEAN NO INTERACTION)
+  for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] &lt;- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] &lt;- 0)
+      }
+    }
+  }
+  
+  df_mat&lt;-na.omit(df_mat)
+
+  
+
+  #10 flys
+  colnames(df_mat)&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;10&quot;)
+  rownames(df_mat)&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;10&quot;)
+  nodes&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;10&quot;)
+  nodes&lt;-as.data.frame(nodes)
+  all&lt;-data.frame()
+  
+  for(i in 1:number_of_flys){
+    for(j in 1:number_of_flys){
+      if(length(unlist(sub_list_mat[i,j]))!=0){
+        temp_num_frames&lt;-unlist(df_mat[i,j])
+        tobind&lt;-c(colnames(df_mat[i]),rownames(df_mat[j,]))
+        tobind&lt;-as.data.frame(t(tobind))
+        #the value from where the diffrence is bigger than 120 in the next frame
+        seq_inter&lt;- temp_num_frames[diff(temp_num_frames)&gt;120]
+        if(length(seq_inter)&gt; 0){
+          num_of_seq_iter&lt;-length(seq_inter)
+          current_iindex&lt;-1
+          for(k in 1:num_of_seq_iter){
+            tobind&lt;-c(colnames(df_mat[i]),rownames(df_mat[j,]))
+            tobind&lt;-as.data.frame(t(tobind))
+            
+            index&lt;-which(temp_num_frames == seq_inter[k])
+            tt_temp_num_frames&lt;-as.data.frame(temp_num_frames)
+            temp_all_inter&lt;-tt_temp_num_frames[current_iindex:index,]
+            current_iindex&lt;-index+1
+            tobind&lt;-cbind(tobind,temp_all_inter[1])
+            tobind&lt;-cbind(tobind,temp_all_inter[length(temp_all_inter)])
+            colnames(tobind)&lt;-c(&quot;tail&quot;,&quot;head&quot;,&quot;onset&quot;,&quot;terminus&quot;)
+            
+            all&lt;-rbind(all,tobind)
+        }
+        
+        }else{
+          tobind&lt;-cbind(tobind,temp_num_frames[1])
+          tobind&lt;-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+          colnames(tobind)&lt;-c(&quot;tail&quot;,&quot;head&quot;,&quot;onset&quot;,&quot;terminus&quot;)
+          all&lt;-rbind(all,tobind)
+          
+        }
+        
+      }
+        
+    }
+  }
+  
+  colnames(all)&lt;-c(&quot;tail&quot;,&quot;head&quot;,&quot;onset&quot;,&quot;terminus&quot;)
+  
+  all[&quot;head&quot;] &lt;- as.numeric(unlist(all[&quot;head&quot;]))
+  all[&quot;tail&quot;] &lt;- as.numeric(unlist(all[&quot;tail&quot;]))
+  
+  
+  
+  
+  
+  all&lt;-cbind(all,1)
+  value_sum_df&lt;-data.frame()
+  data&lt;-data.frame()
+  temp_between_values&lt;-c()
+
+  library(dplyr)
+for(i in 1:(length(numbers)-1)){
+  temp_between_values&lt;-c()
+  #find those that are bigger than the onset and small from the terminus
+  temp_between_values&lt;-all %&gt;% filter(numbers[i+1]&gt;=onset &amp; numbers[i] &lt;=terminus)
+  if( nrow(temp_between_values)!=0){
+    #changing the format to get &quot;matrix&quot; with who is in interaction with who
+  values&lt;-suppressMessages(acast(temp_between_values, tail~head,fun.aggregate=sum))
+  #creat matrix in the size of 10 on 10 with 0 
+  zero_matrix &lt;- matrix(0, ncol = 10, nrow = 10)
+  #all_values conation who is in intartcion with who in the spcific frame
+  all_values&lt;-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
+  net2 &lt;- graph_from_adjacency_matrix(all_values,mode = &quot;undirected&quot;)
+  #creat a degree 
+  deg &lt;- degree(net2)
+  value_sum_temp&lt;-data.frame(begin=numbers[i],end=numbers[i+1],degree=(sum(deg)/2))
+  value_sum_df&lt;- bind_rows(value_sum_df,value_sum_temp)
+  }else{
+  value_sum_temp&lt;-data.frame(begin=numbers[i],end=numbers[i+1],degree=0)
+  value_sum_df&lt;- bind_rows(value_sum_df,value_sum_temp)
+  }
+  }
+  
+#the else is to get the whole frame on interaction so we see the buildup
+data&lt;- as.data.frame(paste0(value_sum_df$begin,&quot;-&quot;, value_sum_df$end))
+data$value&lt;-value_sum_df$degree
+colnames(data)&lt;-c(&quot;Frame&quot;,&quot;Value&quot;)
+
+
+data$Frame &lt;- as.character(data$Frame)
+#Then turn it back into a factor with the levels in the correct order
+data$group&lt;-as.character(num_of_movie)
+#data$group &lt;- factor(data$group, levels=unique(data$group))
+
+write.csv(data,paste0(dir[num_of_movie], &#39;/&#39;,&#39;all_frames_degree.csv&#39;), row.names = TRUE)
+
+  }
+  else{
+      print(dir[num_of_movie])
+  print(&quot;file is exited already&quot;)
+  }
+#if(num_of_movie==1){
+ # total_data_for_Graph&lt;-data
+#}else{
+ # total_data_for_Graph&lt;-cbind(total_data_for_Graph,data)
+#}
+
+
+
+#total_data_for_Graph$group &lt;- factor(total_data_for_Graph$group, levels=unique(total_data_for_Graph$group))
+
+
+}
+}
+
+
+close(pb)
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTlVMTFxuIn0= -->
-<pre><code>NULL</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5gYGAifQ== -->
-<pre class="r"><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
