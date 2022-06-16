@@ -166,6 +166,8 @@ for(i in 1:(length(numbers)-1)){
   temp_between_values<-all %>% filter(numbers[i+1]>=onset & numbers[i] <=terminus)
   if( nrow(temp_between_values)!=0){
     #changing the format to get "matrix" with who is in interaction with who
+    #the massge so annoying,everytime it creat the matrix it notify
+    
   values<-suppressMessages(acast(temp_between_values, tail~head,fun.aggregate=sum))
   #creat matrix in the size of 10 on 10 with 0 
   zero_matrix <- matrix(0, ncol = 10, nrow = 10)
