@@ -286,7 +286,9 @@ for(i in 1:length(list_of_all_groups)){
 rownames(degree_corr)<-row.names(df_corr)
 #the col names of the movie made it difcult to see in the plot
 #colnames(degree_corr)<-list_of_all_groups
-
+corrplot(degree_corr, tl.col="black", na.label=" ",tl.cex = 0.7)
+png(filename = "C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/16.06/corrplot_female_mated_without_threshold.png", width = 1200, height = 800)
+corrplot(degree_corr, tl.col="black", na.label=" ",tl.cex = 0.7)
 
 temp_degree_corr<-degree_corr
 
@@ -301,7 +303,7 @@ library(corrplot)
   #remove the NA values from above 
   temp_degree_corr <- na.omit(temp_degree_corr) 
   #select significant values  
-  temp_degree_corr <- subset(temp_degree_corr, abs(Freq) > 0.4) 
+  temp_degree_corr <- subset(temp_degree_corr, abs(Freq) > 0) 
   #sort by highest correlation
   temp_degree_corr <- temp_degree_corr[order(-abs(temp_degree_corr$Freq)),] 
   #print table
@@ -313,7 +315,7 @@ library(corrplot)
   #png(filename = file_name_Save, width = 1200, height = 800)
 corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 1)
 
-png(filename = "C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/16.06/corrplot_female_mated.png", width = 1200, height = 800)
+png(filename = "C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/16.06/corrplot_female_mated_without_threshold.png", width = 1200, height = 800)
 corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 1)
 
 
