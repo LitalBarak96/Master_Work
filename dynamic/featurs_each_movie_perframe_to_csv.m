@@ -5,7 +5,7 @@
 
 %creating alll other features to csv
 %getting the path of the expremnt dirs
-parent_dir_current ="D:\allGroups\Females_Singles";
+parent_dir_current ="D:\allGroups\Males_Singels";
 files = dir(parent_dir_current);
 dirFlags = [files.isdir];
 subDirs = files(dirFlags);

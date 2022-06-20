@@ -5,11 +5,107 @@ date: '2022-06-13'
 ---
 
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+correlaction all groupes
+```{r}
+library(stringr)
+library(corrplot)
+
+without_ncloseflys=FALSE
+list_of_all_groups_top<-list.dirs(path = "D:/allGroups", full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups_top)){
+  path_to_group =list_of_all_groups_top[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  
+  list_of_all_groups<-list.dirs(path = path_to_group, full.names = TRUE, recursive = FALSE)
+  degree_corr<-NULL
+  
+  
+  
+  
+  #orgenizing all the features and degree together and corrleaction
+#list of all groupes is the movies
+for(i in 1:length(list_of_all_groups)){
+  #reading the csv files with paramters
+   if(!file.exists(paste0(list_of_all_groups[i], '/','all_frames_degree.csv'))){
+     warning(paste0(list_of_all_groups[i],"all frames degree dont exist"))
+   }else{
+     degree_csv<-read.csv(paste0(list_of_all_groups[i], '/','all_frames_degree.csv'))
+   }
+  
+    if(!file.exists(paste0(list_of_all_groups[i], '/','per_framefeatures_sum_allflies.csv'))){
+     warning(paste0(list_of_all_groups[i],"per frame features dont exist"))
+   }else{
+     all_features<-read.csv(paste0(list_of_all_groups[i], '/','per_framefeatures_sum_allflies.csv'))
+   }
+  
+  
+  #orgenzieing the data 
+  
+  #only the third and first colom
+  #the number 26997 is becuse some movie end with this frame
+  degree_per_frames<-degree_csv[1:26997,c(1,3)]
+  colnames(degree_per_frames)<-c("Frame","degree")
+  #removing the last frames so the dataframe will be in the same size
+  all_features_new<-all_features[1:26997,]
+  colnames(all_features_new)<-str_remove(colnames(all_features_new), ".mat")
+  if(without_ncloseflys){
+    #removing nclose fly from corrleacton
+      all_features_new <- all_features_new[,!grepl("nflies_close", colnames(all_features_new))]
+  }
+
+  
+  
+  #combining the degree to the df
+  combined_degree_and_features<-cbind(all_features_new,degree_per_frames$degree)
+  #calculate corrlaction 
+  corrleaction=cor(combined_degree_and_features)
+  df_corr<-as.data.frame(corrleaction)
+  #want to get only the corrlaction of the degree
+  degree_corr<-cbind(degree_corr,df_corr$`degree_per_frames$degree`)
+  
+
+}
+
+#this part at the end,after making the all matrix
+  #giving the name of the row to know what features are in the corrleaction
+rownames(degree_corr)<-row.names(df_corr)
+#just to not mess with the original
+temp_degree_corr<-degree_corr
+
+
+  #drop perfect correlations
+  temp_degree_corr[temp_degree_corr == 1] <- NA 
+  #turn into a 3-column table
+  temp_degree_corr <- as.data.frame(as.table(temp_degree_corr))
+  #remove the NA values from above 
+  temp_degree_corr <- na.omit(temp_degree_corr) 
+  #select significant values  
+  temp_degree_corr <- subset(temp_degree_corr, abs(Freq) > 0.5) 
+  #sort by highest correlation
+  temp_degree_corr <-  temp_degree_corr[order(-abs(temp_degree_corr$Freq)),] 
+  #print table
+  print(temp_degree_corr)
+  #turn corr back into matrix in order to plot with corrplot
+  mtx_corr <- reshape2::acast(temp_degree_corr, Var1~Var2, value.var="Freq")
+setwd(path_to_group)
+if(without_ncloseflys){
+  jpeg(filename = paste0(basename(path_to_group),"wo_nclose_corrleaction_degres_threshold05.jpeg"), width = 1200, height = 800)
+corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 0.7)
+dev.off()
+}else{
+  jpeg(filename = paste0(basename(path_to_group),"_corrleaction_degres_threshold05.jpeg"), width = 1200, height = 800)
+corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 0.7)
+
+dev.off()
+}
+
+}
+
+```
 
 
 ```{r}
@@ -47,7 +143,7 @@ chart.Correlation(data, histogram=FALSE)
 
 
 
-#tring things for corrleaction,didnt succesed
+#tring things for corrleaction,didnt succesed but gave idea for network
 
 ```{r corrleaction}
 
@@ -227,101 +323,5 @@ heatmaply_cor(x = cor(data), xlab = "Features",
 ```
 
 
-#Combined all correlaction to degree from all features
-#final and working for female mated
 
-```{r}
-
-# i need to to each movie,creat corrleaction to the degree,save it and than display it together
-
-
-list_of_all_groups<-list.dirs(path = "D:/allGroups/Females_Mated", full.names = TRUE, recursive = FALSE)
-
-degree_corr<-NULL
-
-  library(stringr)
-
-for(i in 1:length(list_of_all_groups)){
-  #reading the csv files with paramters
-   if(!file.exists(paste0(list_of_all_groups[i], '/','all_frames_degree.csv'))){
-     warning(paste0(list_of_all_groups[i],"all frames degree dont exist"))
-   }else{
-     degree_csv<-read.csv(paste0(list_of_all_groups[i], '/','all_frames_degree.csv'))
-   }
-  
-    if(!file.exists(paste0(list_of_all_groups[i], '/','per_framefeatures_sum_allflies.csv'))){
-     warning(paste0(list_of_all_groups[i],"per frame features dont exist"))
-   }else{
-     all_features<-read.csv(paste0(list_of_all_groups[i], '/','per_framefeatures_sum_allflies.csv'))
-   }
-  
-  
-  #orgensing the data 
-  
-  #only the third and first colom
-  #the number 26997 is becuse some movie end with this frame
-  degree_per_frames<-degree_csv[1:26997,c(1,3)]
-  colnames(degree_per_frames)<-c("Frame","degree")
-  
-  
-  
-
-
-  #removing the last frames so the dataframe will be in the same size
-  all_features_new<-all_features[1:26997,]
-  
-  colnames(all_features_new)<-str_remove(colnames(all_features_new), ".mat")
-
-  combined_degree_and_features<-cbind(all_features_new,degree_per_frames$degree)
-
-  corrleaction=cor(combined_degree_and_features)
-  df_corr<-as.data.frame(corrleaction)
-  
-  degree_corr<-cbind(degree_corr,df_corr$`degree_per_frames$degree`)
-  
-
-}
-
-#this part at the end,after making the all matrix
-rownames(degree_corr)<-row.names(df_corr)
-#the col names of the movie made it difcult to see in the plot
-#colnames(degree_corr)<-list_of_all_groups
-corrplot(degree_corr, tl.col="black", na.label=" ",tl.cex = 0.7)
-png(filename = "C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/16.06/corrplot_female_mated_without_threshold.png", width = 1200, height = 800)
-corrplot(degree_corr, tl.col="black", na.label=" ",tl.cex = 0.7)
-
-temp_degree_corr<-degree_corr
-
-
-library(corrplot)
-
-  #degree_corr[lower.tri(degree_corr,diag=TRUE)] <- NA 
-  #drop perfect correlations
-  temp_degree_corr[temp_degree_corr == 1] <- NA 
-  #turn into a 3-column table
-  temp_degree_corr <- as.data.frame(as.table(temp_degree_corr))
-  #remove the NA values from above 
-  temp_degree_corr <- na.omit(temp_degree_corr) 
-  #select significant values  
-  temp_degree_corr <- subset(temp_degree_corr, abs(Freq) > 0) 
-  #sort by highest correlation
-  temp_degree_corr <- temp_degree_corr[order(-abs(temp_degree_corr$Freq)),] 
-  #print table
-  print(temp_degree_corr)
-  #turn corr back into matrix in order to plot with corrplot
-  mtx_corr <- reshape2::acast(temp_degree_corr, Var1~Var2, value.var="Freq")
-  
-  #plot correlations visually
-  #png(filename = file_name_Save, width = 1200, height = 800)
-corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 1)
-
-png(filename = "C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/16.06/corrplot_female_mated_without_threshold.png", width = 1200, height = 800)
-corrplot(mtx_corr, is.corr=FALSE, tl.col="black", na.label=" ",tl.cex = 1)
-
-
-
-
-
-
-```
 
