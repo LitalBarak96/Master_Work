@@ -20,11 +20,83 @@ for (index_group in 1:length(list_of_all_groups)){
       if(!file.exists(paste0(dir_subGroup[num_of_movie], '/','all_frames_degree.csv'))){
     warning(paste0("all_frames_degree.csv don't exist in ", dir_subGroup[num_of_movie]))
       }else{
+    all_frames<-read.csv(paste0(dir_subGroup[num_of_movie],'/','all_frames_degree.csv'))
     print("test")
   }
   }
 
 
 }
+```
+
+```{r}
+
+
+list_of_all_groups<-list.dirs(path = "D:/allGroups", full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  
+  #find all files that have the file
+  all.the.files <- dir(path_to_group, recursive=TRUE, pattern="^all_frames_degree.csv$" )
+  #get the full path
+all__subfile_fullpath<-paste0(path_to_group,"/",all.the.files)
+
+library(purrr)
+#bind all with coloms for current group
+data_bined_csv<- 
+    all__subfile_fullpath %>%  map_dfr( ~ read.csv(.x) )
+
+
+data_bined_to_mean<- 
+    all__subfile_fullpath %>%  map_dfc( ~ read.csv(.x) )
+
+#keep only the values,I didnt worte the movie name cuz he was very long and distrupted the visullization of the graph
+#actuall changed my mind,did rbind and only removed the frames so i could show each group together
+only_values_all_movies <- data_bined_csv[,!grepl("Frame", colnames(data_bined_csv))]
+
+
+values_for_mean <- data_bined_to_mean[,grepl("Value", colnames(data_bined_to_mean))]
+
+only_values_all_movies$group <- factor(only_values_all_movies$group, levels=unique(only_values_all_movies$group))
+
+#gave evrey movie a number
+colnames(values_for_mean)<-1:length(all.the.files)
+
+
+
+
+#orgenaizing mean of every row to put on the graph
+mean_every_row<-as.data.frame(rowMeans(values_for_mean, na.rm = FALSE, dims = 1))
+
+mean_every_row<-cbind(1:27000,mean_every_row)
+colnames(mean_every_row)<-c("Frame","Value")
+
+library(ggplot2)
+  setwd(path_to_group)
+
+ jpeg(filename = paste0(basename(path_to_group),"_per_frame_degree.jpeg"),width = 1200, height = 800)
+
+p<-ggplot()+geom_line(data = only_values_all_movies, mapping = aes(x = X, y = Value,group=group,color=group)) +geom_point(data=mean_every_row, aes(x=Frame, y=Value), color='red', size = 3,alpha = 0.15)
+
+ p<-p+theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(paste0(basename(path_to_group)," every frame all movies")) +
+  xlab("frames") + ylab("dgree(sum)") +theme(
+plot.title = element_text(color="red", size=7, face="bold.italic"),
+axis.title.x = element_text(color="blue", size=7, face="bold"),
+axis.title.y = element_text(color="#993333", size=7, face="bold")
+) + ylim(0, 45)
+ 
+ 
+
+ plot(p)
+ dev.off()
+ 
+}
+
+
 ```
 
