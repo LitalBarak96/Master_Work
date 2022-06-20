@@ -1,0 +1,30 @@
+---
+title: "visual_per_frame_degree"
+output: html_document
+date: '2022-06-20'
+---
+
+
+
+```{r}
+
+
+list_of_all_groups<-list.dirs(path = "D:/allGroups", full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  for(num_of_movie in 1:length(dir_subGroup)){
+      if(!file.exists(paste0(dir_subGroup[num_of_movie], '/','all_frames_degree.csv'))){
+    warning(paste0("all_frames_degree.csv don't exist in ", dir_subGroup[num_of_movie]))
+      }else{
+    print("test")
+  }
+  }
+
+
+}
+```
+

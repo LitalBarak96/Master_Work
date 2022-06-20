@@ -116,14 +116,31 @@ all_other_features<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unkno
   cc<-cc_frame_and_value$cc
     combined_cc_and_features<-cbind(all_other_features,cc)
 
+    data<-combined_cc_and_features
     
     
+    data_cor <- cor(data[ , colnames(data) != "cc"],  # Calculate correlations
+                data$cc)
+    
+  temp_degree_corr <- as.data.frame(as.table(data_cor))
+    temp_degree_corr <- subset(temp_degree_corr, abs(Freq) > 0) 
+
+  temp_degree_corr <- temp_degree_corr[order(-abs(temp_degree_corr$Freq)),] 
+  
+  
+  #tried to find the the features in the most correlation
+
+
    # data_cor <- cor(combined_cc_and_features[ , colnames(combined_cc_and_features) != 
     #"cc_frame_and_value$cc"],  # Calculate correlations
    #             combined_cc_and_features$`cc_frame_and_value$cc`)
     
     #removed what was with na and non sig
     lm1<-lm(cc ~ . -theta_mm.mat -timestamps.mat -y_mm.mat -x_mm.mat -dt.mat -dist2wall.mat -a_mm.mat -b_mm.mat -a.mat -absdtheta.mat -absdv_cor.mat -corfrac_min.mat -yaw.mat -veltoward_nose2ell.mat -velmag_nose.mat -velmag.mat -signdtheta.mat -phi.mat -dv_cor.mat -du_tail.mat -dphi.mat -flipdv_cor.mat -dangle2wall.mat -absphidiff_anglesub.mat, data=combined_cc_and_features)
+    
+    
+      lm1<-lm(cc ~ y_mm.mat+y.mat+ynose_mm.mat
++angle2wall.mat+theta.mat+theta_mm.mat+anglesub.mat+dist2wall.mat ,data=combined_cc_and_features)  
   summary(lm1)
   
   
