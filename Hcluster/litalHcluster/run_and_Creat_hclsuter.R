@@ -94,7 +94,8 @@ for(i in 1:num_of_pop){
   all_together<-rbind(all_together,colnamedf)
 }
 
-
+# i did tanformation so i could show the groups and not the features statistic
+all_together_transformed <- as.data.frame(t(all_together))
 
 
 ##all together is ready and now we creating the heatmap itself
@@ -115,7 +116,9 @@ row_dend <- phtmap[[1]]
 
 
 
-result <- pvclust(all_together, method.dist="euclidian", method.hclust="average", nboot=1000, parallel=TRUE)
+#result <- pvclust(all_together, method.dist="euclidian", method.hclust="average", nboot=1000, parallel=TRUE)
+result <- pvclust(all_together_transformed, method.dist="euclidian", method.hclust="average", nboot=1000, parallel=TRUE)
+
 plot(result)
 pvrect(result, alpha=0.95)
 
