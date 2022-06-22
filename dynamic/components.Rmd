@@ -101,9 +101,10 @@ for(i in 1:(length(numbers)-1)){
 ```
 
 
-Connected Components
+Connected Components with linear regression
 
-
+claculating in the top the cc and combing him to creat linear regression
+didnt do well, i think it is becuase cc is not very good 
 
 ```{r}
 

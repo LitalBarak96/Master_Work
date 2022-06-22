@@ -8,7 +8,138 @@ date: '2022-05-31'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+linear regrrsion single movie
 
+
+```{r}
+#install.packages('olsrr')
+
+all_other_features<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/per_framefeatures_sum_allflies.csv")[1:26997,]
+
+degree_csv<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/all_frames_degree.csv")
+
+
+  degree_csv<-degree_csv[1:26997,c(1,3)]
+  colnames(degree_csv)<-c("Frame","degree")
+  degree<-degree_csv$degree
+scaled_all_other_features<-scale(all_other_features)
+    #combined_degree_and_features<-cbind(scaled_all_other_features,degree)
+#nonscaled
+non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
+    #scaled_combined<-scale(combined_degree_and_features[,-ncol(combined_degree_and_features)])
+    #scalign on all features works better with the degree
+    combined_degree_and_features<-scale(combined_degree_and_features)
+    data_scaled<-as.data.frame(combined_degree_and_features)
+    data_non_scaled<-non_scaledcombined_degree_and_features
+  
+    
+    
+    
+ #   d <- data.frame(
+  #x=runif(100),
+  #y=rnorm(100)
+#)
+
+#d <- within(d, s.x <- scale(x))
+    
+ #m1 <- lm(y~s.x, data=d)
+  
+# attributes(combined_degree_and_features)
+    #lm to nflies close
+    
+    
+
+      lm_fliesn<-lm(degree ~  nflies_close.mat,data =data_non_scaled)
+summary(lm_fliesn)
+      predi_n_close<-as.data.frame(predict(lm_fliesn))
+
+
+    #lm on all data
+  lm1<-lm(degree ~ .,data =data_scaled)
+    summary(lm1)
+      predi<-as.data.frame(predict(lm1))
+      
+      
+      
+      
+      
+      
+      #visualaztion of the diffrnece between prdiction and reality
+      
+      
+      library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+a=predi$`predict(lm1)`
+b=scale(degree)
+time=degree_csv$Frame
+
+test<-data.frame(predict=a,degree=b,time=time)
+
+library(reshape2)
+test <- melt(test, id.vars = 'time')
+
+#DF <- data.frame(time = seq(as.Date("1999-06-15"),as.Date("2008-06-15"), by= "years"),
+   #              a = c(22.3,24.1,35,35,35.9,39.2,34.8,31.5,29.1,25.8),
+  #               b = c(22,24.9,31,34,37.5,36.3,32.1,29.7,28.6,23.9))
+
+library(ggplot2)
+ggplot(test, aes(x =time , y = value, color = variable)) + geom_line()
+
+
+
+#data_frame(time, a, b) %>%
+#  mutate(diff_a_b =(a - b)) %>% 
+ # gather(key, value, a, b) %>% 
+ # ggplot(., aes(time)) +
+  #geom_line(aes(y = value, color = key)) + 
+  #geom_col(aes(y = diff_a_b, fill = key))
+     # s.x<-predi$`predict(lm1)`
+#s.x * attr(s.x, 'scaled:scale') + attr(s.x, 'scaled:center')
+
+   # data_cor <- cor(combined_cc_and_features[ , colnames(combined_cc_and_features) != 
+    #"cc_frame_and_value$cc"],  # Calculate correlations
+   #             combined_cc_and_features$`cc_frame_and_value$cc`)
+    
+    #removed what was with na and non sig
+   # lm1<-lm(cc ~ . -theta_mm.mat -timestamps.mat -y_mm.mat -x_mm.mat -dt.mat -dist2wall.mat -a_mm.mat -b_mm.mat -a.mat -absdtheta.mat -absdv_cor.mat -corfrac_min.mat -yaw.mat -veltoward_nose2ell.mat -velmag_nose.mat -velmag.mat -signdtheta.mat -phi.mat -dv_cor.mat -du_tail.mat -dphi.mat -flipdv_cor.mat -dangle2wall.mat -absphidiff_anglesub.mat, data=combined_cc_and_features)
+    
+    
+     # lm1<-lm(cc ~ y_mm.mat+y.mat+ynose_mm.mat
+#+angle2wall.mat+theta.mat+theta_mm.mat+anglesub.mat+dist2wall.mat ,data=combined_cc_and_features)  
+  #summary(lm1)
+  
+  
+  #predi<-as.data.frame(predict(lm1))
+  
+  
+  
+  
+  ##WILL NEVER WORK,TOO MUCH VARIBLES
+  #NEED TO TRY MYSELF WITH CORRLACTION?
+  #or with comon sense and choose 10 varibles top
+library(leaps)
+  
+  Best_Subset <-
+    regsubsets(cc~.,
+               data =combined_cc_and_features,
+               nbest = 1,      # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive",really.big=T)
+summary_best_subset <- summary(regsubsets.out)
+as.data.frame(summary_best_subset$outmat)
+```
+
+
+
+
+
+```{r}
+
+
+
+```
 
 
 ```{r}
