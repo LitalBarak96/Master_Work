@@ -28,8 +28,8 @@ scaled_all_other_features<-scale(all_other_features)
 non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
     #scaled_combined<-scale(combined_degree_and_features[,-ncol(combined_degree_and_features)])
     #scalign on all features works better with the degree
-    combined_degree_and_features<-scale(combined_degree_and_features)
-    data_scaled<-as.data.frame(combined_degree_and_features)
+    #combined_degree_and_features<-scale(combined_degree_and_features)
+    #data_scaled<-as.data.frame(combined_degree_and_features)
     data_non_scaled<-non_scaledcombined_degree_and_features
   
     
@@ -49,10 +49,17 @@ non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
     
     
 
-      lm_fliesn<-lm(degree ~  nflies_close.mat,data =data_non_scaled)
+      lm_fliesn<-lm(degree ~  dnose2ell.mat,data =data_non_scaled)
 summary(lm_fliesn)
       predi_n_close<-as.data.frame(predict(lm_fliesn))
 
+      
+        lm1<-lm(degree ~ .,data =data_non_scaled)
+    summary(lm1)
+      predi<-as.data.frame(predict(lm1))
+      
+      
+      
 
     #lm on all data
   lm1<-lm(degree ~ .,data =data_scaled)
@@ -132,14 +139,113 @@ as.data.frame(summary_best_subset$outmat)
 ```
 
 
-
+#THAT WAS THE TRAIN OF THE MODLE,NOW IT IS THE TEST FOR PREDICTION
 
 
 ```{r}
 
+all_other_features_test<-read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/per_framefeatures_sum_allflies.csv")[1:26997,]
+
+degree_csv_test<-read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/all_frames_degree.csv")
+
+
+  degree_csv_test<-degree_csv_test[1:26997,c(1,3)]
+  colnames(degree_csv_test)<-c("Frame","degree")
+  degree<-degree_csv_test$degree
+scaled_all_other_features<-scale(all_other_features_test)
+    #combined_degree_and_features<-cbind(scaled_all_other_features,degree)
+#nonscaled
+non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
+    data_non_scaled_only_features_test<-all_other_features_test
+  data_non_scaled_only_features_test$predicted.y <- predict.lm(lm1, newdata=data_non_scaled_only_features_test)
+    data_non_scaled_only_features_test<-cbind(data_non_scaled_only_features_test,degree)
+    
+
+    
+    
+      library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+a=data_non_scaled_only_features_test$predicted.y
+b=(degree)
+time=degree_csv$Frame
+
+test<-data.frame(predict=a,degree=b,time=time)
+
+library(reshape2)
+test <- melt(test, id.vars = 'time')
+
+#DF <- data.frame(time = seq(as.Date("1999-06-15"),as.Date("2008-06-15"), by= "years"),
+   #              a = c(22.3,24.1,35,35,35.9,39.2,34.8,31.5,29.1,25.8),
+  #               b = c(22,24.9,31,34,37.5,36.3,32.1,29.7,28.6,23.9))
+
+library(ggplot2)
+ggplot(test, aes(x =time , y = value, color = variable)) + geom_line()
+```
+#will creat avarge of all the varibles in all the frames and than will check in each movie invidually for the predicition
+
+```{r}
+
+
+#creat avarge of all movie in female mated ,creat linear regression and predict
+
+#get the avarge of all the degrees
+all.the.files <- dir("D:\\allGroups\\Females_Mated", recursive=TRUE, pattern="^all_frames_degree.csv$" )
+
+all.the.files<-paste0("D:\\allGroups\\Females_Mated","\\",all.the.files)
+library(purrr)
+#bind all with coloms
+all.the.data <- 
+    all.the.files %>%  map_dfc( ~ read.csv(.x) )
+
+#combined by coloms
+
+wo_framenum <- all.the.data[,!grepl("Frame", colnames(all.the.data))]
+
+wo_frame_and_num <- wo_framenum[,!grepl("X", colnames(wo_framenum))]
+
+wo_frame_and_num_group <- wo_frame_and_num[,!grepl("group", colnames(wo_frame_and_num))]
+
+colnames(wo_frame_and_num_group)<-1:19
+
+mean_everyrow<-as.data.frame(rowMeans(wo_frame_and_num_group, na.rm = FALSE, dims = 1))
+
+mean_everyrow<-cbind(1:27000,mean_everyrow)
+colnames(mean_everyrow)<-c("Frame","Value")
+
+
+
+
+all.the.files_all_featurs <- dir("D:\\allGroups\\Females_Mated", recursive=TRUE, pattern="^per_framefeatures_sum_allflies.csv$" )
+
+all.the.files_all_featurs<-paste0("D:\\allGroups\\Females_Mated","\\",all.the.files_all_featurs)
+
+for(i in 1:19){
+  
+  temp<-read.csv(all.the.files_all_featurs)
+  
+}
+
+#to see what is the limit of combining the data frame
+test_file_names<-all.the.files_all_featurs[1:3]
+
+df <-all.the.files_all_featurs  %>% 
+  lapply(read.csv) %>% 
+  bind_rows 
+
+library(purrr)
+#bind all with coloms
+all.the.data_all_features <- 
+    test_file_names %>%  map_dfr( ~ read.csv(.x) )
+
+
+
+
+
 
 
 ```
+
 
 
 ```{r}
