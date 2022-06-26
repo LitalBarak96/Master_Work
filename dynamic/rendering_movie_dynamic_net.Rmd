@@ -10,17 +10,18 @@ output: html_document
 ```{r}
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="D:/Dark&Ligth/Ligth"
+  current_dir ="D:/Elia/cyp6a20/WT"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
   print(dir)
-  color<-"cyan"
+  color<-"green"
 ```
 
 
 
 ```{r}
+#CHOOSING THE FIRST MOVIE ON THE LIST
 order_index<-1
 #meanwhile ii am doing iit undiirected 
 all<-data.frame()

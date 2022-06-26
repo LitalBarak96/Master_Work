@@ -236,7 +236,7 @@ df <-all.the.files_all_featurs  %>%
 library(purrr)
 #bind all with coloms
 all.the.data_all_features <- 
-    test_file_names %>%  map_dfr( ~ read.csv(.x) )
+    test_file_names %>%  map_dfc( ~ read.csv(.x) )
 
 
 
