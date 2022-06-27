@@ -7,9 +7,13 @@ date: '2022-06-14'
 
 ```{r }
 
-all.the.files <- dir("D:\\allGroups\\Females_Mated", recursive=TRUE, pattern="^all_frames_degree.csv$" )
 
-all.the.files<-paste0("D:\\allGroups\\Females_Mated","\\",all.the.files)
+group_name<-"Males_Singels"
+
+my_path<-paste0("D:\\allGroups\\",group_name)
+all.the.files <- dir(my_path, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+
+all.the.files<-paste0(my_path,"\\",all.the.files)
 library(purrr)
 #bind all with coloms
 all.the.data <- 
@@ -23,7 +27,7 @@ wo_frame_and_num <- wo_framenum[,!grepl("X", colnames(wo_framenum))]
 
 wo_frame_and_num_group <- wo_frame_and_num[,!grepl("group", colnames(wo_frame_and_num))]
 
-colnames(wo_frame_and_num_group)<-1:17
+colnames(wo_frame_and_num_group)<-1:length(all.the.files)
 
 
 
@@ -40,9 +44,9 @@ colnames(mean_everyrow)<-c("Frame","Value")
 
 
 
-all.the.files <- dir("D:\\allGroups\\Females_Mated", recursive=TRUE, pattern="^all_frames_degree.csv$" )
+all.the.files <- dir(my_path, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
 
-all.the.files<-paste0("D:\\allGroups\\Females_Mated","\\",all.the.files)
+all.the.files<-paste0(my_path,"\\",all.the.files)
 library(purrr)
 #bind all with coloms
 all.the.data <- 
@@ -63,7 +67,7 @@ p<-ggplot()+geom_line(data = wo_frame, mapping = aes(x = X, y = Value,group=grou
 
 
  p<-p+theme(text = element_text(size=10),
-        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle("every frame for all movies female mated") +
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(paste0("every frame for all movies ",group_name)) +
   xlab("frames") + ylab("dgree(sum)") +theme(
 plot.title = element_text(color="red", size=7, face="bold.italic"),
 axis.title.x = element_text(color="blue", size=7, face="bold"),

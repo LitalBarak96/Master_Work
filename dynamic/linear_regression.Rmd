@@ -8,29 +8,49 @@ date: '2022-05-31'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-linear regrrsion single movie
+linear regrrsion single movie train and test
 
 
 ```{r}
 #install.packages('olsrr')
+scaled<-TRUE
 
 all_other_features<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/per_framefeatures_sum_allflies.csv")[1:26997,]
 
-degree_csv<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/all_frames_degree.csv")
+degree_csv<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/all_frames_degree_new.csv")
 
 
   degree_csv<-degree_csv[1:26997,c(1,3)]
   colnames(degree_csv)<-c("Frame","degree")
   degree<-degree_csv$degree
-scaled_all_other_features<-scale(all_other_features)
-    #combined_degree_and_features<-cbind(scaled_all_other_features,degree)
+  combined_degree_and_features<-cbind(all_other_features,degree)
+
+  if(scaled == TRUE){
+    data_scaled<-as.data.frame(scale(combined_degree_and_features))
+    lm_sclaed<-lm(degree ~ .,data =data_scaled)
+    summary(lm_sclaed)
+    predi<-as.data.frame(predict(lm_sclaed))
+      
+      
+
+  }else{
+    non_scaledcombined_degree_and_features<-combined_degree_and_features
+    data_non_scaled<-non_scaledcombined_degree_and_features
+    
+    lm_non_scaled<-lm(degree ~ .,data =data_non_scaled)
+    summary(lm_non_scaled)
+    predi<-as.data.frame(predict(lm_non_scaled))
+      
+      
+  }
+  
+
+
 #nonscaled
-non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
     #scaled_combined<-scale(combined_degree_and_features[,-ncol(combined_degree_and_features)])
     #scalign on all features works better with the degree
     #combined_degree_and_features<-scale(combined_degree_and_features)
     #data_scaled<-as.data.frame(combined_degree_and_features)
-    data_non_scaled<-non_scaledcombined_degree_and_features
   
     
     
@@ -49,50 +69,111 @@ non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
     
     
 
-      lm_fliesn<-lm(degree ~  dnose2ell.mat,data =data_non_scaled)
-summary(lm_fliesn)
-      predi_n_close<-as.data.frame(predict(lm_fliesn))
+   #  lm_fliesn<-lm(degree ~  dnose2ell.mat,data =data_non_scaled)
+
+  #summary(lm_fliesn)
+   #   predi_n_close<-as.data.frame(predict(lm_fliesn))
 
       
-        lm1<-lm(degree ~ .,data =data_non_scaled)
-    summary(lm1)
-      predi<-as.data.frame(predict(lm1))
       
       
+
       
 
     #lm on all data
-  lm1<-lm(degree ~ .,data =data_scaled)
-    summary(lm1)
-      predi<-as.data.frame(predict(lm1))
+
       
       
       
       
       
       
-      #visualaztion of the diffrnece between prdiction and reality
       
       
-      library(dplyr)
-  library(tidyr)
-  library(ggplot2)
-a=predi$`predict(lm1)`
+      #visualaztion of the diffrnece between prdiction and reality on the same dataset
+      
+      
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+a=predi$`predict(lm_sclaed)`
 b=scale(degree)
 time=degree_csv$Frame
 
-test<-data.frame(predict=a,degree=b,time=time)
+df_ploting_prediction<-data.frame(predict=a,degree=b,time=time)
 
 library(reshape2)
-test <- melt(test, id.vars = 'time')
+df_ploting_prediction <- melt(df_ploting_prediction, id.vars = 'time')
+
+
+
+library(ggplot2)
+ggplot(df_ploting_prediction, aes(x =time , y = value, color = variable)) + geom_line()
+
+
+
+
+
+
+
+#doing test and train,it was the train,now its the test
+
+all_other_features_test<-read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/per_framefeatures_sum_allflies.csv")[1:26997,]
+
+degree_csv_test<-read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/all_frames_degree_new.csv")
+
+
+  degree_csv_test<-degree_csv_test[1:26997,c(1,3)]
+  colnames(degree_csv_test)<-c("Frame","degree")
+  degree<-degree_csv_test$degree
+  
+  combined_degree_and_features_test<-cbind(all_other_features_test,degree)
+
+#scaled_test<-scale(combined_degree_and_features_test)
+
+
+#scaled
+
+if(scaled == TRUE){
+  data_scaled_only_features_test<-as.data.frame(scale(all_other_features_test))
+    degree<-scale(degree)
+  data_scaled_only_features_test$predicted.y <- predict.lm(lm_sclaed, newdata=data_scaled_only_features_test)
+    data_scaled_only_features_test<-cbind(data_scaled_only_features_test,degree)
+    
+    test_prediaction<-data_scaled_only_features_test
+    
+}else{
+  data_non_scaled_only_features_test<-all_other_features_test
+    data_non_scaled_only_features_test$predicted.y <- predict.lm(lm_non_scaled, newdata=data_non_scaled_only_features_test)
+    data_non_scaled_only_features_test<-cbind(data_non_scaled_only_features_test,degree)
+    test_prediaction<-data_non_scaled_only_features_test
+
+
+}
+
+    #nonscaled
+
+
+    
+    
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+a=test_prediaction$predicted.y
+b=degree
+time=degree_csv_test$Frame
+
+together_test<-data.frame(predict=a,degree=b,time=time)
+
+library(reshape2)
+together_test <- melt(together_test, id.vars = 'time')
 
 #DF <- data.frame(time = seq(as.Date("1999-06-15"),as.Date("2008-06-15"), by= "years"),
    #              a = c(22.3,24.1,35,35,35.9,39.2,34.8,31.5,29.1,25.8),
   #               b = c(22,24.9,31,34,37.5,36.3,32.1,29.7,28.6,23.9))
 
 library(ggplot2)
-ggplot(test, aes(x =time , y = value, color = variable)) + geom_line()
-
+ggplot(together_test, aes(x =time , y = value, color = variable)) + geom_line()
 
 
 #data_frame(time, a, b) %>%
@@ -144,43 +225,6 @@ as.data.frame(summary_best_subset$outmat)
 
 ```{r}
 
-all_other_features_test<-read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/per_framefeatures_sum_allflies.csv")[1:26997,]
-
-degree_csv_test<-read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/all_frames_degree.csv")
-
-
-  degree_csv_test<-degree_csv_test[1:26997,c(1,3)]
-  colnames(degree_csv_test)<-c("Frame","degree")
-  degree<-degree_csv_test$degree
-scaled_all_other_features<-scale(all_other_features_test)
-    #combined_degree_and_features<-cbind(scaled_all_other_features,degree)
-#nonscaled
-non_scaledcombined_degree_and_features<-cbind(all_other_features,degree)
-    data_non_scaled_only_features_test<-all_other_features_test
-  data_non_scaled_only_features_test$predicted.y <- predict.lm(lm1, newdata=data_non_scaled_only_features_test)
-    data_non_scaled_only_features_test<-cbind(data_non_scaled_only_features_test,degree)
-    
-
-    
-    
-      library(dplyr)
-  library(tidyr)
-  library(ggplot2)
-a=data_non_scaled_only_features_test$predicted.y
-b=(degree)
-time=degree_csv$Frame
-
-test<-data.frame(predict=a,degree=b,time=time)
-
-library(reshape2)
-test <- melt(test, id.vars = 'time')
-
-#DF <- data.frame(time = seq(as.Date("1999-06-15"),as.Date("2008-06-15"), by= "years"),
-   #              a = c(22.3,24.1,35,35,35.9,39.2,34.8,31.5,29.1,25.8),
-  #               b = c(22,24.9,31,34,37.5,36.3,32.1,29.7,28.6,23.9))
-
-library(ggplot2)
-ggplot(test, aes(x =time , y = value, color = variable)) + geom_line()
 ```
 #will creat avarge of all the varibles in all the frames and than will check in each movie invidually for the predicition
 

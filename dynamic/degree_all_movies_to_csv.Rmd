@@ -14,12 +14,14 @@ library(reshape2)
 library(igraph)
 library(R.matlab)
 
+ #to_be_deleted <-list.files("D:/allGroups",pattern = "all_frames_degree", recursive = TRUE)
+#unlink(to_be_deleted)
 
 
 
 
-list_of_all_groups<-list.dirs(path = "D:/allGroups", full.names = TRUE, recursive = FALSE)
-number_of_dirs<-length(list.dirs(recursive = T,path = "D:/allGroups"))-7
+list_of_all_groups<-list.dirs(path = "D:/Elia/cyp6a20", full.names = TRUE, recursive = FALSE)
+number_of_dirs<-round(length(list.dirs(recursive = T,path = "D:/Elia/cyp6a20"))/2)
 
 
 current_index<-0
@@ -49,6 +51,17 @@ f <- function(x) {
 
 
 
+path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+
+
+  current_dir_Scripts =getwd()
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir_Scripts)
+  
+  
+
 for(group in 1:6){
   
 path =list_of_all_groups[group]
@@ -74,7 +87,7 @@ for(num_of_movie in 1:length(dir)){
     
   #if the file don't exist ,creat him
 
-  if(!file.exists(paste0(dir[num_of_movie], '/','all_frames_degree.csv'))){
+  if(!file.exists(paste0(dir[num_of_movie], '/','all_frames_degree_new.csv'))){
   print(dir[num_of_movie])
     print("creating the file of this dir")
   #it is under the assumtion that there is 10 flys and they are orgenized in spcific way from the Allinteraction.mat
@@ -102,49 +115,11 @@ for(num_of_movie in 1:length(dir)){
   #10 flys
   colnames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
   rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
-  nodes<-c("1","2","3","4","5","6","7","8","9","10")
-  nodes<-as.data.frame(nodes)
+
   all<-data.frame()
-  
-  for(i in 1:number_of_flys){
-    for(j in 1:number_of_flys){
-      if(length(unlist(sub_list_mat[i,j]))!=0){
-        temp_num_frames<-unlist(df_mat[i,j])
-        tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
-        tobind<-as.data.frame(t(tobind))
-        #the value from where the diffrence is bigger than 120 in the next frame
-        seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
-        if(length(seq_inter)> 0){
-          num_of_seq_iter<-length(seq_inter)
-          current_iindex<-1
-          for(k in 1:num_of_seq_iter){
-            tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
-            tobind<-as.data.frame(t(tobind))
-            
-            index<-which(temp_num_frames == seq_inter[k])
-            tt_temp_num_frames<-as.data.frame(temp_num_frames)
-            temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
-            current_iindex<-index+1
-            tobind<-cbind(tobind,temp_all_inter[1])
-            tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
-            colnames(tobind)<-c("tail","head","onset","terminus")
-            
-            all<-rbind(all,tobind)
-        }
-        
-        }else{
-          tobind<-cbind(tobind,temp_num_frames[1])
-          tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
-          colnames(tobind)<-c("tail","head","onset","terminus")
-          all<-rbind(all,tobind)
-          
-        }
-        
-      }
-        
-    }
-  }
-  
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+
   colnames(all)<-c("tail","head","onset","terminus")
   
   all["head"] <- as.numeric(unlist(all["head"]))
@@ -195,7 +170,7 @@ data$Frame <- as.character(data$Frame)
 data$group<-as.character(num_of_movie)
 #data$group <- factor(data$group, levels=unique(data$group))
 
-write.csv(data,paste0(dir[num_of_movie], '/','all_frames_degree.csv'), row.names = TRUE)
+write.csv(data,paste0(dir[num_of_movie], '/','all_frames_degree_new.csv'), row.names = TRUE)
 
   }
   else{

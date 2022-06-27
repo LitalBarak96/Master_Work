@@ -10,27 +10,39 @@ output: html_document
 ```{r}
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="D:/Elia/cyp6a20/WT"
+  current_dir ="D:/allGroups/Males_Grouped"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
   print(dir)
-  color<-"green"
+  color<-"blue"
 ```
 
 
 
 ```{r}
 #CHOOSING THE FIRST MOVIE ON THE LIST
-order_index<-1
+  library(R.matlab)
+
+path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+
+
+  current_dir_scripts =getwd()
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir_scripts)
+  
+  
+order_index<-2
 #meanwhile ii am doing iit undiirected 
 all<-data.frame()
 
 setwd(current_dir)
 
 df <- (readMat(paste0(dir[order_index], '/','Allinteraction.mat'))) # read each MAT file
-mat_all_inter<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
-all_inter<-as.data.frame(mat_all_inter)
+sub_list_mat<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+df_mat<-as.data.frame(sub_list_mat)
 
 
 f <- function(x) {
@@ -40,74 +52,33 @@ f <- function(x) {
 
 
 #REMOVE 0 (MEAN NO INTERACTION)
-for(i in 1:ncol(all_inter)){
-  for(j in 1:nrow(all_inter)){
-    if(length(unlist(all_inter[i,j])) == 0){
-      all_inter[i,j] <- lapply(all_inter[i,j], function(x)x[lengths(x) == 0] <- 0)
+for(i in 1:ncol(df_mat)){
+  for(j in 1:nrow(df_mat)){
+    if(length(unlist(df_mat[i,j])) == 0){
+      df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
     }
   }
 }
 
-all_inter<-na.omit(all_inter)
+df_mat<-na.omit(df_mat)
 
 
 
-colnames(all_inter)<-c("1","2","3","4","5","6","7","8","9","10")
-rownames(all_inter)<-c("1","2","3","4","5","6","7","8","9","10")
+colnames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
 nodes<-c("1","2","3","4","5","6","7","8","9","10")
 nodes<-as.data.frame(nodes)
 nodes$name<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
 colnames(nodes)<-c("vertex.id","names")
 #colnames(nodes)<-c("vertex.id")
 nodes$vertex.id<-as.numeric(nodes$vertex.id)
-#other <- do.call(unlist, all_inter)
+#other <- do.call(unlist, df_mat)
 all<-data.frame()
 
 number_of_flys<-10
-for(i in 1:number_of_flys){
-  for(j in 1:number_of_flys){
-    if(length(unlist(mat_all_inter[i,j]))!=0){
-      temp_num_frames<-unlist(all_inter[i,j])
-      tt_temp_num_frames<-as.data.frame(temp_num_frames)
-      
-      tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
-      tobind<-as.data.frame(t(tobind))
-      
-      #check the diffrences from previus interaction
-      #the value itself
-      seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
-      if(length(seq_inter)> 0){
-        num_of_seq_iter<-length(seq_inter)
-        Breaks <- c(0, which(diff(temp_num_frames) > 120), length(temp_num_frames))
-        chunks<-sapply(seq(length(Breaks) - 1),function(i) temp_num_frames[(Breaks[i] +1):Breaks[i+1]])
-          
-        #looking for the index in temp_num_frames
-          #putting here the index blok that the diffrences in the thrshold is above 120
-          #the frames itself
-          #the next in the frames in the next bloc
-        for(k in 1:length(chunks)){
-          tobind<-c(colnames(all_inter[i]),rownames(all_inter[j,]))
-          tobind<-as.data.frame(t(tobind))
-          temp_unlist<-unlist(chunks[k])
-          tobind<-cbind(tobind,temp_unlist[1])
-          tobind<-cbind(tobind,temp_unlist[length(temp_unlist)])
-          colnames(tobind)<-c("tail","head","onset","terminus")
-          all<-rbind(all,tobind)
-        }
-        
-      }else{
-        tobind<-cbind(tobind,temp_num_frames[1])
-        tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
-        colnames(tobind)<-c("tail","head","onset","terminus")
-        all<-rbind(all,tobind)
-        
-      }
-      # tobind<-tobind[rep(seq_len(nrow(tobind)), each = num_of_seq_iter), ])
-      
-    }
-    
-  }
-}
+
+all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
 colnames(all)<-c("tail","head","onset","terminus")
 edge.id<-seq_along(1:nrow(all))
 all<-cbind(edge.id,all)

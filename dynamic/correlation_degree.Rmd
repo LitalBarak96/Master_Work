@@ -30,10 +30,10 @@ for (index_group in 1:length(list_of_all_groups_top)){
 #list of all groupes is the movies
 for(i in 1:length(list_of_all_groups)){
   #reading the csv files with paramters
-   if(!file.exists(paste0(list_of_all_groups[i], '/','all_frames_degree.csv'))){
+   if(!file.exists(paste0(list_of_all_groups[i], '/','all_frames_degree_new.csv'))){
      warning(paste0(list_of_all_groups[i],"all frames degree dont exist"))
    }else{
-     degree_csv<-read.csv(paste0(list_of_all_groups[i], '/','all_frames_degree.csv'))
+     degree_csv<-read.csv(paste0(list_of_all_groups[i], '/','all_frames_degree_new.csv'))
    }
   
     if(!file.exists(paste0(list_of_all_groups[i], '/','per_framefeatures_sum_allflies.csv'))){
