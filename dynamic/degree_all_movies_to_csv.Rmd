@@ -18,10 +18,16 @@ library(R.matlab)
 #unlink(to_be_deleted)
 
 
+# i need to put the groups i want in main folder
+# if i have 1 group i need to put it in another folder
+#in mated navie rejected there is 54000 frames and diffrent number of flys than 10
+number_of_Frames<-27001
+number_of_flys<-10
+number_of_frame<-1
 
-
-list_of_all_groups<-list.dirs(path = "D:/Elia/cyp6a20", full.names = TRUE, recursive = FALSE)
-number_of_dirs<-round(length(list.dirs(recursive = T,path = "D:/Elia/cyp6a20"))/2)
+list_of_all_groups<-list.dirs(path = "D:/assa_cyp6a20_controls", full.names = TRUE, recursive = FALSE)
+Number_of_groups<-length(list_of_all_groups)
+number_of_dirs<-round(length(list.dirs(recursive = T,path = "D:/assa_cyp6a20_controls"))/2)
 
 
 current_index<-0
@@ -62,21 +68,20 @@ path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/in
   
   
 
-for(group in 1:6){
+for(group in 1:Number_of_groups){
   
 path =list_of_all_groups[group]
 
 print(path)
 
 setwd(path)
-number_of_flys<-10
-number_of_frame<-1
+
 
 
 
 
 #seq by the  number of frames
-numbers<-seq(1, 27001, by=number_of_frame)
+numbers<-seq(1, number_of_Frames, by=number_of_frame)
 
 
 
@@ -117,6 +122,7 @@ for(num_of_movie in 1:length(dir)){
   rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
 
   all<-data.frame()
+  #function to creat all interaction splits that is longer than 120 frames
   all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
 
 
