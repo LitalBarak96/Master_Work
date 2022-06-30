@@ -1,11 +1,11 @@
-
+clear
 %creating all other features to csv of all flies in avarge
 %getting the path of the expremnt dirs
 filename="per_framefeatures_sum_allflies.csv";
 num_of_frames=26997;
 %pay attention to the length of the movie
 
-parent_dir_current ="D:/assa_cyp6a20_controls/2_Cyp6a20RNAi_control";
+parent_dir_current ="D:/assa_cyp6a20_controls/3_Cyp6a20RNAi_control";
 
 files = dir(parent_dir_current);
 dirFlags = [files.isdir];

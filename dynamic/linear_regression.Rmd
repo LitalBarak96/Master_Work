@@ -15,14 +15,21 @@ linear regrrsion single movie train and test
 #install.packages('olsrr')
 scaled<-TRUE
 
-all_other_features<-read.csv("D:/Elia/cyp6a20/WT_With_Cyp6a20/Assa_Females_Obp69a_GFP_Unknown_RigA_20220617T100935/per_framefeatures_sum_allflies.csv")[1:26997,]
+all_other_features<-read.csv("D:/cyp6a20_assa/5_Cyp6a20 RNAi/avg_all_movies_all_features.csv")
 
-degree_csv<-read.csv("D:/Elia/cyp6a20/WT_With_Cyp6a20/Assa_Females_Obp69a_GFP_Unknown_RigA_20220617T100935/all_frames_degree_new.csv")
+feature_names<-colnames(read.csv("D:/allGroups/Females_Mated/Assa_Females_MatedN_Unknown_RigA_20220208T124803/per_framefeatures_sum_allflies.csv"))
+#maybe write this to spcific csv file for the col names
+
+degree_csv<-read.csv("D:/cyp6a20_assa/5_Cyp6a20 RNAi/avg_all_movies_degree.csv")
 
 
-  degree_csv<-degree_csv[1:26997,c(1,3)]
+  degree_csv<-degree_csv[1:26996,]
+  degree_csv<-cbind(1:26996,degree_csv)
   colnames(degree_csv)<-c("Frame","degree")
+  degree_csv<-as.data.frame(degree_csv)
   degree<-degree_csv$degree
+  #all_other_features<-rbind(feature_names,all_other_features)
+  colnames(all_other_features)<-feature_names
   combined_degree_and_features<-cbind(all_other_features,degree)
 
   if(scaled == TRUE){
@@ -121,12 +128,12 @@ ggplot(df_ploting_prediction, aes(x =time , y = value, color = variable)) + geom
 
 #doing test and train,it was the train,now its the test
 
-all_other_features_test<-read.csv("D:/Elia/cyp6a20/WT_With_Cyp6a20/Assa_Females_Obp69a_GFP_Unknown_RigA_20220617T102949/per_framefeatures_sum_allflies.csv")[1:26997,]
+all_other_features_test<-read.csv("D:/cyp6a20_assa/5_Cyp6a20 RNAi/Assa_Males_Grouped_with_one_cyp6a20RNAi_Unknown_RigA_20181214T110953/per_framefeatures_sum_allflies.csv")[1:26996,]
 
-degree_csv_test<-read.csv("D:/Elia/cyp6a20/WT_With_Cyp6a20/Assa_Females_Obp69a_GFP_Unknown_RigA_20220617T102949/all_frames_degree_new.csv")
+degree_csv_test<-read.csv("D:/cyp6a20_assa/5_Cyp6a20 RNAi/Assa_Males_Grouped_with_one_cyp6a20RNAi_Unknown_RigA_20181214T110953/all_frames_degree_new.csv")
 
 
-  degree_csv_test<-degree_csv_test[1:26997,c(1,3)]
+  degree_csv_test<-degree_csv_test[1:26996,c(1,3)]
   colnames(degree_csv_test)<-c("Frame","degree")
   degree<-degree_csv_test$degree
   

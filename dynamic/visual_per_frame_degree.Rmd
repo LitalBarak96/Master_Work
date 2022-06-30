@@ -9,7 +9,7 @@ date: '2022-06-20'
 #using the csv of per frame
 ```{r}
 
-main_path<-"D:/cyp6a20_assa"
+main_path<-"D:/assa_cyp6a20_controls"
 
 list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
 

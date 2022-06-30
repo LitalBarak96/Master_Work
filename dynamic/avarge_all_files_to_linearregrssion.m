@@ -1,6 +1,6 @@
 %avarge all movies for linear regrssion
-
-parent_dir_current ="D:/allGroups/Females_Mated";
+clear
+parent_dir_current ="D:/cyp6a20_assa/5_Cyp6a20 RNAi";
 files = dir(parent_dir_current);
 dirFlags = [files.isdir];
 subDirs = files(dirFlags);

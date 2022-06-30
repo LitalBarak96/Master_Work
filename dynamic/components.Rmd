@@ -55,7 +55,7 @@ num_of_movie=1
     files.sources = list.files()
     sapply(files.sources, source)
 
-  all<-orgenize_interval_and_timestamps(df_mat,path_to_sub_Scripts)
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
 
   
   all<-cbind(all,1)

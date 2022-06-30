@@ -1,0 +1,128 @@
+---
+title: "biggest_component_changes"
+output: html_document
+date: '2022-06-30'
+---
+
+
+```{r}
+
+
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+
+
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+number_of_flys<-10
+number_of_frame<-1
+
+#seq by the  number of frames
+numbers<-seq(1, 27001, by=number_of_frame)
+
+
+
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+
+
+num_of_movie=1
+
+  mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  
+
+    for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  df_mat<-na.omit(df_mat)
+
+  
+
+  #10 flys
+  
+  
+  colnames(df_mat)<-c(1:number_of_flys)
+  rownames(df_mat)<-c(1:number_of_flys)
+  
+  
+  all<-data.frame()
+  path_to_sub_Scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+  
+   setwd(path_to_sub_Scripts)
+    files.sources = list.files()
+    sapply(files.sources, source)
+
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+  #for the acasct every interaction mean 1 
+  all<-cbind(all,1)
+  value_sum_df<-data.frame()
+  data<-data.frame()
+  temp_between_values<-c()
+
+  library(dplyr)
+  library(igraph)
+  
+  previous_net<-creat_network(all,361,numbers)
+
+  
+for(i in 2:(length(numbers)-1)){
+  
+  current_net<-creat_network(all,i,numbers)
+  
+  sub_prev_net<-biggest_cc_subgraph(previous_net)
+  sub_current_net<-biggest_cc_subgraph(current_net)
+  #if there is a component that is bigger than 3 nodes,the if is inside biggest_cc_subgraph script
+  if(length(sub_current_net)!=0){
+    
+  }
+  reverse=length(E(difference(sub_prev_net,g1)))-length(E(difference(u2,u1)))
+
+  commEdges1 <- length(E(difference(sub_prev_net,sub_current_net)))
+  commEdges2 <- length(E(difference(sub_current_net,sub_prev_net)))
+if(commEdges1 == 0){
+  diff = commEdges2
+}else if(commEdges2 == 0){
+   diff = commEdges1
+}else{
+  diff=0
+}
+
+  previous_net<-current_net
+  
+  # the number of common edges and who has the common edges
+  # i need to keep the prevoius graph and the current graph so this could work
+
+
+  #creat component
+  clu <- components(net)
+  biggest_cc<-max(clu[["csize"]])
+  if(biggest_cc >= 3){
+    
+    print(i)
+  }
+  # i get who is interaction with who
+  #groups(clu)
+  #count_components(net)
+  
+  #component_distribution(net)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],cc=biggest_cc)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }
+```
