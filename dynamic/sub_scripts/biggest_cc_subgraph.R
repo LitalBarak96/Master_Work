@@ -7,7 +7,7 @@ biggest_cc_subgraph<-function(net){
     current_graph<-(igraph::induced_subgraph(net, vert_ids))
     return(current_graph)
   }else{
-    return(NULL)
+    return(net)
   }
 
 }

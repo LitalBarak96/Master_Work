@@ -18,7 +18,10 @@ creat_network <- function(all,i,numbers) {
     return(net)
   }
   else{
-    warning("no interaction here,check please what to do")
-    return(NULL)
+    warning("no interaction here FYI,returning empty matrix")
+    zero_matrix <- matrix(0, ncol = number_of_flys, nrow = number_of_flys)
+    #all_values conation who is in intartcion with who in the spcific frame
+    net <- graph_from_adjacency_matrix(zero_matrix,mode = "undirected")
+    return(net)
   }
 }
