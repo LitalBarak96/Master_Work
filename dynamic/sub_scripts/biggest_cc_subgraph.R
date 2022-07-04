@@ -5,9 +5,9 @@ biggest_cc_subgraph<-function(net){
     biggest_cluster_id <- which.max(components$csize)
     vert_ids <- V(net)[components$membership == biggest_cluster_id]
     current_graph<-(igraph::induced_subgraph(net, vert_ids))
-    return(current_graph)
+    return(c(list(current_graph),TRUE))
   }else{
-    return(net)
+    return(c(list(net),FALSE))
   }
 
 }
