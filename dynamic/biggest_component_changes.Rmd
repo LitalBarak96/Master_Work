@@ -157,14 +157,14 @@ df2 <- melt(data = all_changes, id.vars = "frame")
 # plot, using the aesthetics argument 'colour'
 #ggplot(data = df2, aes(x = frame, y = value, colour = variable)) + geom_line()
   
+library(ggplot2)
 
 
 cc_and_change<-ggplot(df2, aes(frame,value,colour = variable)) + 
   geom_point() + 
   geom_line() +
-  facet_wrap(~variable)
+  facet_wrap(~variable,nrow =2)
 
-library(ggplot2)
   #work if they are on the same scale
   #ggplot(all_changes, aes(frame)) +                    # basic graphical object
   #geom_line(aes(y=size_cc), colour="red") +  # first layer
