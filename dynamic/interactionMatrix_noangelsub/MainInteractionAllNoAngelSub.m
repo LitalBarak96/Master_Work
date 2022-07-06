@@ -23,7 +23,7 @@ for i = 1:length(handles.allFolders)
     folderPath = handles.allFolders{i};
     fileName = fullfile(folderPath, jaabaFileName);
     [COMPUTERPERFRAMESTATSSOCIAL_SUCCEEDED,savenames] = compute_perframe_stats_social_f('matname', fileName);
-    [newInteractions, newNoInteractions, txtFileName] = computeAllMovieInteractionsAllinteraction(savenames, param);
+    [newInteractions, newNoInteractions] = computeAllMovieInteractionsAllinteraction(savenames, param);
     interactions = [interactions, newInteractions];
     noInteractions = [noInteractions, newNoInteractions];
 end

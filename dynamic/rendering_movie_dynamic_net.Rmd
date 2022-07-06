@@ -6,24 +6,23 @@ output: html_document
 
 #creat dynamic movies from Allinteraction.mat of a single movie
 
-## Including Plots
+#insert dir and insert color of chooice
 ```{r}
   #install.packages('R.matlab')
   library(R.matlab)
-  current_dir ="D:/allGroups/Males_Grouped"
+  current_dir ="D:/allGroups/Males_Mated"
   setwd(current_dir)
   
   dir<-list.dirs(recursive = F)
   print(dir)
-  color<-"blue"
+  color<-"black"
 ```
 
 
-
+#creating the all df that conation all the data
 ```{r}
-#CHOOSING THE FIRST MOVIE ON THE LIST
   library(R.matlab)
-
+#where the subscripts is located
 path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
 
 
@@ -33,22 +32,29 @@ path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/in
   sapply(files.sources, source)
   setwd(current_dir_scripts)
   
-  
-order_index<-2
-#meanwhile ii am doing iit undiirected 
+number_of_flys<-10
+#choosing the spcific movie i want to show
+number_of_movie<-13
 all<-data.frame()
 
 setwd(current_dir)
-
-df <- (readMat(paste0(dir[order_index], '/','Allinteraction.mat'))) # read each MAT file
-sub_list_mat<-matrix(df[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
-df_mat<-as.data.frame(sub_list_mat)
-
+#read the all frames
 
 f <- function(x) {
   if(is.list(x)) lapply(x, f)
   else ifelse(length(x) == 0, 0, x)
 }
+
+filepath<-paste0(dir[number_of_movie], '/','Allinteraction.mat')
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+}
+
+df <- (readMat(filepath)) # read each MAT file
+sub_list_mat<-matrix(df[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+df_mat<-as.data.frame(sub_list_mat)
+
+
 
 
 #REMOVE 0 (MEAN NO INTERACTION)
@@ -75,7 +81,6 @@ nodes$vertex.id<-as.numeric(nodes$vertex.id)
 #other <- do.call(unlist, df_mat)
 all<-data.frame()
 
-number_of_flys<-10
 
 all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
 
@@ -123,7 +128,7 @@ compute.animation(net,
               slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
 
 setwd(current_dir)
-  render.d3movie(net,filename= paste0(basename(current_dir),"_without_angelsub",".html"),
+  render.d3movie(net,filename= paste0(basename(current_dir),"_",".html"),
            output.mode = "HTML",vertex.col = "col",
            launchBrowser = TRUE,displaylabels =T)
 ```

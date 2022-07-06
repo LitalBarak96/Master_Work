@@ -4,6 +4,7 @@ output: html_document
 date: '2022-06-30'
 ---
 
+#showing histogram cc and changes of the same movie
 
 ```{r}
 
@@ -25,6 +26,7 @@ f <- function(x) {
 
 
 number_of_flys<-10
+#how many frame in a batch
 number_of_frame<-1
 
 #seq by the  number of frames
@@ -32,10 +34,13 @@ numbers<-seq(1, 27001, by=number_of_frame)
 
 
 
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Grouped")
+num_of_movie=19
 
-
-num_of_movie=14
+filepath<-paste0(dir[num_of_movie], '/','Allinteraction.mat')
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+}
 
   mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
   sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
@@ -114,33 +119,13 @@ for(i in 2:(length(numbers)-1)){
   #only if there is cc that is bigger than 3
  #if(size_of_biggest_cc_current>=3){
     
-  #i need to consider to make subtraction on each over if always one of them is 0
-  #reverse=length(E(difference(sub_prev_net,g1)))-length(E(difference(u2,u1)))
+
 #if the edges is in one of them 
   changes_in_edges <- length(E(difference(sub_prev_net,sub_current_net)))+length(E(difference(sub_current_net,sub_prev_net)))
   #bigeest cc show the cc if it is bigger than 3,else it is 0
   tmp<-data.frame(change = changes_in_edges,frame = i,size_cc = size_of_biggest_cc_current)
   all_changes<-rbind(all_changes,tmp)
   print(i)
-#if(commEdges1 == 0){
-  
-  #diff = commEdges2
-  #  warning("diff1 is 0 and diff2 is")
- #     print(diff)
-#}else if(commEdges2 == 0){
-   #diff = commEdges1
-     # warning("diff2 is 0 and diff1 is")
-    #print(diff)
-
-    #}else{
-  #print("both diffs are")
-  #diff=0
- # print(diff)
-#}
-  
-  
-#  }
-
 previous_net<-current_net
 }  
 
@@ -152,24 +137,15 @@ library(reshape2)
 
 
 # melt the data to a long format
-df2 <- melt(data = all_changes, id.vars = "frame")
+all_changes_melted <- melt(data = all_changes, id.vars = "frame")
 
-# plot, using the aesthetics argument 'colour'
-#ggplot(data = df2, aes(x = frame, y = value, colour = variable)) + geom_line()
-  
 library(ggplot2)
 
 
-cc_and_change<-ggplot(df2, aes(frame,value,colour = variable)) + 
+cc_and_change<-ggplot(all_changes_melted, aes(frame,value,colour = variable)) + 
   geom_point() + 
   geom_line() +
   facet_wrap(~variable,nrow =2)
-
-  #work if they are on the same scale
-  #ggplot(all_changes, aes(frame)) +                    # basic graphical object
-  #geom_line(aes(y=size_cc), colour="red") +  # first layer
-  #geom_line(aes(y=change), colour="green") 
-#P<-ggplot(data =all_changes, aes(frame, change))+geom_line()
 
 
 
