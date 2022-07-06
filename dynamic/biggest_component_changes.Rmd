@@ -32,10 +32,10 @@ numbers<-seq(1, 27001, by=number_of_frame)
 
 
 
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Males_Mated")
 
 
-num_of_movie=11
+num_of_movie=13
 
   mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
   sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
@@ -170,5 +170,69 @@ cc_and_change<-ggplot(df2, aes(frame,value,colour = variable)) +
   #geom_line(aes(y=size_cc), colour="red") +  # first layer
   #geom_line(aes(y=change), colour="green") 
 #P<-ggplot(data =all_changes, aes(frame, change))+geom_line()
+
+
+
+#histogram
+#length
+filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_length.txt")
+if(!(file.exists(filepath))){
+  warning("length interaction matrix does not exist!!!please creat it")
+}
+filename<-basename(filepath)
+mat <- scan(toString(filepath))
+numCol <- sqrt(length(mat))
+mat <- matrix(mat, ncol = numCol, byrow = TRUE)
+rownames(mat)<-1:numCol
+
+sapply(c("dplyr", "ggplot2"), require, character.only = T)
+
+#  convert from matrix to data frame and preserve row names as column
+mat <- data.frame(fly = row.names(mat), as.data.frame(mat), row.names = NULL)
+library(tidyr)
+colnames(mat)<-c("fly",1:numCol)
+# gather so in a tidy format for ease of use in ggplot2
+mat <- gather(as.data.frame(mat), lambda, value, -1)
+#mat$fly<-as.numeric(mat$fly)
+# plot 1 as described in question
+#ggplot(mat, aes(x = fly, y = value)) + geom_histogram(aes(fill = lambda), stat = "identity", position = "dodge")        
+
+# plot 2 using facets to separate as an alternative
+length_plot<-ggplot(mat, aes(x = fly, y = value)) + geom_histogram(stat = "identity") + facet_grid(. ~ lambda)+ggtitle(filename)
+
+
+
+#number
+filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_number.txt")
+
+if(!(file.exists(filepath))){
+  warning("number interaction matrix does not exist!!!please creat it")
+}
+filename<-basename(filepath)
+mat <- scan(toString(filepath))
+numCol <- sqrt(length(mat))
+mat <- matrix(mat, ncol = numCol, byrow = TRUE)
+
+rownames(mat)<-1:numCol
+
+sapply(c("dplyr", "ggplot2"), require, character.only = T)
+
+#  convert from matrix to data frame and preserve row names as column
+mat <- data.frame(fly = row.names(mat), as.data.frame(mat), row.names = NULL)
+library(tidyr)
+colnames(mat)<-c("fly",1:numCol)
+# gather so in a tidy format for ease of use in ggplot2
+mat <- gather(as.data.frame(mat), lambda, value, -1)
+#mat$fly<-as.numeric(mat$fly)
+# plot 1 as described in question
+#ggplot(mat, aes(x = fly, y = value)) + geom_histogram(aes(fill = lambda), stat = "identity", position = "dodge")        
+
+# plot 2 using facets to separate as an alternative
+number_plot<-ggplot(mat, aes(x = fly, y = value)) + geom_histogram(stat = "identity") + facet_grid(. ~ lambda)+ggtitle(filename)
+
+
+plot(number_plot)
+plot(length_plot)
 plot(cc_and_change)
+
 ```
