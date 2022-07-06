@@ -1,4 +1,4 @@
-function [interactions, noInteractions, txtFileName] = computeAllMovieInteractions_new(savenames, param)
+function [interactions, noInteractions] = computeAllMovieInteractionsAllinteraction(savenames, param)
 load(savenames{1});
 maxNumberOfInteractions = sum([pairtrx.nframes]);
 load(savenames{2});
@@ -11,11 +11,8 @@ iNo = 1;
 spaces = repmat(-1, 1, maxNumberOfInteractions);
 iSpaces = 1;
 [filepath,~,~] = fileparts(savenames{1});
-txtFileName = fullfile(filepath, ['Allinteraction_frame_', num2str(param.startFrame), '_to_', num2str(param.endFrame), '_gap_', num2str(param.oneInteractionThreshold), '.mat']);
 interactionMatrixLength = zeros(length(savenames), length(savenames));
 interactionMatrixNumber = zeros(length(savenames), length(savenames));
-undirectedInteractionMatrixLength = zeros(length(savenames), length(savenames));
-undirectedInteractionMatrixNumber = zeros(length(savenames), length(savenames));
 interactionFrameMatrix = cell(length(savenames), length(savenames));
 new_interactionFrameMatrix = cell(length(savenames), length(savenames));
 
@@ -24,7 +21,7 @@ for i = 1:length(savenames)
     disp(cur);
     for j = 1:length(savenames)
         if i ~= j
-            [newInteractions, newNoInteractions, newSpaces, frames] = computeTwoFliesInteractions(j, savenames{i}, param, 'off');
+            [newInteractions, newNoInteractions, newSpaces, frames] = computeTwoFliesInteractionsNoAngelSub(j, savenames{i}, param, 'off');
             interactionMatrixLength(i, j) = sum(newInteractions) / pairtrx(1).nframes;
             interactionMatrixNumber(i, j) = length(newInteractions);
             interactionFrameMatrix{i, j} = frames;
@@ -50,6 +47,7 @@ if (~param.directed)
         for  j = (i + 1) :length(savenames)
             allFrames = unique([interactionFrameMatrix{i, j}; interactionFrameMatrix{j, i}]);
             if isempty(allFrames)
+                %need to check it is giving what i need
                 new_interactionFrameMatrix{i,j}=null;
             else
                 new_interactionFrameMatrix{i,j} = allFrames;
@@ -58,5 +56,4 @@ if (~param.directed)
         end
     end
 end
-
 save(fullfile(filepath, 'Allinteraction'), 'new_interactionFrameMatrix'); %maybe also add extension to backmean
