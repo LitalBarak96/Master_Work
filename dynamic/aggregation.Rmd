@@ -9,5 +9,159 @@ date: '2022-07-10'
 ```{r}
 
 
+
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+
+
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+number_of_flys<-10
+#how many frame in a batch
+number_of_frame<-1
+
+#seq by the  number of frames
+numbers<-seq(1, 27001, by=number_of_frame)
+
+
+
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+num_of_movie=14
+
+filepath<-paste0(dir[num_of_movie], '/','Allinteraction.mat')
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+}
+
+  mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  
+
+    for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  df_mat<-na.omit(df_mat)
+
+  
+
+  #10 flys
+  
+  
+  colnames(df_mat)<-c(1:number_of_flys)
+  rownames(df_mat)<-c(1:number_of_flys)
+  
+  
+  all<-data.frame()
+  path_to_sub_Scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+  
+   setwd(path_to_sub_Scripts)
+    files.sources = list.files()
+    sapply(files.sources, source)
+
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+  #for the acasct every interaction mean 1 
+  all<-cbind(all,1)
+
+
+  library(dplyr)
+  library(igraph)
+  
+  
+  
+  
+  
+
+
+
+
+
+```
+
+
+
+
+
+```{r}
+all_cluster_coff_local<-NULL
+
+for(frame in 1:(length(numbers)-1)){
+  
+curent_net<-creat_network(all,frame,numbers)
+
+tmp<-transitivity(curent_net, type="localundirected")
+print(frame)
+
+all_cluster_coff_local<-rbind(all_cluster_coff_local,tmp)
+
+  
+}
+
+
+
+all_cluster_coff_local <- replace(all_cluster_coff_local, is.na(all_cluster_coff_local), 0)
+
+
+colnames(all_cluster_coff_local)<-1:10
+rownames(all_cluster_coff_local)<-1:(length(numbers)-1)
+
+
+require(reshape2)
+
+
+
+temporary_for_trying_things<-all_cluster_coff_local
+
+all_cluster_coff_local<-temporary_for_trying_things
+
+
+
+
+all_cluster_coff_local<-as.data.frame(all_cluster_coff_local)
+all_cluster_coff_local$frame<-rownames(all_cluster_coff_local)
+all_cluster_coff_local <- melt(all_cluster_coff_local ,  id.vars = 'frame',variable.name = 'series')
+
+library(ggplot2)
+# plot on same grid, each series colored differently -- 
+# good if the series have same scale
+ggplot(all_cluster_coff_local, aes(frame,value,group =series)) + geom_line(aes(colour = series))
+
+# or plot on different plots
+ggplot(all_cluster_coff_local, aes(frame,value,group =series)) + geom_line(aes(colour = series)) + facet_grid(series ~ .)
+
+
+ggplot(all_cluster_coff_local, aes(frame,value,colour = series)) + 
+  geom_point() + 
+  geom_line() +
+  facet_wrap(~series,nrow =10)
+
+```
+
+
+```{r}
+df <- data.frame(time = 1:10,
+                 a = cumsum(rnorm(10)),
+                 b = cumsum(rnorm(10)),
+                 c = cumsum(rnorm(10)))
+
+
+df <- melt(df ,  id.vars = 'time', variable.name = 'series')
+
 ```
 
