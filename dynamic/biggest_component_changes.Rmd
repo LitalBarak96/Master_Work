@@ -212,3 +212,161 @@ plot(length_plot)
 plot(cc_and_change)
 
 ```
+
+
+
+
+
+
+#heatmap instead histogram
+```{r}
+
+
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Grouped")
+num_of_movie=19
+
+flynames<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+
+#histogram
+#length
+filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_length.txt")
+if(!(file.exists(filepath))){
+  warning("length interaction matrix does not exist!!!please creat it")
+}
+
+group_name<-basename(dirname(dirname(filepath)))
+filename<-basename(filepath)
+mat <- scan(toString(filepath))
+numCol <- sqrt(length(mat))
+mat <- matrix(mat, ncol = numCol, byrow = TRUE)
+
+rownames(mat)<-flynames
+colnames(mat)<-flynames
+
+
+#mat<-as.data.frame(mat)
+library(tidyverse)
+mat[upper.tri(mat)]=NA
+
+library(reshape2)
+library(dplyr)
+library(tidyverse)
+
+
+melted_mat <- melt(mat, na.rm = TRUE)
+
+melted_mat$value<-as.numeric(format(round(melted_mat$value, 3), nsmall = 2))
+
+#dt2 <- mat %>%
+ # rownames_to_column() %>%
+  #gather(colname, value, -rowname, na.rm = T)
+#head(dt2)
+
+
+
+
+
+library(ggplot2)
+ggheatmap <-ggplot(data = melted_mat, aes(Var1, Var2, fill = value))+
+ geom_tile(color = "white")+
+ scale_fill_gradient2(low = "white", high = "red", 
+   midpoint = 0.25, limit = c(0,1), space = "Lab", 
+   paste0(group_name," LOI")) +
+  theme_minimal()+ 
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+    size = 12, hjust = 1))+
+ coord_fixed()
+
+length_of_interaction<-ggheatmap + 
+geom_text(aes(Var1,Var2 , label = value), color = "black", size = 2) +
+theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.grid.major = element_blank(),
+  panel.border = element_blank(),
+  panel.background = element_blank(),
+  axis.ticks = element_blank(),
+  legend.justification = c(1, 0),
+  legend.position = c(0.6, 0.7),
+  legend.direction = "horizontal")+
+  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
+                title.position = "top", title.hjust = 0.5))
+
+
+#library("scales")
+#vec_range4 <- rescale(dt2, to = c(0, 5))                # Scale to 0/5
+#library(ggplot2)
+#ggplot(dt2, aes(x = rowname, y = colname, fill = value)) +
+  #geom_tile(color = "black") +
+   #scale_fill_gradient(low = "white", high = "blue") +
+  #coord_fixed()
+
+
+
+
+
+
+
+
+#number
+filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_number.txt")
+
+if(!(file.exists(filepath))){
+  warning("number interaction matrix does not exist!!!please creat it")
+}
+filename<-basename(filepath)
+mat <- scan(toString(filepath))
+numCol <- sqrt(length(mat))
+mat <- matrix(mat, ncol = numCol, byrow = TRUE)
+
+rownames(mat)<-flynames
+colnames(mat)<-flynames
+
+
+#mat<-as.data.frame(mat)
+library(tidyverse)
+mat[upper.tri(mat)]=NA
+
+library(reshape2)
+library(dplyr)
+library(tidyverse)
+
+
+melted_mat <- melt(mat, na.rm = TRUE)
+
+melted_mat$value<-as.numeric(format(round(melted_mat$value, 3), nsmall = 2))
+
+
+
+library(ggplot2)
+ggheatmap_number <-ggplot(data = melted_mat, aes(Var1, Var2, fill = value))+
+ geom_tile(color = "white")+
+ scale_fill_gradient2(low = "white", high = "blue", 
+    space = "Lab", 
+   name=paste0(group_name," NOI")) +
+  theme_minimal()+ 
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+    size = 12, hjust = 1))+
+ coord_fixed()
+
+number_of_interaction<-ggheatmap_number + 
+geom_text(aes(Var1,Var2 , label = value), color = "black", size = 2) +
+theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.grid.major = element_blank(),
+  panel.border = element_blank(),
+  panel.background = element_blank(),
+  axis.ticks = element_blank(),
+  legend.justification = c(1, 0),
+  legend.position = c(0.6, 0.7),
+  legend.direction = "horizontal")+
+  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
+                title.position = "top", title.hjust = 0.5))
+
+
+
+plot(length_of_interaction)
+plot(number_of_interaction)
+```
+
