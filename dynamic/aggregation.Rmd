@@ -115,53 +115,49 @@ all_cluster_coff_local<-rbind(all_cluster_coff_local,tmp)
 
 
 
-all_cluster_coff_local <- replace(all_cluster_coff_local, is.na(all_cluster_coff_local), 0)
+all_cluster_coff_local_zeros <- replace(all_cluster_coff_local, is.na(all_cluster_coff_local), 0)
+
+all_cluster_coff_local_minus_1 <- replace(all_cluster_coff_local, is.na(all_cluster_coff_local), -1)
 
 
-colnames(all_cluster_coff_local)<-1:10
-rownames(all_cluster_coff_local)<-1:(length(numbers)-1)
+colnames(all_cluster_coff_local_minus_1)<-1:10
+rownames(all_cluster_coff_local_minus_1)<-1:(length(numbers)-1)
 
 
 require(reshape2)
 
 
 
-temporary_for_trying_things<-all_cluster_coff_local
+temporary_for_trying_things<-all_cluster_coff_local_minus_1
 
-all_cluster_coff_local<-temporary_for_trying_things
-
-
+all_cluster_coff_local_minus_1<-temporary_for_trying_things
 
 
-all_cluster_coff_local<-as.data.frame(all_cluster_coff_local)
-all_cluster_coff_local$frame<-rownames(all_cluster_coff_local)
-all_cluster_coff_local <- melt(all_cluster_coff_local ,  id.vars = 'frame',variable.name = 'series')
+
+
+all_cluster_coff_local_minus_1<-as.data.frame(all_cluster_coff_local_minus_1)
+all_cluster_coff_local_minus_1$frame<-rownames(all_cluster_coff_local_minus_1)
+all_cluster_coff_local_minus_1 <- melt(all_cluster_coff_local_minus_1 ,  id.vars = 'frame',variable.name = 'series')
 
 library(ggplot2)
 # plot on same grid, each series colored differently -- 
 # good if the series have same scale
-ggplot(all_cluster_coff_local, aes(frame,value,group =series)) + geom_line(aes(colour = series))
-
-# or plot on different plots
-ggplot(all_cluster_coff_local, aes(frame,value,group =series)) + geom_line(aes(colour = series)) + facet_grid(series ~ .)
 
 
-ggplot(all_cluster_coff_local, aes(frame,value,colour = series)) + 
-  geom_point() + 
-  geom_line() +
-  facet_wrap(~series,nrow =10)
+library(ggplot2)
+library(dplyr)
 
-```
-
-
-```{r}
-df <- data.frame(time = 1:10,
-                 a = cumsum(rnorm(10)),
-                 b = cumsum(rnorm(10)),
-                 c = cumsum(rnorm(10)))
-
-
-df <- melt(df ,  id.vars = 'time', variable.name = 'series')
-
+cluster_coff_all_flys<-all_cluster_coff_local_minus_1 %>%
+  ggplot( aes(x=frame, y=value, group=series, fill=series)) +
+    geom_area() +
+    theme(legend.position="none") +
+    ggtitle("cluster_coff each fly over time") +
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()
+    ) +
+    facet_wrap(~series, scale="free_y")
 ```
 
