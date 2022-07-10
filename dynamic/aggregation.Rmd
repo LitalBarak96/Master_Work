@@ -1,0 +1,13 @@
+---
+title: "aggregation"
+output: html_document
+date: '2022-07-10'
+---
+
+#trying stuff to see aggregation
+
+```{r}
+
+
+```
+

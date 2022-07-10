@@ -34,8 +34,8 @@ numbers<-seq(1, 27001, by=number_of_frame)
 
 
 
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Grouped")
-num_of_movie=19
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+num_of_movie=14
 
 filepath<-paste0(dir[num_of_movie], '/','Allinteraction.mat')
 if(!(file.exists(filepath))){
