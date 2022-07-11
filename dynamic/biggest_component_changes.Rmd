@@ -18,6 +18,9 @@ library(R.matlab)
 
 
 
+
+
+
 f <- function(x) {
     if(is.list(x)) lapply(x, f)
     else ifelse(length(x) == 0, 0, x)
@@ -25,24 +28,46 @@ f <- function(x) {
 
 
 
-number_of_flys<-10
+
+length_of_movie<-54000
 #how many frame in a batch
 number_of_frame<-1
 
 #seq by the  number of frames
-numbers<-seq(1, 27001, by=number_of_frame)
+numbers<-seq(1, length_of_movie, by=number_of_frame)
+with_Angelsub<-TRUE
 
 
+#if i want without angelsub for calcualtin of interaction choose Allinteraction.mat
+#if you do want it choose AllinteractionWithAngelsub.mat
 
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
-num_of_movie=14
-
-filepath<-paste0(dir[num_of_movie], '/','Allinteraction.mat')
-if(!(file.exists(filepath))){
-  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+if(length_of_movie == 54000){
+    name_of_interactionmat_len<-"interactionMatrix_frame_0_to_54000_gap_120_interaction_length.txt"
+  name_of_interactionmat_num<-"interactionMatrix_frame_0_to_54000_gap_120_interaction_number.txt"
+}
+if(length_of_movie == 27000){
+  name_of_interactionmat_len<-"interactionMatrix_frame_0_to_27000_gap_120_interaction_length.txt"
+  name_of_interactionmat_num<-"interactionMatrix_frame_0_to_27000_gap_120_interaction_number.txt"
 }
 
-  mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
+
+if(with_Angelsub == TRUE){
+  
+  name_of_mat<-"AllinteractionWithAngelsub.mat"
+}else{
+  name_of_mat<-"Allinteraction.mat"
+}
+dir<-list.dirs(recursive = F,path = "D:/Mated_Rejected_Naive_oneMovieEach/_Naive")
+num_of_movie=1
+
+filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
+}
+
+  mat <- (readMat(paste0(dir[num_of_movie], '/',name_of_mat)))
+#  number_of_flys<-sqrt(mat)
+# read each MAT file
   sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
   df_mat<-as.data.frame(sub_list_mat)
   
@@ -149,9 +174,10 @@ cc_and_change<-ggplot(all_changes_melted, aes(frame,value,colour = variable)) +
 
 
 
+
 #histogram
 #length
-filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_length.txt")
+filepath<-paste0(dir[num_of_movie],"/",name_of_interactionmat_len)
 if(!(file.exists(filepath))){
   warning("length interaction matrix does not exist!!!please creat it")
 }
@@ -179,7 +205,7 @@ length_plot<-ggplot(mat, aes(x = fly, y = value)) + geom_histogram(stat = "ident
 
 
 #number
-filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_number.txt")
+filepath<-paste0(dir[num_of_movie],"/",name_of_interactionmat_num)
 
 if(!(file.exists(filepath))){
   warning("number interaction matrix does not exist!!!please creat it")
@@ -222,14 +248,14 @@ plot(cc_and_change)
 ```{r}
 
 
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Grouped")
-num_of_movie=19
+#dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Grouped")
+#num_of_movie=19
 
 flynames<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
 
 #histogram
 #length
-filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_length.txt")
+filepath<-paste0(dir[num_of_movie],"/",name_of_interactionmat_len)
 if(!(file.exists(filepath))){
   warning("length interaction matrix does not exist!!!please creat it")
 }
@@ -309,7 +335,7 @@ theme(
 
 
 #number
-filepath<-paste0(dir[num_of_movie],"/","interactionMatrix_frame_0_to_27000_gap_120_interaction_number.txt")
+filepath<-paste0(dir[num_of_movie],"/",name_of_interactionmat_num)
 
 if(!(file.exists(filepath))){
   warning("number interaction matrix does not exist!!!please creat it")

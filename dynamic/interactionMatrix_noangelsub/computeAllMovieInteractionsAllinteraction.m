@@ -44,10 +44,11 @@ spaces(spaces == -1) = [];
 
 if (~param.directed)
     for i = 1:length(savenames)
-        for  j = (i + 1) :length(savenames)
+        for  j = (i + 1):length(savenames)
             allFrames = unique([interactionFrameMatrix{i, j}; interactionFrameMatrix{j, i}]);
             if isempty(allFrames)
                 %need to check it is giving what i need
+                "hereee"
                 new_interactionFrameMatrix{i,j}=null;
             else
                 new_interactionFrameMatrix{i,j} = allFrames;
