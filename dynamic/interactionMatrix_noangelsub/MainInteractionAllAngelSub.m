@@ -10,11 +10,13 @@ param.interactionsDistance = 8;
 param.interactionsAnglesub = 0;
 param.oneInteractionThreshold = 120;
 param.startFrame = 0;
-param.endFrame = 27000;
+param.endFrame = 54000;
 %i can change here to false and get undirected network parametrs
 param.directed = false;
 %param.interactionLength = true;
-
+%do angelsub mean calculate angelsub as parametrs of interaction
+%false mean only use distnace for interatcion
+param.doAngelsub = true;
 interactions = [];
 noInteractions = [];
 

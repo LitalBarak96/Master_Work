@@ -1,15 +1,22 @@
-function [interactions, noInteractions, spaces, frames] = computeTwoFliesInteractionsNoAngelSub(flyIdentity, fileName, param, showSingleGraphs)
+function [interactions, noInteractions, spaces, frames] = computeTwoFliesInteractionsAngelSub(flyIdentity, fileName, param, showSingleGraphs)
 load(fileName);
 % classifier is a list of per frame data of each fly of distance and angle
 % to other fly
 %the logic is first we remove all the frames that is not anwering the
 %thrshold of distance or angelsub or both
-%classifier = [(1:length(pairtrx(flyIdentity).distnose2ell))', pairtrx(flyIdentity).distnose2ell' , pairtrx(flyIdentity).anglesub'];
+
+if(param.doAngelsub == true)
+  classifier = [(1:length(pairtrx(flyIdentity).distnose2ell))', pairtrx(flyIdentity).distnose2ell' , pairtrx(flyIdentity).anglesub'];
+  classifier(classifier(:, 3) == param.interactionsAnglesub, :) = [];
+
+else
 classifier = [(1:length(pairtrx(flyIdentity).distnose2ell))', pairtrx(flyIdentity).distnose2ell'];
+end
+
+
 % remove data of all frames which are not interactions
 classifier(classifier(:, 1) < param.startFrame, :) = [];
 classifier(classifier(:, 1) > param.endFrame, :) = [];
-%classifier(classifier(:, 3) == param.interactionsAnglesub, :) = [];
 classifier(classifier(:, 2) > param.interactionsDistance, :) = [];
 toDelete = repmat(-1, 1, length(classifier(:, 1)));
 iDelete = 1;

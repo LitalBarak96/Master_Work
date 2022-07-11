@@ -24,7 +24,7 @@ for i = 1:length(savenames)
     disp(cur);
     for j = 1:length(savenames)
         if i ~= j
-            [newInteractions, newNoInteractions, newSpaces, frames] = computeTwoFliesInteractions(j, savenames{i}, param, 'off');
+            [newInteractions, newNoInteractions, newSpaces, frames] = computeTwoFliesInteractionsAngelSub(j, savenames{i}, param, 'on');
             interactionMatrixLength(i, j) = sum(newInteractions) / pairtrx(1).nframes;
             interactionMatrixNumber(i, j) = length(newInteractions);
             interactionFrameMatrix{i, j} = frames;
