@@ -57,7 +57,7 @@ if(with_Angelsub == TRUE){
 }else{
   name_of_mat<-"Allinteraction.mat"
 }
-dir<-list.dirs(recursive = F,path = "D:/Mated_Rejected_Naive_oneMovieEach/_Naive")
+dir<-list.dirs(recursive = F,path = "D:/Mated_Rejected_Naive_oneMovieEach/_Rejected")
 num_of_movie=1
 
 filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
@@ -66,7 +66,7 @@ if(!(file.exists(filepath))){
 }
 
   mat <- (readMat(paste0(dir[num_of_movie], '/',name_of_mat)))
-#  number_of_flys<-sqrt(mat)
+number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
 # read each MAT file
   sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
   df_mat<-as.data.frame(sub_list_mat)

@@ -49,7 +49,6 @@ if (~param.directed)
             if isempty(allFrames)
                 %need to check it is giving what i need
                 "hereee"
-                new_interactionFrameMatrix{i,j}=null;
             else
                 new_interactionFrameMatrix{i,j} = allFrames;
 
