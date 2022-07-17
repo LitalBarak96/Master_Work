@@ -55,9 +55,9 @@ if(with_Angelsub == TRUE){
 }else{
   name_of_mat<-"Allinteraction.mat"
 }
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Males_Mated")
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
 
-num_of_movie=1
+num_of_movie=14
 
   filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
 if(!(file.exists(filepath))){
@@ -148,6 +148,12 @@ library(zoo)
 means <- sapply(c("right","center","left"),
                 function(x)zoo::rollmean(test,100,align = x, na.pad = TRUE))
 ttest<-cbind(test,means)
+
+ttest<-as.data.frame(ttest)
+
+#combind the colom of each rollmean to remove na
+no_na<-ttest %>% mutate(mycol = coalesce(right,center,left)) %>%
+         select(test, mycol)
 
 ```
 

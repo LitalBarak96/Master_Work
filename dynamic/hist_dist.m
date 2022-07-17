@@ -23,6 +23,7 @@ end
 end
 
 values_for_hist=cell2mat(cellfun(@(x)x(:),rouneddistance_per_fly(:),'un',0));
-h1=histogram(values_for_hist);
+h1=histogram(values_for_hist,"FaceAlpha",0.2);
+h1.BinWidth = 0.1;
 hold on
 end
