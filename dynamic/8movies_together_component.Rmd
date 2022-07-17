@@ -55,7 +55,7 @@ if(with_Angelsub == TRUE){
 }else{
   name_of_mat<-"Allinteraction.mat"
 }
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Males_Grouped")
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Males_Mated")
 
 
 all_movie_change<-NULL
