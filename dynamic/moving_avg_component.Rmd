@@ -57,7 +57,7 @@ if(with_Angelsub == TRUE){
 }
 dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
 
-num_of_movie=14
+num_of_movie=5
 
   filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
 if(!(file.exists(filepath))){
@@ -131,7 +131,7 @@ for(i in 1:(length(numbers)-1)){
 }  
 
 
-
+#combining the movieing avg where is na os beggining and end
 
 ```
 
@@ -146,7 +146,7 @@ test<-all_changes_current_movie$size_cc
 
 library(zoo)
 means <- sapply(c("right","center","left"),
-                function(x)zoo::rollmean(test,100,align = x, na.pad = TRUE))
+                function(x)zoo::rollmean(test,1000,align = x, na.pad = TRUE))
 ttest<-cbind(test,means)
 
 ttest<-as.data.frame(ttest)
@@ -154,6 +154,27 @@ ttest<-as.data.frame(ttest)
 #combind the colom of each rollmean to remove na
 no_na<-ttest %>% mutate(mycol = coalesce(right,center,left)) %>%
          select(test, mycol)
+
+
+colnames(no_na)<-c("original","moving_avg")
+
+
+no_na$frame<-1:nrow(no_na)
+
+
+melted_no_na<- melt(data = no_na, id.vars = "frame")
+
+
+
+
+
+library(ggplot2)
+moving_avg_vs_reallity_compo<-ggplot(melted_no_na, aes(frame,value,colour = variable)) + 
+  geom_point() + 
+  geom_line() +
+  facet_wrap(~variable,nrow =2)
+
+plot(moving_avg_vs_reallity_compo)
 
 ```
 
