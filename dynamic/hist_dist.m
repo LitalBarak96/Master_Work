@@ -1,4 +1,6 @@
 
+withSubPlot=true;
+
 %pick the movies
 handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
 
@@ -29,10 +31,33 @@ end
 
 %break down the cell for the histogram
 values_for_hist=cell2mat(cellfun(@(x)x(:),rouneddistance_per_fly(:),'un',0));
+if(withSubPlot)
 subplot(2,round((length(handles.allFolders))/2),numofmovie)
+end
 h1=histogram(values_for_hist,"FaceAlpha",0.2);
-h1.BinWidth = 0.1;
+h1.BinWidth = 1;
+xlabel('Distance', 'FontSize', 15);
+ylabel('Count', 'FontSize', 15);
+% Compute mean and standard deviation.
+mu = mean(values_for_hist);
+sigma = std(values_for_hist);
+xline(mu, 'Color', 'g', 'LineWidth', 1);
+xline(mu - sigma, 'Color', 'r', 'LineWidth', 1, 'LineStyle', '--');
+xline(mu + sigma, 'Color', 'r', 'LineWidth', 1, 'LineStyle', '--');
+ylim([0, max(h1.Values)+1000]); % Give some headroom above the bars.
+yl = ylim;
+sMean = sprintf('  Mean = %.3f\n  SD = %.3f', mu, sigma);
+% Position the text 90% of the way from bottom to top.
+text(mu, 0.9*yl(2), sMean, 'Color', 'r', ...
+	'FontWeight', 'bold', 'FontSize', 6, ...
+	'EdgeColor', 'b');
+%sMean2= sprintf('Mean = %.3f.  SD = %.3f', mu, sigma);
+%title(sMean2, 'FontSize', 10);
+
 hold on
 end
 cd(currentFolder)
 
+
+
+ 

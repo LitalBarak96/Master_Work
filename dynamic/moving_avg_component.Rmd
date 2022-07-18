@@ -12,7 +12,7 @@ date: '2022-07-17'
 
 
 
-
+#moving avarge for multipul movies together for visual
 
 
 
@@ -65,7 +65,7 @@ if(with_Angelsub == TRUE){
 dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
 
 #length(dir)
-number_of_movies<-5
+number_of_movies<-3
 all_movie_change<-NULL
 for(num_of_movie in 1:number_of_movies){
   filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
@@ -143,7 +143,7 @@ for(i in 1:(length(numbers)-1)){
   print(i)
 
 } 
-write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = TRUE)
+write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = FALSE)
 print(num_of_movie)
 
 #if the component do exist
@@ -156,14 +156,15 @@ print(num_of_movie)
  all_movie_change<-bind_cols(all_movie_change,all_changes_current_movie)
 }
   
-  
+  #there is no colomof frame in no one
 
 library(zoo)
 
 
 #get the seceond colom and the next ones (just not the first which is the frames) and do roll mean on each colom
+#removed the colom with the frame number
 rollmeans_eachcolom<-NULL
-for(coloms in 2:number_of_movies+1){
+for(coloms in 1:number_of_movies){
   means <- sapply(c("center"),
                 function(x)zoo::rollmean(all_movie_change[,coloms],1000,align = x, na.pad = TRUE))
   
@@ -177,7 +178,7 @@ library(tidyr)
 rollmeans_eachcolom<-as.data.frame(rollmeans_eachcolom)
 #remove na that was for padding
 means_no_na<-rollmeans_eachcolom %>% drop_na()
-#add the frames back
+#add the frames
 means_no_na$frame<-1:nrow(means_no_na)
 
 colnames(means_no_na)<-c(c(1:number_of_movies),"frame")
