@@ -65,7 +65,7 @@ if(with_Angelsub == TRUE){
 dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
 
 #length(dir)
-number_of_movies<-3
+number_of_movies<-4
 all_movie_change<-NULL
 for(num_of_movie in 1:number_of_movies){
   filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
@@ -187,13 +187,21 @@ colnames(means_no_na)<-c(c(1:number_of_movies),"frame")
 melted_no_na<- melt(data = means_no_na, id.vars = "frame")
 
 
+all_movie_change$frame<-1:nrow(all_movie_change)
+colnames(all_movie_change)<-c(c(1:number_of_movies),"frame")
+melted_original_comp<- melt(data = all_movie_change, id.vars = "frame")
+
+
 movingavg_all_movie<-ggplot(melted_no_na, aes(frame,value,colour = variable)) + 
   geom_point() + 
   geom_line() +
   facet_wrap(~variable,nrow =number_of_movies)
 
 
-
+original_comp_all_movie<-ggplot(melted_original_comp, aes(frame,value,colour = variable)) + 
+  geom_point() + 
+  geom_line() +
+  facet_wrap(~variable,nrow =number_of_movies)
 
 
 ```
