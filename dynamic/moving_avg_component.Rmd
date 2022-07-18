@@ -5,6 +5,198 @@ date: '2022-07-17'
 ---
 
 
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+
+
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+
+length_of_movie<-27000
+#how many frame in a batch
+number_of_frame<-1
+
+#seq by the  number of frames
+numbers<-seq(1, length_of_movie, by=number_of_frame)
+with_Angelsub<-TRUE
+
+
+#if i want without angelsub for calcualtin of interaction choose Allinteraction.mat
+#if you do want it choose AllinteractionWithAngelsub.mat
+
+if(length_of_movie == 54000){
+    name_of_interactionmat_len<-"interactionMatrix_frame_0_to_54000_gap_120_interaction_length.txt"
+  name_of_interactionmat_num<-"interactionMatrix_frame_0_to_54000_gap_120_interaction_number.txt"
+}
+if(length_of_movie == 27000){
+  name_of_interactionmat_len<-"interactionMatrix_frame_0_to_27000_gap_120_interaction_length.txt"
+  name_of_interactionmat_num<-"interactionMatrix_frame_0_to_27000_gap_120_interaction_number.txt"
+}
+
+
+if(with_Angelsub == TRUE){
+  
+  name_of_mat<-"AllinteractionWithAngelsub.mat"
+}else{
+  name_of_mat<-"Allinteraction.mat"
+}
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+
+#length(dir)
+all_movie_change<-NULL
+for(num_of_movie in 1:2){
+  filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
+}
+filepath_csv_component<-paste0(dir[num_of_movie], '/',"componentSize.csv")
+
+if(!(file.exists(filepath_csv_component))){
+  
+  mat <- (readMat(paste0(dir[num_of_movie], '/',name_of_mat)))
+number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
+# read each MAT file
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  
+
+    for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  df_mat<-na.omit(df_mat)
+
+  
+
+  #10 flys
+  
+  
+  colnames(df_mat)<-c(1:number_of_flys)
+  rownames(df_mat)<-c(1:number_of_flys)
+  
+  
+  all<-data.frame()
+  path_to_sub_Scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+  
+   setwd(path_to_sub_Scripts)
+    files.sources = list.files()
+    sapply(files.sources, source)
+
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+  #for the acasct every interaction mean 1 
+  all<-cbind(all,1)
+
+
+  library(dplyr)
+  library(igraph)
+  
+
+  all_changes_current_movie<-NULL
+for(i in 1:(length(numbers)-1)){
+  
+  current_net<-creat_network(all,i,numbers)
+  
+  sub_current_net<-biggest_cc_subgraph(current_net)
+    if(sub_current_net[[2]] == FALSE){
+    # no sub cluster bigger than 3
+    sub_current_net<-(sub_current_net[[1]])
+    size_of_biggest_cc_current = 0
+  }else{
+    sub_current_net<-(sub_current_net[[1]])
+    size_of_biggest_cc_current= length(sub_current_net)
+  }
+  
+  #without the frame number becuase when we do it for multipul movies we want to cbind and than do melt
+  tmp<-data.frame(size_cc = size_of_biggest_cc_current)
+  all_changes_current_movie<-rbind(all_changes_current_movie,tmp)
+  print(i)
+
+} 
+write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = TRUE)
+
+  
+print(num_of_movie)
+}else{
+  print("file component is already exist,using him")
+ all_changes_current_movie<- read.csv(filepath_csv_component)
+ print(num_of_movie)
+
+}
+ all_movie_change<-bind_cols(all_movie_change,all_changes_current_movie)
+
+}
+  
+  
+
+
+
+#all_movie_change$number_of_movie<-as.factor(all_movie_change$number_of_movie)
+  
+
+#library(ggplot2)
+
+
+#all_movies<-ggplot(all_movie_change, aes(frame,size_cc,colour = number_of_movie)) + 
+ # geom_point() + 
+  #geom_line() +
+  #facet_wrap(~number_of_movie,nrow =2)
+  
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```{r}
 
 library(openxlsx)
@@ -136,6 +328,39 @@ for(i in 1:(length(numbers)-1)){
 ```
 
 
+
+```{r}
+library(zoo)
+
+size_comp<-all_changes_current_movie$size_cc
+
+library(zoo)
+means <- sapply(c("center"),
+                function(x)zoo::rollmean(size_comp,1000,align = x, na.pad = TRUE))
+
+
+library(tidyr)
+means<-as.data.frame(means)
+means_no_na<-means %>% drop_na()
+
+means_no_na$frame<-1:nrow(means_no_na)
+
+colnames(means_no_na)<-c("moving_avg","frame")
+
+
+
+library(ggplot2)
+moving_avg<-ggplot(means_no_na, aes(frame,moving_avg)) + 
+  geom_point() + 
+  geom_line() 
+
+plot(moving_avg)
+
+
+
+```
+
+
 ```{r}
 
 
@@ -177,4 +402,7 @@ moving_avg_vs_reallity_compo<-ggplot(melted_no_na, aes(frame,value,colour = vari
 plot(moving_avg_vs_reallity_compo)
 
 ```
+
+
+
 
