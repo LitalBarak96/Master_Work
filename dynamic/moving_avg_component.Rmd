@@ -65,14 +65,18 @@ if(with_Angelsub == TRUE){
 dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
 
 #length(dir)
+number_of_movies<-5
 all_movie_change<-NULL
-for(num_of_movie in 1:2){
+for(num_of_movie in 1:number_of_movies){
   filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
 if(!(file.exists(filepath))){
   stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
 }
+  
+#check if the component csv is exist,if not,creat it  
 filepath_csv_component<-paste0(dir[num_of_movie], '/',"componentSize.csv")
 
+#if the component not exist
 if(!(file.exists(filepath_csv_component))){
   
   mat <- (readMat(paste0(dir[num_of_movie], '/',name_of_mat)))
@@ -140,9 +144,9 @@ for(i in 1:(length(numbers)-1)){
 
 } 
 write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = TRUE)
-
-  
 print(num_of_movie)
+
+#if the component do exist
 }else{
   print("file component is already exist,using him")
  all_changes_current_movie<- read.csv(filepath_csv_component)
@@ -150,24 +154,44 @@ print(num_of_movie)
 
 }
  all_movie_change<-bind_cols(all_movie_change,all_changes_current_movie)
-
 }
   
   
 
+library(zoo)
 
 
-#all_movie_change$number_of_movie<-as.factor(all_movie_change$number_of_movie)
+#get the seceond colom and the next ones (just not the first which is the frames) and do roll mean on each colom
+rollmeans_eachcolom<-NULL
+for(coloms in 2:number_of_movies+1){
+  means <- sapply(c("center"),
+                function(x)zoo::rollmean(all_movie_change[,coloms],1000,align = x, na.pad = TRUE))
   
+  rollmeans_eachcolom<-cbind(rollmeans_eachcolom,means)
+}
+          
 
-#library(ggplot2)
 
 
-#all_movies<-ggplot(all_movie_change, aes(frame,size_cc,colour = number_of_movie)) + 
- # geom_point() + 
-  #geom_line() +
-  #facet_wrap(~number_of_movie,nrow =2)
-  
+library(tidyr)
+rollmeans_eachcolom<-as.data.frame(rollmeans_eachcolom)
+#remove na that was for padding
+means_no_na<-rollmeans_eachcolom %>% drop_na()
+#add the frames back
+means_no_na$frame<-1:nrow(means_no_na)
+
+colnames(means_no_na)<-c(c(1:number_of_movies),"frame")
+
+#melt the data for visual
+melted_no_na<- melt(data = means_no_na, id.vars = "frame")
+
+
+movingavg_all_movie<-ggplot(melted_no_na, aes(frame,value,colour = variable)) + 
+  geom_point() + 
+  geom_line() +
+  facet_wrap(~variable,nrow =number_of_movies)
+
+
 
 
 
