@@ -25,8 +25,6 @@ else
     warning("we didn't found the index")
 end
 end
-%return to the script path
-
 %break down the cell for the histogram
 values_for_hist=cell2mat(cellfun(@(x)x(:),rouneddistance_per_fly(:),'un',0));
 subplot(2,round((length(handles.allFolders))/2),numofmovie)
@@ -34,5 +32,3 @@ h1=histogram(values_for_hist,"FaceAlpha",0.2);
 h1.BinWidth = 0.1;
 hold on
 end
-cd(currentFolder)
-
