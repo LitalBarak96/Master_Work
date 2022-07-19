@@ -44,7 +44,7 @@ number_of_frame<-1
 numbers<-seq(1, length_of_movie, by=number_of_frame)
 #use the data of interaction that used angelsub
 with_Angelsub<-TRUE
-path_of_condition<-"D:/allGroups/Males_Grouped"
+path_of_condition<-"D:/allGroups/Females_Grouped"
 #path of the main condition
 dir<-list.dirs(recursive = F,path =path_of_condition )
 #####
