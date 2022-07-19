@@ -4,6 +4,9 @@ withSubPlot=true;
 %pick the movies
 handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
 
+parts = strsplit(handles.allFolders{1}, '\');
+GroupName = parts{end-1};
+
 currentFolder = pwd;
 for numofmovie=1:length(handles.allFolders)
     %the folder path
@@ -36,6 +39,7 @@ subplot(2,round((length(handles.allFolders))/2),numofmovie)
 end
 h1=histogram(values_for_hist,"FaceAlpha",0.2);
 h1.BinWidth = 1;
+h1.Normalization = 'probability';
 xlabel('Distance', 'FontSize', 15);
 ylabel('Count', 'FontSize', 15);
 % Compute mean and standard deviation.
@@ -44,7 +48,8 @@ sigma = std(values_for_hist);
 xline(mu, 'Color', 'g', 'LineWidth', 1);
 xline(mu - sigma, 'Color', 'r', 'LineWidth', 1, 'LineStyle', '--');
 xline(mu + sigma, 'Color', 'r', 'LineWidth', 1, 'LineStyle', '--');
-ylim([0, max(h1.Values)+1000]); % Give some headroom above the bars.
+%ylim([0, max(h1.Values)+1000]); % Give some headroom above the bars.
+ylim([0, 0.15]); % Give some headroom above the bars.
 yl = ylim;
 sMean = sprintf('  Mean = %.3f\n  SD = %.3f', mu, sigma);
 % Position the text 90% of the way from bottom to top.
@@ -55,6 +60,7 @@ text(mu, 0.9*yl(2), sMean, 'Color', 'r', ...
 %title(sMean2, 'FontSize', 10);
 
 hold on
+sgtitle(GroupName)
 end
 cd(currentFolder)
 

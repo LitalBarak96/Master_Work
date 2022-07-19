@@ -40,14 +40,15 @@ length_of_movie<-27000
 #how many frame in a batch
 number_of_frame<-1
 #number of movies to analys
-number_of_movies<-length(dir)
 #seq by the  number of frames
 numbers<-seq(1, length_of_movie, by=number_of_frame)
 #use the data of interaction that used angelsub
 with_Angelsub<-TRUE
+path_of_condition<-"D:/allGroups/Males_Mated"
 #path of the main condition
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+dir<-list.dirs(recursive = F,path =path_of_condition )
 #####
+number_of_movies<-length(dir)
 
 
 
@@ -195,15 +196,13 @@ melted_original_comp<- melt(data = all_movie_component, id.vars = "frame")
 ###ploting
 #moving avg
 movingavg_all_movie<-ggplot(melted_means_no_na, aes(frame,value,colour = variable)) + 
-  geom_point() + 
-  geom_line() +
-  facet_wrap(~variable,nrow =number_of_movies)
+  geom_line(size=1) +
+  facet_wrap(~variable) +ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size moving avarge "))
 
 #original
 original_comp_all_movie<-ggplot(melted_original_comp, aes(frame,value,colour = variable)) + 
-  geom_point() + 
-  geom_line() +
-  facet_wrap(~variable,nrow =number_of_movies)
+  geom_line(size=1) +
+  facet_wrap(~variable)+ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size original"))
 ###
 plot(movingavg_all_movie)
 plot(original_comp_all_movie)
