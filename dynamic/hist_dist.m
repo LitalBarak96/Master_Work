@@ -3,7 +3,7 @@ withSubPlot=true;
 
 %pick the movies
 handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
-
+%get the group name - please choose by groups and not combine them
 parts = strsplit(handles.allFolders{1}, '\');
 GroupName = parts{end-1};
 
@@ -52,12 +52,11 @@ xline(mu + sigma, 'Color', 'r', 'LineWidth', 1, 'LineStyle', '--');
 ylim([0, 0.15]); % Give some headroom above the bars.
 yl = ylim;
 sMean = sprintf('  Mean = %.3f\n  SD = %.3f', mu, sigma);
-% Position the text 90% of the way from bottom to top.
 text(mu, 0.9*yl(2), sMean, 'Color', 'r', ...
 	'FontWeight', 'bold', 'FontSize', 6, ...
 	'EdgeColor', 'b');
 %sMean2= sprintf('Mean = %.3f.  SD = %.3f', mu, sigma);
-%title(sMean2, 'FontSize', 10);
+%title(GroupName, 'FontSize', 10);
 
 hold on
 sgtitle(GroupName)

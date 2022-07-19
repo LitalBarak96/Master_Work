@@ -44,7 +44,7 @@ number_of_frame<-1
 numbers<-seq(1, length_of_movie, by=number_of_frame)
 #use the data of interaction that used angelsub
 with_Angelsub<-TRUE
-path_of_condition<-"D:/allGroups/Males_Mated"
+path_of_condition<-"D:/allGroups/Males_Grouped"
 #path of the main condition
 dir<-list.dirs(recursive = F,path =path_of_condition )
 #####
@@ -203,9 +203,20 @@ movingavg_all_movie<-ggplot(melted_means_no_na, aes(frame,value,colour = variabl
 original_comp_all_movie<-ggplot(melted_original_comp, aes(frame,value,colour = variable)) + 
   geom_line(size=1) +
   facet_wrap(~variable)+ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size original"))
+
+
+movingavg_together<-ggplot(melted_means_no_na, aes(frame,value,colour = variable)) + 
+    geom_line(size=1) + stat_summary(fun = "median", geom = "line", color = "black", size = 1.1)+ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size moving avarge"))
+
 ###
+
+
 plot(movingavg_all_movie)
 plot(original_comp_all_movie)
+
+
+
+
 
 ```
 

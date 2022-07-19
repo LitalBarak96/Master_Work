@@ -22,12 +22,14 @@ noInteractions = [];
 
 handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
 for i = 1:length(handles.allFolders)
+    if(not(isfile(fullfile(folderPath, 'AllinteractionWithAngelsub.mat'))))
     folderPath = handles.allFolders{i};
     fileName = fullfile(folderPath, jaabaFileName);
     [COMPUTERPERFRAMESTATSSOCIAL_SUCCEEDED,savenames] = compute_perframe_stats_social_f('matname', fileName);
     [newInteractions, newNoInteractions] = computeAllMovieInteractionsAllinteraction(savenames, param);
     interactions = [interactions, newInteractions];
     noInteractions = [noInteractions, newNoInteractions];
+    end
 end
 
 
