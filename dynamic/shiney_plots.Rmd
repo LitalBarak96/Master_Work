@@ -326,9 +326,21 @@ draw_plot_1 <- function(data_input, num_var_1, num_var_2,color_choice,analysis_t
       means_no_na<-means %>% drop_na()
       means_no_na$frame<-1:nrow(means_no_na)
       colnames(means_no_na)<-c("movie","frame")
+      
+      original_comp<-data_input
+      original_comp$frame<-1:nrow(original_comp)
+      colnames(original_comp)<-c("movie","frame")
+
+     # ggplot(original_comp, aes(frame,movie)) +
+  #theme_bw() +
+  #geom_line() + # values mapped to aes() in ggplot() call
+ # geom_line(means_no_na, aes(frame,movie,size=1,color=color_choice,alpha=1))
+      
       ggplot(means_no_na, aes(frame,movie)) + 
   geom_line(size=1,color=color_choice) +ylab("component size")
-    
+      
+          ggplot(original_comp, aes(frame,movie)) + 
+  geom_line(size=1,color=color_choice,alpha=0.5) +ylab("component size")
   }
 }
 
