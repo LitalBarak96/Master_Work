@@ -8,9 +8,9 @@ filename="per_framefeatures_sum_allflies.csv";
 
 num_of_frames=26997;
 
-handles = uipickfiles('Prompt', 'Select movies to run inteactions');
-for i = 1:length(handles)
-    folderPath = handles{i};
+handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
+for i = 1:length(handles.allFolders)
+    folderPath = handles.allFolders{i};
     if(not(isfile(fullfile(folderPath, filename))))
     fileName = fullfile(folderPath, "perframe");
     all=[];

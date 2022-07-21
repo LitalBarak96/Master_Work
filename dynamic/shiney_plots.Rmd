@@ -71,11 +71,12 @@ if(with_Angelsub == TRUE){
 for(num_of_movie in 1:number_of_movies){
   #if the mat file is not existing
   filepath<-paste0(dir_list[num_of_movie], '/',name_of_mat)
+  
+  
 if(!(file.exists(filepath))){
   stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
 }
 else{
-   #####orgenaizing the data for analysis
   mat <- (readMat(paste0(dir_list[num_of_movie], '/',name_of_mat)))
   #find how many flys in each movie - it should be 10 but sometimes its less
   number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
@@ -109,6 +110,7 @@ else{
   nodes$vertex.id<-as.numeric(nodes$vertex.id)
   
   all_for_render<-all
+  
   colnames(all_for_render)<-c("tail","head","onset","terminus")
   edge.id<-seq_along(1:nrow(all_for_render))
   all_for_render<-cbind(edge.id,all_for_render)
@@ -116,36 +118,38 @@ else{
   all_for_render$head<-as.numeric(all_for_render$head)
   
   
-  new_edge<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],tail=all_for_render["tail"],head=all_for_render["head"])
+  new_edge<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],tail=all_for_render["tail"], head=all_for_render["head"])
 new_nodes<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],id=all_for_render["tail"])
-tmp_new<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],id=all_for_render["head"])
-colnames(tmp_new)<-c("onset","terminus","id")
-colnames(new_nodes)<-c("onset","terminus","id")
+  tmp_new<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],id=all_for_render["head"])
+  colnames(tmp_new)<-c("onset","terminus","id")
+  colnames(new_nodes)<-c("onset","terminus","id")
 
-new_nodes<-rbind(new_nodes,tmp_new)
-new_nodes$pid<-seq_along(1:nrow(new_nodes))
+  new_nodes<-rbind(new_nodes,tmp_new)
+  new_nodes$pid<-seq_along(1:nrow(new_nodes))
 
-final_nodes<-new_nodes
-final_nodes$onset<-0
-final_nodes$terminus<-27001
-vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
-vertex$vertex.id<-as.numeric(vertex$vertex.id)
-nw <- network(unique(new_edge[,c(3,4)]),
+  final_nodes<-new_nodes
+  final_nodes$onset<-0
+  final_nodes$terminus<-27001
+  vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
+  vertex$vertex.id<-as.numeric(vertex$vertex.id)
+  nw <- network(unique(new_edge[,c(3,4)]),
               vertex.attr = vertex[,c(1:2)],
               vertex.attrnames = c("vertex.id", "col"),
               directed = F)
 
-net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
+  net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
 
-compute.animation(net,
+  compute.animation(net,
               slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
 
-setwd(dir_list[num_of_movie])
+  setwd(dir_list[num_of_movie])
   render.d3movie(net,filename= paste0(basename(dir_list[num_of_movie]),"_",".html"),
            output.mode = "HTML",vertex.col = "col",
            launchBrowser = TRUE,displaylabels =T)
 
   }
+  
+  ####################################################################
   if(component_to_do == TRUE){
     all_for_component<-all
       if(!file.exists(paste0(dir_list[num_of_movie], '/','componentSize.csv'))){
@@ -177,11 +181,11 @@ for(i in 1:(length(numbers)-1)){
   
 }
   #writing to csv to save claulating time
-write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = FALSE)
+write.csv(all_changes_current_movie,paste0(dir_list[num_of_movie],"/","componentSize.csv"), row.names = FALSE)
 print(num_of_movie)
         }
   }
-  
+  ################################
   if(correlaction_show_in_shiney == TRUE){
         if(!file.exists(paste0(dir_list[num_of_movie], '/','per_framefeatures_sum_allflies.csv'))){
      stop(paste0(dir_list[num_of_movie],"per frame features dont exist for correlaction analysis,please use perFrameFeaturesCalc2Csv.m"))
@@ -271,8 +275,11 @@ ui <- navbarPage(
 )
 
 
+# here i can change by the choice of the user
 
-draw_plot_1 <- function(data_input, num_var_1, num_var_2,color_choice){
+draw_plot_1 <- function(data_input, num_var_1, num_var_2,color_choice,analysis_type){
+  
+  if(analysis_type == "plot 2 vars"){
     if(num_var_1 != not_sel & num_var_2 != not_sel & color_choice != not_sel){
       ggplot(data = data_input,
              aes_string(x = num_var_1, y = num_var_2)) +
@@ -308,6 +315,21 @@ draw_plot_1 <- function(data_input, num_var_1, num_var_2,color_choice){
              aes_string(x =1:26999 ,y=sample(x = 1:100, size  = 26999))) +
         geom_bar(color="red")
     }
+  }
+  if(analysis_type == "correlaction"){
+    # i need to combine the component and the per frame features for this
+  }
+  if(analysis_type=="component"){
+      means <- sapply(c("center"),
+                function(x)zoo::rollmean(data_input,1000,align = x, na.pad = TRUE))
+      means<-as.data.frame(means)
+      means_no_na<-means %>% drop_na()
+      means_no_na$frame<-1:nrow(means_no_na)
+      colnames(means_no_na)<-c("movie","frame")
+      ggplot(means_no_na, aes(frame,movie)) + 
+  geom_line(size=1,color=color_choice) +ylab("component size")
+    
+  }
 }
 
 server <- function(input, output){
@@ -324,7 +346,7 @@ data_input <- reactive({
     updateSelectInput(inputId = "num_var_1", choices = choices)
     updateSelectInput(inputId = "num_var_2", choices = choices)
     updateSelectInput(inputId = "color_choice", choices = c("green","blue","red"))
-    updateSelectInput(inputId = "analysis_type", choices = c("corrleaction","heatmap","component","degree"))
+    updateSelectInput(inputId = "analysis_type", choices = c("corrleaction","heatmap","component","plot 2 vars"))
 
   })
   
