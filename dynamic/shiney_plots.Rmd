@@ -1,0 +1,387 @@
+---
+title: "pipline dynamic networks"
+author: "lital barak"
+date: "2022-07-21"
+output: html_document
+---
+
+#this is the pipline to creat make analysis for dynamic network - from html movies to compnent size ,degree density ect
+
+
+#in this part i will creat all the csv file for the analysis later in shiney
+#to make my life easy i will ask the user if he want to make group analysis or he want to make per movie analysis
+# i will first creat csv per group so it wont take long to calcualte and than if he want to make it per group i will ask him where he want to save it
+
+#so for this i need to creat at first from matlab scripts the initial data and then the csv file
+```{r}
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+library(dplyr)
+library(ggplot2)
+library(zoo)
+library(tidyr)
+library(tcltk)
+library(ndtv)
+
+
+
+
+main_dir<-choose.dir(default = "", caption = "Select parent dir for exp")
+color<-"black"
+
+#for example - choose female mated
+dir_list <- list.dirs(main_dir,recursive = FALSE) 
+number_of_movies<-length(dir_list)
+render_the_movie<-TRUE
+length_of_movie<-27000
+#how many frame in a batch
+number_of_frame<-1
+#number of movies to analys
+#seq by the  number of frames
+numbers<-seq(1, length_of_movie, by=number_of_frame)
+#use the data of interaction that used angelsub
+with_Angelsub<-TRUE
+
+if(with_Angelsub == TRUE){
+  name_of_mat<-"AllinteractionWithAngelsub.mat"
+}else{
+  # i need to check in matlab if in the else this is the name of the output
+  name_of_mat<-"Allinteraction.mat"
+}
+
+  #####get the subscripts of calcualtion
+  path_to_sub_Scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+    setwd(path_to_sub_Scripts)
+    files.sources = list.files()
+    sapply(files.sources, source)
+    
+    
+
+```
+#calculation according the choosing in the block befor
+
+```{r}
+
+
+for(num_of_movie in 1:number_of_movies){
+  #if the mat file is not existing
+  filepath<-paste0(dir_list[num_of_movie], '/',name_of_mat)
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
+}
+else{
+   #####orgenaizing the data for analysis
+  mat <- (readMat(paste0(dir_list[num_of_movie], '/',name_of_mat)))
+  #find how many flys in each movie - it should be 10 but sometimes its less
+  number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
+  if(number_of_flys!=10){
+    stop("the number of flys is not 10,please check if it effect the script somehow and why its not 10")
+  }
+  #read each MAT file by the number of flys
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  df_mat<-na.omit(df_mat)
+  #creat the df with the name of each fly for consistancy
+  colnames(df_mat)<-c(1:number_of_flys)
+  rownames(df_mat)<-c(1:number_of_flys)
+  ####
+  all<-data.frame()
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+  if(render_the_movie==TRUE){
+    
+  nodes<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-as.data.frame(nodes)
+  nodes$name<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+  colnames(nodes)<-c("vertex.id","names")
+  nodes$vertex.id<-as.numeric(nodes$vertex.id)
+  
+  all_for_render<-all
+  colnames(all_for_render)<-c("tail","head","onset","terminus")
+  edge.id<-seq_along(1:nrow(all_for_render))
+  all_for_render<-cbind(edge.id,all_for_render)
+  all_for_render$tail<-as.numeric(all_for_render$tail)
+  all_for_render$head<-as.numeric(all_for_render$head)
+  
+  
+  new_edge<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],tail=all_for_render["tail"],head=all_for_render["head"])
+new_nodes<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],id=all_for_render["tail"])
+tmp_new<-data.frame(onset=all_for_render["onset"],terminus=all_for_render["terminus"],id=all_for_render["head"])
+colnames(tmp_new)<-c("onset","terminus","id")
+colnames(new_nodes)<-c("onset","terminus","id")
+
+new_nodes<-rbind(new_nodes,tmp_new)
+new_nodes$pid<-seq_along(1:nrow(new_nodes))
+
+final_nodes<-new_nodes
+final_nodes$onset<-0
+final_nodes$terminus<-27001
+
+
+vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
+
+vertex$vertex.id<-as.numeric(vertex$vertex.id)
+
+nw <- network(unique(new_edge[,c(3,4)]),
+              vertex.attr = vertex[,c(1:2)],
+              vertex.attrnames = c("vertex.id", "col"),
+              directed = F)
+
+net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
+
+compute.animation(net,
+              slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
+
+setwd(dir_list[num_of_movie])
+  render.d3movie(net,filename= paste0(basename(dir_list[num_of_movie]),"_",".html"),
+           output.mode = "HTML",vertex.col = "col",
+           launchBrowser = TRUE,displaylabels =T)
+
+}
+  
+  
+}
+}
+```
+
+
+
+```{r}
+
+
+library(shiny)
+library(shinythemes)
+library(data.table)
+library(ggplot2)
+
+
+not_sel <- "Not Selected"
+
+about_page <- tabPanel(
+  title = "About",
+  titlePanel("About"),
+  "Created with R Shiny",
+  br(),
+  "2021 April"
+)
+
+main_page <- tabPanel(
+  title = "Analysis",
+  titlePanel("Analysis"),
+  sidebarLayout(
+    sidebarPanel(
+      title = "Inputs",
+      fileInput("csv_input", "Select CSV File to Import", accept = ".csv"),
+      selectInput("num_var_1", "Numerical Variable 1", choices = c(not_sel)),
+      selectInput("num_var_2", "Numerical Variable 2", choices = c(not_sel)),
+      selectInput("color_choice", "choose color", choices = c(not_sel)),
+      selectInput("analysis_type", "choose type of analysis", choices = c(not_sel)),
+
+      br(),
+      actionButton("run_button", "Run Analysis", icon = icon("play"))
+    ),
+    mainPanel(
+      tabsetPanel(
+        tabPanel(
+          title = "Plot",
+          plotOutput("plot_1")
+        ),
+        tabPanel(
+          title = "Statistics",
+          fluidRow(
+            column(width = 4, strong(textOutput("num_var_1_title"))),
+            column(width = 4, strong(textOutput("num_var_2_title"))),
+            column(width = 4, strong(textOutput("color_choice_title"))),
+            column(width = 4, strong(textOutput("analysis_choice_title")))
+          ),
+          fluidRow(
+            column(width = 4, tableOutput("num_var_1_summary_table")),
+            column(width = 4, tableOutput("num_var_2_summary_table")),
+            column(width = 4, tableOutput("analysis_summary_table"))
+          ),
+          fluidRow(
+            column(width = 12, strong("Combined Statistics"))
+          ),
+          fluidRow(
+            column(width = 12, tableOutput("combined_summary_table"))
+          )
+          
+        )
+      )
+    )
+  )
+)
+
+ui <- navbarPage(
+  title = "Data Analyser",
+  main_page,
+  about_page
+)
+
+
+
+draw_plot_1 <- function(data_input, num_var_1, num_var_2,color_choice){
+    if(num_var_1 != not_sel & num_var_2 != not_sel & color_choice != not_sel){
+      ggplot(data = data_input,
+             aes_string(x = num_var_1, y = num_var_2)) +
+        geom_point(color = color_choice)
+    }
+    else if(num_var_1 != not_sel & num_var_2 != not_sel & color_choice == not_sel){
+      ggplot(data = data_input,
+             aes_string(x = num_var_1, y = num_var_2)) +
+        geom_point(color ="red")
+    }
+    else if(num_var_1 != not_sel & num_var_2 == not_sel & color_choice != not_sel){
+      ggplot(data = data_input,
+             aes_string(x = 1:26999, y = num_var_1)) +
+        geom_line(color=color_choice)
+    }
+    else if(num_var_1 == not_sel & num_var_2 != not_sel & color_choice != not_sel){
+      ggplot(data = data_input,
+             aes_string(x = 1:26999, y = num_var_2)) +
+        geom_line(color=color_choice)
+    }
+    else if(num_var_1 != not_sel & num_var_2 == not_sel & color_choice == not_sel){
+      ggplot(data = data_input,
+             aes_string(x = 1:26999,y=num_var_1)) +
+        geom_line(color ="red")
+    }
+    else if(num_var_1 == not_sel & num_var_2 != not_sel & color_choice == not_sel){
+      ggplot(data = data_input,
+             aes_string(x = 1:26999,y=num_var_2)) +
+        geom_histogram(color="red")
+    }
+    else if(num_var_1 == not_sel & num_var_2 == not_sel & color_choice != not_sel){
+      ggplot(data = data_input,
+             aes_string(x =1:26999 ,y=sample(x = 1:100, size  = 26999))) +
+        geom_bar(color="red")
+    }
+}
+
+server <- function(input, output){
+ options(shiny.maxRequestSize=40*1024^2) 
+
+  
+data_input <- reactive({
+    req(input$csv_input)
+    fread(input$csv_input$datapath)
+  })
+
+  observeEvent(data_input(),{
+    choices <- c(not_sel,names(data_input()))
+    updateSelectInput(inputId = "num_var_1", choices = choices)
+    updateSelectInput(inputId = "num_var_2", choices = choices)
+    updateSelectInput(inputId = "color_choice", choices = c("green","blue","red"))
+    updateSelectInput(inputId = "analysis_type", choices = c("corrleaction","heatmap","component","degree"))
+
+  })
+  
+  num_var_1 <- eventReactive(input$run_button,input$num_var_1)
+  num_var_2 <- eventReactive(input$run_button,input$num_var_2)
+  color_choice <- eventReactive(input$run_button,input$color_choice)
+  analysis_type <- eventReactive(input$run_button,input$analysis_type)
+
+  
+  plot_1 <- eventReactive(input$run_button,{
+    draw_plot_1(data_input(), num_var_1(), num_var_2(), color_choice(),analysis_type())
+  })
+
+  output$plot_1 <- renderPlot(plot_1())
+
+}
+shinyApp(ui = ui, server = server)
+
+
+
+```
+```{r}
+ ui <- fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+        # ?fileInput
+        fileInput("file1", "Choose HTML File(s)", multiple=T, accept = ".html")
+      ),
+      mainPanel(
+        verbatimTextOutput("out.print")
+      )
+    )
+  )
+
+  
+  server <- function(input, output) {
+    
+    output$out.print <- renderPrint({
+      file <- input$file1
+      ext <- tools::file_ext(file$datapath)
+      
+      req(file)
+      validate(need(ext == "html", "Please upload  html  file(s)"))
+      
+      file 
+    })
+ 
+  }
+
+  shinyApp(ui, server)
+```
+
+
+```{r}
+library(shiny)
+library(shinyFiles)
+
+ui <- fluidPage(
+   
+   titlePanel("Test"),
+   
+   sidebarLayout(
+      sidebarPanel(
+         shinyDirButton('fld','Choose...','Choose a folder'),
+         actionButton("submitbutton", "Add folder", class = "btn btn-primary"),
+         checkboxGroupInput('chosenfolders','Chosen folders...')
+      ),
+      
+      mainPanel(
+         verbatimTextOutput("selected")
+      )
+   )
+)
+
+server <- function(input, output, session) {
+  volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
+  shinyDirChoose(input, 'fld', session=session,
+                 root=volumes, filetypes=c('txt'))
+  
+  datasetInput <- reactive({
+    inputfolders <- c(input$chosenfolders,
+                      parseDirPath(volumes, input$fld))
+    updateCheckboxGroupInput(session, 'chosenfolders', 
+                             choices = inputfolders,
+                             selected = inputfolders)
+    print(list('Input folders' = inputfolders))
+  })
+
+  output$selected <- renderPrint({
+    if (input$submitbutton>0) { 
+      isolate(datasetInput()) 
+    } else {
+      return("Server is ready for calculation.")
+    }
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+

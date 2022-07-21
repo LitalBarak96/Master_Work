@@ -208,9 +208,13 @@ original_comp_all_movie<-ggplot(melted_original_comp, aes(frame,value,colour = v
   geom_line(size=1) +
   facet_wrap(~variable)+ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size original"))
 
+geom_line(size=1)
+#moving avg all movies on top each over with midean
 
 movingavg_together<-ggplot(melted_means_no_na, aes(frame,value,colour = variable)) + 
-    geom_line(size=1) + stat_summary(fun = "median", geom = "line", color = "black", size = 1.1)+ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size moving avarge"))
+  geom_line(size=1) +   stat_summary(fun = "median", geom = "line", color = "black", size = 1.1)+ylab("component size")+ ggtitle(paste0(basename(path_of_condition)," component size moving avarge"))
+
+
 
 ###
 
