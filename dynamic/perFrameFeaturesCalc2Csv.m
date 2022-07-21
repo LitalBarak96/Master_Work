@@ -1,16 +1,8 @@
 
-
-
-
-
 clear
-
-
 %creating all other features to csv of all flies in avarge
 %getting the path of the expremnt dirs
 %pay attention to the length of the movie
-
-
 
 filename="per_framefeatures_sum_allflies.csv";
 

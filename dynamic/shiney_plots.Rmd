@@ -29,14 +29,15 @@ library(ndtv)
 
 
 
-
 main_dir<-choose.dir(default = "", caption = "Select parent dir for exp")
 color<-"black"
 
 #for example - choose female mated
 dir_list <- list.dirs(main_dir,recursive = FALSE) 
 number_of_movies<-length(dir_list)
-render_the_movie<-TRUE
+render_the_movie<-FALSE
+component_to_do =TRUE
+correlaction_show_in_shiney=FALSE
 length_of_movie<-27000
 #how many frame in a batch
 number_of_frame<-1
@@ -127,12 +128,8 @@ new_nodes$pid<-seq_along(1:nrow(new_nodes))
 final_nodes<-new_nodes
 final_nodes$onset<-0
 final_nodes$terminus<-27001
-
-
 vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
-
 vertex$vertex.id<-as.numeric(vertex$vertex.id)
-
 nw <- network(unique(new_edge[,c(3,4)]),
               vertex.attr = vertex[,c(1:2)],
               vertex.attrnames = c("vertex.id", "col"),
@@ -148,7 +145,51 @@ setwd(dir_list[num_of_movie])
            output.mode = "HTML",vertex.col = "col",
            launchBrowser = TRUE,displaylabels =T)
 
+  }
+  if(component_to_do == TRUE){
+    all_for_component<-all
+      if(!file.exists(paste0(dir_list[num_of_movie], '/','componentSize.csv'))){
+      all_for_component<-cbind(all_for_component,1)
+  
+  #####creat network for each frame to claculate the component (cc is compnent)
+  all_changes_current_movie<-NULL
+for(i in 1:(length(numbers)-1)){
+  #get net and subnet for component size
+  current_net<-creat_network(all,i,numbers)
+  sub_current_net<-biggest_cc_subgraph(current_net)
+    if(sub_current_net[[2]] == FALSE){
+    # no sub cluster bigger than 3
+    sub_current_net<-(sub_current_net[[1]])
+    size_of_biggest_cc_current = 0
+  }else{
+    sub_current_net<-(sub_current_net[[1]])
+    size_of_biggest_cc_current= length(sub_current_net)
+  }
+  #####
+  
+  #####binding the data for dataframe usage
+  #without the frame number becuase when we do it for multipul movies we want to cbind and than do melt
+  tmp<-data.frame(size_cc = size_of_biggest_cc_current)
+  all_changes_current_movie<-rbind(all_changes_current_movie,tmp)
+  print(i)
+  #####
+  
+  
 }
+  #writing to csv to save claulating time
+write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = FALSE)
+print(num_of_movie)
+        }
+  }
+  
+  if(correlaction_show_in_shiney == TRUE){
+        if(!file.exists(paste0(dir_list[num_of_movie], '/','per_framefeatures_sum_allflies.csv'))){
+     stop(paste0(dir_list[num_of_movie],"per frame features dont exist for correlaction analysis,please use perFrameFeaturesCalc2Csv.m"))
+        }
+    }
+    
+
+    
   
   
 }
