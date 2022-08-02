@@ -404,8 +404,8 @@ ggplot(data = se_and_median, aes(x = date, group = variable)) +
   geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = variable), alpha = .2)
 
 
-ggplot(se_and_median, aes(frame,median,color="blue")) +  geom_point()+
-geom_errorbar(aes(ymin=median-se, ymax=median+se), width=.2,position=position_dodge(0.05))
+ggplot(se_and_median, aes(frame,median,color="blue")) +  geom_point(size=0.5)+
+geom_ribbon(aes(ymin=median-se, ymax=median+se),alpha = .2)
 
 }
 ```
