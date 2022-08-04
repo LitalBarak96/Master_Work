@@ -1,4 +1,4 @@
-command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" creatExpNet.R ';
+command = '"C:\Program Files\R\R-4.2.0\bin\x64\Rscript.exe" creatExpNet.R ';
 prompt = {'how many population:'};
 dlgtitle = 'number of population';
 dims = [1 35];
