@@ -146,7 +146,9 @@ vizual<-function(){
 debbug_path_color<-"F:/RejectedvsMatedvsNaive/color.xlsx"
 debbug_path_param<-"F:/RejectedvsMatedvsNaive/params.xlsx"
 #the path that have all the scripts in
-path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
+
+path_to_scripts<-choose.dir(getwd(),"choose dir where sub scripts are located")
+#path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/scatter_plot/scatter_source"
 
 #sainity check # 3 trues
 print("this only need to bbe true in debug mode")

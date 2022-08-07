@@ -11,7 +11,7 @@ param.directed = false;
 param.jaabaFileName = 'registered_trx.mat';
 maxExperimentInteractions = -1;
 
-command = '"C:\Program Files\R\R-4.1.2\bin\x64\Rscript.exe" creatExpNet.R ';
+command = '"C:\Program Files\R\R-4.2.1\bin\x64\Rscript.exe" creatExpNet.R ';
 expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 [suggestedPath, ~, ~] = fileparts(expGroups{1});
 savePath = uigetdir(suggestedPath, 'Select folder to save csv file');

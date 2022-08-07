@@ -1,0 +1,84 @@
+---
+title: "markov"
+output: html_document
+date: '2022-05-25'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+
+tmat <- rbind(c(0, 1, 2),
+              c(NA, 0, 1),
+              c(NA, NA, NA))
+colnames(tmat) <- rownames(tmat) <- c("Healthy", "Sick", "Death")
+print(tmat)
+
+library("hesim")
+library("data.table")
+transitions_data <- data.table(multinom3_exdata$transitions)
+head(transitions_data)
+
+
+n_patients <- 100
+patients <- transitions_data[year == 1, .(patient_id, age, female)][
+  sample.int(nrow(transitions_data[year == 1]), n_patients)][
+  , grp_id := 1:n_patients]
+head(patients)
+
+hesim_dat <- hesim_data(
+  patients = patients,
+  strategies = data.table(strategy_id = 1:2,
+                          strategy_name = c("Reference", "Intervention")),
+  states = data.table(state_id = c(1, 2),
+                     state_name = rownames(tmat)[1:2]) # Non-death health states
+)
+labs <- get_labels(hesim_dat)
+print(labs)
+
+#hesim can simulate cDTSTMs with transition probabilities fit via multinomial logistic regression with the nnet package. The probability of a health state transition is modeled as a function of the treatment strategy, patient age, and gender
+
+
+library("nnet")
+library("splines")
+
+# Transitions from healthy state
+data_healthy <- transitions_data[state_from == "Healthy"]
+fit_healthy <- multinom(state_to ~ strategy_name + female + 
+                          ns(age, df = 5) + year_cat, 
+                        data = data_healthy, trace = FALSE)
+
+# Transitions from sick state
+data_sick <- droplevels(transitions_data[state_from == "Sick"])
+fit_sick <- multinom(state_to ~ strategy_name + female + 
+                       ns(age, df = 5) + year_cat, 
+                     data = data_sick, trace = FALSE)
+
+
+transfits <- multinom_list(healthy = fit_healthy, sick = fit_sick)
+
+```
+

@@ -1,0 +1,2639 @@
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Aggregation (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+599, 240, 343, 687, 692, 453, 194, 213, 463, 306, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+598, 333, 394, 829, 910, 148, 678, 246, 387, 379, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+709, 1094, 794, 2159, 1757, 1051, 1143, 679, 1524, 1459, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+463, 440, 388, 256, 407, 448, 162, 188, 434, 576, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+998, 264, 347, 136, 786, 746, 224, 433, 427, 959, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+1121, 259, 590, 599, 1359, 223, 640, 253, 104, 521, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+129, 11, 130, 73, 41, 17, 199, 63, 44, 25, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+367, 491, 562, 626, 386, 681, 599, 489, 435, 830, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+348, 183, 320, 743, 329, 167, 383, 275, 408, 121, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+1373, 3494, 1011, 933, 2626, 1203, 2166, 4789, 2871, 2065, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+3042, 2314, 1396, 1935, 1978, 2711, 937, 5642, 2020, 1404, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+1234, 1398, 784, 1483, 3090, 1076, 2916, 2933, 1418, 1800, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+2864, 4516, 1889, 4151, 3191, 3042, 2668, 2014, 2333, 1740, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+2782, 1978, 1064, 2531, 1332, 2708, 1124, 1959, 3432, 2966, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+1709, 1228, 2033, 1395, 2225, 2591, 1285, 1617, 1254, 1066, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+867, 858, 720, 848, 2497, 908, 1754, 653, 970, 925, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+1099, 2476, 1525, 1358, 1159, 1411, 1309, 754, 1547, 362, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+701, 1150, 967, 1609, 614, 2407, 508, 612, 794, 835, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+9101, 10347, 5722, 5700, 8931, 13220, 14345, 11558, 4970, 7465, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+574, 3500, 1391, 6155, 988, 7512, 6212, 2882, 8487, 3640, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+4472, 8667, 10694, 8554, 1124, 6837, 4352, 4051, 7893, 4580, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+2691, 8550, 1941, 3189, 1458, 3307, 2842, 9074, 10278, 2505, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+1624, 2198, 453, 5419, 7297, 1719, 6892, 3683, 1106, 5153, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+8882, 5488, 4342, 3594, 2558, 5532, 4661, 5273, 10845, 3236, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+6366, 5541, 7617, 2530, 5114, 10038, 7008, 6233, 5708, 6543, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+6137, 6275, 5316, 6357, 6262, 5367, 4005, 5411, 5909, 4790, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+1569, 777, 1189, 4001, 1537, 821, 1092, 1506, 300, 348, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+882, 1328, 2650, 726, 4256, 2660, 1276, 907, 1480, 4592, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+716, 2041, 1386, 1714, 2338, 1493, 983, 1492, 2509, 691, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+1997, 1999, 1002, 2499, 2898, 1243, 2151, 1621, 2842, 1802, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+939, 4575, 1640, 2991, 1802, 3649, 2778, 3109, 3210, 3666, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+2295, 3067, 1721, 4106, 5430, 3280, 2455, 4477, 1710, 6446, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+1662, 1187, 1546, 656, 2431, 1701, 1399, 1487, 589, 1228, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+1997, 2622, 3428, 2310, 1461, 2157, 1357, 852, 2082, 5467, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+5630, 2336, 2396, 1146, 1390, 3765, 1018, 2055, 2792, 2099, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+5.0597, 15.9526, 
+% ydata, CT-D
+3.60671, 12.0692, 
+% ydata, CT
+4.3332, 14.0109, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Chain (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+1626, 1041, 1535, 758, 564, 1328, 988, 1042, 970, 1399, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+641, 570, 989, 767, 576, 340, 357, 579, 371, 725, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+1398, 938, 1298, 720, 1659, 887, 1112, 1545, 507, 1083, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+1264, 965, 948, 745, 600, 883, 1315, 1193, 626, 1150, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+732, 1270, 1118, 934, 1179, 814, 895, 711, 864, 1009, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+450, 519, 1275, 841, 856, 561, 1124, 509, 582, 490, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+274, 357, 797, 458, 418, 678, 292, 437, 455, 390, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+420, 248, 449, 760, 585, 734, 488, 352, 757, 756, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+291, 501, 266, 246, 263, 340, 284, 275, 385, 301, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+854, 960, 1191, 1079, 1640, 1014, 1001, 651, 937, 869, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+291, 257, 470, 700, 450, 440, 523, 450, 412, 423, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+251, 225, 483, 573, 1637, 453, 2540, 1232, 1311, 670, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+1066, 564, 538, 2698, 2949, 1832, 1319, 664, 2037, 203, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+194, 317, 256, 130, 148, 174, 181, 285, 86, 162, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+494, 734, 769, 995, 772, 909, 840, 409, 1122, 433, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+587, 456, 460, 703, 393, 350, 558, 538, 404, 358, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+1217, 924, 1838, 880, 1305, 1306, 757, 1389, 2211, 554, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+768, 473, 536, 672, 550, 1098, 756, 551, 1124, 629, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+1480, 224, 803, 233, 887, 3727, 917, 1662, 315, 153, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+324, 187, 349, 240, 279, 245, 1336, 486, 456, 278, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+167, 3843, 1962, 4152, 376, 3392, 319, 581, 4968, 602, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+260, 2292, 242, 316, 303, 413, 76, 327, 650, 97, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+63, 125, 123, 319, 133, 190, 224, 526, 92, 282, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+1603, 3394, 1009, 532, 267, 403, 152, 278, 731, 314, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+345, 320, 505, 124, 142, 1401, 565, 1669, 595, 351, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+717, 1167, 768, 1464, 474, 1097, 324, 468, 1179, 878, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+615, 229, 380, 232, 410, 330, 772, 658, 303, 244, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+741, 1404, 538, 777, 368, 741, 653, 1219, 280, 843, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+1434, 1869, 1317, 1687, 1353, 1631, 1937, 789, 1973, 1016, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+716, 862, 769, 623, 639, 811, 398, 577, 463, 702, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+299, 1245, 230, 1113, 218, 247, 282, 261, 165, 486, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+432, 355, 597, 347, 432, 364, 447, 159, 131, 215, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+579, 281, 289, 455, 337, 159, 508, 315, 466, 323, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+576, 199, 389, 404, 226, 135, 303, 204, 516, 280, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+402, 239, 425, 290, 617, 347, 354, 400, 488, 160, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+3.16569, 2.97927, 
+% ydata, CT-D
+2.5788, 2.12822, 
+% ydata, CT
+2.87224, 2.55375, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Chase (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+1892, 1179, 1540, 799, 1164, 1867, 948, 1370, 866, 963, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+1268, 1125, 1486, 1221, 656, 784, 356, 1000, 857, 937, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+811, 1158, 957, 464, 1133, 667, 553, 911, 394, 839, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+500, 1155, 1235, 728, 766, 907, 1401, 1000, 974, 796, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+488, 820, 852, 762, 679, 650, 603, 793, 635, 771, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+496, 872, 991, 1040, 663, 807, 706, 530, 581, 852, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+1013, 1047, 1337, 872, 1005, 1324, 1147, 890, 925, 828, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+425, 602, 584, 858, 495, 551, 746, 337, 601, 762, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+840, 784, 1041, 747, 996, 887, 1728, 662, 659, 1149, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+734, 671, 719, 886, 838, 826, 506, 399, 859, 609, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+411, 391, 301, 653, 498, 340, 599, 460, 555, 425, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+479, 353, 509, 536, 404, 463, 467, 653, 345, 484, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+551, 113, 497, 503, 441, 568, 436, 475, 718, 303, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+199, 396, 174, 252, 135, 131, 240, 185, 200, 164, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+284, 547, 556, 801, 266, 350, 622, 382, 615, 503, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+505, 662, 696, 661, 400, 716, 604, 437, 445, 503, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+458, 816, 826, 841, 1178, 725, 542, 404, 772, 437, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+448, 684, 466, 485, 592, 692, 655, 512, 683, 578, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+522, 123, 199, 145, 242, 470, 240, 141, 98, 174, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+393, 185, 508, 775, 268, 310, 497, 192, 240, 506, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+277, 222, 174, 289, 250, 481, 356, 381, 250, 381, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+255, 184, 440, 456, 572, 197, 168, 145, 218, 232, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+333, 85, 197, 275, 179, 335, 147, 93, 458, 162, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+294, 81, 501, 190, 163, 426, 107, 171, 274, 199, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+171, 163, 232, 151, 330, 240, 268, 796, 201, 289, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+562, 322, 189, 257, 310, 317, 159, 210, 327, 630, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+1000, 906, 741, 313, 589, 627, 1436, 1117, 550, 173, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+1044, 1966, 298, 310, 282, 1612, 651, 2369, 346, 797, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+1468, 1845, 855, 1990, 1433, 1596, 2338, 521, 2269, 769, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+380, 839, 402, 482, 543, 875, 303, 416, 326, 401, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+273, 170, 115, 141, 360, 288, 195, 249, 237, 243, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+372, 239, 967, 387, 280, 356, 361, 235, 224, 308, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+656, 249, 334, 566, 322, 153, 347, 495, 550, 128, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+577, 119, 676, 70, 254, 136, 382, 427, 221, 357, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+478, 199, 1057, 292, 471, 559, 453, 403, 428, 256, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+2.82684, 1.99382, 
+% ydata, CT-D
+2.37693, 1.39345, 
+% ydata, CT
+2.60188, 1.69364, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Grooming (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+10289, 9739, 7605, 12058, 12582, 7182, 13766, 7520, 10398, 14924, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+9939, 12050, 10940, 10115, 9830, 13896, 12861, 9472, 11078, 10618, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+11344, 16372, 8202, 13364, 17743, 16224, 11817, 9051, 11335, 9856, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+15129, 10748, 11326, 13656, 12424, 9857, 8514, 10325, 12926, 11168, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+16239, 12259, 16172, 12241, 18959, 13884, 13829, 10312, 15465, 13394, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+11241, 9066, 11974, 8133, 12363, 13230, 13704, 9992, 10503, 10409, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+8416, 6767, 8515, 6462, 6302, 5545, 6788, 9597, 9070, 7652, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+17437, 11804, 11088, 9557, 9437, 11114, 12629, 9347, 13301, 8693, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+13572, 5506, 8155, 15637, 3447, 4908, 11596, 13128, 5717, 13403, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+11195, 12086, 11872, 17311, 11417, 10602, 12922, 12555, 12574, 14565, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+15514, 15579, 13486, 13424, 13667, 14621, 11318, 13965, 14758, 14230, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+13485, 13136, 6509, 11341, 14983, 8433, 14393, 11122, 12935, 11528, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+14598, 19728, 15150, 13379, 14067, 14378, 14298, 12710, 14137, 15449, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+12663, 10706, 17042, 13164, 10859, 17351, 12034, 8857, 13233, 14524, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+16621, 13632, 13627, 13394, 16614, 16246, 11723, 12639, 11514, 11208, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+13328, 14958, 12549, 13060, 16638, 13356, 13714, 14440, 14288, 13755, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+11745, 15267, 15016, 10445, 14521, 15128, 14568, 15532, 13950, 15453, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+12417, 13247, 11648, 11172, 8836, 10624, 9619, 8131, 13068, 11097, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+12400, 18256, 13458, 13377, 15830, 22853, 15737, 9918, 15331, 11534, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+11375, 14873, 6938, 12123, 5385, 11495, 18909, 16306, 12340, 9532, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+16370, 17053, 17869, 16106, 7934, 15404, 12127, 15559, 16882, 14695, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+12364, 15967, 9092, 11619, 15692, 14485, 15462, 18122, 13874, 10138, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+7725, 14941, 7571, 11751, 14010, 7195, 8732, 9544, 7600, 10074, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+17068, 15288, 18024, 13827, 8933, 12158, 14727, 16633, 16128, 19170, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+14205, 21493, 18587, 9186, 18738, 17224, 17053, 10938, 17281, 17225, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+16809, 21153, 14085, 16543, 16183, 14902, 14348, 18448, 13787, 11668, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+8082, 5582, 7054, 11859, 9834, 16099, 9820, 7619, 8666, 7568, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+11989, 14858, 17561, 13469, 20185, 18302, 13450, 16103, 20136, 20829, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+10709, 13119, 8579, 12243, 11804, 13204, 9843, 9489, 14465, 11765, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+13961, 13718, 13245, 16906, 16100, 10788, 15365, 14134, 16920, 15140, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+14397, 19547, 14502, 19094, 15248, 16959, 18753, 15161, 15408, 16236, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+12125, 13833, 10383, 15077, 18350, 13405, 13970, 17192, 15052, 17698, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+13049, 13180, 16377, 14603, 17832, 16513, 16466, 17977, 14077, 18790, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+15245, 16058, 21406, 18078, 8917, 19935, 17372, 16286, 19135, 17748, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+19367, 15816, 13360, 14992, 10895, 13842, 18421, 15873, 15316, 19274, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+46.6986, 55.3803, 
+% ydata, CT-D
+43.3689, 51.144, 
+% ydata, CT
+45.0338, 53.2621, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Interaction (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+3367, 2218, 2541, 1820, 1986, 2671, 2373, 2566, 1711, 3181, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+2285, 2491, 2703, 2264, 1967, 1960, 1639, 2226, 1763, 2677, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+2749, 3016, 2626, 2719, 2849, 2691, 2703, 2893, 1672, 3191, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+2322, 2187, 2511, 1760, 2565, 2084, 2729, 2647, 2430, 2578, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+2173, 2650, 2526, 2267, 3060, 2218, 2288, 2315, 2735, 2791, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+2113, 1897, 3399, 2519, 2588, 2159, 2448, 2186, 2030, 1654, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+1690, 2254, 2583, 2165, 2126, 2256, 1795, 2452, 2315, 1971, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+2241, 1529, 2434, 2537, 2133, 2261, 2195, 1791, 2263, 2737, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+1754, 1820, 1361, 1595, 1699, 1654, 1948, 1555, 1926, 2077, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+2131, 1909, 2106, 2190, 2692, 1966, 2146, 1913, 2414, 2231, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+1568, 1841, 1702, 2341, 1768, 1587, 1662, 1962, 2322, 1935, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+1371, 1596, 1747, 1705, 2096, 1788, 2389, 2000, 1927, 1561, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+1923, 1637, 1602, 2546, 1759, 2350, 2530, 2378, 2351, 1723, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+1179, 1444, 1181, 1331, 1145, 1351, 1401, 1250, 1275, 1153, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+1512, 2208, 2025, 2352, 1817, 1541, 2096, 1596, 2387, 1727, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+2104, 2143, 1923, 1887, 1380, 2069, 2081, 1753, 1989, 2100, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+1902, 2375, 2430, 1893, 2567, 2188, 2018, 2258, 2726, 1970, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+1874, 2252, 1931, 2038, 1672, 1967, 1968, 1741, 2272, 2458, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+1216, 759, 770, 968, 1172, 1334, 1068, 715, 827, 777, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+1549, 1206, 1492, 1549, 1462, 1125, 1398, 1316, 1061, 1358, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+1107, 1059, 917, 1532, 1295, 1383, 1161, 1408, 1182, 1261, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+1260, 910, 1179, 1355, 1418, 864, 1252, 1165, 946, 1432, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+1027, 988, 1220, 1050, 751, 948, 1065, 1126, 1041, 1035, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+1328, 971, 1077, 1276, 985, 1751, 727, 1222, 1356, 1061, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+865, 918, 1017, 1339, 1102, 1205, 1154, 1352, 935, 983, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+1536, 1175, 1195, 1720, 1531, 1115, 1077, 910, 1247, 1580, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+2195, 1218, 1492, 1461, 1370, 1351, 2207, 1971, 1552, 1449, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+2222, 2905, 1596, 3484, 1639, 2262, 1818, 2857, 1875, 1938, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+3157, 3504, 3088, 3391, 3178, 3334, 3517, 3288, 3287, 2662, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+1638, 1949, 2010, 1533, 1746, 2034, 1640, 1801, 1592, 1855, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+1321, 1515, 1114, 1389, 1241, 1052, 1131, 1239, 1327, 1234, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+1726, 1276, 1704, 1502, 1588, 1715, 1675, 1168, 1359, 1009, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+2034, 1646, 1367, 1574, 1419, 1211, 2033, 1432, 1750, 1338, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+1738, 1509, 1382, 1185, 1477, 1468, 1545, 1534, 1541, 1468, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+1609, 1468, 1972, 1521, 1457, 1921, 1357, 1733, 1726, 1419, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+8.09908, 6.07708, 
+% ydata, CT-D
+7.52617, 5.09229, 
+% ydata, CT
+7.81263, 5.58469, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Jump (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+7, 7, 0, 0, 0, 4, 2, 2, 1, 7, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+7, 4, 13, 2, 1, 3, 9, 2, 0, 8, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+6, 2, 2, 5, 0, 3, 2, 8, 3, 3, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+13, 3, 5, 8, 1, 0, 2, 7, 5, 11, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+8, 6, 8, 14, 9, 16, 4, 7, 9, 22, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+2, 8, 16, 8, 9, 2, 9, 1, 11, 3, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+3, 8, 1, 4, 3, 5, 2, 4, 4, 5, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+9, 8, 7, 7, 8, 10, 8, 13, 6, 12, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+3, 3, 9, 3, 2, 3, 0, 5, 3, 15, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+5, 1, 2, 4, 5, 0, 4, 1, 1, 7, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+2, 1, 7, 3, 3, 2, 6, 4, 8, 7, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+8, 1, 3, 12, 4, 6, 5, 6, 7, 19, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+3, 0, 1, 2, 4, 6, 4, 2, 5, 0, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+34, 12, 3, 4, 27, 29, 5, 21, 27, 38, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+1, 5, 5, 3, 8, 2, 4, 3, 4, 2, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+2, 3, 7, 4, 0, 3, 4, 3, 9, 2, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+11, 6, 15, 9, 4, 6, 4, 14, 23, 4, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+1, 3, 3, 3, 2, 1, 0, 2, 7, 8, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+0, 0, 8, 3, 1, 0, 6, 0, 1, 3, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+0, 12, 5, 5, 6, 2, 0, 7, 1, 3, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+3, 31, 18, 11, 13, 13, 5, 11, 8, 9, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+32, 3, 28, 20, 1, 50, 0, 15, 0, 2, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+2, 14, 0, 6, 17, 7, 4, 12, 2, 6, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+1, 4, 0, 2, 0, 3, 2, 0, 7, 4, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+7, 4, 13, 13, 19, 7, 8, 10, 7, 0, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+3, 36, 25, 4, 27, 18, 10, 12, 1, 11, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+18, 0, 3, 3, 1, 2, 3, 12, 1, 0, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+8, 4, 15, 3, 10, 19, 1, 3, 5, 22, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+30, 15, 11, 46, 1, 0, 33, 10, 4, 13, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+19, 8, 10, 26, 15, 8, 24, 32, 25, 10, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+4, 0, 5, 29, 3, 0, 10, 13, 2, 17, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+6, 5, 14, 5, 4, 13, 11, 6, 15, 9, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+16, 57, 8, 24, 22, 14, 23, 25, 21, 12, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+1, 0, 1, 11, 48, 8, 50, 20, 0, 21, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+0.0259895, 0.0425765, 
+% ydata, CT-D
+0.0186158, 0.0313187, 
+% ydata, CT
+0.0223026, 0.0369476, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Song (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+4, 14, 9, 1, 6, 11, 10, 9, 4, 8, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+12, 29, 24, 16, 6, 3, 9, 12, 3, 19, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+7, 14, 10, 2, 11, 7, 12, 15, 13, 17, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+17, 20, 14, 17, 5, 2, 24, 6, 7, 14, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+3, 12, 10, 7, 21, 13, 20, 8, 6, 15, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+12, 5, 27, 15, 9, 4, 7, 2, 13, 8, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+12, 12, 10, 10, 30, 6, 12, 15, 12, 14, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+10, 1, 12, 6, 13, 6, 18, 5, 1, 13, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+15, 16, 19, 21, 24, 20, 33, 13, 5, 18, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+11, 23, 13, 10, 4, 11, 4, 19, 8, 8, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+3, 7, 0, 11, 1, 7, 9, 8, 5, 4, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+19, 8, 7, 10, 10, 7, 0, 28, 14, 7, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+5, 1, 4, 4, 23, 13, 4, 10, 20, 6, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+7, 0, 4, 2, 0, 4, 3, 11, 6, 5, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+5, 13, 5, 8, 6, 3, 3, 7, 8, 16, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+10, 7, 9, 9, 8, 11, 8, 6, 6, 4, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+18, 26, 1, 32, 20, 11, 10, 1, 8, 10, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+3, 7, 6, 4, 7, 12, 10, 2, 3, 22, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+2, 1, 18, 13, 8, 1, 5, 22, 1, 5, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+4, 5, 5, 1, 4, 4, 4, 2, 6, 5, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+2, 2, 1, 8, 3, 6, 1, 7, 0, 1, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+2, 3, 3, 9, 16, 12, 3, 1, 0, 5, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+4, 7, 7, 2, 11, 1, 8, 4, 2, 7, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+8, 2, 13, 4, 2, 1, 13, 6, 13, 2, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+12, 1, 5, 1, 6, 3, 0, 11, 1, 17, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+17, 5, 1, 6, 3, 3, 3, 2, 0, 9, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+0, 7, 2, 15, 3, 1, 32, 4, 7, 1, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+22, 13, 9, 6, 8, 22, 3, 10, 8, 3, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+16, 9, 14, 18, 11, 38, 23, 6, 14, 4, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+4, 8, 3, 4, 14, 8, 6, 8, 10, 4, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+4, 0, 5, 3, 12, 6, 8, 5, 1, 2, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+5, 5, 8, 2, 0, 3, 4, 8, 3, 3, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+5, 0, 7, 7, 0, 2, 1, 1, 5, 2, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+3, 1, 24, 0, 3, 13, 8, 3, 5, 5, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+3, 6, 2, 10, 7, 1, 20, 13, 12, 4, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+0.0407291, 0.0262397, 
+% ydata, CT-D
+0.0347785, 0.0209033, 
+% ydata, CT
+0.0377538, 0.0235715, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Stop (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+9221, 5295, 7003, 9593, 8998, 4907, 4907, 6057, 7529, 10669, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+5710, 6350, 6006, 6763, 8550, 10833, 7897, 6110, 7977, 7040, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+6330, 8840, 7844, 13637, 15475, 10855, 11823, 6053, 9566, 10348, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+9802, 7266, 7947, 10386, 9519, 5198, 4597, 5663, 7362, 6213, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+12074, 4928, 9021, 7284, 11140, 7227, 5194, 4525, 6085, 8679, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+8630, 7091, 7819, 5321, 9281, 7652, 9216, 7936, 7577, 6131, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+3169, 3243, 4300, 2555, 3669, 2937, 2981, 3294, 4810, 4378, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+6601, 6812, 7156, 8121, 6896, 7084, 9014, 6837, 10716, 8033, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+6086, 5744, 5163, 9791, 3950, 3632, 7425, 6268, 3136, 9731, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+8794, 10050, 9355, 9701, 12089, 10633, 9116, 13144, 10351, 10538, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+13096, 10986, 10981, 9294, 9098, 15092, 9042, 13501, 9419, 7742, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+12143, 12065, 8616, 7960, 14541, 9245, 13410, 11774, 11668, 10019, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+9566, 17876, 10387, 10587, 10312, 10904, 10166, 8878, 9538, 9209, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+16453, 11893, 18380, 15135, 13354, 16716, 15500, 13356, 15692, 15275, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+13786, 12336, 12034, 9904, 14305, 14198, 11212, 12482, 10314, 10206, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+10319, 11041, 8504, 9768, 17211, 7438, 8172, 9282, 10642, 9879, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+7949, 8939, 10190, 6768, 8684, 8648, 8307, 8058, 9173, 7349, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+8478, 9770, 9867, 10317, 9023, 15613, 9992, 7515, 7839, 8010, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+14679, 21588, 17977, 23304, 19291, 22944, 21102, 18621, 18393, 17614, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+9567, 17090, 10980, 17126, 10108, 16911, 18983, 18562, 18054, 15096, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+19805, 17557, 18807, 17786, 10618, 16634, 14027, 16095, 18019, 16042, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+16045, 19124, 13908, 15050, 16332, 21211, 17851, 23807, 19448, 17883, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+11896, 20521, 10150, 18277, 20897, 10756, 16429, 18869, 15436, 19779, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+20345, 18242, 18153, 15641, 14564, 13834, 15751, 19515, 18372, 20997, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+18545, 21902, 18845, 15741, 19871, 19187, 19148, 13460, 19864, 21008, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+18706, 20643, 16385, 17451, 17302, 16922, 16130, 18776, 16944, 15058, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+12785, 8070, 11791, 18531, 12811, 15783, 12679, 10743, 7131, 9874, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+8747, 12471, 16711, 8165, 18218, 16333, 12928, 13398, 18556, 18719, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+13010, 12484, 12127, 13079, 14882, 12524, 9628, 8909, 14264, 13856, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+14229, 12170, 13590, 16745, 17075, 11827, 14796, 13043, 16608, 13923, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+11012, 18647, 13008, 17220, 14631, 16550, 16767, 16529, 14820, 14959, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+14667, 17370, 11799, 15357, 18849, 15604, 13664, 17984, 13947, 18944, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+12620, 12647, 13471, 13075, 15957, 14935, 14507, 17395, 12327, 17213, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+14450, 14455, 19478, 17823, 9712, 18500, 15402, 12990, 17841, 19090, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+18012, 18082, 15719, 15021, 10226, 14932, 15296, 14853, 16408, 16125, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+35.9051, 60.6108, 
+% ydata, CT-D
+31.3581, 56.9609, 
+% ydata, CT
+33.6316, 58.7859, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Touch (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+5725, 2663, 3407, 1918, 2481, 3961, 3164, 3356, 2108, 4953, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+3091, 3236, 3856, 2926, 2082, 2087, 1866, 2837, 2068, 3292, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+3579, 4644, 3792, 4853, 4912, 3892, 3341, 4345, 3437, 5001, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+3017, 2749, 3491, 2039, 3052, 2345, 3916, 3671, 3340, 3368, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+2801, 3708, 3587, 2938, 4740, 2819, 3106, 3226, 4208, 4167, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+3293, 2447, 5372, 3057, 3663, 2753, 3468, 2829, 2299, 1753, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+1750, 2600, 3146, 2312, 2134, 2451, 1949, 2866, 2544, 1919, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+2698, 1746, 2808, 3224, 2348, 2647, 2787, 2414, 2758, 3562, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+2360, 2055, 1400, 1836, 1800, 1825, 2286, 1710, 2142, 2538, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+3849, 4155, 3462, 3956, 5847, 3017, 3780, 4232, 3981, 4376, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+2271, 3625, 2722, 3978, 2301, 2045, 2533, 5536, 3846, 2958, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+1993, 2098, 2253, 2317, 4745, 2581, 4538, 3404, 2906, 2485, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+3950, 2264, 3004, 7083, 4449, 4560, 4500, 4028, 5987, 2739, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+853, 1510, 795, 1253, 794, 977, 1450, 1443, 1124, 1078, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+1966, 2972, 2982, 3703, 2379, 2186, 2909, 2015, 3640, 2768, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+2792, 2729, 2538, 2574, 1592, 2813, 3041, 2231, 2681, 2787, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+2712, 4828, 4675, 3407, 4961, 3316, 3530, 3874, 4737, 2871, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+2841, 3059, 2694, 3006, 2358, 3252, 2796, 2763, 3612, 3397, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+2616, 1848, 2359, 1030, 3155, 7002, 4609, 4047, 2221, 1411, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+1673, 1621, 1574, 1816, 1658, 1692, 1983, 1850, 1402, 1522, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+1698, 5009, 2627, 6429, 1258, 6941, 1605, 1433, 5748, 1574, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+1266, 1110, 1088, 1462, 1454, 905, 1344, 1935, 1539, 1439, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+691, 606, 845, 1188, 1085, 973, 1015, 1189, 816, 1152, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+1531, 1418, 1747, 1719, 1160, 1923, 1238, 1121, 1830, 1104, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+1173, 1258, 1611, 1091, 1625, 2202, 2535, 2046, 1694, 1412, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+3167, 1959, 2179, 3167, 3253, 2334, 1517, 1547, 1784, 2305, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+2217, 1160, 1277, 1992, 1069, 987, 2288, 2539, 1546, 1290, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+3114, 4707, 2170, 5152, 1835, 3156, 2720, 4389, 1872, 3537, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+3668, 4783, 3661, 4982, 4101, 4086, 4982, 4184, 4410, 2691, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+2270, 2532, 2117, 1904, 2046, 2471, 1780, 2686, 1724, 2424, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+1340, 2334, 1232, 1748, 2021, 1165, 1901, 1401, 2060, 1904, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+1896, 1700, 2273, 1842, 2546, 2413, 2338, 1596, 1513, 1192, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+2339, 1503, 1023, 1421, 1215, 946, 2136, 1367, 1656, 1207, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+1723, 2145, 2385, 1575, 1718, 1516, 1171, 1252, 1453, 2127, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+1661, 1940, 3082, 1672, 1726, 2252, 987, 1853, 2455, 1343, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+11.9724, 8.59311, 
+% ydata, CT-D
+10.5904, 7.04612, 
+% ydata, CT
+11.2814, 7.81962, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Turn (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+9833, 10630, 10190, 9241, 10063, 10859, 11981, 10038, 9950, 9042, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+10821, 10717, 10455, 10184, 9717, 8621, 10301, 10223, 9469, 10373, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+9928, 9537, 8527, 7143, 5836, 8089, 7515, 9829, 8430, 8540, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+10397, 10782, 11083, 9219, 10176, 11273, 12108, 11884, 10927, 11111, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+8767, 11225, 10115, 10968, 9144, 10776, 11116, 11585, 11378, 10081, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+10097, 10637, 10295, 11475, 10255, 10502, 9348, 10402, 10766, 10952, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+12580, 13271, 12756, 13519, 12662, 13282, 12732, 13829, 12035, 12767, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+11518, 10671, 11195, 10302, 11198, 10986, 10378, 11085, 9603, 11000, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+11361, 11448, 11207, 9493, 11634, 11357, 11049, 11351, 11461, 10070, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+9407, 8461, 9203, 9567, 8506, 8050, 9667, 7989, 8251, 9221, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+8024, 8874, 9189, 9547, 10054, 7438, 9320, 7886, 9873, 9769, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+8465, 7861, 9112, 9612, 6998, 8652, 7334, 7924, 8363, 8602, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+8395, 6142, 8485, 8499, 8200, 8507, 8538, 9204, 9003, 8698, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+5982, 7003, 5769, 6048, 7062, 6541, 6204, 6643, 6269, 6448, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+8074, 8743, 8809, 9593, 8034, 7752, 9188, 8023, 9108, 9767, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+9069, 9284, 10647, 10110, 6908, 10830, 10636, 10008, 9569, 9691, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+9850, 9472, 9162, 9822, 9776, 9937, 10144, 9906, 9579, 9891, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+8878, 9043, 8499, 8691, 9022, 6197, 8957, 9228, 9438, 9343, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+5783, 4490, 5958, 4417, 5035, 4220, 4752, 4797, 5474, 4930, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+7065, 5864, 6751, 5371, 6864, 5589, 4928, 5242, 5265, 5968, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+5598, 5988, 5700, 5853, 7765, 5996, 6447, 5871, 5633, 6243, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+5274, 5345, 6310, 6024, 5989, 4892, 5615, 4221, 5096, 5327, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+7430, 4606, 8041, 5294, 4445, 7650, 5527, 4976, 5777, 4855, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+4628, 6053, 5832, 6104, 6271, 6746, 6137, 5601, 5767, 5084, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+5444, 4944, 5102, 6117, 5648, 5302, 5518, 7038, 5247, 4892, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+5227, 5252, 5977, 5694, 5585, 5525, 5997, 5188, 5734, 5832, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+6571, 8038, 6965, 4911, 7183, 6367, 6790, 7472, 8620, 7805, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+8241, 6961, 6089, 9237, 5678, 6081, 6812, 6940, 5790, 5904, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+7068, 7595, 7221, 6910, 6305, 7513, 8510, 8755, 6547, 6906, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+6395, 7659, 7224, 6316, 5542, 6946, 7253, 7525, 6580, 6981, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+8636, 6177, 7545, 6368, 7010, 6765, 6557, 5948, 7226, 7008, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+6417, 4968, 7268, 6343, 5290, 5936, 6874, 5967, 6831, 5467, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+8215, 6719, 7474, 7268, 6451, 7316, 7427, 5969, 7400, 6624, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+7021, 7457, 5816, 6320, 8474, 6307, 7177, 7451, 6357, 5872, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+6206, 5553, 6062, 6739, 8556, 6495, 7165, 7371, 6161, 6599, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+36.872, 23.9156, 
+% ydata, CT-D
+34.3258, 22.655, 
+% ydata, CT
+35.5989, 23.2853, 
+% type=behavior bar chart
+% title=
+% xlabel=group
+% ylabel=Walk (%)
+
+
+% raw data
+% individual A
+% group dark
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114902
+% frames labelled
+16105, 19384, 18350, 16183, 16841, 19673, 18876, 18589, 18000, 14864, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T114943
+% frames labelled
+19190, 18386, 18838, 18866, 17242, 15271, 17226, 18947, 17877, 18003, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T115044
+% frames labelled
+17855, 16726, 17551, 12903, 10952, 15022, 14296, 18198, 16535, 15904, 
+% frames total
+27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 27005, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122912
+% frames labelled
+15281, 18079, 17242, 15499, 16237, 19169, 19769, 18547, 18050, 18897, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122922
+% frames labelled
+13868, 18440, 16049, 17493, 13816, 17355, 18718, 19661, 17204, 16253, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T122923
+% frames labelled
+16468, 17870, 16889, 19107, 16296, 17724, 16495, 17087, 17558, 18829, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125344
+% frames labelled
+21050, 20984, 19587, 21457, 20139, 21126, 21159, 20529, 19354, 20146, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125347
+% frames labelled
+16250, 17573, 17890, 17009, 17615, 18027, 16230, 17168, 14623, 16794, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180723T125353
+% frames labelled
+18833, 19309, 19835, 16102, 21133, 20479, 17904, 18267, 20256, 15991, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122740
+% frames labelled
+17100, 16474, 16786, 16097, 13992, 15836, 16356, 13153, 16247, 15271, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122745
+% frames labelled
+13029, 15086, 15084, 16712, 16478, 11089, 16710, 12151, 15932, 17897, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122747
+% frames labelled
+14369, 14181, 17390, 17645, 11859, 17033, 12714, 14372, 14408, 16181, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T122748
+% frames labelled
+16086, 8517, 15181, 15006, 15838, 14964, 15337, 16699, 16102, 16130, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T125040
+% frames labelled
+9727, 14370, 7848, 11351, 12699, 9080, 11078, 12392, 10194, 10810, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130953
+% frames labelled
+12165, 13942, 14157, 15808, 11873, 11872, 14899, 13948, 15838, 16040, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T130958
+% frames labelled
+15700, 14932, 17132, 15956, 9103, 17738, 16962, 16639, 15297, 15772, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131001
+% frames labelled
+17217, 16159, 15306, 18603, 16868, 16837, 17185, 16672, 15924, 17518, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\Dark\Assa_Males_Grouped_Dark_Unknown_RigA_20180726T131012
+% frames labelled
+17365, 15300, 16011, 15375, 17181, 10296, 16431, 18429, 16847, 17172, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% individual A
+% group light
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125530
+% frames labelled
+11976, 5255, 8641, 3418, 7487, 3649, 5516, 8114, 8471, 9232, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125532
+% frames labelled
+16698, 9465, 15800, 9278, 16085, 9795, 7698, 7891, 8810, 11504, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125537
+% frames labelled
+6333, 8299, 7399, 8231, 15342, 9488, 12423, 10101, 8128, 9921, 
+% frames total
+27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 27004, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T125538
+% frames labelled
+10756, 7502, 12700, 11679, 10404, 5613, 8948, 3126, 7355, 8849, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131824
+% frames labelled
+14352, 6359, 15772, 8337, 6119, 15277, 10251, 8017, 11382, 7057, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131836
+% frames labelled
+6161, 7947, 8254, 10854, 11895, 12533, 10857, 6884, 8230, 5614, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131852
+% frames labelled
+8161, 4568, 7783, 10824, 6749, 7447, 7456, 13046, 6806, 5703, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180712T131901
+% frames labelled
+7974, 6045, 10001, 8796, 9074, 9767, 10140, 7688, 9583, 11499, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120810
+% frames labelled
+13509, 17714, 14299, 8014, 13335, 10290, 13463, 15128, 18343, 16253, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T120905
+% frames labelled
+17046, 13816, 9866, 17778, 8341, 10314, 13426, 12435, 7899, 7680, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180723T121000
+% frames labelled
+12988, 13527, 14017, 13068, 11449, 13477, 15876, 17044, 11837, 12159, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124941
+% frames labelled
+11771, 13946, 12809, 9153, 9676, 14548, 11314, 13389, 9579, 12637, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124945
+% frames labelled
+14562, 7714, 13239, 8849, 11729, 9782, 9400, 9690, 10915, 11372, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T124951
+% frames labelled
+12124, 9634, 14665, 10895, 7712, 11158, 12448, 8651, 12508, 7181, 
+% frames total
+27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 27003, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133013
+% frames labelled
+13211, 13845, 12154, 13128, 10281, 10834, 11605, 8935, 13932, 8936, 
+% frames total
+27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 27002, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133016
+% frames labelled
+11799, 10955, 6603, 8066, 16399, 7784, 10417, 12739, 8077, 7089, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+% experiment W:\Shir Ben Shaanan\Networks\Dark & Light\light\Assa_Males_Grouped_Unknown_RigA_20180726T133023
+% frames labelled
+8544, 8627, 11067, 11349, 15143, 11643, 10116, 10856, 10080, 9821, 
+% frames total
+27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 27001, 
+
+
+% summary data
+% xdata
+dark, light, 
+% ydata, CT+D
+62.2398, 40.4416, 
+% ydata, CT-D
+58.6106, 37.1183, 
+% ydata, CT
+60.4252, 38.7799, 
+
+% statistics
+% behavior, 
+% dark, light, (sample size), 
+% dark, light, (K-S normal), 
+% dark, light, (mean), 
+% dark, light, (std. dev.), 
+% t-test, 
+% Wilcoxen, 
+% 
+Aggregation, 
+18, 17, 
+**4.2911e-12**, **2.1374e-16**, 
+4.3332, 14.0109, 
+3.0823, 8.0059, 
+**3.6146e-05**, 
+**4.5796e-05**, 
+
+Chain, 
+18, 17, 
+**2.9257e-12**, **2.6116e-11**, 
+2.8722, 2.5537, 
+1.245, 1.7545, 
+0.53809, 
+0.21583, 
+
+Chase, 
+18, 17, 
+**4.3183e-14**, **1.2652e-10**, 
+2.6019, 1.6936, 
+0.9544, 1.2377, 
+**0.020253**, 
+**0.0028178**, 
+
+Grooming, 
+18, 17, 
+**2.7801e-17**, **2.1373e-16**, 
+45.0338, 53.2621, 
+7.0633, 8.7334, 
+**0.0042288**, 
+**0.0025282**, 
+
+Interaction, 
+18, 17, 
+**2.7804e-17**, **2.167e-16**, 
+7.8126, 5.5847, 
+1.2153, 2.0302, 
+**0.00037071**, 
+**0.00020477**, 
+
+Jump, 
+18, 17, 
+**9.3095e-05**, **0.00018071**, 
+0.022303, 0.036948, 
+0.015642, 0.023208, 
+**0.034868**, 
+0.066985, 
+
+Song, 
+18, 17, 
+**8.4856e-05**, **0.00015723**, 
+0.037754, 0.023571, 
+0.012623, 0.011001, 
+**0.0012336**, 
+**0.00067449**, 
+
+Stop, 
+18, 17, 
+**2.7801e-17**, **2.1373e-16**, 
+33.6316, 58.7859, 
+9.6457, 7.5246, 
+**6.7066e-10**, 
+**1.33e-06**, 
+
+Touch, 
+18, 17, 
+**2.7833e-17**, **2.1689e-16**, 
+11.2814, 7.8196, 
+2.9317, 3.1892, 
+**0.0020569**, 
+**0.0034898**, 
+
+Turn, 
+18, 17, 
+**2.7801e-17**, **2.1373e-16**, 
+35.5989, 23.2853, 
+5.4011, 2.5987, 
+**7.7995e-10**, 
+**1.8495e-06**, 
+
+Walk, 
+18, 17, 
+**2.7801e-17**, **2.1373e-16**, 
+60.4252, 38.7799, 
+7.6987, 6.8511, 
+**3.918e-10**, 
+**1.33e-06**, 
+
