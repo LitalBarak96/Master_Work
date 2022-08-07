@@ -150,7 +150,7 @@ vizual<-function(){
 debbug_path_color<-"D:/Assa/Elia/Ex_5/Females/color.xlsx"
 debbug_path_param<-"D:/Assa/Elia/Ex_5/Females/params.xlsx"
 #the path that have all the scripts in
-path_to_scripts<-choose.dir(getwd(),"choose dir where sub scripts are located")
+path_to_scripts<-"D:/MATLAB/runAll/scatterPlot/scatter_source"
 
 #sainity check # 3 trues
 print("this only need to bbe true in debug mode")
