@@ -16,7 +16,7 @@ library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE
 
 dot<-0
 xsize<-0
@@ -147,10 +147,10 @@ vizual<-function(){
 #EXTRACTION AND USER INPUT TO LIST OF DIRS
 ############################################################################################################
 
-debbug_path_color<-"D:/Assa/Elia/Ex_5/Females/color.xlsx"
-debbug_path_param<-"D:/Assa/Elia/Ex_5/Females/params.xlsx"
+debbug_path_color<-"D:/exp6/allGroupes/color.xlsx"
+debbug_path_param<-"D:/exp6/allGroupes/params.xlsx"
 #the path that have all the scripts in
-path_to_scripts<-"D:/MATLAB/runAll/scatterPlot/scatter_source"
+path_to_scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
 
 #sainity check # 3 trues
 print("this only need to bbe true in debug mode")
