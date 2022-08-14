@@ -9,7 +9,7 @@ date: '2022-06-20'
 #using the csv of per frame
 ```{r}
 
-main_path<-"D:/assa_cyp6a20_controls"
+main_path<-"D:/allGroups"
 
 list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
 
@@ -81,14 +81,14 @@ library(ggplot2)
 
  jpeg(filename = paste0(basename(path_to_group),"_per_frame_degree.jpeg"),width = 1200, height = 800)
 
-p<-ggplot()+geom_line(data = only_values_all_movies, mapping = aes(x = X, y = Value,group=group,color=group)) +geom_point(data=mean_every_row, aes(x=Frame, y=Value), color='red', size = 3,alpha = 0.15)
+p<-ggplot()+geom_line(data = only_values_all_movies, mapping = aes(x = X, y = Value,group=group,color=group)) +geom_point(data=mean_every_row, aes(x=Frame, y=Value), color='black', size = 2,alpha = 0.15)
 
- p<-p+theme(text = element_text(size=10),
-        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(paste0(basename(path_to_group)," every frame all movies")) +
-  xlab("frames") + ylab("dgree(sum)") +theme(
-plot.title = element_text(color="red", size=7, face="bold.italic"),
-axis.title.x = element_text(color="blue", size=7, face="bold"),
-axis.title.y = element_text(color="#993333", size=7, face="bold")
+ p<-p+theme(text = element_text(size=12),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(paste0(basename(path_to_group)," density per frame all movies with avarge")) +
+  xlab("frames") + ylab("density") +theme(
+plot.title = element_text(color="black", size=14, face="bold.italic"),
+axis.title.x = element_text(color="black", size=12, face="bold"),
+axis.title.y = element_text(color="black", size=12, face="bold")
 ) + ylim(0, 50)
  
  
