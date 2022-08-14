@@ -1,0 +1,371 @@
+---
+title: "Untitled"
+author: "lital barak"
+date: "2022-08-14"
+output: html_document
+---
+
+
+
+```{r}
+group.colors <- c("#3D1A39", "#CC6600", "#9633FF",  "#E2FF33",  "#E3DB71","#E3DB71")
+
+```
+
+
+avarge of density of all condition all movies with error bars
+```{r}
+
+all_sd_and_avg_all_conditions_final<-NULL
+main_path<-"D:/allGroups"
+
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  for(num_of_movie in 1:length(dir_subGroup)){
+      if(!file.exists(paste0(dir_subGroup[num_of_movie], '/','all_frames_degree_new.csv'))){
+    warning(paste0("all_frames_degree.csv don't exist in ", dir_subGroup[num_of_movie]))
+      }else{
+    all_frames<-read.csv(paste0(dir_subGroup[num_of_movie],'/','all_frames_degree_new.csv'))
+  }
+  }
+
+
+}
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  
+  #find all files that have the file
+  all.the.files <- dir(path_to_group, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+  #get the full path
+all__subfile_fullpath<-paste0(path_to_group,"/",all.the.files)
+
+library(purrr)
+#bind all with coloms for current group
+data_bined_csv<- 
+    all__subfile_fullpath %>%  map_dfr( ~ read.csv(.x) )
+
+
+data_colom_bined<- 
+    all__subfile_fullpath %>%  map_dfc( ~ read.csv(.x) )
+
+#keep only the values,I didnt worte the movie name cuz he was very long and distrupted the visullization of the graph
+#actuall changed my mind,did rbind and only removed the frames so i could show each group together
+
+
+value_of_density <- data_colom_bined[,grepl("Value", colnames(data_colom_bined))]
+
+
+#gave evrey movie a number
+colnames(value_of_density)<-1:length(all.the.files)
+
+
+colnames(value_of_density)<-paste0("value",colnames(value_of_density))
+
+
+
+
+library(dplyr)
+library(matrixStats)
+
+columns <- c(colnames(value_of_density))
+
+#value_of_density<-value_of_density %>% 
+#mutate(Mean= rowMeans(.[columns]), stdev=rowSds(as.matrix(.[columns])))
+
+Mean= rowMeans(value_of_density)
+se=rowSds(as.matrix(value_of_density))/sqrt(length(value_of_density))
+mean_and_sd_all_conditions<-as.data.frame(cbind(Mean,se))
+mean_and_sd_all_conditions$frame<-1:nrow(mean_and_sd_all_conditions)
+mean_and_sd_all_conditions$group<-basename(path_to_group)
+
+
+all_sd_and_avg_all_conditions_final<-bind_rows(all_sd_and_avg_all_conditions_final,mean_and_sd_all_conditions)
+#ggplot(mean_and_sd_all_conditions, aes(frame,Mean,color="blue")) +  geom_point(size=0.5)+
+#geom_ribbon(aes(ymin=Mean-stdev, ymax=Mean+stdev),alpha = .2)
+
+}
+
+pl <- ggplot(data=all_sd_and_avg_all_conditions_final, aes(y=Mean, x=frame, group=group, colour=group,
+                      fill=group)) +
+geom_point() +
+geom_line() +
+geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.5, linetype=0) +facet_wrap(~ group)+
+theme_minimal()+ggtitle("density per frame all conditions all movies with se") +
+  xlab("frames") + ylab("density") +theme(
+plot.title = element_text(color="black", size=12, face="bold.italic"),
+axis.title.x = element_text(color="black", size=10, face="bold"),
+axis.title.y = element_text(color="black", size=10, face="bold"))
+
+# looks ok, no lines at the edges
+plot(pl)
+
+```
+
+
+
+```{r}
+
+
+
+library(plotly)
+
+set.seed(1)
+dt <- data.frame(x=rep(1:7,2), group=rep(letters[1:2], each=7), value=runif(14))
+dt$lwr <- dt$value*.9
+dt$upr <- dt$value*1.1
+
+# build plot in ggplot, don't want lines at the edge
+pl <- ggplot(data=dt, aes(y=value, x=x, group=group, colour=group,
+                      fill=group)) +
+geom_point() +
+geom_line() +
+geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=.3, linetype=0) +
+theme_minimal()
+
+# looks ok, no lines at the edges
+pl
+
+# no lines at edges
+dd = ggplotly(pl)
+dd$x$data[[3]]$line$color = "rgba(248,118,109,0.0)"
+dd$x$data[[4]]$line$color = "rgba(0,191,196,0.0)"
+dd
+```
+
+
+
+
+
+avarge and se of component
+```{r}
+
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+library(dplyr)
+library(ggplot2)
+library(zoo)
+library(tidyr)
+
+all_condtion_se_and_mean<-NULL
+main_path<-"D:/allGroups"
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+####paramters setting
+length_of_movie<-27000
+#how many frame in a batch
+number_of_frame<-1
+#number of movies to analys
+#seq by the  number of frames
+numbers<-seq(1, length_of_movie, by=number_of_frame)
+#use the data of interaction that used angelsub
+with_Angelsub<-TRUE
+#length(order_of_paths)
+for(condition in 1:length(list_of_all_groups)){
+path_of_condition<-list_of_all_groups[condition]
+#path of the main condition
+dir<-list.dirs(recursive = F,path =path_of_condition )
+#####
+number_of_movies<-length(dir)
+
+
+
+if(with_Angelsub == TRUE){
+  name_of_mat<-"AllinteractionWithAngelsub.mat"
+}else{
+  name_of_mat<-"Allinteraction.mat"
+}
+
+
+########loop of each movie
+all_movie_component<-NULL
+for(num_of_movie in 1:number_of_movies){
+  #if the mat file is not existing
+  filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
+  #if the component size csv is not exisitng
+  filepath_csv_component<-paste0(dir[num_of_movie], '/',"componentSize.csv")
+
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
+}
+
+  
+#if the component csv not exist creat it
+if(!(file.exists(filepath_csv_component))){
+  
+  
+  #####orgenaizing the data for analysis
+  mat <- (readMat(paste0(dir[num_of_movie], '/',name_of_mat)))
+  #find how many flys in each movie - it should be 10 but sometimes its less
+  number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
+  if(number_of_flys!=10){
+    stop("the number of flys is not 10,please check if it effect the script somehow and why its not 10")
+  }
+  #read each MAT file by the number of flys
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  df_mat<-na.omit(df_mat)
+  #creat the df with the name of each fly for consistancy
+  colnames(df_mat)<-c(1:number_of_flys)
+  rownames(df_mat)<-c(1:number_of_flys)
+  ####
+  
+  
+  #####get the subscripts of calcualtion
+  path_to_sub_Scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+    setwd(path_to_sub_Scripts)
+    files.sources = list.files()
+    sapply(files.sources, source)
+  #####
+    
+    
+  ####get who interacting with who and at what frames 
+  all<-data.frame()
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+  #for the acasct every interaction mean 1 
+  all<-cbind(all,1)
+  ##### 
+
+  
+  #####creat network for each frame to claculate the component (cc is compnent)
+  all_changes_current_movie<-NULL
+for(i in 1:(length(numbers)-1)){
+  #get net and subnet for component size
+  current_net<-creat_network(all,i,numbers)
+  sub_current_net<-biggest_cc_subgraph(current_net)
+    if(sub_current_net[[2]] == FALSE){
+    # no sub cluster bigger than 3
+    sub_current_net<-(sub_current_net[[1]])
+    size_of_biggest_cc_current = 0
+  }else{
+    sub_current_net<-(sub_current_net[[1]])
+    size_of_biggest_cc_current= length(sub_current_net)
+  }
+  #####
+  
+  #####binding the data for dataframe usage
+  #without the frame number becuase when we do it for multipul movies we want to cbind and than do melt
+  tmp<-data.frame(size_cc = size_of_biggest_cc_current)
+  all_changes_current_movie<-rbind(all_changes_current_movie,tmp)
+  print(i)
+  #####
+  
+  
+}
+  #writing to csv to save claulating time
+write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = FALSE)
+print(num_of_movie)
+
+#if the component do exist
+}else{
+ print("file component is already exist,using him")
+  #reading existing csv
+ all_changes_current_movie<- read.csv(filepath_csv_component)
+ print(num_of_movie)
+
+}
+  #binding to colums to do melt at the end
+ all_movie_component<-bind_cols(all_movie_component,all_changes_current_movie)
+}
+########end loop all movies
+
+
+
+###each colum individaully rollmean
+rollmeans_colums<-NULL
+for(colums in 1:number_of_movies){
+  #doing rollmean on each colum separately with batch of 1000 in each rollmean
+  #added pad of na at the ends
+  means <- sapply(c("center"),
+                function(x)zoo::rollmean(all_movie_component[,colums],1000,align = x, na.pad = TRUE))
+  #combind the colums together
+  rollmeans_colums<-cbind(rollmeans_colums,means)
+}
+####
+
+
+###final formating of the data for visual for the meanroll
+rollmeans_colums<-as.data.frame(rollmeans_colums)
+#remove na that was for padding
+means_no_na<-rollmeans_colums %>% drop_na()
+#add the frames
+#names of coloms
+colnames(means_no_na)<-c(c(1:number_of_movies))
+#melt the data for visual
+
+library("plotrix")
+
+
+
+
+Mean= rowMeans(means_no_na)
+se=rowSds(as.matrix(means_no_na))/sqrt(length(means_no_na))
+mean_and_se_per_conditions<-as.data.frame(cbind(Mean,se))
+mean_and_se_per_conditions$frame<-1:nrow(mean_and_se_per_conditions)
+mean_and_se_per_conditions$group<-basename(path_of_condition)
+
+
+
+all_condtion_se_and_mean<-bind_rows(all_condtion_se_and_mean,mean_and_se_per_conditions)
+
+
+
+
+
+
+}
+order_of_paths<-c("D:/allGroups/Females_Mated","D:/allGroups/Females_Grouped","D:/allGroups/Females_Singles","D:/allGroups/Males_Grouped","D:/allGroups/Males_Mated","D:/allGroups/Males_Singels")
+
+
+component_plot <- ggplot(data=all_condtion_se_and_mean, aes(y=Mean, x=frame, group=group, colour=group,
+                      fill=group)) +scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singels"="chartreuse4")) +
+geom_point() +
+geom_line() +
+geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.5, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singels"="chartreuse4")) +
+theme_minimal()+ggtitle("component size(after moving avarge) per frame all conditions all movies with se") +
+  xlab("frames") + ylab("component size") +theme(
+plot.title = element_text(color="black", size=12, face="bold.italic"),
+axis.title.x = element_text(color="black", size=10, face="bold"),
+axis.title.y = element_text(color="black", size=10, face="bold"))
+
+
+# looks ok, no lines at the edges
+plot(component_plot)
+
+
+
+ggplot(data = se_and_median, aes(x = date, group = variable)) + 
+  geom_line(aes(y = mean, color = variable), size = 1) + 
+  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = variable), alpha = .2)
+
+
+ggplot(se_and_median, aes(frame,median,color="blue")) +  geom_point(size=0.5)+
+geom_ribbon(aes(ymin=median-se, ymax=median+se),alpha = .2)
+```
+
+
