@@ -147,10 +147,10 @@ vizual<-function(){
 #EXTRACTION AND USER INPUT TO LIST OF DIRS
 ############################################################################################################
 
-debbug_path_color<-"D:/exp6/allGroupes/color.xlsx"
-debbug_path_param<-"D:/exp6/allGroupes/params.xlsx"
+debbug_path_color<-"D:/Assa/Elia/Ex_5/Females/color.xlsx"
+debbug_path_param<-"D:/Assa/Elia/Ex_5/Females/params.xlsx"
 #the path that have all the scripts in
-path_to_scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
+path_to_scripts<-choose.dir(getwd(),"choose dir where sub scripts are located")
 
 #sainity check # 3 trues
 print("this only need to bbe true in debug mode")
