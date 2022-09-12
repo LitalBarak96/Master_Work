@@ -1,0 +1,35 @@
+---
+title: "histogram_interaction"
+output: html_document
+date: '2022-07-05'
+---
+
+
+```{r}
+
+
+
+filepath<-file.choose()
+filename<-basename(filepath)
+mat <- scan(toString(filepath))
+numCol <- sqrt(length(mat))
+mat <- matrix(mat, ncol = numCol, byrow = TRUE)
+
+rownames(mat)<-1:10
+
+sapply(c("dplyr", "ggplot2"), require, character.only = T)
+
+#  convert from matrix to data frame and preserve row names as column
+mat <- data.frame(fly = row.names(mat), as.data.frame(mat), row.names = NULL)
+library(tidyr)
+colnames(mat)<-c("fly",1:10)
+# gather so in a tidy format for ease of use in ggplot2
+mat <- gather(as.data.frame(mat), lambda, value, -1)
+#mat$fly<-as.numeric(mat$fly)
+# plot 1 as described in question
+#ggplot(mat, aes(x = fly, y = value)) + geom_histogram(aes(fill = lambda), stat = "identity", position = "dodge")        
+
+# plot 2 using facets to separate as an alternative
+ggplot(mat, aes(x = fly, y = value)) + geom_histogram(stat = "identity") + facet_grid(. ~ lambda)+ggtitle(filename)
+
+```

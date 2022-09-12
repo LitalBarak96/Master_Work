@@ -11,11 +11,22 @@ options(knitr.duplicate.label = "allow")
 ## R Markdown
 #tsne all sub groups
 ```{r all sub groups}
-#all groupes
-  library(stringr)
+
+
+debbug_path_color<-"D:/EX5_6/color.xlsx"
+file.exists(debbug_path_color)
+
+
+if(file.exists(debbug_path_color)){
+    library(stringr)
   library(openxlsx)
   dirs <- as.data.frame(read.xlsx("F:/allGroups/color.xlsx"))
   num_of_pop<<-nrow(dirs)
+}else{
+  stop("worng paths change please to what needed")
+}
+#all groupes
+
   
   
   dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) X = numeric(num_of_pop)))
