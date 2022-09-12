@@ -7,6 +7,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+debbug_path_color<-"D:/EX5_6/color.xlsx"
+file.exists(debbug_path_color)
+
+paths_of_groups <- as.data.frame(read.xlsx(debbug_path_color))
+
+library(stringr)
+library(dplyr)
+
+dirs<-paths_of_groups %>%
+  filter(str_detect(groupNameDir, "Mated"))
+```
+
 ## R Markdown
 #tsne for female mated and male mated
 
@@ -14,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #all groupes
   library(stringr)
   library(openxlsx)
-  dirs <- as.data.frame(read.xlsx("F:/allGroups/mated_color.xlsx"))
+  #dirs <- as.data.frame(read.xlsx("F:/allGroups/mated_color.xlsx"))
   num_of_pop<<-nrow(dirs)
   
   
@@ -111,11 +124,11 @@ tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
 #plot(tsne_results$Y, col = colors[scaled_dat$id], bg= colors[scaled_dat$id], pch = 21, cex = 1.2)
 plot(tsne_results$Y, col = "black", bg= colors[scaled_dat$id], pch = 21, cex = 1.2)
 
-legend(x = "topleft",          # Position
-       legend =names(colors),fill= colors,cex=0.5)
+#legend(x = "topleft",          # Position
+     #  legend =names(colors),fill= colors,cex=0.5)
 
 
-ggsave(file="male_vs_female_mated.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
+#ggsave(file="male_vs_female_mated.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
 
 
 ```

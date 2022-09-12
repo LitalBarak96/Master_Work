@@ -20,7 +20,7 @@ file.exists(debbug_path_color)
 if(file.exists(debbug_path_color)){
     library(stringr)
   library(openxlsx)
-  dirs <- as.data.frame(read.xlsx("F:/allGroups/color.xlsx"))
+  dirs <- as.data.frame(read.xlsx(debbug_path_color))
   num_of_pop<<-nrow(dirs)
 }else{
   stop("worng paths change please to what needed")
@@ -126,7 +126,8 @@ plot(tsne_results$Y, col = "black", bg= colors[scaled_dat$id], pch = 21, cex = 1
  
 #      legend =names(colors),fill= colors,bty = "n")
 
-ggsave(file="all_sub_groupes.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
+
+#ggsave(file="all_sub_groupes.jpeg",device="jpeg",path="D:/EX5_6/tsne",units="cm",width=20,height=20,dpi="retina")
 
 
 ```

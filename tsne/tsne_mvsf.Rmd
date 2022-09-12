@@ -1,9 +1,13 @@
 ```{r male vs female}
-rm(list = ls())
+#rm(list = ls())
+
+debbug_path_color<-"D:/EX5_6/color.xlsx"
+file.exists(debbug_path_color)
+
+dirs <- as.data.frame(read.xlsx(debbug_path_color))
 #male vs female
 library(stringr)
 library(openxlsx)
-  dirs <- as.data.frame(read.xlsx("F:/allGroups/dirs.xlsx"))
   num_of_pop<<-nrow(dirs)
   
   
@@ -155,20 +159,24 @@ library(readr)
 library(Rtsne)
 tag<-all_feature_final$id
 colors = rainbow(length(unique(scaled_dat$id)))
+#colors<-c("#AA4371","#CCFF00")
 names(colors) = unique(scaled_dat$id)
+#female is yellow
+#male is blue
+colors[1]<-"#CCFF00"
 
 ## Run the t-SNE algorithm and store the results into an object called tsne_results
 tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
 #THE DEFULAT IS 1000 ITERS
 plot(tsne_results$Y, col = colors[scaled_dat$id], bg= colors[scaled_dat$id], pch = 21, cex = 1.5)
 #text(tsne_results$Y, labels=scaled_dat$id, col=colors[scaled_dat$id])
-legend(x="topleft",legend = names(colors),fill=colors,cex=0.5)
+legend(x="topleft",legend = names(colors),fill=colors,cex=0.9)
 ```
 
 
 ```{r male vs female}
 ##ALSO WITH SAMPLING
-numTrain <-1190
+numTrain <-600
 set.seed(1)
 rows <- sample(1:nrow(scaled_dat), numTrain)
 train <- scaled_dat[rows,]
