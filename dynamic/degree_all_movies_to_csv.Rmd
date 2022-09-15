@@ -25,9 +25,9 @@ number_of_Frames<-27001
 number_of_flys<-10
 number_of_frame<-1
 
-list_of_all_groups<-list.dirs(path = "D:/assa_cyp6a20_controls", full.names = TRUE, recursive = FALSE)
+list_of_all_groups<-list.dirs(path = "D:/EX5_6", full.names = TRUE, recursive = FALSE)
 Number_of_groups<-length(list_of_all_groups)
-number_of_dirs<-round(length(list.dirs(recursive = T,path = "D:/assa_cyp6a20_controls"))/2)
+number_of_dirs<-round(length(list.dirs(recursive = T,path = "D:/EX5_6"))/2)
 
 
 current_index<-0
@@ -57,7 +57,7 @@ f <- function(x) {
 
 
 
-path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
 
 
   current_dir_Scripts =getwd()

@@ -8,14 +8,14 @@ param.interactionsDistance = 8;
 %param.interactionsAnglesub = 0;
 param.oneInteractionThreshold = 120;
 param.startFrame = 0;
-param.endFrame = 54000;
+param.endFrame = 27000;
 param.directed = false;
 param.jaabaFileName = 'registered_trx.mat';
 maxExperimentInteractions = -1;
 
 %please note that need to be in each movie 10 flys
 
-addpath 'C:\Users\barakli8\OneDrive - Bar Ilan University\Lital\code\interactions_network\dynamic\code'
+addpath 'C:\Users\lital\OneDrive - Bar Ilan University\Lital\code\interactions_network\dynamic\code'
 expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 [suggestedPath, ~, ~] = fileparts(expGroups{1});
 numOfGroups = length(expGroups);
