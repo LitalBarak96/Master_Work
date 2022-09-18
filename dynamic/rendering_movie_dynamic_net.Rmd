@@ -23,7 +23,8 @@ output: html_document
 ```{r}
   library(R.matlab)
 #where the subscripts is located
-path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+path_to_scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
+
 
 
   current_dir_scripts =getwd()

@@ -29,7 +29,7 @@ library(zoo)
 library(tidyr)
 
 
-order_of_paths<-c("D:/allGroups/Females_Mated","D:/allGroups/Females_Grouped","D:/allGroups/Females_Singles","D:/allGroups/Males_Grouped","D:/allGroups/Males_Mated","D:/allGroups/Males_Singels")
+order_of_paths<-c("D:/EX5_6/Females_Mated","D:/EX5_6/Females_Grouped","D:/EX5_6/Females_Singles","D:/EX5_6/Males_Grouped","D:/EX5_6/Males_Mated","D:/EX5_6/Males_Singels")
 
 f <- function(x) {
     if(is.list(x)) lapply(x, f)
@@ -45,7 +45,7 @@ number_of_frame<-1
 #seq by the  number of frames
 numbers<-seq(1, length_of_movie, by=number_of_frame)
 #use the data of interaction that used angelsub
-with_Angelsub<-TRUE
+with_Angelsub<-FALSE
 #length(order_of_paths)
 for(condition in 1:length(order_of_paths)){
 path_of_condition<-order_of_paths[condition]
@@ -53,6 +53,7 @@ path_of_condition<-order_of_paths[condition]
 dir<-list.dirs(recursive = F,path =path_of_condition )
 #####
 number_of_movies<-length(dir)
+path_to_sub_Scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
 
 
 
@@ -105,7 +106,7 @@ if(!(file.exists(filepath_csv_component))){
   
   
   #####get the subscripts of calcualtion
-  path_to_sub_Scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+
     setwd(path_to_sub_Scripts)
     files.sources = list.files()
     sapply(files.sources, source)
@@ -305,7 +306,7 @@ if(with_Angelsub == TRUE){
 }else{
   name_of_mat<-"Allinteraction.mat"
 }
-dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+dir<-list.dirs(recursive = F,path = "D:/EX5_6/Females_Mated")
 
 num_of_movie=5
 

@@ -2,7 +2,7 @@
 withSubPlot=true;
 
 %pick the movies
-handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
+handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions from the same group');
 %get the group name - please choose by groups and not combine them
 parts = strsplit(handles.allFolders{1}, '\');
 GroupName = parts{end-1};

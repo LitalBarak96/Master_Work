@@ -32,6 +32,9 @@ h1.Normalization = 'probability';
 set(gca, 'XTick', linspace(0,60,61))
 xlabel('Distance', 'FontSize', 15);
 ylabel('Count', 'FontSize', 15);
+ylim([0, 0.15]); % Give some headroom above the bars.
+yl = ylim;
 hold on
 sgtitle(GroupName)
+%sgtitle("Low Aggregation")
 end

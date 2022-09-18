@@ -29,13 +29,13 @@ f <- function(x) {
 
 
 
-length_of_movie<-54000
+length_of_movie<-27000
 #how many frame in a batch
 number_of_frame<-1
 
 #seq by the  number of frames
 numbers<-seq(1, length_of_movie, by=number_of_frame)
-with_Angelsub<-TRUE
+with_Angelsub<-FALSE
 
 
 #if i want without angelsub for calcualtin of interaction choose Allinteraction.mat
@@ -57,7 +57,7 @@ if(with_Angelsub == TRUE){
 }else{
   name_of_mat<-"Allinteraction.mat"
 }
-dir<-list.dirs(recursive = F,path = "D:/Mated_Rejected_Naive_oneMovieEach/_Rejected")
+dir<-list.dirs(recursive = F,path = "D:/EX5_6/Females_Mated")
 num_of_movie=1
 
 filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
@@ -92,7 +92,8 @@ number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
   
   
   all<-data.frame()
-  path_to_sub_Scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+path_to_scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
+
   
    setwd(path_to_sub_Scripts)
     files.sources = list.files()
