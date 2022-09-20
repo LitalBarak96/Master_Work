@@ -239,10 +239,12 @@ all_feature_final<-rbind(Female,Male)
 colnames(all_feature_final) <- make.names(colnames(all_feature_final))
 
 
+library(dplyr)
+all_feature_final<-as.data.frame(all_feature_final)
 #check balance
 all_feature_final %>% 
-  count(id) %>% 
-  mutate(prop = n/sum(n))
+  dplyr::count(id) %>% 
+  dplyr::mutate(prop = n/sum(n))
 ```
 
 ```{r}
@@ -267,7 +269,7 @@ rf <-randomForest(id~.,data=all_feature_final, mtry=best.m,
  importance=TRUE,ntree=600)
 print(rf)
 importance(rf)
-varImpPlot(rf)
+varImpPlot(rf,main="random forest male vs female")
 
 
 pred1=predict(rf,type = "prob")
