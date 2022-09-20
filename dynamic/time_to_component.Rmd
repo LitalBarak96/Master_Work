@@ -29,7 +29,7 @@ library(tidyr)
 all_condition_se_avg_times_to_component<-NULL
 
 all_condtion_se_and_mean<-NULL
-main_path<-"D:/allGroups"
+main_path<-"D:/EX5_6"
 list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
 
 
@@ -47,7 +47,7 @@ number_of_frame<-1
 #seq by the  number of frames
 numbers<-seq(1, length_of_movie, by=number_of_frame)
 #use the data of interaction that used angelsub
-with_Angelsub<-TRUE
+with_Angelsub<-FALSE
 #length(order_of_paths)
 
 all_conditions_avarge<-NULL
@@ -172,7 +172,7 @@ colnames(all_movie_component)<-1:length(all_movie_component)
 
 
 
-coponent_Size<-5
+coponent_Size<-3
 find_index_bigger_than <- function(x) {
 min(which(x>coponent_Size))
 }
@@ -211,7 +211,7 @@ all_condition_se_avg_times_to_component<-bind_rows(all_condition_se_avg_times_to
 
 
 time_to_component<-ggplot(all_condition_se_avg_times_to_component) +
-    geom_bar( aes(x=group, y=Mean,colour=group, fill=group), stat="identity", alpha=0.7)+scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singels"="chartreuse4"))  + scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singels"="chartreuse4"))+
+    geom_bar( aes(x=group, y=Mean,colour=group, fill=group), stat="identity", alpha=0.7)+scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4"))  + scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4"))+
     geom_errorbar( aes(x=group, ymin=Mean-se, ymax=Mean+se), width=0.4, colour="black", alpha=0.9, size=1.3)+labs(title=paste0("in avarge per condition frames to get to component size of ",coponent_Size), x ="condition", y = "frames")
 
 ```
