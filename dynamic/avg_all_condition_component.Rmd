@@ -19,7 +19,7 @@ library(zoo)
 library(tidyr)
 
 
-order_of_paths<-c("D:/allGroups/Females_Mated","D:/allGroups/Females_Grouped","D:/allGroups/Females_Singles","D:/allGroups/Males_Grouped","D:/allGroups/Males_Mated","D:/allGroups/Males_Singels")
+order_of_paths<-c("D:/EX5_6/Females_Mated","D:/EX5_6/Females_Grouped","D:/EX5_6/Females_Singles","D:/EX5_6/Males_Grouped","D:/EX5_6/Males_Mated","D:/EX5_6/Males_Singles")
 
 f <- function(x) {
     if(is.list(x)) lapply(x, f)
@@ -35,7 +35,7 @@ number_of_frame<-1
 #seq by the  number of frames
 numbers<-seq(1, length_of_movie, by=number_of_frame)
 #use the data of interaction that used angelsub
-with_Angelsub<-TRUE
+with_Angelsub<-FALSE
 #length(order_of_paths)
 
 all_conditions_avarge<-NULL
@@ -220,7 +220,7 @@ library(zoo)
 library(tidyr)
 
 
-order_of_paths<-c("D:/allGroups/Females_Mated","D:/allGroups/Females_Grouped","D:/allGroups/Females_Singles","D:/allGroups/Males_Grouped","D:/allGroups/Males_Mated","D:/allGroups/Males_Singels")
+order_of_paths<-c("D:/EX5_6/Females_Mated","D:/EX5_6/Females_Grouped","D:/EX5_6/Females_Singles","D:/EX5_6/Males_Grouped","D:/EX5_6/Males_Mated","D:/EX5_6/Males_Singles")
 
 f <- function(x) {
     if(is.list(x)) lapply(x, f)

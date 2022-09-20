@@ -29,13 +29,14 @@ library(zoo)
 library(tidyr)
 
 
-order_of_paths<-c("D:/EX5_6/Females_Mated","D:/EX5_6/Females_Grouped","D:/EX5_6/Females_Singles","D:/EX5_6/Males_Grouped","D:/EX5_6/Males_Mated","D:/EX5_6/Males_Singels")
+order_of_paths<-c("D:/EX5_6/Females_Mated","D:/EX5_6/Females_Grouped","D:/EX5_6/Females_Singles","D:/EX5_6/Males_Grouped","D:/EX5_6/Males_Mated","D:/EX5_6/Males_Singles")
 
 f <- function(x) {
     if(is.list(x)) lapply(x, f)
     else ifelse(length(x) == 0, 0, x)
 }
 
+path_to_sub_Scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
 
 ####paramters setting
 length_of_movie<-27000
@@ -53,7 +54,6 @@ path_of_condition<-order_of_paths[condition]
 dir<-list.dirs(recursive = F,path =path_of_condition )
 #####
 number_of_movies<-length(dir)
-path_to_sub_Scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
 
 
 
