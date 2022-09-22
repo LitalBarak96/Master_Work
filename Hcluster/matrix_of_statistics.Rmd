@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+author: "lital barak"
+date: "2022-09-22"
+output: html_document
+---
+
+ #heatmap on the statistics
+```{r}
+
+  all_together<-read.csv("D:/EX5_6/all_together.csv")
+  
+  
+  
+  only_data_and_names<-all_together[1:(length(all_together)-3)]
+
+only_data_and_names<-as.data.frame(only_data_and_names)
+
+
+rownames(only_data_and_names) <- only_data_and_names$name
+
+heatmap(only_data_and_names, Colv = NA, Rowv = NA)
+
+```
+
