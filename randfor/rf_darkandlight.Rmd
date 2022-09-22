@@ -1,0 +1,357 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+
+```{r}
+require(R.matlab)
+library(base)
+library(openxlsx)
+library(igraph)
+library(ggplot2)
+library(cowplot)
+library(ggpubr)
+library(ggsignif)
+library(nortest)
+library(fmsb)
+library(argparser, quietly=TRUE)
+library(stringr)
+library("readxl")
+
+test = FALSE
+
+group_name<-c()
+num_of_pop<-0
+colors_of_groups<<-data.frame()
+
+dot<<-0
+xsize<<-0
+font_size<<-0
+width<<-0
+height<<-0
+type_format<<-0
+
+groupsNames <<- c()
+xlsxFile<<-c()
+
+
+
+
+#to debug if i want to run and see the var
+if (test == TRUE){
+  
+  p <- arg_parser("path of the color")
+  
+  # Add command line arguments
+  p <- add_argument(p,"path",
+                    help = "path",
+                    flag = FALSE)
+  
+  # Parse the command line arguments
+  argv <- parse_args(p)
+  
+}
+
+###########################################################
+
+if(test==TRUE){
+  #reading from the path the color values
+  dirs <- read.xlsx(argv$path)
+  num_of_pop<<-nrow(dirs)
+  
+}else{
+  #test for myself
+  library(openxlsx)
+  dirs <- as.data.frame(read.xlsx("F:/Dark&Ligth/dirs.xlsx"))
+  num_of_pop<<-nrow(dirs)
+}
+
+#the path that have all the scripts in
+path_to_scripts<-"C:/Users/lital/OneDrive - Bar Ilan University/Lital/code/interactions_network/randfor/sub_function"
+
+
+
+
+#creat list of dirs 
+dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) numeric(num_of_pop)))
+for (i in 1:num_of_pop){
+  dir[i,1]<-dirs$groupNameDir[i]
+}
+#xlsxFile <<- choose.files(default = "", caption = "Select expData file")
+
+groupsNames <<- as.character(basename(dirs$groupNameDir))
+
+#chnage the dir values so it would be readable
+dir$X1<-gsub("\\\\", "/", dir$X1)
+for(i in 1:num_of_pop){
+  dir[i,1]<-str_trim(dir[i,1], side = c("right"))
+}
+
+
+#### run the functions
+
+setwd(path_to_scripts)
+files.sources = list.files()
+sapply(files.sources, source)
+
+
+#### the actuall run (if the user choose to run from the start)
+for (i in 1:num_of_pop){
+  #for each population i get the group name the number for movies and running 
+  setwd(dir[i,1])
+  avg_per_Fly_all_features(dir[i,1],path_to_scripts)
+  importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
+  frq(dir[i,1],path_to_scripts)
+}
+
+
+#for (i in 1:num_of_pop){
+#group_name <<- tools::file_path_sans_ext(basename((dir[i,1])))
+#creatNetwork2popforscatter(dir[i,1])
+#}
+
+
+for(i in 1:num_of_pop){
+  #for each net there is different valus 
+  setwd(dir[i,1])
+  combind_all(dir[i,1],path_to_scripts)
+}
+
+
+library("dplyr")
+library("stringr")
+
+Ligth<-data.frame()
+Dark<-data.frame()
+
+
+
+#feature_names<-all_features %>%
+# select(-ends_with('~'))
+Ligth_index<-0
+Dark_index<-0
+
+for(i in 1:num_of_pop){
+  if(str_detect(basename(dir[i,1]), "Ligth")){
+    Ligth_index<-Ligth_index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    
+    #test<-all_features_valus[,!grepl("*~",names(all_features_valus))]
+    #connecting the names of the movies to the value and feature name
+    
+    #all_features_names<-cbind(all_features_names,all_features_valus[,!grepl("*~",names(all_features_valus))])
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("Ligth")
+    if(Ligth_index==1){
+      Ligth<-all_features_names
+    }else{
+      Ligth<-rbind(Ligth,all_features_names)
+      
+    }
+    #putting factor on the label
+    Ligth$id<-as.factor(Ligth$id)
+  }
+  
+  
+  
+  if(str_detect(basename(dir[i,1]), "Dark")){
+    Dark_index<-Dark_index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    #connecting the names of the movies to the value and feature name
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c("Dark")
+    
+    if(Dark_index==1){
+      Dark<-all_features_names
+    }else{
+      Dark<-rbind(Dark,all_features_names)
+      
+    }
+    #putting factor on the label
+    Dark$id<-as.factor(Dark$id)
+  }
+  
+
+}
+all_feature_final<-rbind(Ligth,Dark)
+
+#this part was problematic for the random forest
+colnames(all_feature_final) <- make.names(colnames(all_feature_final))
+
+
+#check balance
+all_feature_final %>% 
+  count(id) %>% 
+  mutate(prop = n/sum(n))
+```
+```{r}
+#library(randomForest)
+set.seed(71)
+rf <-randomForest(id ~ .,data=all_feature_final) 
+print(rf)
+
+
+
+
+set.seed(71)
+rf <-randomForest(id~.,data=all_feature_final, importance=TRUE,ntree=500)
+print(rf)
+importance(rf)
+varImpPlot(rf)
+```
+
+
+
+```{r}
+m1 <- randomForest(
+  formula = id ~ .,
+  data    = all_feature_final
+)
+
+features <- setdiff(names(all_feature_final), "id")
+m2 <- tuneRF(
+    x          = all_feature_final[features],
+    y          = all_feature_final$id,
+    ntreeTry   = 500,
+    mtryStart  = 5,
+    stepFactor = 1.5,
+    improve    = 0.01,
+    trace      = FALSE      # to not show real-time progress 
+)
+```
+
+
+
+```{r}
+hyper_grid <- expand.grid(
+  mtry       = seq(20, 30, by = 2),
+  node_size  = seq(3, 9, by = 2),
+  sampe_size = c(.55, .632, .70, .80),
+  OOB_RMSE   = 0
+)
+
+nrow(hyper_grid)
+
+```
+```{r}
+ library(ranger)
+for(i in 1:nrow(hyper_grid)) {
+  
+  # train model
+  model <- ranger(
+    formula         = id ~ ., 
+    data            = all_feature_final, 
+    num.trees       = 500,
+    mtry            = hyper_grid$mtry[i],
+    min.node.size   = hyper_grid$node_size[i],
+    sample.fraction = hyper_grid$sampe_size[i],
+    seed            = 123
+  )
+  
+  # add OOB error to grid
+  hyper_grid$OOB_RMSE[i] <- sqrt(model$prediction.error)
+}
+
+hyper_grid %>% 
+  dplyr::arrange(OOB_RMSE) %>%
+  head(10)
+```
+```{r}
+OOB_RMSE <- vector(mode = "numeric", length = 100)
+
+for(i in seq_along(OOB_RMSE)) {
+
+  optimal_ranger <- ranger(
+    formula         = id ~ ., 
+    data            = all_feature_final, 
+    num.trees       = 500,
+    mtry            = 4,
+    min.node.size   = 5,
+    sample.fraction = .8,
+    importance      = 'impurity'
+  )
+  
+  OOB_RMSE[i] <- sqrt(optimal_ranger$prediction.error)
+}
+
+hist(OOB_RMSE, breaks = 20)
+```
+
+```{r}
+
+#Variable importance is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. The remaining error left in predictive accuracy after a node split is known as node impurity and a variable that reduces this impurity is considered more imporant than those variables that do not.
+library(broom)
+
+optimal_ranger$variable.importance %>% 
+  tidy() %>%
+  dplyr::arrange(desc(x)) %>%
+  dplyr::top_n(25) %>%
+  ggplot(aes(reorder(names, x), x)) +
+  geom_col() +
+  coord_flip() +
+  ggtitle("Top 25 important variables")
+```
+
