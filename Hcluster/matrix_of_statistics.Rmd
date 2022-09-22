@@ -48,15 +48,15 @@ df3 <- melt_data %>%
 
 
 
-ggplot() + 
+plot_final<-ggplot() + 
   geom_raster(data = melt_data, aes(x = variable, y = name, fill = value)) +
   geom_text(data = df3, aes(x = variable, y = name, label = Asterisks),
             nudge_y = 0.1, nudge_x = 0.1, size = 3) +
-  scale_fill_viridis_c(na.value = "black")+scale_fill_gradientn(colours=c("yellow","red"))
+  scale_fill_viridis_c(na.value = "black")+scale_fill_gradientn(colours=c("yellow","red"))+theme(text = element_text(size = 10,face="bold", color = "black"))  
 
 
 
-
+plot(plot_final)
 
 ```
 
