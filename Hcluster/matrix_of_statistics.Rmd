@@ -8,7 +8,7 @@ output: html_document
  #heatmap on the statistics
 ```{r}
 
-  all_together<-read.csv("D:/EX5_6/all_together.csv")
+  all_together<-read.csv("D:/EX5_6/all_together.csv",check.names = F)
   
   
   
@@ -17,9 +17,97 @@ output: html_document
 only_data_and_names<-as.data.frame(only_data_and_names)
 
 
-rownames(only_data_and_names) <- only_data_and_names$name
+#rownames(only_data_and_names) <- only_data_and_names$name
 
-heatmap(only_data_and_names, Colv = NA, Rowv = NA)
+#only_data_and_names<-subset(only_data_and_names, select = -c(name))
 
+only_data_and_names_matrix<-as.matrix(only_data_and_names)
+
+heatmap(only_data_and_names_matrix)
+
+library(corrplot)
+#corrplot(only_data_and_names_matrix, is.corr = FALSE,    # Change font size of text labels
+      #   tl.cex = 1)
+heatmap(only_data_and_names_matrix, Colv = NA, Rowv = NA)
+
+library(reshape2)
+#test<-setNames(melt(only_data_and_names), c('feature', 'group', 'values'))
+
+
+
+melt_data <- melt(only_data_and_names, id = c("name")) 
+
+
+df3 <- melt_data %>% 
+  mutate(Asterisks = ifelse(value <= 0.0005, "***",
+                            ifelse(value <= 0.005, "**",
+                            ifelse(value <= 0.05, "*", NA))))
+
+
+
+
+
+
+ggplot() + 
+  geom_raster(data = melt_data, aes(x = variable, y = name, fill = value)) +
+  geom_text(data = df3, aes(x = variable, y = name, label = Asterisks),
+            nudge_y = 0.1, nudge_x = 0.1, size = 3) +
+  scale_fill_viridis_c(na.value = "black")+scale_fill_gradientn(colours=c("yellow","red"))
+
+
+
+
+
+```
+
+```{r}
+
+
+library(tidyverse)
+
+df1 <- tibble::tribble(
+   ~`03m`, ~`06m`,  ~`09m`, ~`12m`, ~`18m`,  ~`24m`, ~`36m`,
+        1,   0.25,  -0.002,    0.1, -0.057,  -0.063,    NaN,
+     0.25,      1,   0.384,  0.265,  0.209,   0.021,  0.209,
+  -0.0021,  0.374,       1,  0.454,  0.426, -0.0132,  0.361,
+      0.1,  0.265,   0.454,      1,  0.286,   0.118,  0.414,
+  -0.0572,  0.209,   0.426,  0.286,      1,   0.248,  0.409,
+  -0.0632, 0.0213, -0.0132,  0.118,  0.248,       1, -0.163,
+      NaN,  0.209,   0.361,  0.414,  0.409,  -0.163,      1
+  ) %>%
+  as.data.frame() %>% 
+  magrittr::set_rownames(c("03m", "06m", "09m", "12m", "18m", "24m", "36m")) %>% 
+  rownames_to_column("f_id") %>%
+  pivot_longer(-c(f_id), names_to = "samples", values_to = "Correlation")
+
+df2 <- tibble::tribble(
+           ~V1,         ~V2,          ~V3,          ~V4,         ~V5,        ~V6,         ~V7,
+           NaN, 0.146821255, 0.5032691552, 0.2744200984, 0.696125633, 0.68544985, 0.809989049,
+     0.1468213,         NaN, 0.0046248855, 0.0255566484, 0.084404798,  0.4282244, 0.081061255,
+     0.5032692, 0.004624886,          NaN, 0.0004159696, 0.002517379, 0.53866956, 0.006688649,
+     0.2744201, 0.025556648, 0.0004159696,          NaN, 0.040601011, 0.21443715, 0.002414332,
+     0.6961256, 0.084404798, 0.0025173792, 0.0406010109,         NaN, 0.07311703, 0.008312505,
+     0.6854499, 0.428224404, 0.5386695582, 0.2144371492, 0.073117029,        NaN, 0.840898661,
+      0.809989, 0.081061255, 0.0066886493, 0.0024143322, 0.008312505, 0.84089866,         NaN
+  ) %>%
+  as.data.frame() %>% 
+  magrittr::set_colnames(c("03m", "06m", "09m", "12m", "18m", "24m", "36m")) %>% 
+  magrittr::set_rownames(c("03m", "06m", "09m", "12m", "18m", "24m", "36m")) %>% 
+  rownames_to_column("f_id") %>%
+  pivot_longer(-c(f_id), names_to = "samples", values_to = "Significance")
+
+df3 <- df2 %>% 
+  mutate(Asterisks = ifelse(Significance <= 0.0005, "***",
+                            ifelse(Significance <= 0.005, "**",
+                            ifelse(Significance <= 0.05, "*", NA))))
+
+
+
+ggplot() + 
+  geom_raster(data = df1, aes(x = samples, y = f_id, fill = Correlation)) +
+  geom_text(data = df2, aes(x = samples, y = f_id, label = round(Significance, 3))) +
+  geom_text(data = df3, aes(x = samples, y = f_id, label = Asterisks),
+            nudge_y = 0.25, nudge_x = 0.25, size = 6) +
+  scale_fill_viridis_c(na.value = "black")
 ```
 
