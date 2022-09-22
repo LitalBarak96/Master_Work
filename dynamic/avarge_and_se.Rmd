@@ -98,12 +98,12 @@ pl_facted <- ggplot(data=all_sd_and_avg_all_conditions_final, aes(y=Mean, x=fram
                       fill=group)) +scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
 geom_point(size=0.5) +
 geom_line(size=0.5) +
-geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.5, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +facet_wrap(~ group)+
-theme_minimal()+ggtitle("density per frame all conditions all movies with se") +
+geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.15, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +facet_wrap(~ group)+
+theme_classic()+ggtitle("density per frame all conditions all movies with se") +
   xlab("frames") + ylab("density") +theme(
-plot.title = element_text(color="black", size=12, face="bold.italic"),
-axis.title.x = element_text(color="black", size=10, face="bold"),
-axis.title.y = element_text(color="black", size=10, face="bold"))
+plot.title = element_text(color="black", size=13, face="bold.italic"),
+axis.title.x = element_text(color="black", size=13, face="bold"),
+axis.title.y = element_text(color="black", size=13, face="bold"))
 # looks ok, no lines at the edges
 plot(pl_facted)
 
@@ -113,12 +113,12 @@ pl <- ggplot(data=all_sd_and_avg_all_conditions_final, aes(y=Mean, x=frame, grou
                       fill=group)) +scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
 geom_point(size=0.5) +
 geom_line(size=0.5) +
-geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.5, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
-theme_minimal()+ggtitle("density per frame all conditions all movies with se") +
+geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.15, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
+theme_classic()+ggtitle("density per frame all conditions all movies with se") +
   xlab("frames") + ylab("density") +theme(
-plot.title = element_text(color="black", size=12, face="bold.italic"),
-axis.title.x = element_text(color="black", size=10, face="bold"),
-axis.title.y = element_text(color="black", size=10, face="bold"))
+plot.title = element_text(color="black", size=13, face="bold.italic"),
+axis.title.x = element_text(color="black", size=13, face="bold"),
+axis.title.y = element_text(color="black", size=13, face="bold"))
 # looks ok, no lines at the edges
 plot(pl)
 
@@ -361,8 +361,8 @@ component_plot_facet <- ggplot(data=all_condtion_se_and_mean, aes(y=Mean, x=fram
                       fill=group)) +scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
 geom_point(size=0.5) +
 geom_line(size=0.5) +
-geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.5, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +facet_wrap(~ group)+
-theme_minimal()+ggtitle("component size(after moving avarge) per frame per conditions all movies with se") +
+geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.15, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +facet_wrap(~ group)+
+theme_classic()+ggtitle("component size(after moving avarge) per frame per conditions all movies with se") +
   xlab("frames") + ylab("component size") +theme(
 plot.title = element_text(color="black", size=12, face="bold.italic"),
 axis.title.x = element_text(color="black", size=10, face="bold"),
@@ -376,12 +376,12 @@ component_plot <- ggplot(data=all_condtion_se_and_mean, aes(y=Mean, x=frame, gro
                       fill=group)) +scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
 geom_point(size=0.5) +
 geom_line(size=0.5) +
-geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.5, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
-theme_minimal()+ggtitle("component size(after moving avarge) per frame all conditions all movies with se") +
+geom_ribbon(aes(ymin=Mean-se, ymax=Mean+se), alpha=0.15, linetype=0) +scale_fill_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +
+theme_classic()+ggtitle("component size(after moving avarge) per frame all conditions all movies with se") +
   xlab("frames") + ylab("component size") +theme(
-plot.title = element_text(color="black", size=12, face="bold.italic"),
-axis.title.x = element_text(color="black", size=10, face="bold"),
-axis.title.y = element_text(color="black", size=10, face="bold"))
+plot.title = element_text(color="black", size=13, face="bold.italic"),
+axis.title.x = element_text(color="black", size=13, face="bold"),
+axis.title.y = element_text(color="black", size=13, face="bold"))
 # looks ok, no lines at the edges
 
 
