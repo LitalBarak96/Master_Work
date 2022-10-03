@@ -26,8 +26,8 @@ netWorkStats<-function(current_path,xlsxFile,path_to_scripts,groupsNames,lengthP
     lenStat<-statProcess(groupsNames, lengthParams[i,],path_to_scripts)
     
     if(num_of_pop<3){
-      #print(all_name_LOI[i])
-      #print(lenStat[[1]]$p.value)
+      print(all_name_LOI[i])
+      print(lenStat[[1]]$p.value)
       dat <- data.frame(name =all_name_LOI[i],pVal = lenStat[[1]]$p.value)
       dat$test <- lenStat[[2]]  #what is the test 
       datalist[[i]] <- dat # add it to your list
@@ -57,11 +57,11 @@ netWorkStats<-function(current_path,xlsxFile,path_to_scripts,groupsNames,lengthP
       
     }else{
       if(numStat[[2]]=="Dunn"){
-        datalist_num[[i]]<-DunnTstDataFrame(all_name_LOI[i],numStat,path_to_scripts,groupsNames)
+        datalist_num[[i]]<-DunnTstDataFrame(all_name_NOI[i],numStat,path_to_scripts,groupsNames)
         
       }
       else{
-        datalist_num[[i]]<-AnovaToDataFrame(all_name_LOI[i],numStat,path_to_scripts,groupsNames)
+        datalist_num[[i]]<-AnovaToDataFrame(all_name_NOI[i],numStat,path_to_scripts,groupsNames)
       }
       
     }
