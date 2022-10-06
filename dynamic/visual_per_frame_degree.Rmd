@@ -101,3 +101,99 @@ axis.title.y = element_text(color="black", size=12, face="bold")
 
 ```
 
+
+#if i need to do statisctic this is a start ish?
+
+```{r}
+all_sd_and_avg_all_conditions_final<-NULL
+main_path<-"D:/EX5_6"
+
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  for(num_of_movie in 1:length(dir_subGroup)){
+      if(!file.exists(paste0(dir_subGroup[num_of_movie], '/','all_frames_degree_new.csv'))){
+    warning(paste0("all_frames_degree.csv don't exist in ", dir_subGroup[num_of_movie]))
+      }else{
+    all_frames<-read.csv(paste0(dir_subGroup[num_of_movie],'/','all_frames_degree_new.csv'))
+  }
+  }
+
+
+}
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  
+  #find all files that have the file
+  all.the.files <- dir(path_to_group, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+  #get the full path
+all__subfile_fullpath<-paste0(path_to_group,"/",all.the.files)
+
+library(purrr)
+#bind all with coloms for current group
+data_bined_csv<- 
+    all__subfile_fullpath %>%  map_dfr( ~ read.csv(.x) )
+
+
+data_colom_bined<- 
+    all__subfile_fullpath %>%  map_dfc( ~ read.csv(.x) )
+
+#keep only the values,I didnt worte the movie name cuz he was very long and distrupted the visullization of the graph
+#actuall changed my mind,did rbind and only removed the frames so i could show each group together
+
+
+value_of_density <- data_colom_bined[,grepl("Value", colnames(data_colom_bined))]
+
+
+#gave evrey movie a number
+colnames(value_of_density)<-1:length(all.the.files)
+
+
+colnames(value_of_density)<-paste0("value",colnames(value_of_density))
+
+
+
+
+library(dplyr)
+library(ggplot2)
+library(matrixStats)
+
+columns <- c(colnames(value_of_density))
+
+#value_of_density<-value_of_density %>% 
+#mutate(Mean= rowMeans(.[columns]), stdev=rowSds(as.matrix(.[columns])))
+
+Mean= rowMeans(value_of_density)
+se=rowSds(as.matrix(value_of_density))/sqrt(length(value_of_density))
+mean_and_sd_all_conditions<-as.data.frame(cbind(Mean,se))
+mean_and_sd_all_conditions$frame<-1:nrow(mean_and_sd_all_conditions)
+mean_and_sd_all_conditions$group<-basename(path_to_group)
+
+
+
+
+all_sd_and_avg_all_conditions_final<-bind_rows(all_sd_and_avg_all_conditions_final,mean_and_sd_all_conditions)
+#ggplot(mean_and_sd_all_conditions, aes(frame,Mean,color="blue")) +  geom_point(size=0.5)+
+#geom_ribbon(aes(ymin=Mean-stdev, ymax=Mean+stdev),alpha = .2)
+
+}
+
+
+
+
+
+```
+
+
+
+
+
