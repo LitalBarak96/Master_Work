@@ -177,6 +177,7 @@ library(tidyr)
 
 
 all_condtion_se_and_mean<-NULL
+for_statistic<-NULL
 main_path<-"D:/EX5_6"
 
 list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
@@ -262,9 +263,11 @@ colnames(means_no_na)<-c(c(1:number_of_movies))
 library("plotrix")
 
 
-
+for_statistic<-cbind(for_statistic,(t(means_no_na[nrow(means_no_na),])))
 
 Mean= rowMeans(means_no_na)
+
+
 se=rowSds(as.matrix(means_no_na))/sqrt(length(means_no_na))
 mean_and_se_per_conditions<-as.data.frame(cbind(Mean,se))
 mean_and_se_per_conditions$frame<-1:nrow(mean_and_se_per_conditions)
@@ -274,10 +277,19 @@ mean_and_se_per_conditions$group<-basename(path_to_group)
 
 all_condtion_se_and_mean<-bind_rows(all_condtion_se_and_mean,mean_and_se_per_conditions)
 
+colnames(for_statistic)[index_group]<-basename(path_to_group)
 
 
 
 }
+for_statistic<-as.data.frame(for_statistic)
+melt_data <- melt(for_statistic) 
+for_statistic$num_of_movie<-1:18
+for_statistic$num_of_movie <- factor(for_statistic$num_of_movie)
+
+aov1 <- aov(Females_Mated ~Females_Grouped+Females_Singles+Males_Mated+Males_Grouped+Males_Singles , data=for_statistic)
+summary(aov1)
+TukeyHSD(aov1)
 
 
 component_plot_facet <- ggplot(data=all_condtion_se_and_mean, aes(y=Mean, x=frame, group=group, colour=group,
