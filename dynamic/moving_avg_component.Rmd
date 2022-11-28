@@ -462,7 +462,7 @@ plot(moving_avg_vs_reallity_compo)
 
 ```
 
-#the full moving avg for cc
+#the full moving avg for cc with statistics 
 
 
 ```{r}
@@ -478,7 +478,9 @@ library(zoo)
 library(tidyr)
 for_statistic<-NULL
 all_condtion_se_and_mean<-NULL
-main_path<-"D:/EX5_6"
+
+all_condition_statistic<-NULL
+main_path<-"E:/allGroups"
 list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
 f <- function(x) {
     if(is.list(x)) lapply(x, f)
@@ -640,6 +642,8 @@ library("plotrix")
 
 for_statistic<-cbind(for_statistic,(t(means_no_na[nrow(means_no_na),])))
 
+for_statistic_per_group<-cbind((t(means_no_na[nrow(means_no_na),])),basename(path_of_condition))
+colnames(for_statistic_per_group)<-c("value","group")
 
 Mean= rowMeans(means_no_na)
 se=rowSds(as.matrix(means_no_na))/sqrt(length(means_no_na))
@@ -648,24 +652,31 @@ mean_and_se_per_conditions$frame<-1:nrow(mean_and_se_per_conditions)
 mean_and_se_per_conditions$group<-basename(path_of_condition)
 
 
-
 all_condtion_se_and_mean<-bind_rows(all_condtion_se_and_mean,mean_and_se_per_conditions)
 
 
 
 
 colnames(for_statistic)[condition]<-basename(path_of_condition)
-
+all_condition_statistic<-rbind(all_condition_statistic,for_statistic_per_group)
 
 }
 
-for_statistic<-as.data.frame(for_statistic)
-melt_data <- melt(for_statistic) 
-for_statistic$num_of_movie<-1:18
-for_statistic$num_of_movie <- factor(for_statistic$num_of_movie)
-aov1 <- aov(Females_Mated ~Females_Grouped+Females_Singles+Males_Mated+Males_Grouped+Males_Singles , data=for_statistic)
-summary(aov1)
-TukeyHSD(aov1)
+all_condition_statistic<-as.data.frame(all_condition_statistic)
+#all_condition_statistic$value<-as.numeric(all_condition_statistic$value)
+
+res.aov <- aov(value ~ group, data = all_condition_statistic)
+summary(res.aov)
+TukeyHSD(res.aov)
+
+
+# for_statistic<-as.data.frame(for_statistic)
+# melt_data <- melt(for_statistic) 
+# for_statistic$num_of_movie<-1:18
+# for_statistic$num_of_movie <- factor(for_statistic$num_of_movie)
+# aov1 <- aov(Females_Mated ~Females_Grouped+Females_Singles+Males_Mated+Males_Grouped+Males_Singles , data=for_statistic)
+# summary(aov1)
+# TukeyHSD(aov1)
 
 component_plot_facet <- ggplot(data=all_condtion_se_and_mean, aes(y=Mean, x=frame, group=group, colour=group,
                       fill=group)) +scale_colour_manual(values = c("Females_Mated"="red", "Females_Grouped"="darkmagenta", "Females_Singles"="deeppink1", "Males_Grouped"="orange","Males_Mated"="dodgerblue3","Males_Singles"="chartreuse4")) +

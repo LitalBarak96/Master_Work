@@ -255,7 +255,7 @@ time_to_component<-ggplot(all_condition_se_avg_times_to_component_3) +
 
 
 
-#diffrnce bw 4 and 3 
+#diffrnce bw 4 and 3 with statistic
 
 ```{r}
 library(openxlsx)
