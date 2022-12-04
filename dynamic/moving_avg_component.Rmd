@@ -476,11 +476,12 @@ library(dplyr)
 library(ggplot2)
 library(zoo)
 library(tidyr)
+library(matrixStats)
 for_statistic<-NULL
 all_condtion_se_and_mean<-NULL
 
 all_condition_statistic<-NULL
-main_path<-"E:/allGroups"
+main_path<-"D:/EX5_6"
 list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
 f <- function(x) {
     if(is.list(x)) lapply(x, f)

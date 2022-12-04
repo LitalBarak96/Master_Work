@@ -1,0 +1,256 @@
+
+```{r}
+
+
+
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+library(dplyr)
+library(ggplot2)
+library(zoo)
+library(tidyr)
+
+
+
+all_conidtions_all_movies<-NULL
+order_of_paths<-c("E:/EX5_6/Females_Mated","E:/EX5_6/Females_Grouped","E:/EX5_6/Females_Singles","E:/EX5_6/Males_Grouped","E:/EX5_6/Males_Mated","E:/EX5_6/Males_Singles")
+
+f <- function(x) {
+  if(is.list(x)) lapply(x, f)
+  else ifelse(length(x) == 0, 0, x)
+}
+
+path_to_sub_Scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
+
+####paramters setting
+length_of_movie<-27000
+#how many frame in a batch
+number_of_frame<-1
+#number of movies to analys
+#seq by the  number of frames
+numbers<-seq(1, length_of_movie, by=number_of_frame)
+#use the data of interaction that used angelsub
+with_Angelsub<-FALSE
+#length(order_of_paths)
+
+for(condition in 1:length(order_of_paths)){
+  path_of_condition<-order_of_paths[condition]
+  #path of the main condition
+  dir<-list.dirs(recursive = F,path =path_of_condition )
+  #####
+  number_of_movies<-length(dir)
+  
+  
+  
+  if(with_Angelsub == TRUE){
+    name_of_mat<-"AllinteractionWithAngelsub.mat"
+  }else{
+    name_of_mat<-"Allinteraction.mat"
+  }
+  
+  
+  ########loop of each movie
+  all_movie_component<-NULL
+  for(num_of_movie in 1:number_of_movies){
+    #if the mat file is not existing
+    filepath<-paste0(dir[num_of_movie], '/',name_of_mat)
+    #if the component size csv is not exisitng
+    filepath_csv_component<-paste0(dir[num_of_movie], '/',"componentSize.csv")
+    
+    if(!(file.exists(filepath))){
+      stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllAngelSub.m ")
+    }
+    
+    
+    #if the component csv not exist creat it
+    if(!(file.exists(filepath_csv_component))){
+      
+      
+      #####orgenaizing the data for analysis
+      mat <- (readMat(paste0(dir[num_of_movie], '/',name_of_mat)))
+      #find how many flys in each movie - it should be 10 but sometimes its less
+      number_of_flys<-sqrt(length(mat[["new.interactionFrameMatrix"]]))
+      if(number_of_flys!=10){
+        stop("the number of flys is not 10,please check if it effect the script somehow and why its not 10")
+      }
+      #read each MAT file by the number of flys
+      sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+      df_mat<-as.data.frame(sub_list_mat)
+      for(i in 1:ncol(df_mat)){
+        for(j in 1:nrow(df_mat)){
+          if(length(unlist(df_mat[i,j])) == 0){
+            df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+          }
+        }
+      }
+      df_mat<-na.omit(df_mat)
+      #creat the df with the name of each fly for consistancy
+      colnames(df_mat)<-c(1:number_of_flys)
+      rownames(df_mat)<-c(1:number_of_flys)
+      ####
+      
+      
+      #####get the subscripts of calcualtion
+      
+      setwd(path_to_sub_Scripts)
+      files.sources = list.files()
+      sapply(files.sources, source)
+      #####
+      
+      
+      ####get who interacting with who and at what frames 
+      all<-data.frame()
+      all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+      #for the acasct every interaction mean 1 
+      all<-cbind(all,1)
+      ##### 
+      
+      
+      #####creat network for each frame to claculate the component (cc is compnent)
+      all_changes_current_movie<-NULL
+      for(i in 1:(length(numbers)-1)){
+        #get net and subnet for component size
+        current_net<-creat_network(all,i,numbers)
+        sub_current_net<-biggest_cc_subgraph(current_net)
+        if(sub_current_net[[2]] == FALSE){
+          # no sub cluster bigger than 3
+          sub_current_net<-(sub_current_net[[1]])
+          size_of_biggest_cc_current = 0
+        }else{
+          sub_current_net<-(sub_current_net[[1]])
+          size_of_biggest_cc_current= length(sub_current_net)
+        }
+        #####
+        
+        #####binding the data for dataframe usage
+        #without the frame number becuase when we do it for multipul movies we want to cbind and than do melt
+        tmp<-data.frame(size_cc = size_of_biggest_cc_current)
+        all_changes_current_movie<-rbind(all_changes_current_movie,tmp)
+        print(i)
+        #####
+        
+        
+      }
+      #writing to csv to save claulating time
+      write.csv(all_changes_current_movie,paste0(dir[num_of_movie],"/","componentSize.csv"), row.names = FALSE)
+      print(num_of_movie)
+      
+      #if the component do exist
+    }else{
+      print("file component is already exist,using him")
+      #reading existing csv
+      all_changes_current_movie<- read.csv(filepath_csv_component)
+      print(num_of_movie)
+      
+    }
+    #binding to colums to do melt at the end
+    all_movie_component<-bind_cols(all_movie_component,all_changes_current_movie)
+  }
+  
+ colnames(all_movie_component)<- str_replace(colnames(all_movie_component),"size_cc",basename(path_of_condition))
+  ########end loop all movies
+ all_conidtions_all_movies<-bind_cols(all_conidtions_all_movies,all_movie_component)
+  
+  
+
+}
+
+
+
+write.csv(all_conidtions_all_movies,"E:/EX5_6/all_movies_all_conidition.csv")
+```
+
+```{r}
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+library(dplyr)
+library(ggplot2)
+library(zoo)
+library(tidyr)
+
+
+
+
+all_sd_and_avg_all_conditions_final<-NULL
+main_path<-"E:/EX5_6"
+
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  for(num_of_movie in 1:length(dir_subGroup)){
+      if(!file.exists(paste0(dir_subGroup[num_of_movie], '/','all_frames_degree_new.csv'))){
+    warning(paste0("all_frames_degree.csv don't exist in ", dir_subGroup[num_of_movie]))
+      }else{
+    all_frames<-read.csv(paste0(dir_subGroup[num_of_movie],'/','all_frames_degree_new.csv'))
+  }
+  }
+
+
+}
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+all_conidtions_all_movies<-NULL
+for (index_group in 1:length(list_of_all_groups)){
+  all_movie_component<-NULL
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  number_of_movies<-length(dir_subGroup)
+  #find all files that have the file
+  all.the.files <- dir(path_to_group, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+  #get the full path
+all__subfile_fullpath<-paste0(path_to_group,"/",all.the.files)
+
+library(purrr)
+#bind all with coloms for current group
+data_bined_csv<- 
+    all__subfile_fullpath %>%  map_dfr( ~ read.csv(.x) )
+
+
+data_colom_bined<- 
+    all__subfile_fullpath %>%  map_dfc( ~ read.csv(.x) )
+
+#keep only the values,I didnt worte the movie name cuz he was very long and distrupted the visullization of the graph
+#actuall changed my mind,did rbind and only removed the frames so i could show each group together
+
+
+value_of_density <- data_colom_bined[,grepl("Value", colnames(data_colom_bined))]
+
+
+#gave evrey movie a number
+colnames(value_of_density)<-1:length(all.the.files)
+
+
+colnames(value_of_density)<-paste0("value",colnames(value_of_density))
+
+
+
+all_movie_component<-value_of_density
+
+
+###each colum individaully rollmean
+
+
+ colnames(all_movie_component)<- str_replace(colnames(all_movie_component),"value",basename(path_to_group))
+ 
+  all_conidtions_all_movies<-bind_cols(all_conidtions_all_movies,all_movie_component)
+
+}
+
+write.csv(all_conidtions_all_movies,"E:/EX5_6/all_movies_all_conidition.csv")
+
+```
+
