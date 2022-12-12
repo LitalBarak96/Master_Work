@@ -263,7 +263,10 @@ colnames(means_no_na)<-c(c(1:number_of_movies))
 library("plotrix")
 
 
-for_statistic<-cbind(for_statistic,(t(means_no_na[nrow(means_no_na),])))
+ last_min_frames<-means_no_na[(nrow(means_no_na)-1800):nrow(means_no_na),]
+ mean_lst_min<-apply(last_min_frames, 2, mean)
+# 
+ for_statistic<-cbind(for_statistic,mean_lst_min)
 
 Mean= rowMeans(means_no_na)
 
@@ -287,9 +290,11 @@ melt_data <- melt(for_statistic)
 for_statistic$num_of_movie<-1:18
 for_statistic$num_of_movie <- factor(for_statistic$num_of_movie)
 
-aov1 <- aov(Females_Mated ~Females_Grouped+Females_Singles+Males_Mated+Males_Grouped+Males_Singles , data=for_statistic)
-summary(aov1)
-TukeyHSD(aov1)
+res.aov <- aov(value ~ variable, data = melt_data)
+summary(res.aov)
+TukeyHSD(res.aov)
+
+
 
 
 component_plot_facet <- ggplot(data=all_condtion_se_and_mean, aes(y=Mean, x=frame, group=group, colour=group,

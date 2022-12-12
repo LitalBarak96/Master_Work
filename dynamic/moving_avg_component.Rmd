@@ -641,9 +641,16 @@ colnames(means_no_na)<-c(c(1:number_of_movies))
 library("plotrix")
 
 
-for_statistic<-cbind(for_statistic,(t(means_no_na[nrow(means_no_na),])))
+#for_statistic<-cbind(for_statistic,(t(means_no_na[nrow(means_no_na),])))
 
-for_statistic_per_group<-cbind((t(means_no_na[nrow(means_no_na),])),basename(path_of_condition))
+ last_min_frames<-means_no_na[(nrow(means_no_na)-1800):nrow(means_no_na),]
+ mean_lst_min<-apply(last_min_frames, 2, mean)
+# 
+# for_statistic<-cbind(for_statistic,mean_lst_min)
+ 
+ 
+#for_statistic_per_group<-cbind((t(means_no_na[nrow(means_no_na),])),basename(path_of_condition))
+ for_statistic_per_group<-cbind(mean_lst_min,basename(path_of_condition))
 colnames(for_statistic_per_group)<-c("value","group")
 
 Mean= rowMeans(means_no_na)
@@ -658,7 +665,7 @@ all_condtion_se_and_mean<-bind_rows(all_condtion_se_and_mean,mean_and_se_per_con
 
 
 
-colnames(for_statistic)[condition]<-basename(path_of_condition)
+#colnames(for_statistic)[condition]<-basename(path_of_condition)
 all_condition_statistic<-rbind(all_condition_statistic,for_statistic_per_group)
 
 }
