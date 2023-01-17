@@ -1,0 +1,78 @@
+---
+_title: "for"
+output: html_document
+date: "2023-01-17"
+---
+
+```{r}
+library(dplyr)
+library("reshape2")
+library(stringr)
+per_fly_data<-read.csv("D:/hadar/combined_per_fly.csv")
+
+Data1 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081325"))
+Data2 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081409"))
+Data3 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081451"))
+Data4 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T083919"))
+Data5 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122319"))
+Data6 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122408"))
+Data7 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122443"))
+Data8 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122521"))
+
+
+
+
+
+plots_per_movie <- function(Data1){
+  
+  df_sub <- select(Data1, -contains("dir"))
+
+
+colnames(df_sub)<-gsub("^file.*", "file", colnames(df_sub))
+colnames(df_sub)<-gsub("^fly.*", "fly", colnames(df_sub))
+colnames(df_sub)<-gsub("^value.*", "value", colnames(df_sub))
+
+
+
+
+
+
+file<-df_sub[ , grepl( "file" , names( df_sub ) ) ]
+colnames(file)<-rep("file", length(file))
+file_for_main<-data.frame(x = unlist(file))
+
+
+
+
+fly<-df_sub[ , grepl( "fly" , names( df_sub ) ) ]
+colnames(fly)<-rep("fly", length(fly))
+fly_for_main<-data.frame(x = unlist(fly))
+
+
+
+value<-df_sub[ , grepl( "value" , names( df_sub ) ) ]
+colnames(value)<-rep("value", length(value))
+value_for_main<-data.frame(x = unlist(value))
+
+
+main<-NULL
+main<-cbind(file_for_main,fly_for_main)
+
+main<-cbind(main,value_for_main)
+colnames(main)<-c("file","fly","value")
+
+
+main$file<-str_remove(main$file, ".mat")
+ggplot(data = main, aes(x = file, y = value, fill =  factor(fly))) + 
+ geom_bar(stat = 'identity', position = 'dodge')+theme(axis.text=element_text(size=8,face="bold"),axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        axis.title=element_text(size=10,face="bold"))+ggtitle(Data1$dir[[1]])
+}
+
+plots_per_movie(Data3)
+
+```
+
+
+
+
+
