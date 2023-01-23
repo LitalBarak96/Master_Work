@@ -1,0 +1,103 @@
+---
+title: "visual_per_frame_degree"
+output: html_document
+date: '2022-06-20'
+---
+
+
+#for each group calculating mean and ploting of all movies per frame 
+#using the csv of per frame
+```{r}
+
+main_path<-"D:/allGroups"
+
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  for(num_of_movie in 1:length(dir_subGroup)){
+      if(!file.exists(paste0(dir_subGroup[num_of_movie], '/','all_frames_degree_new.csv'))){
+    warning(paste0("all_frames_degree.csv don't exist in ", dir_subGroup[num_of_movie]))
+      }else{
+    all_frames<-read.csv(paste0(dir_subGroup[num_of_movie],'/','all_frames_degree_new.csv'))
+  }
+  }
+
+
+}
+```
+
+```{r}
+
+
+list_of_all_groups<-list.dirs(path = main_path, full.names = TRUE, recursive = FALSE)
+
+for (index_group in 1:length(list_of_all_groups)){
+  path_to_group =list_of_all_groups[index_group]
+  print(path_to_group)
+  setwd(path_to_group)
+  dir_subGroup<-list.dirs(recursive = F,path = path_to_group)
+  
+  #find all files that have the file
+  all.the.files <- dir(path_to_group, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+  #get the full path
+all__subfile_fullpath<-paste0(path_to_group,"/",all.the.files)
+
+library(purrr)
+#bind all with coloms for current group
+data_bined_csv<- 
+    all__subfile_fullpath %>%  map_dfr( ~ read.csv(.x) )
+
+
+data_bined_to_mean<- 
+    all__subfile_fullpath %>%  map_dfc( ~ read.csv(.x) )
+
+#keep only the values,I didnt worte the movie name cuz he was very long and distrupted the visullization of the graph
+#actuall changed my mind,did rbind and only removed the frames so i could show each group together
+only_values_all_movies <- data_bined_csv[,!grepl("Frame", colnames(data_bined_csv))]
+
+
+values_for_mean <- data_bined_to_mean[,grepl("Value", colnames(data_bined_to_mean))]
+
+only_values_all_movies$group <- factor(only_values_all_movies$group, levels=unique(only_values_all_movies$group))
+
+#gave evrey movie a number
+colnames(values_for_mean)<-1:length(all.the.files)
+
+
+
+
+#orgenaizing mean of every row to put on the graph
+mean_every_row<-as.data.frame(rowMeans(values_for_mean, na.rm = FALSE, dims = 1))
+
+mean_every_row<-cbind(1:27000,mean_every_row)
+colnames(mean_every_row)<-c("Frame","Value")
+
+library(ggplot2)
+  setwd(path_to_group)
+
+ jpeg(filename = paste0(basename(path_to_group),"_per_frame_degree.jpeg"),width = 1200, height = 800)
+
+p<-ggplot()+geom_line(data = only_values_all_movies, mapping = aes(x = X, y = Value,group=group,color=group)) +geom_point(data=mean_every_row, aes(x=Frame, y=Value), color='black', size = 2,alpha = 0.15)
+
+ p<-p+theme(text = element_text(size=12),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(paste0(basename(path_to_group)," density per frame all movies with avarge")) +
+  xlab("frames") + ylab("density") +theme(
+plot.title = element_text(color="black", size=14, face="bold.italic"),
+axis.title.x = element_text(color="black", size=12, face="bold"),
+axis.title.y = element_text(color="black", size=12, face="bold")
+) + ylim(0, 50)
+ 
+ 
+
+ plot(p)
+ dev.off()
+ 
+}
+
+
+```
+

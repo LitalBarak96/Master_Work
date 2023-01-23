@@ -1,0 +1,384 @@
+---
+title: "degree"
+output: html_document
+---
+
+
+##this script calculate at evry movie the avg degree for evey 120 frame(can be chnagable in numbers) and visulaize it 
+
+```{r pressure, echo=FALSE}
+
+library(openxlsx)
+library(R.matlab)
+path ="D:/allGroups/Females_Mated"
+setwd(path)
+
+
+dir<-list.dirs(recursive = F)
+print(dir)
+#it is under the assumtion that there is 10 flys and they are orgenized in spcific way from the Allinteraction.mat
+mat <- (readMat(paste0(dir[1], '/','Allinteraction.mat'))) # read each MAT file
+sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = 10, ncol = 10)
+df_mat<-as.data.frame(sub_list_mat)
+
+
+```
+
+
+#remove 0 and omnit nans 
+#give each fly from the 10 flys a "name"
+#can be more generic about the number of flys
+```{r}
+
+path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+
+
+  current_dir =getwd()
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir)
+  
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+
+  
+  #REMOVE 0 (MEAN NO INTERACTION)
+  for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  df_mat<-na.omit(df_mat)
+
+  
+
+  #10 flys
+  colnames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+  all<-data.frame()
+  
+  number_of_flys<-10
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+  colnames(all)<-c("tail","head","onset","terminus")
+  
+  all["head"] <- as.numeric(unlist(all["head"]))
+  all["tail"] <- as.numeric(unlist(all["tail"]))
+```
+
+#the net is undirected
+#the degree is caluclated with degree function from igraph that give the number
+#if an interaaction stop in the middle of a batch of the 60 it will count as no interaction
+```{r}
+#wanted to get all the rows in the spcific timeline
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+#each 120 frames
+
+number_of_frame<-150
+value_sum_df<-data.frame()
+numbers<-seq(1, 27001, by=number_of_frame)
+#for acast so it will sum it as 1 
+all<-cbind(all,1)
+
+for(i in 1:(length(numbers)-1)){
+  
+  #print(numbers[i])
+  #print(numbers[i+1])
+  temp_between_values<-c()
+  #find those that are bigger than the onset and small from the terminus
+  mat_of_termins_and_onset<-as.matrix(all)
+  temp_between_values<-all %>% filter(c(numbers[i],numbers[i+1]) %overlaps%  (all[,3:4]))
+
+  temp_between_values<-all %>% filter(numbers[i+1]>=onset & numbers[i] <=terminus)
+  if( nrow(temp_between_values)!=0){
+    #changing the format to get "matrix" with who is in interaction with who
+  values<-acast(temp_between_values, tail~head,fun.aggregate=sum)
+  #creat matrix in the size of 10 on 10 with 0 
+  zero_matrix <- matrix(0, ncol = 10, nrow = 10)
+  #all_values conation who is in intartcion with who in the spcific frame
+  all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
+  net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
+  #creat a degree 
+  deg <- degree(net2, mode="all")
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=mean(deg))
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }else{
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],avg_value=0)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }
+  }
+  
+#the else is to get the whole frame on interaction so we see the buildup
+data<- as.data.frame(paste0(value_sum_df$begin,"-", value_sum_df$end))
+data$value<-value_sum_df$avg_value
+colnames(data)<-c("Frame","Value")
+
+
+data$Frame <- as.character(data$Frame)
+#Then turn it back into a factor with the levels in the correct order
+data$Frame <- factor(data$Frame, levels=unique(data$Frame))
+
+
+
+
+
+#library(ggplot2)
+
+#ggplot(data = data, mapping = aes(x = Frame, y = Value))+    geom_bar(stat="identity", #color="black", fill="gray")+theme(text = element_text(size=6),
+   #     axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(title_of_plot) +
+  #xlab("frames") + ylab("avg dgree(mean)") +theme(
+#plot.title = element_text(color="red", size=6, face="bold.italic"),
+#axis.title.x = element_text(color="blue", size=6, face="bold"),
+#axis.title.y = element_text(color="#993333", size=6, face="bold")
+#)
+#histogram of distrabution
+#with(value_sum_df, hist(avg_value))
+
+
+
+
+
+
+
+#title
+title_of_plot<-paste0(basename(path)," plot of dgree in each ",number_of_frame," frames")
+
+#lines and dots
+
+
+library(ggplot2)
+ggplot(data = data, mapping = aes(x = Frame, y = Value,group = 1))+ geom_line() +
+    geom_point()+theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(title_of_plot) +
+  xlab("frames") + ylab("avg dgree(mean)") +theme(
+plot.title = element_text(color="red", size=7, face="bold.italic"),
+axis.title.x = element_text(color="blue", size=7, face="bold"),
+axis.title.y = element_text(color="#993333", size=7, face="bold")
+) + ylim(0, 4.5)
+
+
+name_for_file<-paste0(basename(path),"_avg_degree.pdf")
+
+#ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/26.05")
+```
+
+#for all films
+
+
+```{r}
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+path ="D:/allGroups/Males_Singels"
+setwd(path)
+number_of_flys<-10
+number_of_frame<-40
+#seq by the  number of frames
+numbers<-seq(1, 27001, by=number_of_frame)
+
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+dir<-list.dirs(recursive = F)
+for(num_of_movie in 1:length(dir)){
+  dir[num_of_movie]
+  #it is under the assumtion that there is 10 flys and they are orgenized in spcific way from the Allinteraction.mat
+  mat <- (readMat(paste0(path,dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  
+  
+  
+  
+  
+  
+  
+  
+    #REMOVE 0 (MEAN NO INTERACTION)
+  for(i in 1:ncol(df_mat)){
+    for(j in 1:nrow(df_mat)){
+      if(length(unlist(df_mat[i,j])) == 0){
+        df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+      }
+    }
+  }
+  
+  df_mat<-na.omit(df_mat)
+
+  
+
+  #10 flys
+  colnames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+  rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-c("1","2","3","4","5","6","7","8","9","10")
+  nodes<-as.data.frame(nodes)
+  all<-data.frame()
+  
+  for(i in 1:number_of_flys){
+    for(j in 1:number_of_flys){
+      if(length(unlist(sub_list_mat[i,j]))!=0){
+        temp_num_frames<-unlist(df_mat[i,j])
+        tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
+        tobind<-as.data.frame(t(tobind))
+        #the value from where the diffrence is bigger than 120 in the next frame
+        seq_inter<- temp_num_frames[diff(temp_num_frames)>120]
+        if(length(seq_inter)> 0){
+          num_of_seq_iter<-length(seq_inter)
+          current_iindex<-1
+          for(k in 1:num_of_seq_iter){
+            tobind<-c(colnames(df_mat[i]),rownames(df_mat[j,]))
+            tobind<-as.data.frame(t(tobind))
+            
+            index<-which(temp_num_frames == seq_inter[k])
+            tt_temp_num_frames<-as.data.frame(temp_num_frames)
+            temp_all_inter<-tt_temp_num_frames[current_iindex:index,]
+            current_iindex<-index+1
+            tobind<-cbind(tobind,temp_all_inter[1])
+            tobind<-cbind(tobind,temp_all_inter[length(temp_all_inter)])
+            colnames(tobind)<-c("tail","head","onset","terminus")
+            
+            all<-rbind(all,tobind)
+        }
+        
+        }else{
+          tobind<-cbind(tobind,temp_num_frames[1])
+          tobind<-cbind(tobind,temp_num_frames[length(temp_num_frames)])
+          colnames(tobind)<-c("tail","head","onset","terminus")
+          all<-rbind(all,tobind)
+          
+        }
+        
+      }
+        
+    }
+  }
+  
+  colnames(all)<-c("tail","head","onset","terminus")
+  
+  all["head"] <- as.numeric(unlist(all["head"]))
+  all["tail"] <- as.numeric(unlist(all["tail"]))
+  
+  
+  
+  
+  
+  all<-cbind(all,1)
+  value_sum_df<-data.frame()
+  data<-data.frame()
+  temp_between_values<-c()
+
+for(i in 1:(length(numbers)-1)){
+  temp_between_values<-c()
+  #find those that are bigger than the onset and small from the terminus
+  temp_between_values<-all %>% filter(numbers[i+1]>=onset & numbers[i] <=terminus)
+  if( nrow(temp_between_values)!=0){
+    #changing the format to get "matrix" with who is in interaction with who
+  values<-acast(temp_between_values, tail~head,fun.aggregate=sum)
+  #creat matrix in the size of 10 on 10 with 0 
+  zero_matrix <- matrix(0, ncol = 10, nrow = 10)
+  #all_values conation who is in intartcion with who in the spcific frame
+  all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
+  net2 <- graph_from_adjacency_matrix(all_values,mode = "undirected")
+  #creat a degree 
+  deg <- degree(net2)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],degree=(sum(deg)/2))
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }else{
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],degree=0)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }
+  }
+  
+#the else is to get the whole frame on interaction so we see the buildup
+data<- as.data.frame(paste0(value_sum_df$begin,"-", value_sum_df$end))
+data$value<-value_sum_df$degree
+colnames(data)<-c("Frame","Value")
+
+
+data$Frame <- as.character(data$Frame)
+#Then turn it back into a factor with the levels in the correct order
+#data$Frame<-as.factor(data$Frame)
+#data$Frame <- factor(data$Frame, levels=unique(data$Frame))
+data$group<-as.character(num_of_movie)
+#data$group <- factor(data$group, levels=unique(data$group))
+
+if(num_of_movie==1){
+  total_data_for_Graph<-data
+}else{
+  total_data_for_Graph<-rbind(total_data_for_Graph,data)
+}
+
+
+
+total_data_for_Graph$group <- factor(total_data_for_Graph$group, levels=unique(total_data_for_Graph$group))
+
+}
+
+
+avarge_per_frames<-aggregate(total_data_for_Graph[,2], list(total_data_for_Graph$Frame), mean)
+
+colnames(avarge_per_frames)<-c("Frame","Value")
+
+#title
+title_of_plot<-paste0(basename(path)," plot of dgree in each ",number_of_frame," frames")
+
+
+
+library(ggplot2)
+
+p<-ggplot()+geom_line(data = total_data_for_Graph, mapping = aes(x = Frame, y = Value,group=group,color=group)) +geom_point(data=avarge_per_frames, aes(x=Frame, y=Value), color='red', size = 3,alpha = 0.15)
+
+
+
+
+
+ p<-p+theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(title_of_plot) +
+  xlab("frames") + ylab("dgree(sum)") +theme(
+plot.title = element_text(color="red", size=7, face="bold.italic"),
+axis.title.x = element_text(color="blue", size=7, face="bold"),
+axis.title.y = element_text(color="#993333", size=7, face="bold")
+) + ylim(0, 45)
+ plot(p)
+
+ #library(ggplot2)
+
+# ggplot(avarge_per_frames,aes(x=Frame,y=Value))+geom_point()
+
+
+ 
+ 
+ name_for_file<-paste0(basename(path),number_of_frame,"_frames_all_movies_avg_degree_with_avg_red.pdf")
+
+ggsave(filename = name_for_file,device="pdf",path="C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/weekly presentation/26.05")
+ 
+```
+
+```{r}
+total_data_for_Graph$Frame <- factor(total_data_for_Graph$Frame, levels=unique(total_data_for_Graph$Frame))
+
+
+
+test<-aggregate(total_data_for_Graph[,2], list(total_data_for_Graph$Frame), mean)
+
+```
+
+

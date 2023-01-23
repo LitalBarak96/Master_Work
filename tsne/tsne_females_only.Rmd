@@ -1,0 +1,185 @@
+---
+title: "tsne_females_only"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+debbug_path_color<-"D:/EX5_6/color.xlsx"
+file.exists(debbug_path_color)
+
+paths_of_groups <- as.data.frame(read.xlsx(debbug_path_color))
+
+library(stringr)
+library(dplyr)
+
+dirs<-paths_of_groups %>%
+  filter(str_detect(groupNameDir, "Females"))
+```
+
+## R Markdown
+#tsne for only females
+
+```{r all sub groups}
+#all groupes
+  library(stringr)
+  library(openxlsx)
+  num_of_pop<<-nrow(dirs)
+  
+  
+  dir=as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function(x) X = numeric(num_of_pop)))
+  for (i in 1:num_of_pop){
+  dir[i,1]<-dirs$groupNameDir[i]
+  }
+
+  groupsNames <<- as.character(basename(dirs$groupNameDir))
+
+#chnage the dir values so it would be readable
+  dir$X1<-gsub("\\\\", "/", dir$X1)
+  for(i in 1:num_of_pop){
+  dir[i,1]<-str_trim(dir[i,1], side = c("right"))
+  }
+
+library("dplyr")
+library("stringr")
+index<-0
+
+for(i in 1:num_of_pop){
+    index<-index+1
+    setwd(dir[i,1])
+    all_features<-read.csv("combined_per_fly.csv")
+    #getting the colom names - getting the feature name e.g aggregation 
+    feature_names<-all_features %>%
+      select(starts_with('file'))
+    
+    #taking the first row of it and removing the col names
+    names_data_frame<-as.data.frame(t(feature_names[1,]))
+    rownames(names_data_frame)<-(NULL)
+    colnames(names_data_frame)<-c("feature_name")
+    #replace the feature names so they won't end with .mat ending
+    names_data_frame$feature_name<- str_replace(names_data_frame$feature_name ,".mat", "")
+    #converting them to list
+    names_in_list<-as.list(names_data_frame$feature_name)
+    all_features_names<-all_features$dir
+    all_features_names<-as.data.frame(all_features_names)
+    colnames(all_features_names)<-c("id")
+    #taking the movie name and calling it id
+    
+    #taking only the values
+    all_features_valus<-all_features %>%
+      select(starts_with('valu'))
+    #putting the name of the feature as colom name to the values
+    colnames(all_features_valus)<-c(names_in_list)
+    
+    all_features_names<-cbind(all_features_names,all_features_valus)
+    all_features_names$id<-c(basename(dir[i,1]))
+    if(index==1){
+      all_feature_final<-all_features_names
+    }else{
+      all_feature_final<-rbind(all_feature_final,all_features_names)
+      
+    }
+    #putting factor on the label
+    all_feature_final$id<-as.factor(all_feature_final$id)
+  }
+
+  #this part was problematic for the random forest
+  colnames(all_feature_final) <- make.names(colnames(all_feature_final))
+
+
+#check balance
+all_feature_final %>% 
+  count(id) %>% 
+  mutate(prop = n/sum(n))
+
+actuall_data<-all_feature_final[,-1]
+
+scaled_dat <- data.frame(lapply(actuall_data, function(x) scale(x, center = FALSE, scale = max(x, na.rm = TRUE)/1)))
+scaled_dat<-cbind(all_feature_final$id,scaled_dat)
+names(scaled_dat)[names(scaled_dat) == 'all_feature_final$id'] <- 'id'
+```
+
+#doing the r
+
+```{r all sub groups tsne, echo=FALSE}
+library(readr)
+library(Rtsne)
+
+rgb_2_hex <- function(r,g,b){
+  return(rgb(r, g, b, maxColorValue = 1))}
+
+#colors = rainbow(length(unique(scaled_dat$id)))
+colors<-c(rgb_2_hex(dirs[1,2],dirs[1,3],dirs[1,4]),rgb_2_hex(dirs[2,2],dirs[2,3],dirs[2,4]),rgb_2_hex(dirs[3,2],dirs[3,3],dirs[3,4]))
+#names(colors) = unique(scaled_dat$id)
+names(colors)<-c(basename(dirs[1,1]),basename(dirs[2,1]),basename(dirs[3,1]))
+#names(colors) = unique(scaled_dat$id)
+
+## Run the t-SNE algorithm and store the results into an object called tsne_results
+tsne_results <- Rtsne(scaled_dat[,-1], perplexity=30, check_duplicates = FALSE)
+#THE DEFULAT IS 1000 ITERS
+#plot(tsne_results$Y, col = colors[scaled_dat$id], bg= colors[scaled_dat$id], pch = 21, cex = 1.2)
+plot(tsne_results$Y, col = "black", bg= colors[scaled_dat$id], pch = 21, cex = 1.2)
+par(cex = 0.85)
+
+#legend(x = "topleft",          # Position
+   #    legend =names(colors),fill= colors,bty = "n")
+
+#ggsave(file="all_females_tsne.pdf",device="pdf",path="F:/allGroups",units="cm",width=20,height=20,dpi="retina")
+
+
+```
+
+
+```{r all sub groups smaples tsne, echo=FALSE}
+##ALSO WITH SAMPLING
+
+numTrain <-nrow(scaled_dat)
+set.seed(1)
+rows <- sample(1:nrow(scaled_dat), numTrain)
+train <- scaled_dat[rows,]
+
+set.seed(1) # for reproducibility
+tsne <- Rtsne(train[,-1], perplexity=30,check_duplicates = FALSE)
+
+#colors = rainbow(length(unique(train$id)))
+#names(colors) = unique(train$id)
+plot(tsne$Y, main="tSNE sampled rows",col ="black", bg= colors[train$id],pch = 21, cex = 1.3)
+#text(tsne$Y, labels=train$id, col=colors[train$id])
+legend(x = "topleft",          # Position
+       legend =names(colors),fill= colors,cex=0.5)
+```
+
+
+```{r all sub groups trying hyper, echo=FALSE}
+library(Rtsne)
+
+tsne_plot <- function(perpl=30,iterations=1000,learning=250){
+  set.seed(1) # for reproducibility
+  tsne <- Rtsne(train[,-1], dims = 2, perplexity=perpl, verbose=TRUE, max_iter=iterations, eta=learning)
+  plot(tsne$Y, main = print(paste0("perplexity = ",perpl, ", max_iter = ",iterations, ", learning rate = ",learning)), col ="black", bg= colors[train$id],pch = 21, cex = 1.3 )
+  legend(x = "topleft",          # Position
+       legend =names(colors),fill= colors,cex=0.5)
+}
+
+perplexity_values <- c(20,30,40,50,60,70,80,90)
+sapply(perplexity_values,function(i){tsne_plot(perpl=i)})
+
+learning_values <- c(20,200,300,2000)
+sapply(learning_values,function(i){tsne_plot(learning=i)})
+
+par(mfrow=c(3,3))
+optPerp <- round(sqrt(104),0)
+for(i in c( 200, 300, 500,1000,2000,3000,4000,5000,6000))
+{
+	tsne <- Rtsne(train[,-1],
+		      perplexity=30, max_iter=i)
+	plot(tsne$Y, col="blue", xlab="tSNE1", ylab="tSNE2", cex=0.5)
+	mtext(paste0("max_iter = ", i))
+}
+
+```

@@ -1,0 +1,83 @@
+---
+title: "combin_all_frames_degree_and_visuall"
+output: html_document
+date: '2022-06-14'
+---
+
+
+```{r }
+
+
+group_name<-"Males_Singels"
+
+my_path<-paste0("D:\\allGroups\\",group_name)
+all.the.files <- dir(my_path, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+
+all.the.files<-paste0(my_path,"\\",all.the.files)
+library(purrr)
+#bind all with coloms
+all.the.data <- 
+    all.the.files %>%  map_dfc( ~ read.csv(.x) )
+
+#combined by coloms
+
+wo_framenum <- all.the.data[,!grepl("Frame", colnames(all.the.data))]
+
+wo_frame_and_num <- wo_framenum[,!grepl("X", colnames(wo_framenum))]
+
+wo_frame_and_num_group <- wo_frame_and_num[,!grepl("group", colnames(wo_frame_and_num))]
+
+colnames(wo_frame_and_num_group)<-1:length(all.the.files)
+
+
+
+
+
+mean_everyrow<-as.data.frame(rowMeans(wo_frame_and_num_group, na.rm = FALSE, dims = 1))
+
+mean_everyrow<-cbind(1:27000,mean_everyrow)
+colnames(mean_everyrow)<-c("Frame","Value")
+```
+
+```{r}
+
+
+
+
+all.the.files <- dir(my_path, recursive=TRUE, pattern="^all_frames_degree_new.csv$" )
+
+all.the.files<-paste0(my_path,"\\",all.the.files)
+library(purrr)
+#bind all with coloms
+all.the.data <- 
+    all.the.files %>%  map_dfr( ~ read.csv(.x) )
+#combined by rows
+
+wo_frame <- all.the.data[,!grepl("Frame", colnames(all.the.data))]
+
+wo_frame$group <- factor(wo_frame$group, levels=unique(wo_frame$group))
+
+
+
+  library(ggplot2)
+
+
+
+p<-ggplot()+geom_line(data = wo_frame, mapping = aes(x = X, y = Value,group=group,color=group)) +geom_point(data=mean_everyrow, aes(x=Frame, y=Value), color='red', size = 3,alpha = 0.15)
+
+
+ p<-p+theme(text = element_text(size=10),
+        axis.text.x = element_text(angle=90, hjust=1)) +ggtitle(paste0("every frame for all movies ",group_name)) +
+  xlab("frames") + ylab("dgree(sum)") +theme(
+plot.title = element_text(color="red", size=7, face="bold.italic"),
+axis.title.x = element_text(color="blue", size=7, face="bold"),
+axis.title.y = element_text(color="#993333", size=7, face="bold")
+) + ylim(0, 45)
+ 
+ 
+
+ plot(p)
+
+```
+
+

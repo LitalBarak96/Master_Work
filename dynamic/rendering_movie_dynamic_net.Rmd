@@ -1,0 +1,134 @@
+---
+title: "dynmic_net"
+output: html_document
+---
+
+
+#creat dynamic movies from Allinteraction.mat of a single movie
+
+#insert dir and insert color of chooice
+```{r}
+  #install.packages('R.matlab')
+  library(R.matlab)
+  current_dir ="D:/allGroups/Males_Mated"
+  setwd(current_dir)
+  
+  dir<-list.dirs(recursive = F)
+  print(dir)
+  color<-"black"
+```
+
+
+#creating the all df that conation all the data
+```{r}
+  library(R.matlab)
+#where the subscripts is located
+path_to_scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+
+
+  current_dir_scripts =getwd()
+  setwd(path_to_scripts)
+  files.sources = list.files()
+  sapply(files.sources, source)
+  setwd(current_dir_scripts)
+  
+number_of_flys<-10
+#choosing the spcific movie i want to show
+number_of_movie<-13
+all<-data.frame()
+
+setwd(current_dir)
+#read the all frames
+
+f <- function(x) {
+  if(is.list(x)) lapply(x, f)
+  else ifelse(length(x) == 0, 0, x)
+}
+
+filepath<-paste0(dir[number_of_movie], '/','Allinteraction.mat')
+if(!(file.exists(filepath))){
+  stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+}
+
+df <- (readMat(filepath)) # read each MAT file
+sub_list_mat<-matrix(df[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+df_mat<-as.data.frame(sub_list_mat)
+
+
+
+
+#REMOVE 0 (MEAN NO INTERACTION)
+for(i in 1:ncol(df_mat)){
+  for(j in 1:nrow(df_mat)){
+    if(length(unlist(df_mat[i,j])) == 0){
+      df_mat[i,j] <- lapply(df_mat[i,j], function(x)x[lengths(x) == 0] <- 0)
+    }
+  }
+}
+
+df_mat<-na.omit(df_mat)
+
+
+
+colnames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+rownames(df_mat)<-c("1","2","3","4","5","6","7","8","9","10")
+nodes<-c("1","2","3","4","5","6","7","8","9","10")
+nodes<-as.data.frame(nodes)
+nodes$name<-c("fly1","fly2","fly3","fly4","fly5","fly6","fly7","fly8","fly9","fly10")
+colnames(nodes)<-c("vertex.id","names")
+#colnames(nodes)<-c("vertex.id")
+nodes$vertex.id<-as.numeric(nodes$vertex.id)
+#other <- do.call(unlist, df_mat)
+all<-data.frame()
+
+
+all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+colnames(all)<-c("tail","head","onset","terminus")
+edge.id<-seq_along(1:nrow(all))
+all<-cbind(edge.id,all)
+all$tail<-as.numeric(all$tail)
+all$head<-as.numeric(all$head)
+
+```
+
+#this part doing the rendering itself
+
+
+```{r pressure, echo=FALSE}
+library(ndtv)
+setwd(current_dir)
+
+new_edge<-data.frame(onset=all["onset"],terminus=all["terminus"],tail=all["tail"],head=all["head"])
+new_nodes<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["tail"])
+tmp_new<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["head"])
+colnames(tmp_new)<-c("onset","terminus","id")
+colnames(new_nodes)<-c("onset","terminus","id")
+
+new_nodes<-rbind(new_nodes,tmp_new)
+new_nodes$pid<-seq_along(1:nrow(new_nodes))
+
+final_nodes<-new_nodes
+final_nodes$onset<-0
+final_nodes$terminus<-27001
+
+
+vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
+
+vertex$vertex.id<-as.numeric(vertex$vertex.id)
+
+nw <- network(unique(new_edge[,c(3,4)]),
+              vertex.attr = vertex[,c(1:2)],
+              vertex.attrnames = c("vertex.id", "col"),
+              directed = F)
+
+net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
+
+compute.animation(net,
+              slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
+
+setwd(current_dir)
+  render.d3movie(net,filename= paste0(basename(current_dir),"_",".html"),
+           output.mode = "HTML",vertex.col = "col",
+           launchBrowser = TRUE,displaylabels =T)
+```

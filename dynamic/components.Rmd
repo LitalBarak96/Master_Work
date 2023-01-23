@@ -1,0 +1,167 @@
+---
+title: "Connected Components"
+output: html_document
+date: '2022-06-19'
+---
+
+
+
+
+
+```{r}
+
+library(openxlsx)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library(igraph)
+library(R.matlab)
+
+
+
+
+f <- function(x) {
+    if(is.list(x)) lapply(x, f)
+    else ifelse(length(x) == 0, 0, x)
+}
+
+
+
+
+number_of_flys<-10
+number_of_frame<-1
+
+#seq by the  number of frames
+numbers<-seq(1, 27001, by=number_of_frame)
+
+
+
+dir<-list.dirs(recursive = F,path = "D:/allGroups/Females_Mated")
+
+
+num_of_movie=1
+
+  mat <- (readMat(paste0(dir[num_of_movie], '/','Allinteraction.mat'))) # read each MAT file
+  sub_list_mat<-matrix(mat[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
+  df_mat<-as.data.frame(sub_list_mat)
+  
+
+  
+  
+  all<-data.frame()
+  path_to_sub_Scripts<-"C:/Users/barakli8/OneDrive - Bar Ilan University/Lital/code/interactions_network/dynamic/sub_scripts"
+  
+   setwd(path_to_sub_Scripts)
+    files.sources = list.files()
+    sapply(files.sources, source)
+
+  all<-all_frames_interaction_above(number_of_flys,sub_list_mat,df_mat)
+
+  
+  all<-cbind(all,1)
+  value_sum_df<-data.frame()
+  data<-data.frame()
+  temp_between_values<-c()
+
+  library(dplyr)
+  
+  
+for(i in 1:(length(numbers)-1)){
+  temp_between_values<-c()
+  #find those that are bigger than the onset and small from the terminus
+  temp_between_values<-all %>% filter(numbers[i+1]>=onset & numbers[i] <=terminus)
+  #if there is any rows at all
+  if( nrow(temp_between_values)!=0){
+    #changing the format to get "matrix" with who is in interaction with who
+    #the massge so annoying,everytime it creat the matrix it notify
+    
+  values<-suppressMessages(acast(temp_between_values, tail~head,fun.aggregate=sum))
+  #creat matrix in the size of 10 on 10 with 0 
+  zero_matrix <- matrix(0, ncol = 10, nrow = 10)
+  #all_values conation who is in intartcion with who in the spcific frame
+  all_values<-acast(rbind(melt(values), melt(zero_matrix)), Var1~Var2, sum)
+  net <- graph_from_adjacency_matrix(all_values,mode = "undirected")
+  #creat component
+  clu <- components(net)
+  biggest_cc<-max(clu[["csize"]])
+  # i get who is interaction with who
+  #groups(clu)
+  #count_components(net)
+  
+  #component_distribution(net)
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],cc=biggest_cc)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }else{
+  value_sum_temp<-data.frame(begin=numbers[i],end=numbers[i+1],cc=0)
+  value_sum_df<- bind_rows(value_sum_df,value_sum_temp)
+  }
+  }
+  
+
+```
+
+
+Connected Components with linear regression
+
+claculating in the top the cc and combing him to creat linear regression
+didnt do well, i think it is becuase cc is not very good 
+
+```{r}
+
+install.packages('olsrr')
+
+all_other_features<-read.csv("D:/allGroups/Females_Mated/Assa_Female_Mated_Unknown_RigA_20211025T120646/per_framefeatures_sum_allflies.csv")[1:26997,]
+
+  cc_frame_and_value<-value_sum_df[1:26997,c(1,3)]
+  colnames(cc_frame_and_value)<-c("Frame","cc")
+  cc<-cc_frame_and_value$cc
+    combined_cc_and_features<-cbind(all_other_features,cc)
+
+    data<-combined_cc_and_features
+    
+    
+    data_cor <- cor(data[ , colnames(data) != "cc"],  # Calculate correlations
+                data$cc)
+    
+  temp_degree_corr <- as.data.frame(as.table(data_cor))
+    temp_degree_corr <- subset(temp_degree_corr, abs(Freq) > 0) 
+
+  temp_degree_corr <- temp_degree_corr[order(-abs(temp_degree_corr$Freq)),] 
+  
+  
+  #tried to find the the features in the most correlation
+
+
+   # data_cor <- cor(combined_cc_and_features[ , colnames(combined_cc_and_features) != 
+    #"cc_frame_and_value$cc"],  # Calculate correlations
+   #             combined_cc_and_features$`cc_frame_and_value$cc`)
+    
+    #removed what was with na and non sig
+    lm1<-lm(cc ~ . -theta_mm.mat -timestamps.mat -y_mm.mat -x_mm.mat -dt.mat -dist2wall.mat -a_mm.mat -b_mm.mat -a.mat -absdtheta.mat -absdv_cor.mat -corfrac_min.mat -yaw.mat -veltoward_nose2ell.mat -velmag_nose.mat -velmag.mat -signdtheta.mat -phi.mat -dv_cor.mat -du_tail.mat -dphi.mat -flipdv_cor.mat -dangle2wall.mat -absphidiff_anglesub.mat, data=combined_cc_and_features)
+    
+    
+      lm1<-lm(cc ~ y_mm.mat+y.mat+ynose_mm.mat
++angle2wall.mat+theta.mat+theta_mm.mat+anglesub.mat+dist2wall.mat ,data=combined_cc_and_features)  
+  summary(lm1)
+  
+  
+  predi<-as.data.frame(predict(lm1))
+  
+  
+  
+  
+  ##WILL NEVER WORK,TOO MUCH VARIBLES
+  #NEED TO TRY MYSELF WITH CORRLACTION?
+  #or with comon sense and choose 10 varibles top
+library(leaps)
+  
+  Best_Subset <-
+    regsubsets(cc~.,
+               data =combined_cc_and_features,
+               nbest = 1,      # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive",really.big=T)
+summary_best_subset <- summary(regsubsets.out)
+as.data.frame(summary_best_subset$outmat)
+```
