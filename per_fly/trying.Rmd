@@ -67,7 +67,7 @@ dev.off()
 }
 
 
-pathCsv<-"D:/hadar/combined_per_fly.csv"
+pathCsv<-"F:/hadar/combined_per_fly.csv"
 per_fly_data<-read.csv(pathCsv)
 
 Data1 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081325"))
@@ -82,7 +82,7 @@ Data8 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221
 
 
 
-plots_per_movie(Data1,1,dirname(pathCsv))
+plots_per_movie(Data6,3,dirname(pathCsv))
 
 ```
 
