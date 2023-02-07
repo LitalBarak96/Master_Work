@@ -147,8 +147,8 @@ vizual<-function(){
 #EXTRACTION AND USER INPUT TO LIST OF DIRS
 ############################################################################################################
 
-debbug_path_color<-"D:/Assa/Elia/Ex_5/Females/color.xlsx"
-debbug_path_param<-"D:/Assa/Elia/Ex_5/Females/params.xlsx"
+debbug_path_color<-"D:/scatterplot_data/npf_chrimson_030223/color.xlsx"
+debbug_path_param<-"D:/scatterplot_data/npf_chrimson_030223/params.xlsx"
 #the path that have all the scripts in
 path_to_scripts<-choose.dir(getwd(),"choose dir where sub scripts are located")
 
@@ -215,6 +215,8 @@ dir$X1<-gsub("\\\\", "/", dir$X1)
 for(i in 1:num_of_pop){
   if(dir.exists(dir[i,1])){
     print("exist!!")
+  }else{
+    stop(paste(dir[i,1]," dir don't exist"))
   }
 }
 
@@ -223,6 +225,7 @@ for(i in 1:num_of_pop){
 #getting the real order
 colnames(namesOfGroupsFromxlsx)<-c("groupname")
 namesOfXlsx<-gsub("^(\\S+)\\s+(.*)", "\\1", namesOfGroupsFromxlsx$groupname)
+#this is the part that removes the number of interaction dir
 namesOfXlsx<-namesOfXlsx[duplicated(namesOfXlsx)]
 
 #TEST NEED TO BE TRUE
@@ -238,7 +241,7 @@ for(i in 1:num_of_pop){
   if(length(output) !=1){
         warning(("the order should be: "))
         warning(paste(" ",namesOfXlsx))
-        stop("you choose not in the right order!please check the correct order as you choose in expdata")
+        warning("you choose not in the right order!please check the correct order as you choose in expdata")
   }
 }
 
