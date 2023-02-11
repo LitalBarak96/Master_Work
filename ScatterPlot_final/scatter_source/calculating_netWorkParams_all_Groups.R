@@ -31,6 +31,7 @@ calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv
   #this loop calculte for all groupes 
   for (i in 1:allData$Number.of.groups[1]) {
     cur <- (i + 1) * 2
+    print(i)
     numberOfMovies[i]<- allData[i, 3]
     lengthParams <- cbind(lengthParams, calculateGroupParams(allData[1:numberOfMovies[i], cur], 0,path_to_scripts))
     numberParams <- cbind(numberParams, calculateGroupParams(allData[1:numberOfMovies[i], cur + 1], allData$Max.number.of.interaction[1],path_to_scripts))
