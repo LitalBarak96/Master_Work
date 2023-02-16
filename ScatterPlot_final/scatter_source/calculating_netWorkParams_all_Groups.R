@@ -1,4 +1,4 @@
-calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv,debbug_path_color){
+calculating_netWorkParams_all_Groups<-function(dir,path_to_scripts,xlsxFile,argv,debbug_path_color,with_rgb){
   
   current_dir =dir
   setwd(path_to_scripts)

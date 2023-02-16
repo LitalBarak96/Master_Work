@@ -229,11 +229,15 @@ namesOfXlsx<-gsub("^(\\S+)\\s+(.*)", "\\1", namesOfGroupsFromxlsx$groupname)
 namesOfXlsx<-namesOfXlsx[duplicated(namesOfXlsx)]
 
 #TEST NEED TO BE TRUE
-nrow(dir) == num_of_pop
+if(!nrow(dir) == num_of_pop){
+  stop("something off with the color file data ")
+}
 #check from the 4th place
 
 #check on each one from expdata is iin the same order as the group the user choose
 #by useing grep i check the iif true 
+
+#fix - not stop if the order incorrect - need to see if it is imprtant
 output<-0
 for(i in 1:num_of_pop){
   output<-grep(paste0("^.*", groupsNames[i], ".*$"), namesOfGroupsFromxlsx[i*2,1])
@@ -270,22 +274,22 @@ pb <- winProgressBar(title = "Window progress bar", # Window title
 #### the actuall run (if the user choose to run from the start)
 if(vizual_or_run == 1){
   #CALCULATING THE PARAMS FOR ALL THE POPULATION TOGETHER
-  Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color)
+  Listedparams<-calculating_netWorkParams_all_Groups(dir[1,1],path_to_scripts,xlsxFile,argv,debbug_path_color,with_rgb)
   lengthParams<- as.data.frame(Listedparams[1])
   numberParams<- as.data.frame(Listedparams[2])
-  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+ # current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
 
   for (i in 1:num_of_pop){
     #for each population i get the group name the number for movies and running 
     setwd(dir[i,1])
     averagesPerMovieByFile(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+   # current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+   # current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     boutLengthAndFrequencyForClassifiers(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+  #  current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     netWorkParamsCalcuPerGroup(dir[i,1],i,path_to_scripts,lengthParams,numberParams,xlsxFile,num_of_pop,FALSE)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+   # current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
   }
 
 ##############################################
