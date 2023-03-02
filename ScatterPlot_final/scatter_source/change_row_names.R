@@ -15,8 +15,12 @@ change_row_names<-function(stats_data,path_to_scripts,groupsNames,is_anova){
   }else{
     list_row_name<-stats_data
   }
-  
-  name_permutation<- combn(groupsNames, 2,simplify = FALSE)
+  if(length(groupsNames)!=0){
+    name_permutation<- combn(groupsNames, 2,simplify = FALSE)
+    
+  }else{
+    stop("hereeeeeeeeeee")
+  }
   
   
   # i need to change the order of the names to something const to both 
