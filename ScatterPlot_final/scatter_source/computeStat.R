@@ -7,13 +7,11 @@ computeStat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
   setwd(current_dir)
   
   datalist = list()
-  setwd(dir[1,1])
-  df1<-as.data.frame(read.csv(csv_file_name))
+  df1<-as.data.frame(read.csv(paste(dir[1,1],"/",csv_file_name,sep = "")))
   first<-df1[ , grepl( "value" , names( df1 ) ) ]
   first$id <-as.factor(groupsNames[1])
   for (i in 2:num_of_pop){
-    setwd(dir[i,1])
-    df_temp<-as.data.frame(read.csv(csv_file_name))
+    df_temp<-as.data.frame(read.csv(paste(dir[i,1],"/",csv_file_name,sep = "")))
     df_temp<-df_temp[ , grepl( "value" , names( df_temp ) ) ]
     df_temp$id <-as.factor(groupsNames[i])
     first<-bind_cols(first,df_temp)
