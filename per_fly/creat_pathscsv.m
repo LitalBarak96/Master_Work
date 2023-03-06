@@ -24,4 +24,4 @@ writetable(tables,baseFileName)
 
 cd(OriginFolder)
 command = append(command,path_of_xlsx) 
-[status,cmdout]=system(command,'-echo');
+%[status,cmdout]=system(command,'-echo');

@@ -161,23 +161,10 @@ dev.off()
 
 }
 
-# 
-# pathCsv<-"D:/hadar/combined_per_fly.csv"
-# per_fly_data<-read.csv(pathCsv)
-# 
-# Data1 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081325"))
-# Data2 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081409"))
-# Data3 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081451"))
-# Data4 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T083919"))
-# Data5 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122319"))
-# Data6 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122408"))
-# Data7 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122443"))
-# Data8 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122521"))
-
-
-
 
 path_test<-"D:/hadar/20230305/all_grouped"
+
+
 
 
 pathCsv<-paste(path_test,"/","averages per fly per movie.csv",sep = "")
@@ -192,18 +179,17 @@ sub_dir<-list.dirs(path_test,recursive = F)
      x <- list()
      for (i in 1:length(sub_dir_tmp)){
          z <- readline(paste("number of fly for movie ",sub_dir_tmp[i], ": ", sep=''))
-         x[[z]] <- z
+         x[i] <- z
      }
      return(x)
  }
  
- 
+   list_of_flys<-get_fly_from_user(sub_dir)
+
  for(j in 1:length(sub_dir)){
    
-  list_of_flys<-get_fly_from_user(sub_dir[j])
   colnames(per_fly_data)<-str_replace(colnames(per_fly_data),"dir...","dir")
   Data <- subset(per_fly_data, dir1 %in% c(paste("./",basename(sub_dir[j]),sep = "")))
-
   plots_per_movie(Data,list_of_flys[[j]],sub_dir[j])
 
    
@@ -219,11 +205,4 @@ sub_dir<-list.dirs(path_test,recursive = F)
 ```
 
 
-
-
-
-
-```{r}
-
-```
 
