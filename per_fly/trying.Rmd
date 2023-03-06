@@ -1,8 +1,11 @@
----
+ ---
 _title: "for"
 output: html_document
 date: "2023-01-17"
 ---
+
+
+for runing this code we need to creat combin per dly which is in tsne file and calls main per fly
 
 ```{r}
 library(dplyr)
@@ -89,4 +92,138 @@ plots_per_movie(Data6,3,dirname(pathCsv))
 
 
 
+
+
+
+
+
+```{r}
+
+
+library(dplyr)
+library("reshape2")
+library(stringr)
+library(ggplot2)
+
+
+
+plots_per_movie <- function(Data1,flynumber,path_to_plot){
+  
+  df_sub <- select(Data1, -contains("dir"))
+
+
+colnames(df_sub)<-gsub("^file.*", "file", colnames(df_sub))
+colnames(df_sub)<-gsub("^fly.*", "fly", colnames(df_sub))
+colnames(df_sub)<-gsub("^value.*", "value", colnames(df_sub))
+
+
+file<-df_sub[ , grepl( "file" , names( df_sub ) ) ]
+colnames(file)<-rep("file", length(file))
+file_for_main<-data.frame(x = unlist(file))
+
+
+
+
+fly<-df_sub[ , grepl( "fly" , names( df_sub ) ) ]
+colnames(fly)<-rep("fly", length(fly))
+fly_for_main<-data.frame(x = unlist(fly))
+
+
+
+value<-df_sub[ , grepl( "value" , names( df_sub ) ) ]
+colnames(value)<-rep("value", length(value))
+value_for_main<-data.frame(x = unlist(value))
+
+
+main<-NULL
+main<-cbind(file_for_main,fly_for_main)
+
+main<-cbind(main,value_for_main)
+colnames(main)<-c("file","fly","value")
+
+
+
+
+
+
+myColors <- c("#4699dd", "#4699dd", "#4699dd", "#4699dd", "#4699dd", "#4699dd", "#4699dd", "#4699dd", "#4699dd", "#4699dd")
+myColors[flynumber]<-"#ff3db7"
+
+main$file<-str_remove(main$file, ".mat")
+name_for_pic<-str_remove(Data1$dir[[1]],"./")
+
+tiff(file=paste(path_to_plot,"/",name_for_pic,".tiff",sep = ""),units="in", width=18, height=15, res=400, compression = 'lzw')
+p<-ggplot(data = main, aes(x = fly, y = value, col =  factor(fly))) + 
+ geom_bar(stat = 'identity', position = 'dodge')+theme(axis.text=element_text(size=6,face="bold"),axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        axis.title = element_text( size =4, face = "bold" ))+ggtitle(Data1$dir[[1]])+facet_wrap(~file,ncol= 7,scales = "free")+scale_color_manual(values=myColors)
+plot(p)
+dev.off()
+
+}
+
+# 
+# pathCsv<-"D:/hadar/combined_per_fly.csv"
+# per_fly_data<-read.csv(pathCsv)
+# 
+# Data1 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081325"))
+# Data2 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081409"))
+# Data3 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T081451"))
+# Data4 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T083919"))
+# Data5 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122319"))
+# Data6 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122408"))
+# Data7 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122443"))
+# Data8 <- subset(per_fly_data, dir %in% c("./Assa_Males_Single_Unknown_RigA_20221027T122521"))
+
+
+
+
+path_test<-"D:/hadar/20230305/all_grouped"
+
+
+pathCsv<-paste(path_test,"/","averages per fly per movie.csv",sep = "")
+per_fly_data<-read.csv(pathCsv)
+
+sub_dir<-list.dirs(path_test,recursive = F)
+
+ 
+
+
+ get_fly_from_user <- function(sub_dir_tmp){
+     x <- list()
+     for (i in 1:length(sub_dir_tmp)){
+         z <- readline(paste("number of fly for movie ",sub_dir_tmp[i], ": ", sep=''))
+         x[[z]] <- z
+     }
+     return(x)
+ }
+ 
+ 
+ for(j in 1:length(sub_dir)){
+   
+  list_of_flys<-get_fly_from_user(sub_dir[j])
+  colnames(per_fly_data)<-str_replace(colnames(per_fly_data),"dir...","dir")
+  Data <- subset(per_fly_data, dir1 %in% c(paste("./",basename(sub_dir[j]),sep = "")))
+
+  plots_per_movie(Data,list_of_flys[[j]],sub_dir[j])
+
+   
+ }
+ 
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+```{r}
+
+```
 
