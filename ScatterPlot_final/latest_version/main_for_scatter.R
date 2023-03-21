@@ -129,14 +129,17 @@ vizual<-function(){
   t<-t+ scale_color_manual(values = as.character(colors_of_groups$X1))
   t<-t+ geom_pointrange(mapping=aes(xmax=value+Variance, xmin=value-Variance), size=0.08)+
     xlim(-(xsize),(xsize))+theme_minimal(base_size = font_size)
-  print(t)
-  setwd((choose.dir(caption = "Select folder for saving the scatter plot")))
+  paths<-((choose.dir(caption = "Select folder for saving the scatter plot")))
   if(type_format==1){
-    ggsave(plot = t, filename = "scatterplot.pdf", height=height, width=width,units = "cm")
     
+    pdf(file = paste(paths,"/","scatterplot.pdf",sep=""), height=height, width=width)
+    plot(t)
+    dev.off()
   }
   if(type_format==2){
-    ggsave(plot = t, filename = "scatterplot.jpeg", height=height, width=width,units = "cm")
+    jpeg( filename = paste(paths,"/","scatterplot.jpeg",sep=""), height=height, width=width,units = "in",res=400)
+    plot(t)
+    dev.off()
 
   }
   
