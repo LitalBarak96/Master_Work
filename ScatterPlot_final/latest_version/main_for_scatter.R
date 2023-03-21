@@ -312,7 +312,7 @@ if(vizual_or_run == 1){
     #for each net there is different valus 
     setwd(dir[i,1])
     combineKineticAndClassifiersToSignature(dir[i,1],path_to_scripts)
-    current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
+   # current_index<- windowBar(current_index,pb,number_of_operation,path_to_scripts)
     
   }
   
