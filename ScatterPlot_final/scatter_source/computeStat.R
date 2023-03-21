@@ -6,35 +6,45 @@ computeStat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
   sapply(files.sources, source)
   setwd(current_dir)
   
+  
+  largest_number_of_movies(dir,num_of_pop,path_to_scripts)
+  
   datalist = list()
   df1<-as.data.frame(read.csv(paste(dir[1,1],"/",csv_file_name,sep = "")))
   first<-df1[ , grepl( "value" , names( df1 ) ) ]
   first$id <-as.factor(groupsNames[1])
+  
+  
   for (i in 2:num_of_pop){
     df_temp<-as.data.frame(read.csv(paste(dir[i,1],"/",csv_file_name,sep = "")))
     df_temp<-df_temp[ , grepl( "value" , names( df_temp ) ) ]
     df_temp$id <-as.factor(groupsNames[i])
-    first<-bind_cols(first,df_temp)
+    
+    #first <-rbind(first,df_temp)
+    
+    first<-rbind(first,df_temp)
   }
   
-  indexs<-c()
-  indexs<-which(grepl( "id" , names( first ) ))
+  
+  
   names_all<-df1[ , grepl( "file" , names( df1 ) ) ]
   all_name<-as.character(names_all[1,1:ncol(names_all)])
   featuers_comb<-c()
   
-  #the j is for the feature names and i is for the number oof pop
   
-  for(j in 1:ncol(names_all)){
-    temp<-c()
-    temp<-cbind(temp,(as.list(first[j])))
-    for(i in 2:num_of_pop){
-      temp<-cbind(temp,(as.list(first[indexs[i-1]+j])))
+  for(i in 1:num_of_pop){
+    Data <- subset(first, id %in% groupsNames[i])
+    
+    temp<-NULL
+    for(feature in 1:ncol(names_all)){
+      temp<-rbind(temp,as.list(Data[feature]))
     }
     
-    featuers_comb<-rbind(featuers_comb,temp)
+    featuers_comb<-cbind(featuers_comb,temp)
     
   }
+  
+  
   rownames(featuers_comb)<-all_name
   
   
