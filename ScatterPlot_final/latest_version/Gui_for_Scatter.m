@@ -1,5 +1,5 @@
 
-command = '"C:\Program Files\R\R-4.2.1\bin\x64\Rscript.exe" main_for_scatter.R ';
+command = '"C:\Program Files\R\R-4.2.3\bin\x64\Rscript.exe" main_for_scatter.R ';
 expGroups = uipickfiles('Prompt', 'Select experiment groups folders');
 [suggestedPath, ~, ~] = fileparts(expGroups{1});
 savePath =suggestedPath;

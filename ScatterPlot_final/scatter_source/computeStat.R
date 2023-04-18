@@ -7,17 +7,20 @@ computeStat<-function(csv_file_name,dir,groupsNames,path_to_scripts){
   setwd(current_dir)
   
   
-  largest_number_of_movies(dir,num_of_pop,path_to_scripts)
+  #largest_number_of_movies(dir,num_of_pop,path_to_scripts)
   
   datalist = list()
   df1<-as.data.frame(read.csv(paste(dir[1,1],"/",csv_file_name,sep = "")))
   first<-df1[ , grepl( "value" , names( df1 ) ) ]
+  first<- unname(first)
+  
   first$id <-as.factor(groupsNames[1])
   
   
   for (i in 2:num_of_pop){
     df_temp<-as.data.frame(read.csv(paste(dir[i,1],"/",csv_file_name,sep = "")))
     df_temp<-df_temp[ , grepl( "value" , names( df_temp ) ) ]
+    df_temp<- unname(df_temp)
     df_temp$id <-as.factor(groupsNames[i])
     
     #first <-rbind(first,df_temp)
