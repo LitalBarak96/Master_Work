@@ -137,13 +137,12 @@ scaleing<-function(csv_file_name,dir,path_to_scripts){
   
   
   
-  v <- rep(tools::file_path_sans_ext(basename(((dirs[1,1])))), 78)
-  
+
     for(i in 1:num_of_pop){
       setwd(dirs[i,1])
       bb<-as.data.frame(splited[i])
       bb<-select(bb, -ends_with("id"))
-      write.csv(bb, "combined_per_fly_scaled.csv", row.names = F)
+      write.csv(bb, "combined_per_fly_scaled.csv", row.names = F,col.names = F)
     }
     
   
