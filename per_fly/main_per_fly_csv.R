@@ -53,7 +53,7 @@ path_to_scripts<-choose.dir(getwd(),"choose dir where sub scripts are located")
 #sainity check # 3 trues
 print("this only need to bbe true in debug mode")
 
-#file.exists(debbug_path_color)
+file.exists(debbug_path_color)
 file.exists(path_to_scripts)
 
 
@@ -113,10 +113,9 @@ sapply(files.sources, source)
 #### the actuall run (if the user choose to run from the start)
 for (i in 1:num_of_pop){
   #for each population i get the group name the number for movies and running 
-  setwd(dir[i,1])
   avg_per_Fly_all_features(dir[i,1],path_to_scripts)
-  #importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
-  #frq(dir[i,1],path_to_scripts)
+  importClassifierFilesAndCalculatePerFrame(dir[i,1],path_to_scripts)
+  frq(dir[i,1],path_to_scripts)
 }
 
 
@@ -126,11 +125,10 @@ for (i in 1:num_of_pop){
 #}
 # 
 # 
-# for(i in 1:num_of_pop){
-#   #for each net there is different valus 
-#   setwd(dir[i,1])
-#   combind_all(dir[i,1],path_to_scripts)
-# }
+for(i in 1:num_of_pop){
+  #for each net there is different valus
+  combind_all(dir[i,1],path_to_scripts)
+}
 
 
 

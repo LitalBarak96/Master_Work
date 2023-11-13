@@ -51,7 +51,7 @@ avg_per_Fly_all_features<-function(dir,path_to_scripts){
     #ordered_ave<- col.df[order(col.df$file),]
     #final.df<-rbind(final.df, ordered_ave)
   }
-  #write.csv(all_col.df, 'averages per fly per movie.csv', row.names=F)
+  write.csv(all_col.df, 'averages per fly per movie.csv', row.names=F)
   
   
 }
