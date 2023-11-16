@@ -16,7 +16,7 @@ library(progress)
 
 num_of_pop<-0
 colors_of_groups<<-data.frame()
-with_rgb = TRUE
+with_rgb = FALSE  
 
 dot<-0
 xsize<-0
@@ -150,8 +150,8 @@ vizual<-function(){
 #EXTRACTION AND USER INPUT TO LIST OF DIRS
 ############################################################################################################
 
-debbug_path_color<-"D:/scatterplot_data/npf_chrimson_030223/color.xlsx"
-debbug_path_param<-"D:/scatterplot_data/npf_chrimson_030223/params.xlsx"
+debbug_path_color<-"D:/mated_naive_rejected/color.xlsx"
+debbug_path_param<-"D:/mated_naive_rejected/params.xlsx"
 #the path that have all the scripts in
 path_to_scripts<-choose.dir(getwd(),"choose dir where sub scripts are located")
 
