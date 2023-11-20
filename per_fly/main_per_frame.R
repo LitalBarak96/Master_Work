@@ -44,6 +44,11 @@ if(file.exists(debbug_path_color)){
 ")
 }
 
+path_to_scripts<-"C:/dev/interactions_network/per_fly/sub_function/"
+
+setwd(path_to_scripts)
+files.sources = list.files()
+sapply(files.sources, source)
 
 
 #creat list of dirs 
