@@ -142,9 +142,10 @@ if(change == "yes"){
 }else{
   t <- pheatmap(all_together)
   setwd((choose.dir(caption = "Select folder for saving the heatmap")))
-  ggsave(plot = t, filename = "heatmap.jpeg",units = "cm")
-  jpeg(filename = "dendrogram_p_val.jpeg", width = 1200, height = 800)
-  plot(result)
+  svglite(filename = "heatmap.svg")
+  plot(t)
+  #jpeg(filename = "dendrogram_p_val.jpeg", width = 1200, height = 800)
+  #plot(result)
   pvrect(result, alpha=0.95)
   dev.off()
 
