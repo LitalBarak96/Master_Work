@@ -1,4 +1,7 @@
 #to debug
+library(argparser, quietly=TRUE)
+
+with_rgb = TRUE
 if (with_rgb == TRUE){
   
   p <- arg_parser("path of the color")
@@ -12,3 +15,5 @@ if (with_rgb == TRUE){
   argv <- parse_args(p)
   
 }
+
+print(argv$path)

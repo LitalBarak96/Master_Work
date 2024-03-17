@@ -41,7 +41,7 @@ end
 handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
 for i = 1:length(handles.allFolders)
     folderPath = handles.allFolders{i};
-    if(not(isfile(fullfile(folderPath, 'AllinteractionWithAngelsub.mat'))))
+    if(not((isfile(fullfile(folderPath, 'AllinteractionWithAngelsub.mat')))|| (isfile(fullfile(folderPath, 'Allinteraction.mat')))))
     fileName = fullfile(folderPath, jaabaFileName);
     [COMPUTERPERFRAMESTATSSOCIAL_SUCCEEDED,savenames] = compute_perframe_stats_social_f('matname', fileName);
     %creat Allinteraction or AllinteractionWithAngelsub based on doAngelsub
@@ -50,6 +50,7 @@ for i = 1:length(handles.allFolders)
     else 
         folderPath
     end
+    
 %     if(not(isfile(fullfile(folderPath, 'per_framefeatures_sum_allflies.csv'))))
 %          fileName = fullfile(folderPath, "perframe");
 %     all=[];
