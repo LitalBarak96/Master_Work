@@ -1,5 +1,9 @@
 %%
 
+%change it to R so it can do one after the other
+command = '"C:\Program Files\R\R-4.2.0\bin\x64\Rscript.exe" rendering_movie_dynamic_net.Rmd ';
+%add choosing colors
+
 %creat interaction matrix ,per frame features avarge 
 %for spcific number of mvoies
 jaabaFileName = 'registered_trx.mat';
@@ -26,7 +30,7 @@ for i = 1:length(handles.allFolders)
     fileName = fullfile(folderPath, jaabaFileName);
     [COMPUTERPERFRAMESTATSSOCIAL_SUCCEEDED,savenames] = compute_perframe_stats_social_f('matname', fileName);
     %creat Allinteraction or AllinteractionWithAngelsub based on doAngelsub
-    %give what frame have int
+    %give what frame have interactions
     [newInteractions, newNoInteractions] = computeAllMovieInteractionsAllinteraction(savenames, param);
     else 
         folderPath
@@ -51,10 +55,21 @@ end
 end
 
     fullPath2Csv=fullfile(folderPath,"per_framefeatures_sum_allflies.csv");
+    %avarge per frame of all features
     writetable(all,fullPath2Csv)
     else
     end
 end
+
+    %where to save the tmp list of dirs the user choose
+    dname = uigetdir(handles.allFolders{1},'where to save the list of files you chooce?');
+    fullPath_files=fullfile(dname,"\choosen_files.csv");
+    writecell( handles.allFolders, fullPath_files)
+    
+    command = append(command,fullPath_files) 
+    [status,cmdout]=system(command,'-echo');
+    
+
 %%
 
 

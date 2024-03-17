@@ -1,5 +1,14 @@
 %%
 
+command = '"C:\Program Files\R\R-4.2.0\bin\x64\Rscript.exe" main_dynamic.R ';
+%add choosing colors
+%choose angelsub or not
+
+
+
+
+
+
 %creat interaction matrix ,per frame features avarge 
 %for spcific number of mvoies
 jaabaFileName = 'registered_trx.mat';
@@ -18,6 +27,23 @@ param.directed = false;
 param.doAngelsub = true;
 interactions = [];
 noInteractions = [];
+
+
+
+
+answer_change = questdlg('Would you like to run with Angelsub or withOut ?', ...
+	'Angelsub or Not', ...
+	'Angelsub','Not','Angelsub');
+% Handle response
+switch answer_change
+    case 'Angelsub'
+        disp([answer_change ' you choose with Angelsub '])
+        param.doAngelsub = true;
+    case 'Not'
+        disp([answer_change ' you choose withOut Angelsub '])
+        param.doAngelsub = false;
+end
+
 
 handles.allFolders = uipickfiles('Prompt', 'Select movies to run inteactions');
 for i = 1:length(handles.allFolders)
@@ -57,9 +83,14 @@ end
     end
 end
 
-      fullPath_files=fullfile(handles.allFolders{1},"\choosen_files.csv");
-
+    %where to save the tmp list of dirs the user choose
+    dname = uigetdir(handles.allFolders{1},'where to save the list of files you chooce?');
+    fullPath_files=fullfile(dname,"\choosen_files.csv");
     writecell( handles.allFolders, fullPath_files)
+    
+    command = append(command,fullPath_files) 
+    [status,cmdout]=system(command,'-echo');
+    
 
 %%
 
