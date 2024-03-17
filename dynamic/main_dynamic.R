@@ -16,4 +16,11 @@ if (with_rgb == TRUE){
   
 }
 
+#change the \
 print(argv$path)
+
+my_path<-"D:/EX5_6/choosen_files_colors.csv"
+
+allColorData <- as.data.frame(read.csv(my_path))
+
+#give each on a color for analysis in a loop 
