@@ -1,13 +1,6 @@
 %%
 
-command = '"C:\Program Files\R\R-4.2.0\bin\x64\Rscript.exe" main_dynamic.R ';
-%add choosing colors
-%choose angelsub or not
-
-
-
-
-
+command = '"C:\Program Files\R\R-4.2.3\bin\x64\Rscript.exe" main_dynamic.R ';
 
 %creat interaction matrix ,per frame features avarge 
 %for spcific number of mvoies
@@ -57,38 +50,66 @@ for i = 1:length(handles.allFolders)
     else 
         folderPath
     end
-    if(not(isfile(fullfile(folderPath, 'per_framefeatures_sum_allflies.csv'))))
-         fileName = fullfile(folderPath, "perframe");
-    all=[];
-    current_dir_cell_features=struct2cell(dir(fullfile(fileName)));
-for feature =3:length(current_dir_cell_features)
-        featureName=current_dir_cell_features{1,feature}
-        load(fullfile(fileName,featureName))
-        perFrameAvgAllFlies=zeros(1,param.endFrame);
-%calculating avarge
-for j=1:param.endFrame
-    sum_per_frame=sum(cellfun(@(v)v(j),data));
-    perFrameAvgAllFlies(j)=sum_per_frame;
-end
-%flipping 
-    horizen_perFrameAvgAllFlies=perFrameAvgAllFlies';
-    table_of_current_perframe = array2table(horizen_perFrameAvgAllFlies, 'VariableNames',{featureName});
-    all=horzcat(all,table_of_current_perframe);
+%     if(not(isfile(fullfile(folderPath, 'per_framefeatures_sum_allflies.csv'))))
+%          fileName = fullfile(folderPath, "perframe");
+%     all=[];
+%     current_dir_cell_features=struct2cell(dir(fullfile(fileName)));
+% for feature =3:length(current_dir_cell_features)
+%         featureName=current_dir_cell_features{1,feature}
+%         load(fullfile(fileName,featureName))
+%         perFrameAvgAllFlies=zeros(1,param.endFrame);
+% %calculating avarge
+% for j=1:param.endFrame
+%     sum_per_frame=sum(cellfun(@(v)v(j),data));
+%     perFrameAvgAllFlies(j)=sum_per_frame;
+% end
+% %flipping 
+%     horizen_perFrameAvgAllFlies=perFrameAvgAllFlies';
+%     table_of_current_perframe = array2table(horizen_perFrameAvgAllFlies, 'VariableNames',{featureName});
+%     all=horzcat(all,table_of_current_perframe);
+% end
+% 
+%     fullPath2Csv=fullfile(folderPath,"per_framefeatures_sum_allflies.csv");
+%     %avarge per frame of all features
+%     writetable(all,fullPath2Csv)
+%     else
+%     end
 end
 
-    fullPath2Csv=fullfile(folderPath,"per_framefeatures_sum_allflies.csv");
-    %avarge per frame of all features
-    writetable(all,fullPath2Csv)
-    else
-    end
-end
+
+
 
     %where to save the tmp list of dirs the user choose
-    dname = uigetdir(handles.allFolders{1},'where to save the list of files you chooce?');
-    fullPath_files=fullfile(dname,"\choosen_files.csv");
-    writecell( handles.allFolders, fullPath_files)
+%     fullPath_files=fullfile(dname,"\choosen_files.csv");
+%     writecell( handles.allFolders, fullPath_files);
     
-    command = append(command,fullPath_files) 
+    
+     color ="";
+    groupNameDir =[];
+    colorValue=[];
+
+    groupNameDir=handles.allFolders';
+
+    
+    numOfiles = length(handles.allFolders);
+
+    for i =1:numOfiles
+    s1='Select a color for ';
+    
+    [~,currentGroupName,~]=fileparts(groupNameDir(i));
+    displayOrder =char(strcat(s1,{' '},currentGroupName));
+    c = uisetcolor([1 1 0],displayOrder);
+    color_in_char =[];
+    color_in_char= sprintf(' %f', c)
+    colorValue = [colorValue;c];
+    end
+    tables=table(groupNameDir,colorValue);
+    
+    dname = uigetdir(handles.allFolders{1},'where to save the list of files and colors you chooce?');
+    fullPath_colors=fullfile(dname,"\choosen_files_colors.csv");
+    writetable( tables, fullPath_colors);
+    
+    command = append(command,fullPath_colors) 
     [status,cmdout]=system(command,'-echo');
     
 
