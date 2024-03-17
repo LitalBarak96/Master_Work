@@ -26,7 +26,7 @@ for i = 1:length(handles.allFolders)
     fileName = fullfile(folderPath, jaabaFileName);
     [COMPUTERPERFRAMESTATSSOCIAL_SUCCEEDED,savenames] = compute_perframe_stats_social_f('matname', fileName);
     %creat Allinteraction or AllinteractionWithAngelsub based on doAngelsub
-    %give what frame have interactions
+    %give what frame have int
     [newInteractions, newNoInteractions] = computeAllMovieInteractionsAllinteraction(savenames, param);
     else 
         folderPath
@@ -51,16 +51,10 @@ end
 end
 
     fullPath2Csv=fullfile(folderPath,"per_framefeatures_sum_allflies.csv");
-    %avarge per frame of all features
     writetable(all,fullPath2Csv)
     else
     end
 end
-
-      fullPath_files=fullfile(handles.allFolders{1},"\choosen_files.csv");
-
-    writecell( handles.allFolders, fullPath_files)
-
 %%
 
 
