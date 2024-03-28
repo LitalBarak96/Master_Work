@@ -71,9 +71,9 @@ print(argv$path)
 number_of_flys<-10
 
 
-my_path<-"D:/EX5_6/choosen_files_colors.csv"
+#my_path<-"D:/EX5_6/choosen_files_colors.csv"
 
-allColorData <- as.data.frame(read.csv(my_path))
+allColorData <- as.data.frame(read.csv(argv$path))
 
 #give each on a color for analysis in a loop 
 
@@ -177,12 +177,12 @@ for(index in 1:num_of_pop){
   net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
   
   compute.animation(net,
-                    slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
+                    slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"),verbose=FALSE)
   
   setwd(current_dir)
   render.d3movie(net,filename= paste0(basename(current_dir),"_",".html"),
                  output.mode = "HTML",vertex.col = "col",
-                 launchBrowser = TRUE,displaylabels =T)
+                 launchBrowser = TRUE,displaylabels =T,verbose=FALSE)
 }
 
 
