@@ -88,13 +88,14 @@ colors_of_groups<<-as.data.frame(lapply(structure(.Data=1:1,.Names=1:1),function
 for (i in 1:num_of_pop){
   colors_of_groups$X1[i]<-rgb_2_hex(allColorData[i,2:4])
 }
-colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
+#colors_of_groups$X1<-factor(colors_of_groups$X1, levels = as.character(colors_of_groups$X1))
 
-allColorData<-cbind(allColorData,color =colors_of_groups$X1 )
+allColorData<-cbind(allColorData,color =(colors_of_groups$X1) )
 
 
 
 library(R.matlab)
+library(ndtv)
 
 for(index in 1:num_of_pop){
   
@@ -150,90 +151,41 @@ for(index in 1:num_of_pop){
   all<-cbind(edge.id,all)
   all$tail<-as.numeric(all$tail)
   all$head<-as.numeric(all$head)
+  new_edge<-data.frame(onset=all["onset"],terminus=all["terminus"],tail=all["tail"],head=all["head"])
+  new_nodes<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["tail"])
+  tmp_new<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["head"])
+  colnames(tmp_new)<-c("onset","terminus","id")
+  colnames(new_nodes)<-c("onset","terminus","id")
   
+  new_nodes<-rbind(new_nodes,tmp_new)
+  new_nodes$pid<-seq_along(1:nrow(new_nodes))
+  
+  final_nodes<-new_nodes
+  final_nodes$onset<-0
+  final_nodes$terminus<-27001
+  
+  
+  vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(allColorData[index,"color"]))
+  
+  vertex$vertex.id<-as.numeric(vertex$vertex.id)
+  
+  nw <- network(unique(new_edge[,c(3,4)]),
+                vertex.attr = vertex[,c(1:2)],
+                vertex.attrnames = c("vertex.id", "col"),
+                directed = F)
+  
+  net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
+  
+  compute.animation(net,
+                    slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
+  
+  setwd(current_dir)
+  render.d3movie(net,filename= paste0(basename(current_dir),"_",".html"),
+                 output.mode = "HTML",vertex.col = "col",
+                 launchBrowser = TRUE,displaylabels =T)
 }
 
 
-
-#read the all frames
-
-
-
-
-
-#insert dir and insert color of chooice
-
-#install.packages('R.matlab')
-# library(R.matlab)
-# current_dir ="D:/allGroups/Males_Mated"
-# setwd(current_dir)
-# 
-# dir<-list.dirs(recursive = F)
-# print(dir)
-# color<-"black"
-# ```
-
-
-#creating the all df that conation all the data
-# library(R.matlab)
-# #where the subscripts is located
-# path_to_scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
-# 
-# 
-# 
-# current_dir_scripts =getwd()
-# setwd(path_to_scripts)
-# files.sources = list.files()
-# sapply(files.sources, source)
-# setwd(current_dir_scripts)
-
-#choosing the spcific movie i want to show
-#number_of_movie<-13
-
-
-
-
-
-#this part doing the rendering itself
-
-
-```{r pressure, echo=FALSE}
-library(ndtv)
-setwd(current_dir)
-
-new_edge<-data.frame(onset=all["onset"],terminus=all["terminus"],tail=all["tail"],head=all["head"])
-new_nodes<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["tail"])
-tmp_new<-data.frame(onset=all["onset"],terminus=all["terminus"],id=all["head"])
-colnames(tmp_new)<-c("onset","terminus","id")
-colnames(new_nodes)<-c("onset","terminus","id")
-
-new_nodes<-rbind(new_nodes,tmp_new)
-new_nodes$pid<-seq_along(1:nrow(new_nodes))
-
-final_nodes<-new_nodes
-final_nodes$onset<-0
-final_nodes$terminus<-27001
-
-
-vertex<-data.frame(vertex.id=c("1","2","3","4","5","6","7","8","9","10"),col=c(color))
-
-vertex$vertex.id<-as.numeric(vertex$vertex.id)
-
-nw <- network(unique(new_edge[,c(3,4)]),
-              vertex.attr = vertex[,c(1:2)],
-              vertex.attrnames = c("vertex.id", "col"),
-              directed = F)
-
-net <- networkDynamic(base.net=nw,edge.spells = as.matrix(new_edge), vertex.spells = as.matrix(final_nodes))
-
-compute.animation(net,
-                  slice.par = list(start = 1, end = 27001, interval = 60, aggregate.dur = 60, rule = "latest"))
-
-setwd(current_dir)
-render.d3movie(net,filename= paste0(basename(current_dir),"_",".html"),
-               output.mode = "HTML",vertex.col = "col",
-               launchBrowser = TRUE,displaylabels =T)
-```
 
 
 
