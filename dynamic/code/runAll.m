@@ -23,7 +23,7 @@ function varargout = runAll(varargin)
 
 % Edit the above text to modify the response to help runAll
 
-% Last Modified by GUIDE v2.5 31-Aug-2021 14:06:42
+% Last Modified by GUIDE v2.5 08-Apr-2024 12:03:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -167,6 +167,10 @@ set(handles.jaabaBtn, 'Visible', 'on')
 set(handles.jaabaPlotBtn, 'Visible', 'on')
 set(handles.toolsBtn, 'Visible', 'on')
 set(handles.text3, 'Visible', 'on')
+set(handles.ScatterBtn ,'Visible', 'on')
+set(handles.Dynamic ,'Visible', 'on')
+set(handles.Heatmap ,'Visible', 'on')
+
 h = findobj(handles.logoAxes,'type','image');
 set(h,'visible','on')
 
@@ -179,3 +183,26 @@ function NetworkBtn_Callback(hObject, eventdata, handles)
 runAllExperimentInteractions;
 
 
+
+
+% --- Executes on button press in ScatterBtn.
+function ScatterBtn_Callback(hObject, eventdata, handles)
+% hObject    handle to ScatterBtn (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+Gui_for_Scatter;
+
+
+% --- Executes on button press in Dynamic.
+function Dynamic_Callback(hObject, eventdata, handles)
+% hObject    handle to Dynamic (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+cd dynamic_net\
+main_dynamic_data;
+
+% --- Executes on button press in Heatmap.
+function Heatmap_Callback(hObject, eventdata, handles)
+% hObject    handle to Heatmap (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

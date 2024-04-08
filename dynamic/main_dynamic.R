@@ -51,6 +51,7 @@ all_frames_interaction_above <- function(number_of_flys,sub_list_mat,df_mat) {
 library(argparser, quietly=TRUE)
 
 with_rgb = TRUE
+angelsub = TRUE
 if (with_rgb == TRUE){
   
   p <- arg_parser("path of the color")
@@ -109,11 +110,25 @@ for(index in 1:num_of_pop){
   }
   
   
-  filepath<-paste0(current_dir, '/','Allinteraction.mat')
-  if(!(file.exists(filepath))){
+  
+  
+  if( file.exists(paste0(current_dir, '/','Allinteraction.mat')) ){
+    filepath<-paste0(current_dir, '/','Allinteraction.mat')
+    
+  }else if( file.exists(paste0(current_dir, '/','AllinteractionWithAngelsub.mat'))){
+    filepath<-paste0(current_dir, '/','AllinteractionWithAngelsub.mat')
+    
+  }else{
     stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+    
   }
   
+  
+  # filepath<-paste0(current_dir, '/','Allinteraction.mat')
+  # if(!(file.exists(filepath))){
+  #   stop("Allinteraction.mat does not exist!!!please creat it with MainInteractionAllNoAngelSub.m ")
+  # }
+  # 
   df <- (readMat(filepath)) # read each MAT file
   sub_list_mat<-matrix(df[["new.interactionFrameMatrix"]],nrow = number_of_flys, ncol = number_of_flys)
   df_mat<-as.data.frame(sub_list_mat)
