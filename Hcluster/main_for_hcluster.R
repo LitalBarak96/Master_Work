@@ -1,6 +1,7 @@
 #path_to_scripts<-"D:/MATLAB/runAll/litalHcluster"
 path_to_scripts<-choose.dir(default = "", caption = "Select path of scource scripts")
 
+#ask hadar about the names of the features
 setwd(path_to_scripts)
 files.sources = list.files()
 sapply(files.sources, source)
